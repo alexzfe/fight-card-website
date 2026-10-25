@@ -8,8 +8,10 @@ import {
   formatLongDate,
   formatReach,
   formatRecord,
+  formatPastFight,
   formatResult,
   initials,
+  resultLetter,
   tierLabel,
 } from '../../src/lib/format';
 
@@ -138,5 +140,21 @@ describe('chipLabel', () => {
   });
   it('keeps names without a colon', () => {
     expect(chipLabel('UFC Apex Special')).toBe('UFC Apex Special');
+  });
+});
+
+describe('resultLetter', () => {
+  it('abbreviates past results', () => {
+    expect(['win', 'loss', 'draw', 'nc'].map((r) => resultLetter(r as never))).toEqual(['W', 'L', 'D', 'NC']);
+  });
+});
+
+describe('formatPastFight', () => {
+  const fight = { result: 'win', opponent: 'Dan Delta', method: 'KO/TKO', round: 1, time: '2:10', event: 'UFC 318', date: '2026-06-13' } as const;
+  it('shows method, round and month', () => {
+    expect(formatPastFight(fight)).toBe('KO/TKO R1 · Jun 2026');
+  });
+  it('drops missing parts', () => {
+    expect(formatPastFight({ ...fight, method: null, round: null, date: null })).toBe('');
   });
 });

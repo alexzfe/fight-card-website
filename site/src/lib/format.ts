@@ -1,4 +1,4 @@
-import type { FinishTier, Record, Result } from './schema';
+import type { FinishTier, PastFight, PastResult, Record, Result } from './schema';
 
 const DASH = '—';
 
@@ -32,6 +32,21 @@ export function formatResult(result: Result | null | undefined): string | null {
   if (!result) return null;
   const parts = [result.method, result.round != null ? `R${result.round}` : null, result.time].filter(Boolean);
   return parts.length ? parts.join(' ') : null;
+}
+
+const RESULT_LETTERS: { [K in PastResult]: string } = { win: 'W', loss: 'L', draw: 'D', nc: 'NC' };
+
+export function resultLetter(result: PastResult): string {
+  return RESULT_LETTERS[result];
+}
+
+/** e.g. "KO/TKO R1 · Jun 2026"; empty when nothing is known. */
+export function formatPastFight(fight: Pick<PastFight, 'method' | 'round' | 'date'>): string {
+  const how = [fight.method, fight.round != null ? `R${fight.round}` : null].filter(Boolean).join(' ');
+  const when = fight.date
+    ? utc(fight.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })
+    : null;
+  return [how, when].filter(Boolean).join(' · ');
 }
 
 const TIER_LABELS: { [K in FinishTier]: string } = { high: 'High', medium: 'Medium', low: 'Low' };

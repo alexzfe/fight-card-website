@@ -6,12 +6,24 @@ const isoTimestamp = z.string().regex(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/, 'expected 
 
 export const FinishTier = z.enum(['high', 'medium', 'low']);
 export const EventStatus = z.enum(['upcoming', 'completed']);
+export const PastResult = z.enum(['win', 'loss', 'draw', 'nc']);
 
 export const Record = z.object({
   w: z.number().int().nonnegative().default(0),
   l: z.number().int().nonnegative().default(0),
   d: z.number().int().nonnegative().default(0),
   nc: z.number().int().nonnegative().default(0),
+});
+
+export const PastFight = z.object({
+  result: PastResult,
+  opponent: z.string().min(1),
+  opponent_id: z.string().nullish(),
+  method: z.string().nullish(),
+  round: z.number().int().positive().nullish(),
+  time: z.string().nullish(),
+  event: z.string(),
+  date: isoDate.nullish(),
 });
 
 export const Fighter = z.object({
@@ -25,6 +37,7 @@ export const Fighter = z.object({
   dob: isoDate.nullish(),
   image: z.string().nullish(),
   details_fetched_at: isoTimestamp.nullish(),
+  recent_fights: z.array(PastFight).nullish(), // newest first, at most 3
 });
 
 export const Result = z.object({
@@ -67,6 +80,8 @@ export const Index = z.object({
 export const Fighters = z.record(z.string(), Fighter);
 
 export type FinishTier = z.infer<typeof FinishTier>;
+export type PastResult = z.infer<typeof PastResult>;
+export type PastFight = z.infer<typeof PastFight>;
 export type Record = z.infer<typeof Record>;
 export type Fighter = z.infer<typeof Fighter>;
 export type Result = z.infer<typeof Result>;

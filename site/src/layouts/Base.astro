@@ -10,6 +10,10 @@ interface Props {
 
 const { title, description } = Astro.props;
 const model = site.index.model;
+// Chromium prerenders event pages on hover/touch, so chip taps feel instant. No JS runs.
+const SPECULATION_RULES = JSON.stringify({
+  prerender: [{ where: { href_matches: '/events/*' }, eagerness: 'moderate' }],
+});
 ---
 
 <!doctype html>
@@ -20,6 +24,7 @@ const model = site.index.model;
     <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <script type="speculationrules" is:inline set:html={SPECULATION_RULES} />
   </head>
   <body>
     <slot />

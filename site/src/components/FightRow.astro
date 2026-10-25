@@ -1,15 +1,16 @@
 ---
 import Corner from './Corner.astro';
-import { ageAt, formatHeight, formatReach, formatResult, tierLabel } from '../lib/format';
+import { ageAt, formatHeight, formatPastFight, formatReach, formatResult, resultLetter, tierLabel } from '../lib/format';
 import type { Event, Fight, Fighter } from '../lib/schema';
 
 interface Props {
   fight: Fight;
   event: Event;
   fighters: { [id: string]: Fighter };
+  eager?: boolean;
 }
 
-const { fight, event, fighters } = Astro.props;
+const { fight, event, fighters, eager } = Astro.props;
 const red = fighters[fight.red]!;
 const blue = fighters[fight.blue]!;
 const result = formatResult(fight.result);
@@ -22,11 +23,12 @@ const stats = [
   ['Stance', red.stance ?? '—', blue.stance ?? '—'],
   ['Age', age(red), age(blue)],
 ] as const;
+const history = [red, blue].map((f) => f.recent_fights ?? []);
 ---
 
 <li class:list={['fight', { done: result }]} data-testid="fight">
   <div class="bout">
-    <Corner side="red" fighter={red} winner={winner === red.id} />
+    <Corner side="red" fighter={red} winner={winner === red.id} eager={eager} />
     <div class="mid">
       {fight.weight_class && <span>{fight.weight_class}</span>}
       {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
@@ -43,7 +45,7 @@ const stats = [
         )
       }
     </div>
-    <Corner side="blue" fighter={blue} winner={winner === blue.id} />
+    <Corner side="blue" fighter={blue} winner={winner === blue.id} eager={eager} />
   </div>
   <details class="stats">
     <summary>Stats</summary>
@@ -60,5 +62,26 @@ const stats = [
         }
       </tbody>
     </table>
+    {
+      history.some((h) => h.length > 0) && (
+        <div class="last-fights">
+          {history.map((fights, i) => (
+            <div class:list={['last-fights-side', i === 0 ? 'side-red' : 'side-blue']}>
+              {fights.length > 0 && (
+                <ol data-testid="last-fights" aria-label={`${[red, blue][i]!.name}: last ${fights.length} fights`}>
+                  {fights.map((f) => (
+                    <li>
+                      <span class:list={['past-result', `form-${f.result}`]}>{resultLetter(f.result)}</span>{' '}
+                      <span class="past-opponent">{f.opponent}</span>
+                      <span class="past-meta">{formatPastFight(f)}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          ))}
+        </div>
+      )
+    }
   </details>
 </li>

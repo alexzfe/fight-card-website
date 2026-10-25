@@ -43,8 +43,24 @@ describe('fixture build', () => {
   it('ships zero JavaScript', () => {
     expect(walk(DIST).filter((f) => /\.m?js$/.test(f))).toEqual([]);
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
-      expect(fs.readFileSync(f, 'utf8'), f).not.toMatch(/<script/i);
+      // speculation rules are JSON the browser reads natively; no script runs
+      const html = fs.readFileSync(f, 'utf8').replace(/<script type="speculationrules">[^<]*<\/script>/, '');
+      expect(html, f).not.toMatch(/<script/i);
     }
+  });
+
+  it('prerenders event pages on intent via speculation rules', () => {
+    const html = read('index.html');
+    const m = html.match(/<script type="speculationrules">([^<]*)<\/script>/);
+    expect(m, 'speculationrules script').not.toBeNull();
+    const rules = JSON.parse(m![1]!);
+    expect(rules.prerender[0].where.href_matches).toBe('/events/*');
+  });
+
+  it("loads the first card rows' headshots eagerly, the rest lazily", () => {
+    const imgs = [...read('index.html').matchAll(/<img[^>]*>/g)].map((m) => m[0]);
+    expect(imgs[0]).toMatch(/loading="eager"/);
+    expect(imgs.at(-1)).toMatch(/loading="lazy"/);
   });
 
   it('keeps home page HTML + CSS under 50 KB', () => {

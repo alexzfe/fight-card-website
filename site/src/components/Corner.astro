@@ -1,22 +1,36 @@
 ---
 import Avatar from './Avatar.astro';
-import { formatRecord } from '../lib/format';
+import { formatRecord, resultLetter } from '../lib/format';
 import type { Fighter } from '../lib/schema';
 
 interface Props {
   side: 'red' | 'blue';
   fighter: Fighter;
   winner: boolean;
+  eager?: boolean;
 }
 
-const { side, fighter, winner } = Astro.props;
+const { side, fighter, winner, eager } = Astro.props;
+const form = fighter.recent_fights ?? [];
 ---
 
 <div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
-  <Avatar fighter={fighter} />
+  <Avatar fighter={fighter} eager={eager} />
   <div class="who">
     <span class="name">{fighter.name}</span>
     <span class="record">{formatRecord(fighter.record)}</span>
+    {
+      form.length > 0 && (
+        <span class="form" data-testid="form" aria-label={`Last ${form.length}: ${form.map((f) => f.result).join(', ')}`}>
+          {form.map((f, i) => (
+            <>
+              {i > 0 && ' '}
+              <span class={`form-${f.result}`}>{resultLetter(f.result)}</span>
+            </>
+          ))}
+        </span>
+      )
+    }
     {winner && <span class="sr-only">(winner)</span>}
   </div>
 </div>

@@ -328,3 +328,62 @@ ul {
 .site-footer p {
   margin: 0 0 var(--space-1);
 }
+
+/* Recent form (newest first) and last-fights list */
+.form {
+  display: flex;
+  gap: 0.2em;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.corner-blue .form {
+  justify-content: flex-end;
+}
+
+.form-win {
+  color: var(--color-text);
+}
+
+.last-fights {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--color-border);
+  font-size: var(--font-size-xs);
+}
+
+.last-fights ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.last-fights li + li {
+  margin-top: var(--space-2);
+}
+
+.side-blue {
+  text-align: right;
+}
+
+.past-result {
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.past-result.form-win {
+  color: var(--color-text);
+}
+
+.past-opponent {
+  overflow-wrap: break-word;
+}
+
+.past-meta {
+  display: block;
+  color: var(--color-muted);
+}
