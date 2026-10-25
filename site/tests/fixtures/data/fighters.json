@@ -8,6 +8,38 @@
     "name": "Alex Alpha",
     "nickname": "The Anchor",
     "reach_in": 72,
+    "recent_fights": [
+      {
+        "date": "2026-06-13",
+        "event": "UFC 318: Alpha vs. Delta",
+        "method": "KO/TKO",
+        "opponent": "Dan Delta",
+        "opponent_id": "d4d4d4d4d4d4d4d4",
+        "result": "win",
+        "round": 1,
+        "time": "2:10"
+      },
+      {
+        "date": "2026-02-07",
+        "event": "UFC Fight Night: Alpha vs. Echo",
+        "method": "U-DEC",
+        "opponent": "Eve Echo",
+        "opponent_id": null,
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-09-20",
+        "event": "UFC 310: Alpha vs. Foxtrot",
+        "method": "SUB",
+        "opponent": "Finn Foxtrot",
+        "opponent_id": null,
+        "result": "win",
+        "round": 2,
+        "time": "3:14"
+      }
+    ],
     "record": {
       "d": 0,
       "l": 4,
@@ -21,7 +53,7 @@
     "dob": "2002-01-20",
     "height_in": 71,
     "id": "a3a3a3a3a3a3a3a3",
-    "image": null,
+    "image": "images/a3a3a3a3a3a3a3a3.png",
     "name": "Max Mike",
     "nickname": null,
     "reach_in": 72,
@@ -59,6 +91,18 @@
     "name": "Bruno Bravo",
     "nickname": null,
     "reach_in": 75.5,
+    "recent_fights": [
+      {
+        "date": "2026-05-02",
+        "event": "UFC 317: Bravo vs. Zulu",
+        "method": "CNC",
+        "opponent": "Zed Zulu",
+        "opponent_id": null,
+        "result": "nc",
+        "round": 2,
+        "time": "1:00"
+      }
+    ],
     "record": {
       "d": 1,
       "l": 2,
@@ -110,6 +154,7 @@
     "name": "Carla Charlie",
     "nickname": null,
     "reach_in": 66,
+    "recent_fights": [],
     "record": {
       "d": 0,
       "l": 3,

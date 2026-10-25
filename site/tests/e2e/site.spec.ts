@@ -68,6 +68,30 @@ test('details expand to show height, reach, stance and age', async ({ page }) =>
   await expect(details).toContainText('33');
 });
 
+test('each corner shows recent form, and details list the last 3 fights', async ({ page }) => {
+  await page.goto('/');
+  const main = page.getByTestId('fight').first();
+  await expect(main.getByTestId('form').first()).toHaveText('W L W');
+  await expect(main.getByTestId('form').first()).toHaveAttribute('aria-label', 'Last 3: win, loss, win');
+  await expect(main.getByTestId('form').nth(1)).toHaveText('NC');
+
+  const details = main.locator('details');
+  await expect(details.getByText('Dan Delta')).toBeHidden();
+  await main.locator('summary').click();
+  const red = details.getByTestId('last-fights').first();
+  await expect(red.locator('li')).toHaveCount(3);
+  await expect(red.locator('li').first()).toContainText('Dan Delta');
+  await expect(red.locator('li').first()).toContainText('KO/TKO R1 · Jun 2026');
+  await expect(details.getByTestId('last-fights').nth(1).locator('li')).toHaveCount(1);
+});
+
+test('fighters without history show no form and no last-fights list', async ({ page }) => {
+  await page.goto('/');
+  const second = page.getByTestId('fight').nth(1);
+  await expect(second.getByTestId('form')).toHaveCount(0);
+  await expect(second.getByTestId('last-fights')).toHaveCount(0);
+});
+
 test('completed event shows results next to the frozen badge', async ({ page }) => {
   await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
   const fights = page.getByTestId('fight');

@@ -9,6 +9,8 @@ interface Props {
 }
 
 const { event, fighters } = Astro.props;
+// Rows visible on a phone's first screen load their photos eagerly.
+const EAGER_ROWS = 3;
 const meta = [formatLongDate(event.date), event.location, event.status === 'completed' ? 'Results' : null]
   .filter(Boolean)
   .join(' · ');
@@ -21,8 +23,8 @@ const meta = [formatLongDate(event.date), event.location, event.status === 'comp
 {
   event.fights.length ? (
     <ul class="fights">
-      {event.fights.map((fight) => (
-        <FightRow fight={fight} event={event} fighters={fighters} />
+      {event.fights.map((fight, i) => (
+        <FightRow fight={fight} event={event} fighters={fighters} eager={i < EAGER_ROWS} />
       ))}
     </ul>
   ) : (

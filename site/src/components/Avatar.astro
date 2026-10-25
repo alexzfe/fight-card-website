@@ -6,9 +6,11 @@ import type { Fighter } from '../lib/schema';
 
 interface Props {
   fighter: Fighter;
+  /** Above the fold: skip lazy loading so photos don't pop in. */
+  eager?: boolean;
 }
 
-const { fighter } = Astro.props;
+const { fighter, eager = false } = Astro.props;
 
 // Headshots live in DATA_DIR/images (aliased as @data); keys are matched by suffix.
 const images = import.meta.glob<{ default: ImageMetadata }>('@data/images/*.{png,jpg,jpeg,webp}');
@@ -29,7 +31,7 @@ const src = key ? (await images[key]!()).default : undefined;
       fit="cover"
       position="top"
       alt=""
-      loading="lazy"
+      loading={eager ? 'eager' : 'lazy'}
       decoding="async"
     />
   ) : (
