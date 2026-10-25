@@ -190,6 +190,64 @@ test('a corner shows the Elo next to the record, and nothing when it is unknown'
   await expect(main.locator('.corner-blue').getByTestId('elo')).toHaveCount(0);
 });
 
+test('a ranked fighter shows the P4P rank after the Elo', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  await expect(fights.nth(1).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1690 · #4 P4P');
+  await expect(fights.nth(0).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1612');
+});
+
+test('provisional and inactive are quiet tags, and an unknown Elo shows no tag', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  const tags = (fight: number, side: 'red' | 'blue') =>
+    fights.nth(fight).locator(`.corner-${side}`).getByTestId('elo-tag');
+  await expect(tags(1, 'blue')).toHaveText(['provisional']);
+  await expect(tags(2, 'red')).toHaveText(['inactive']);
+  await expect(tags(1, 'red')).toHaveCount(0);
+  await expect(tags(0, 'blue')).toHaveCount(0); // inactive, but no Elo
+  const muted = await page.locator('.event-meta').evaluate((el) => getComputedStyle(el).color);
+  expect(await tags(1, 'blue').evaluate((el) => getComputedStyle(el).color)).toBe(muted);
+});
+
+test('the peak shows in a tooltip on the Elo, on hover or on tap', async ({ page }) => {
+  await page.goto('/');
+  const elo = page.getByTestId('fight').nth(1).locator('.corner-red').getByTestId('elo');
+  await expect(elo).toHaveAttribute('data-tip', 'Peak 1793');
+  const tip = () => elo.evaluate((el) => getComputedStyle(el, '::after').visibility);
+  expect(await tip()).toBe('hidden');
+  await elo.hover();
+  await expect.poll(tip).toBe('visible');
+  await page.mouse.move(0, 0);
+  await expect.poll(tip).toBe('hidden');
+  await elo.focus();
+  await expect.poll(tip).toBe('visible');
+  const noPeak = page.getByTestId('fight').nth(1).locator('.corner-blue').getByTestId('elo');
+  await expect(noPeak).not.toHaveAttribute('data-tip');
+  await expect(noPeak).not.toHaveAttribute('tabindex');
+});
+
+test('screen readers hear the peak without hovering', async ({ page }) => {
+  await page.goto('/');
+  const corner = page.getByTestId('fight').nth(1).locator('.corner-red');
+  await expect(corner.getByTestId('elo-peak')).toHaveText('Peak 1793');
+  await expect(page.getByTestId('fight').nth(1).locator('.corner-blue').getByTestId('elo-peak')).toHaveCount(0);
+});
+
+test('an Elo with a peak is a 44px tap target', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('/');
+  const elo = page.getByTestId('fight').nth(1).locator('.corner-red').getByTestId('elo');
+  const box = (await elo.boundingBox())!;
+  const x = box.x + box.width / 2;
+  const mid = box.y + box.height / 2;
+  for (const y of [mid - 21, mid + 21]) {
+    expect(await page.evaluate(([x, y]) => document.elementFromPoint(x!, y!)?.getAttribute('data-testid'), [x, y])).toBe(
+      'elo',
+    );
+  }
+});
+
 test('fighters without history show no form and no last-fights list', async ({ page }) => {
   await page.goto('/');
   const second = page.getByTestId('fight').nth(1);

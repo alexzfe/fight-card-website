@@ -7,7 +7,9 @@ import {
   formatHeight,
   formatLongDate,
   formatReach,
+  eloTags,
   formatElo,
+  formatEloPeak,
   formatRecord,
   formatPastFight,
   formatResult,
@@ -35,6 +37,36 @@ describe('formatElo', () => {
   it('is null when unknown', () => {
     expect(formatElo(null)).toBeNull();
     expect(formatElo(undefined)).toBeNull();
+  });
+  it('adds the P4P rank when there is one', () => {
+    expect(formatElo(1690, 4)).toBe('Elo 1690 · #4 P4P');
+  });
+  it('leaves the rank out when unranked', () => {
+    expect(formatElo(1690, null)).toBe('Elo 1690');
+    expect(formatElo(1690, undefined)).toBe('Elo 1690');
+  });
+  it('is null when unknown, even with a rank', () => {
+    expect(formatElo(null, 4)).toBeNull();
+  });
+});
+
+describe('formatEloPeak', () => {
+  it('labels the peak', () => {
+    expect(formatEloPeak(1793)).toBe('Peak 1793');
+  });
+  it('is null before there is a peak', () => {
+    expect(formatEloPeak(null)).toBeNull();
+    expect(formatEloPeak(undefined)).toBeNull();
+  });
+});
+
+describe('eloTags', () => {
+  it('names each tag that applies, provisional first', () => {
+    expect(eloTags({ elo_provisional: true, elo_inactive: true })).toEqual(['provisional', 'inactive']);
+    expect(eloTags({ elo_provisional: false, elo_inactive: true })).toEqual(['inactive']);
+  });
+  it('is empty when neither applies', () => {
+    expect(eloTags({ elo_provisional: false, elo_inactive: false })).toEqual([]);
   });
 });
 
