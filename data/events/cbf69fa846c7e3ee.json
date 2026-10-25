@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-21",
+  "fights": [
+    {
+      "blue": "b4b496ec2197ee3e",
+      "finish_tier": "high",
+      "id": "7de3df8199eafe71",
+      "red": "009341ed974bad72",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "239d8e5359022f3b",
+      "finish_tier": "medium",
+      "id": "07ea5460ba2f04c6",
+      "red": "cb696ebfb6598724",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "def8166ff24bd237",
+      "finish_tier": "high",
+      "id": "739aaa5e3a1e5ed1",
+      "red": "193b9d1858bc4df3",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "b07aed698fba8624",
+      "finish_tier": "medium",
+      "id": "7ba7765e1a7cd03f",
+      "red": "13a0275fa13c4d26",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "17923f676f100e16",
+      "finish_tier": "high",
+      "id": "351ea63e6b4b119a",
+      "red": "6747ccd6d1acd266",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "e047d3b541afd4a7",
+      "finish_tier": "medium",
+      "id": "16abc15d8c49da5c",
+      "red": "a845f0735bc67405",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "faf317c665546a36",
+      "finish_tier": "low",
+      "id": "2b56b3fec86892ef",
+      "red": "4a6dff1b260bcf61",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "98aa60cf58071fd6",
+      "finish_tier": "low",
+      "id": "c74522e1edb21972",
+      "red": "8d3273573b85be09",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Flyweight"
+    },
+    {
+      "blue": "3fa97913cfd205d3",
+      "finish_tier": "medium",
+      "id": "70a8f7eec6ea77ab",
+      "red": "6d35bf94f7d30241",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Flyweight"
+    }
+  ],
+  "id": "cbf69fa846c7e3ee",
+  "location": "Doha, Qatar",
+  "name": "UFC Fight Night: Prochazka vs. Stirling",
+  "slug": "ufc-fight-night-prochazka-vs-stirling",
+  "status": "upcoming"
+}

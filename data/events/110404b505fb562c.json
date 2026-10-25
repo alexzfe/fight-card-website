@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-07",
+  "fights": [
+    {
+      "blue": "45f7cb591c3ab00b",
+      "finish_tier": "medium",
+      "id": "8f7e5ebb20694f22",
+      "red": "01641ba5df0c69b0",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "7dda2cf308f24a02",
+      "finish_tier": "low",
+      "id": "588347615984ec29",
+      "red": "b08012bbe542592a",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Strawweight"
+    },
+    {
+      "blue": "7478b7f959ba61f5",
+      "finish_tier": "high",
+      "id": "1f9c3310eeb1fb93",
+      "red": "113df4fde64735c6",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "4dcfb28c011c11b2",
+      "finish_tier": "medium",
+      "id": "cd446b8759b30093",
+      "red": "4a07b1988477502c",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "3df223aeaacecf3f",
+      "finish_tier": "high",
+      "id": "1955773d3e42a616",
+      "red": "07a74004d964c7f4",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "b4443fae47e7eb9d",
+      "finish_tier": "high",
+      "id": "77faf10a167218b6",
+      "red": "3cc506f115cbb9d5",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "ab2a4b5e04dc5fe9",
+      "finish_tier": null,
+      "id": "bf08333b500a81ad",
+      "red": "e3fc6c1fab298561",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "a6eb54ae17a551be",
+      "finish_tier": "low",
+      "id": "1452e906a169875d",
+      "red": "9d62c2d8ee151f08",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    },
+    {
+      "blue": "d436f5d55156a521",
+      "finish_tier": "medium",
+      "id": "9f33576489a0370c",
+      "red": "d7c4956d61ae76a9",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "b701f095e6ccb149",
+      "finish_tier": "medium",
+      "id": "85d62e821823ba69",
+      "red": "3618e0632ecdba9c",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "33a8708747b7f943",
+      "finish_tier": "low",
+      "id": "25d0085571e737ed",
+      "red": "d3f89fa685bd8420",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "eabece0edc2d62ca",
+      "finish_tier": "medium",
+      "id": "d5bb4cadca484a31",
+      "red": "b1e5bcaad32a3cac",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Bantamweight"
+    },
+    {
+      "blue": "20a0e4cc5227c117",
+      "finish_tier": "high",
+      "id": "e2cd8521c8ba55b2",
+      "red": "2975297f505e9447",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    }
+  ],
+  "id": "110404b505fb562c",
+  "location": "Las Vegas, Nevada, USA",
+  "name": "UFC Fight Night: Bonfim vs. Brady",
+  "slug": "ufc-fight-night-bonfim-vs-brady",
+  "status": "upcoming"
+}

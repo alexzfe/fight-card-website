@@ -1,0 +1,2280 @@
+{
+  "009341ed974bad72": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "009341ed974bad72",
+    "image": "images/009341ed974bad72.webp",
+    "name": "Jiri Prochazka",
+    "nickname": null,
+    "reach_in": 80.0,
+    "record": {
+      "d": 1,
+      "l": 6,
+      "nc": 0,
+      "w": 32
+    },
+    "stance": "Orthodox"
+  },
+  "01641ba5df0c69b0": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "01641ba5df0c69b0",
+    "image": "images/01641ba5df0c69b0.webp",
+    "name": "Gabriel Bonfim",
+    "nickname": "Marretinha",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "0232cabbc30a2372": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "0232cabbc30a2372",
+    "image": "images/0232cabbc30a2372.webp",
+    "name": "Adrian Yanez",
+    "nickname": null,
+    "reach_in": 70.0,
+    "record": {
+      "d": 1,
+      "l": 6,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Orthodox"
+  },
+  "07225ba28ae309b6": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "07225ba28ae309b6",
+    "image": "images/07225ba28ae309b6.webp",
+    "name": "Charles Oliveira",
+    "nickname": "Do Bronxs",
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 11,
+      "nc": 1,
+      "w": 37
+    },
+    "stance": "Orthodox"
+  },
+  "07a74004d964c7f4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1995-05-28",
+    "height_in": 75.0,
+    "id": "07a74004d964c7f4",
+    "image": "images/07a74004d964c7f4.webp",
+    "name": "Billy Elekana",
+    "nickname": "Son of Susie",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Southpaw"
+  },
+  "1091d4d957141094": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "1091d4d957141094",
+    "image": null,
+    "name": "Nikita Krylov",
+    "nickname": "The Miner",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 13,
+      "nc": 0,
+      "w": 31
+    },
+    "stance": "Orthodox"
+  },
+  "113df4fde64735c6": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "113df4fde64735c6",
+    "image": "images/113df4fde64735c6.webp",
+    "name": "Davey Grant",
+    "nickname": "Dangerous",
+    "reach_in": 69.0,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Orthodox"
+  },
+  "13a0275fa13c4d26": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "13a0275fa13c4d26",
+    "image": "images/13a0275fa13c4d26.webp",
+    "name": "Jared Cannonier",
+    "nickname": "The Killa Gorilla",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 10,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Switch"
+  },
+  "15b1f83a90302adf": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "15b1f83a90302adf",
+    "image": "images/15b1f83a90302adf.webp",
+    "name": "Quentin Pasley",
+    "nickname": null,
+    "reach_in": 78.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 4
+    },
+    "stance": "Orthodox"
+  },
+  "17923f676f100e16": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 79.0,
+    "id": "17923f676f100e16",
+    "image": "images/17923f676f100e16.webp",
+    "name": "Tallison Teixeira",
+    "nickname": "Xicao",
+    "reach_in": 83.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "184f6ec4ee712e9f": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": null,
+    "id": "184f6ec4ee712e9f",
+    "image": null,
+    "name": "Lucia Szabova",
+    "nickname": "Silent Killer",
+    "reach_in": null,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
+  "193b9d1858bc4df3": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "193b9d1858bc4df3",
+    "image": "images/193b9d1858bc4df3.webp",
+    "name": "Dan Hooker",
+    "nickname": "The Hangman",
+    "reach_in": 75.0,
+    "record": {
+      "d": 0,
+      "l": 15,
+      "nc": 0,
+      "w": 24
+    },
+    "stance": "Switch"
+  },
+  "1af1170ed937cba7": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "1af1170ed937cba7",
+    "image": "images/1af1170ed937cba7.webp",
+    "name": "Kayla Harrison",
+    "nickname": null,
+    "reach_in": 66.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 19
+    },
+    "stance": "Southpaw"
+  },
+  "20a0e4cc5227c117": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "2002-05-23",
+    "height_in": 75.0,
+    "id": "20a0e4cc5227c117",
+    "image": null,
+    "name": "Jose Souza",
+    "nickname": "Canela",
+    "reach_in": 79.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "239d8e5359022f3b": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "239d8e5359022f3b",
+    "image": "images/239d8e5359022f3b.webp",
+    "name": "Kevin Vallejos",
+    "nickname": "El Chino",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Switch"
+  },
+  "23dec7c47cb418f8": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "23dec7c47cb418f8",
+    "image": "images/23dec7c47cb418f8.webp",
+    "name": "Zach Reese",
+    "nickname": "Savage",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 1,
+      "w": 10
+    },
+    "stance": "Switch"
+  },
+  "279566840aa55bf2": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 79.0,
+    "id": "279566840aa55bf2",
+    "image": null,
+    "name": "Alexander Volkov",
+    "nickname": "Drago",
+    "reach_in": 80.0,
+    "record": {
+      "d": 0,
+      "l": 11,
+      "nc": 0,
+      "w": 41
+    },
+    "stance": "Orthodox"
+  },
+  "29162be25ebef5f0": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 65.0,
+    "id": "29162be25ebef5f0",
+    "image": "images/29162be25ebef5f0.webp",
+    "name": "Luis Gurule",
+    "nickname": "Grim",
+    "reach_in": 64.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "2975297f505e9447": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "2975297f505e9447",
+    "image": "images/2975297f505e9447.webp",
+    "name": "Jonny Parsons",
+    "nickname": "The Sluggernaut",
+    "reach_in": 69.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "2c5f5749569eef66": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "2c5f5749569eef66",
+    "image": "images/2c5f5749569eef66.webp",
+    "name": "Tainara Lisboa",
+    "nickname": "Thai Panther",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Orthodox"
+  },
+  "2e19380f34871c6a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "2e19380f34871c6a",
+    "image": null,
+    "name": "Dominick Reyes",
+    "nickname": "The Devastator",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Southpaw"
+  },
+  "3143bf892608139a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "3143bf892608139a",
+    "image": "images/3143bf892608139a.webp",
+    "name": "Yana Santos",
+    "nickname": "Foxy",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 1,
+      "w": 17
+    },
+    "stance": "Orthodox"
+  },
+  "33a8708747b7f943": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "33a8708747b7f943",
+    "image": "images/33a8708747b7f943.webp",
+    "name": "Lucas Brennan",
+    "nickname": "Skywalker",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Southpaw"
+  },
+  "35673bf5204524ee": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "35673bf5204524ee",
+    "image": "images/35673bf5204524ee.webp",
+    "name": "Bo Nickal",
+    "nickname": null,
+    "reach_in": 76.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Southpaw"
+  },
+  "3618e0632ecdba9c": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "3618e0632ecdba9c",
+    "image": "images/3618e0632ecdba9c.webp",
+    "name": "Keiichiro Nakamura",
+    "nickname": null,
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Southpaw"
+  },
+  "36b8f265bcd1b7a4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "36b8f265bcd1b7a4",
+    "image": null,
+    "name": "Abus Magomedov",
+    "nickname": null,
+    "reach_in": 78.0,
+    "record": {
+      "d": 1,
+      "l": 7,
+      "nc": 0,
+      "w": 30
+    },
+    "stance": "Orthodox"
+  },
+  "3a46b268013afede": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "3a46b268013afede",
+    "image": "images/3a46b268013afede.webp",
+    "name": "Kevin Holland",
+    "nickname": "Trailblazer",
+    "reach_in": 81.0,
+    "record": {
+      "d": 0,
+      "l": 15,
+      "nc": 1,
+      "w": 29
+    },
+    "stance": "Orthodox"
+  },
+  "3bc3f60b21cddc6a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "3bc3f60b21cddc6a",
+    "image": "images/3bc3f60b21cddc6a.webp",
+    "name": "Azamat Bekoev",
+    "nickname": "Iron",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "3cc506f115cbb9d5": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "3cc506f115cbb9d5",
+    "image": "images/3cc506f115cbb9d5.webp",
+    "name": "Mantas Kondratavicius",
+    "nickname": null,
+    "reach_in": 75.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "3df223aeaacecf3f": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "3df223aeaacecf3f",
+    "image": "images/3df223aeaacecf3f.webp",
+    "name": "Lucas Fernando",
+    "nickname": null,
+    "reach_in": 80.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 14
+    },
+    "stance": "Orthodox"
+  },
+  "3fa97913cfd205d3": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 64.0,
+    "id": "3fa97913cfd205d3",
+    "image": "images/3fa97913cfd205d3.webp",
+    "name": "Alessandro Costa",
+    "nickname": "Nono",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Orthodox"
+  },
+  "4126a78111c0855a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "4126a78111c0855a",
+    "image": "images/4126a78111c0855a.webp",
+    "name": "Caio Borralho",
+    "nickname": "The Natural",
+    "reach_in": 75.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 1,
+      "w": 18
+    },
+    "stance": "Southpaw"
+  },
+  "45f7cb591c3ab00b": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "45f7cb591c3ab00b",
+    "image": "images/45f7cb591c3ab00b.webp",
+    "name": "Sean Brady",
+    "nickname": null,
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 19
+    },
+    "stance": "Orthodox"
+  },
+  "4a07b1988477502c": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "4a07b1988477502c",
+    "image": "images/4a07b1988477502c.webp",
+    "name": "Seokhyeon Ko",
+    "nickname": "Technical",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Southpaw"
+  },
+  "4a28cb716c19157a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "4a28cb716c19157a",
+    "image": "images/4a28cb716c19157a.webp",
+    "name": "Stephen Thompson",
+    "nickname": "Wonderboy",
+    "reach_in": 75.0,
+    "record": {
+      "d": 1,
+      "l": 9,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Orthodox"
+  },
+  "4a6dff1b260bcf61": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "4a6dff1b260bcf61",
+    "image": "images/4a6dff1b260bcf61.webp",
+    "name": "Aleksandre Topuria",
+    "nickname": "El Conquistador",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Orthodox"
+  },
+  "4b85abc5abbe657c": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "4b85abc5abbe657c",
+    "image": "images/4b85abc5abbe657c.webp",
+    "name": "Jefferson Nascimento",
+    "nickname": "Toddynho",
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Orthodox"
+  },
+  "4bdedbdeedff7d1d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "4bdedbdeedff7d1d",
+    "image": null,
+    "name": "Bolaji Oki",
+    "nickname": "The Zulu Warrior",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "4dcfb28c011c11b2": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "4dcfb28c011c11b2",
+    "image": "images/4dcfb28c011c11b2.webp",
+    "name": "Wellington Turman",
+    "nickname": "The Prodigy",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Orthodox"
+  },
+  "5078e1dacf9d25f4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "5078e1dacf9d25f4",
+    "image": "images/5078e1dacf9d25f4.webp",
+    "name": "Luana Santos",
+    "nickname": null,
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "5182316da3c1d891": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "5182316da3c1d891",
+    "image": "images/5182316da3c1d891.webp",
+    "name": "Bilal Hasan",
+    "nickname": "The IndoNinja",
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 1,
+      "w": 10
+    },
+    "stance": "Switch"
+  },
+  "519e4fe37ce9ff75": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "519e4fe37ce9ff75",
+    "image": "images/519e4fe37ce9ff75.webp",
+    "name": "Drew Dober",
+    "nickname": null,
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 15,
+      "nc": 1,
+      "w": 29
+    },
+    "stance": "Southpaw"
+  },
+  "5537efc6e496dd84": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "5537efc6e496dd84",
+    "image": null,
+    "name": "Aaron Pico",
+    "nickname": null,
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
+  },
+  "5b43d68174b6e2ab": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "5b43d68174b6e2ab",
+    "image": null,
+    "name": "Losene Keita",
+    "nickname": "Black Panther",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Orthodox"
+  },
+  "5d495dec23d7c68e": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "5d495dec23d7c68e",
+    "image": "images/5d495dec23d7c68e.webp",
+    "name": "Francis Marshall",
+    "nickname": "Fire",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "5f61780fe5e9b6d0": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "5f61780fe5e9b6d0",
+    "image": "images/5f61780fe5e9b6d0.webp",
+    "name": "Andre Petroski",
+    "nickname": null,
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Switch"
+  },
+  "6142edbd477d20c9": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "6142edbd477d20c9",
+    "image": "images/6142edbd477d20c9.webp",
+    "name": "Dakota Hope",
+    "nickname": "Huracan",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": null
+  },
+  "6266abf6e4245c72": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "6266abf6e4245c72",
+    "image": null,
+    "name": "Noah Gugnon",
+    "nickname": "Guns",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "6747ccd6d1acd266": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "6747ccd6d1acd266",
+    "image": "images/6747ccd6d1acd266.webp",
+    "name": "Shamil Gaziev",
+    "nickname": null,
+    "reach_in": 78.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
+  },
+  "681399317dbf4701": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "681399317dbf4701",
+    "image": "images/681399317dbf4701.webp",
+    "name": "Uros Medic",
+    "nickname": "The Doctor",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 14
+    },
+    "stance": "Southpaw"
+  },
+  "6a740daf1b279661": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1998-05-18",
+    "height_in": 65.0,
+    "id": "6a740daf1b279661",
+    "image": "images/6a740daf1b279661.webp",
+    "name": "Maycee Barber",
+    "nickname": "The Future",
+    "reach_in": 65.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Switch"
+  },
+  "6c3b2525436cf5d4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "6c3b2525436cf5d4",
+    "image": "images/6c3b2525436cf5d4.webp",
+    "name": "Tom Nolan",
+    "nickname": "Big Train",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Southpaw"
+  },
+  "6d35bf94f7d30241": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 65.0,
+    "id": "6d35bf94f7d30241",
+    "image": "images/6d35bf94f7d30241.webp",
+    "name": "Amir Albazi",
+    "nickname": "The Prince",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Orthodox"
+  },
+  "6d68c1afe954f121": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "6d68c1afe954f121",
+    "image": "images/6d68c1afe954f121.webp",
+    "name": "Ode Osbourne",
+    "nickname": "The Jamaican Sensation",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 9,
+      "nc": 2,
+      "w": 13
+    },
+    "stance": "Southpaw"
+  },
+  "739fd4fbb5d862f4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "739fd4fbb5d862f4",
+    "image": null,
+    "name": "Rizvan Kuniev",
+    "nickname": null,
+    "reach_in": 76.0,
+    "record": {
+      "d": 1,
+      "l": 4,
+      "nc": 1,
+      "w": 14
+    },
+    "stance": "Orthodox"
+  },
+  "7478b7f959ba61f5": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "7478b7f959ba61f5",
+    "image": null,
+    "name": "Elijah Smith",
+    "nickname": "Swift",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "74939a16c7b56f33": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "74939a16c7b56f33",
+    "image": "images/74939a16c7b56f33.webp",
+    "name": "Juan Diaz",
+    "nickname": "Pegajoso",
+    "reach_in": 69.0,
+    "record": {
+      "d": 1,
+      "l": 1,
+      "nc": 0,
+      "w": 16
+    },
+    "stance": "Orthodox"
+  },
+  "7674b836ce0698a0": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 78.0,
+    "id": "7674b836ce0698a0",
+    "image": "images/7674b836ce0698a0.webp",
+    "name": "Yousri Belgaroui",
+    "nickname": null,
+    "reach_in": 79.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "76e2870ffafbe38f": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "76e2870ffafbe38f",
+    "image": null,
+    "name": "Movsar Evloev",
+    "nickname": null,
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "787bb1f087ccff8a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "787bb1f087ccff8a",
+    "image": "images/787bb1f087ccff8a.webp",
+    "name": "Ciryl Gane",
+    "nickname": "Bon Gamin",
+    "reach_in": 81.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 1,
+      "w": 14
+    },
+    "stance": "Orthodox"
+  },
+  "792be9a24df82ed6": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "792be9a24df82ed6",
+    "image": "images/792be9a24df82ed6.webp",
+    "name": "Brandon Moreno",
+    "nickname": "The Assassin Baby",
+    "reach_in": 70.0,
+    "record": {
+      "d": 2,
+      "l": 10,
+      "nc": 0,
+      "w": 24
+    },
+    "stance": "Orthodox"
+  },
+  "7d0a1968b38ca439": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 64.0,
+    "id": "7d0a1968b38ca439",
+    "image": null,
+    "name": "Ramazan Temirov",
+    "nickname": "Temurlan",
+    "reach_in": 63.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "7dda2cf308f24a02": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1988-05-30",
+    "height_in": 63.0,
+    "id": "7dda2cf308f24a02",
+    "image": "images/7dda2cf308f24a02.webp",
+    "name": "Virna Jandiroba",
+    "nickname": "Carcara",
+    "reach_in": 64.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 23
+    },
+    "stance": "Orthodox"
+  },
+  "7eaa5e31c2dd86aa": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "7eaa5e31c2dd86aa",
+    "image": "images/7eaa5e31c2dd86aa.webp",
+    "name": "Nick Klein",
+    "nickname": "Blue Collar",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 6
+    },
+    "stance": "Orthodox"
+  },
+  "7f6ed67d3ed3c036": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "7f6ed67d3ed3c036",
+    "image": "images/7f6ed67d3ed3c036.webp",
+    "name": "Cody Durden",
+    "nickname": "Custom Made",
+    "reach_in": 67.0,
+    "record": {
+      "d": 1,
+      "l": 11,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Southpaw"
+  },
+  "809bd1a871491508": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "809bd1a871491508",
+    "image": "images/809bd1a871491508.webp",
+    "name": "Terrance McKinney",
+    "nickname": "T. Wrecks",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 9,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Switch"
+  },
+  "80fa8218c99f9c58": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1988-05-30",
+    "height_in": 68.0,
+    "id": "80fa8218c99f9c58",
+    "image": "images/80fa8218c99f9c58.webp",
+    "name": "Amanda Nunes",
+    "nickname": "The Lioness",
+    "reach_in": 69.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 23
+    },
+    "stance": "Orthodox"
+  },
+  "814e5233e2acf2ee": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "814e5233e2acf2ee",
+    "image": "images/814e5233e2acf2ee.webp",
+    "name": "Charles Johnson",
+    "nickname": "InnerG",
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 9,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Switch"
+  },
+  "85497ffd934ecf7e": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "85497ffd934ecf7e",
+    "image": "images/85497ffd934ecf7e.webp",
+    "name": "Jacobe Smith",
+    "nickname": "Cobe",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Southpaw"
+  },
+  "8a81a0707350c4a8": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "8a81a0707350c4a8",
+    "image": null,
+    "name": "Joe Kropschot",
+    "nickname": "The Land Animal",
+    "reach_in": 79.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "8d3273573b85be09": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 64.0,
+    "id": "8d3273573b85be09",
+    "image": "images/8d3273573b85be09.webp",
+    "name": "Asu Almabayev",
+    "nickname": "Zulfikar",
+    "reach_in": 65.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 24
+    },
+    "stance": "Orthodox"
+  },
+  "8ebc3a8da015d70c": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "8ebc3a8da015d70c",
+    "image": null,
+    "name": "Cam Rowston",
+    "nickname": "The Battle Giraffe",
+    "reach_in": 78.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
+  },
+  "902ec2cc48c8ae8a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "902ec2cc48c8ae8a",
+    "image": "images/902ec2cc48c8ae8a.webp",
+    "name": "Julian Erosa",
+    "nickname": "Juicy J",
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 14,
+      "nc": 0,
+      "w": 31
+    },
+    "stance": "Southpaw"
+  },
+  "955da1675ad58a50": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 73.0,
+    "id": "955da1675ad58a50",
+    "image": "images/955da1675ad58a50.webp",
+    "name": "Josh Hokit",
+    "nickname": null,
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "95aff2fd8d09a5f0": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "95aff2fd8d09a5f0",
+    "image": null,
+    "name": "Abdul Rakhman Yakhyaev",
+    "nickname": "The Hunter",
+    "reach_in": 78.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "98aa60cf58071fd6": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 64.0,
+    "id": "98aa60cf58071fd6",
+    "image": "images/98aa60cf58071fd6.webp",
+    "name": "Kyoji Horiguchi",
+    "nickname": "Karate Kid",
+    "reach_in": 63.0,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 1,
+      "w": 36
+    },
+    "stance": "Orthodox"
+  },
+  "99bd51917728c25d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "99bd51917728c25d",
+    "image": null,
+    "name": "Grant Dawson",
+    "nickname": "KGD",
+    "reach_in": 72.0,
+    "record": {
+      "d": 1,
+      "l": 3,
+      "nc": 0,
+      "w": 25
+    },
+    "stance": "Switch"
+  },
+  "9cdd2da1a9104a0b": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "9cdd2da1a9104a0b",
+    "image": "images/9cdd2da1a9104a0b.webp",
+    "name": "Macy Chiasson",
+    "nickname": null,
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "9d62c2d8ee151f08": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 65.0,
+    "id": "9d62c2d8ee151f08",
+    "image": "images/9d62c2d8ee151f08.webp",
+    "name": "Karine Silva",
+    "nickname": "Killer",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 7,
+      "nc": 0,
+      "w": 19
+    },
+    "stance": "Orthodox"
+  },
+  "9e50097a89442158": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "9e50097a89442158",
+    "image": "images/9e50097a89442158.webp",
+    "name": "Mickey Gall",
+    "nickname": null,
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 7,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Switch"
+  },
+  "a24bc9922ee76e9f": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "a24bc9922ee76e9f",
+    "image": null,
+    "name": "Asaf Chopurov",
+    "nickname": "The Honey Badger",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "a3dda21be645be93": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "a3dda21be645be93",
+    "image": "images/a3dda21be645be93.webp",
+    "name": "Jean-Paul Lebosnoyani",
+    "nickname": "Mufasa",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Switch"
+  },
+  "a6eb54ae17a551be": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "a6eb54ae17a551be",
+    "image": "images/a6eb54ae17a551be.webp",
+    "name": "Gabriella Fernandes",
+    "nickname": "Gabi",
+    "reach_in": 66.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Southpaw"
+  },
+  "a845f0735bc67405": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "a845f0735bc67405",
+    "image": "images/a845f0735bc67405.webp",
+    "name": "Jake Matthews",
+    "nickname": "The Celtic Kid",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 23
+    },
+    "stance": "Orthodox"
+  },
+  "ab2a4b5e04dc5fe9": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "ab2a4b5e04dc5fe9",
+    "image": "images/ab2a4b5e04dc5fe9.webp",
+    "name": "Alvin Hines",
+    "nickname": "Goozie",
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Orthodox"
+  },
+  "abcf2cc6efc42031": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 63.0,
+    "id": "abcf2cc6efc42031",
+    "image": null,
+    "name": "Iasmin Lucindo",
+    "nickname": null,
+    "reach_in": 66.0,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 19
+    },
+    "stance": "Orthodox"
+  },
+  "ad5cb64af10fc946": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "ad5cb64af10fc946",
+    "image": "images/ad5cb64af10fc946.webp",
+    "name": "Donte Johnson",
+    "nickname": "Lock Jaw",
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Southpaw"
+  },
+  "aebaa8cec15b083d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "aebaa8cec15b083d",
+    "image": null,
+    "name": "Kody Steele",
+    "nickname": null,
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "b07aed698fba8624": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "b07aed698fba8624",
+    "image": "images/b07aed698fba8624.webp",
+    "name": "Ikram Aliskerov",
+    "nickname": null,
+    "reach_in": 76.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Southpaw"
+  },
+  "b08012bbe542592a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 65.0,
+    "id": "b08012bbe542592a",
+    "image": "images/b08012bbe542592a.webp",
+    "name": "Tatiana Suarez",
+    "nickname": null,
+    "reach_in": 66.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Southpaw"
+  },
+  "b1e5bcaad32a3cac": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "b1e5bcaad32a3cac",
+    "image": "images/b1e5bcaad32a3cac.webp",
+    "name": "Priscila Cachoeira",
+    "nickname": "Zombie Girl",
+    "reach_in": 65.0,
+    "record": {
+      "d": 0,
+      "l": 9,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Orthodox"
+  },
+  "b4443fae47e7eb9d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "b4443fae47e7eb9d",
+    "image": "images/b4443fae47e7eb9d.webp",
+    "name": "Wes Schultz",
+    "nickname": "Party Time",
+    "reach_in": 77.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "b4b496ec2197ee3e": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "b4b496ec2197ee3e",
+    "image": "images/b4b496ec2197ee3e.webp",
+    "name": "Navajo Stirling",
+    "nickname": null,
+    "reach_in": 79.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "b6452706b373eea1": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1989-05-21",
+    "height_in": 71.0,
+    "id": "b6452706b373eea1",
+    "image": "images/b6452706b373eea1.webp",
+    "name": "Renato Moicano",
+    "nickname": null,
+    "reach_in": 72.0,
+    "record": {
+      "d": 1,
+      "l": 7,
+      "nc": 0,
+      "w": 21
+    },
+    "stance": "Orthodox"
+  },
+  "b67d6bacc68d4c92": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "b67d6bacc68d4c92",
+    "image": null,
+    "name": "Daniel Santos",
+    "nickname": "Willycat",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
+  },
+  "b701f095e6ccb149": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 72.0,
+    "id": "b701f095e6ccb149",
+    "image": "images/b701f095e6ccb149.webp",
+    "name": "Ollie Schmid",
+    "nickname": "The Hungarian Stallion",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 4
+    },
+    "stance": "Orthodox"
+  },
+  "bb2c3c3a466224af": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "bb2c3c3a466224af",
+    "image": null,
+    "name": "Lone'er Kavanagh",
+    "nickname": null,
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "c03520b5c88ed6b4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "c03520b5c88ed6b4",
+    "image": null,
+    "name": "Merab Dvalishvili",
+    "nickname": "The Machine",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 21
+    },
+    "stance": "Orthodox"
+  },
+  "c06d6b18862f9a53": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "c06d6b18862f9a53",
+    "image": "images/c06d6b18862f9a53.webp",
+    "name": "Rodrigo Sezinando",
+    "nickname": null,
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "c1085e1701b13eca": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "c1085e1701b13eca",
+    "image": "images/c1085e1701b13eca.webp",
+    "name": "Joe Pyfer",
+    "nickname": "Bodybagz",
+    "reach_in": 75.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 16
+    },
+    "stance": "Orthodox"
+  },
+  "c15fa95b9a12fde4": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "c15fa95b9a12fde4",
+    "image": "images/c15fa95b9a12fde4.webp",
+    "name": "Junior Tafa",
+    "nickname": "The Juggernaut",
+    "reach_in": 75.0,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Orthodox"
+  },
+  "c6aee362c7a7d482": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 75.0,
+    "id": "c6aee362c7a7d482",
+    "image": "images/c6aee362c7a7d482.webp",
+    "name": "Randy Brown",
+    "nickname": "Rudeboy",
+    "reach_in": 78.0,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "c88f8a9c1ea7165d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "c88f8a9c1ea7165d",
+    "image": "images/c88f8a9c1ea7165d.webp",
+    "name": "Farman Hasanov",
+    "nickname": "The Lion",
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 6
+    },
+    "stance": "Orthodox"
+  },
+  "ca28cdf526d6b6e9": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "ca28cdf526d6b6e9",
+    "image": null,
+    "name": "Nurullo Aliev",
+    "nickname": "Tajik Eagle",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
+  "cb696ebfb6598724": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "cb696ebfb6598724",
+    "image": "images/cb696ebfb6598724.webp",
+    "name": "Aljamain Sterling",
+    "nickname": "Funk Master",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 26
+    },
+    "stance": "Orthodox"
+  },
+  "d008d785f6347dc2": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "d008d785f6347dc2",
+    "image": "images/d008d785f6347dc2.webp",
+    "name": "JeongYeong Lee",
+    "nickname": "Korean Tiger",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "d1941565abf50b16": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "d1941565abf50b16",
+    "image": "images/d1941565abf50b16.webp",
+    "name": "Jim Miller",
+    "nickname": "A-10",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 19,
+      "nc": 1,
+      "w": 39
+    },
+    "stance": "Southpaw"
+  },
+  "d1feea7a4bdcd503": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "d1feea7a4bdcd503",
+    "image": "images/d1feea7a4bdcd503.webp",
+    "name": "Baisangur Susurkaev",
+    "nickname": "The Real Hunter",
+    "reach_in": 79.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
+  "d35298b6df168456": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 61.0,
+    "id": "d35298b6df168456",
+    "image": "images/d35298b6df168456.webp",
+    "name": "Talita Alencar",
+    "nickname": "Problem Child",
+    "reach_in": 58.0,
+    "record": {
+      "d": 1,
+      "l": 1,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "d3f89fa685bd8420": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "d3f89fa685bd8420",
+    "image": "images/d3f89fa685bd8420.webp",
+    "name": "Austin Bashi",
+    "nickname": null,
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 14
+    },
+    "stance": "Orthodox"
+  },
+  "d4270315cbcf2569": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "d4270315cbcf2569",
+    "image": null,
+    "name": "Jacob Malkoun",
+    "nickname": "Mamba",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "d436f5d55156a521": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "d436f5d55156a521",
+    "image": "images/d436f5d55156a521.webp",
+    "name": "Murtazali Magomedov",
+    "nickname": "The Highlight",
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "d661ce4da776fc20": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "d661ce4da776fc20",
+    "image": null,
+    "name": "Petr Yan",
+    "nickname": "No Mercy",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 21
+    },
+    "stance": "Switch"
+  },
+  "d7c4956d61ae76a9": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "d7c4956d61ae76a9",
+    "image": "images/d7c4956d61ae76a9.webp",
+    "name": "Jose Delano",
+    "nickname": null,
+    "reach_in": 70.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Orthodox"
+  },
+  "def8166ff24bd237": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "def8166ff24bd237",
+    "image": "images/def8166ff24bd237.webp",
+    "name": "Brian Ortega",
+    "nickname": "T-City",
+    "reach_in": 69.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 1,
+      "w": 16
+    },
+    "stance": "Switch"
+  },
+  "e047d3b541afd4a7": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 68.0,
+    "id": "e047d3b541afd4a7",
+    "image": "images/e047d3b541afd4a7.webp",
+    "name": "Tahir Abdullayev",
+    "nickname": "Tank",
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "e1248941344b3288": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 66.0,
+    "id": "e1248941344b3288",
+    "image": null,
+    "name": "Alexander Volkanovski",
+    "nickname": "The Great",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 29
+    },
+    "stance": "Orthodox"
+  },
+  "e375cb5caf4717b6": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 63.0,
+    "id": "e375cb5caf4717b6",
+    "image": "images/e375cb5caf4717b6.webp",
+    "name": "Piera Rodriguez",
+    "nickname": "La Fiera",
+    "reach_in": 63.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
+  "e3fc6c1fab298561": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 74.0,
+    "id": "e3fc6c1fab298561",
+    "image": "images/e3fc6c1fab298561.webp",
+    "name": "Gabriel Lorenco",
+    "nickname": "The Black Mamba",
+    "reach_in": 76.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "e5549c82bfb5582d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 76.0,
+    "id": "e5549c82bfb5582d",
+    "image": "images/e5549c82bfb5582d.webp",
+    "name": "Alex Pereira",
+    "nickname": "Poatan",
+    "reach_in": 79.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Orthodox"
+  },
+  "e90a2f22417af68e": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 70.0,
+    "id": "e90a2f22417af68e",
+    "image": null,
+    "name": "Azamat Murzakanov",
+    "nickname": "The Professional",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 16
+    },
+    "stance": "Southpaw"
+  },
+  "eabece0edc2d62ca": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 65.0,
+    "id": "eabece0edc2d62ca",
+    "image": "images/eabece0edc2d62ca.webp",
+    "name": "Nina Milosevic",
+    "nickname": "Queen Beast",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "ed7d329d7c29428d": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "ed7d329d7c29428d",
+    "image": null,
+    "name": "Colby Thicknesse",
+    "nickname": "Slickness",
+    "reach_in": 69.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "eff9074bc066f0f2": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 64.0,
+    "id": "eff9074bc066f0f2",
+    "image": "images/eff9074bc066f0f2.webp",
+    "name": "Bia Mesquita",
+    "nickname": "The Lady GOAT",
+    "reach_in": 67.0,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "f14cf73e51b29254": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1992-05-13",
+    "height_in": 75.0,
+    "id": "f14cf73e51b29254",
+    "image": "images/f14cf73e51b29254.webp",
+    "name": "Sergei Pavlovich",
+    "nickname": null,
+    "reach_in": 84.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 21
+    },
+    "stance": "Southpaw"
+  },
+  "f166e93d04a8c274": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "f166e93d04a8c274",
+    "image": "images/f166e93d04a8c274.webp",
+    "name": "Diego Lopes",
+    "nickname": null,
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 28
+    },
+    "stance": "Orthodox"
+  },
+  "f1ab6f37492c630a": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 67.0,
+    "id": "f1ab6f37492c630a",
+    "image": "images/f1ab6f37492c630a.webp",
+    "name": "Carli Judice",
+    "nickname": "Crispy",
+    "reach_in": 68.0,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Southpaw"
+  },
+  "f7adc1fd115f8fdd": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "f7adc1fd115f8fdd",
+    "image": null,
+    "name": "Abubakar Vagaev",
+    "nickname": null,
+    "reach_in": 73.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 26
+    },
+    "stance": "Orthodox"
+  },
+  "faf317c665546a36": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "faf317c665546a36",
+    "image": "images/faf317c665546a36.webp",
+    "name": "Santiago Luna",
+    "nickname": "BorderBoy",
+    "reach_in": 74.0,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "fc0a4053eb8a3a59": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 63.0,
+    "id": "fc0a4053eb8a3a59",
+    "image": null,
+    "name": "Nicolle Caliari",
+    "nickname": null,
+    "reach_in": 62.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "fd406a32a6fb3a29": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1993-05-10",
+    "height_in": 70.0,
+    "id": "fd406a32a6fb3a29",
+    "image": "images/fd406a32a6fb3a29.webp",
+    "name": "Chris Duncan",
+    "nickname": "The Problem",
+    "reach_in": 71.0,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
+  },
+  "feedf3053472fe56": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 69.0,
+    "id": "feedf3053472fe56",
+    "image": "images/feedf3053472fe56.webp",
+    "name": "Charles Radtke",
+    "nickname": "Chuck Buffalo",
+    "reach_in": 72.0,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
+  "feef5f8f5629e5e7": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": null,
+    "height_in": 71.0,
+    "id": "feef5f8f5629e5e7",
+    "image": "images/feef5f8f5629e5e7.webp",
+    "name": "Theodor Berggren",
+    "nickname": "Simba",
+    "reach_in": 75.0,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Switch"
+  },
+  "ff62013d2fce6d13": {
+    "details_fetched_at": "2026-10-25T06:56:37Z",
+    "dob": "1994-05-16",
+    "height_in": 70.0,
+    "id": "ff62013d2fce6d13",
+    "image": "images/ff62013d2fce6d13.webp",
+    "name": "Nazim Sadykhov",
+    "nickname": "Black Wolf",
+    "reach_in": 69.0,
+    "record": {
+      "d": 1,
+      "l": 3,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Southpaw"
+  }
+}
