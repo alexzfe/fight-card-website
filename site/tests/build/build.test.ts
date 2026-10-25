@@ -40,21 +40,28 @@ describe('fixture build', () => {
     expect(read('healthz').trim()).toBe('ok');
   });
 
-  it('ships zero JavaScript', () => {
+  it('ships no JavaScript beyond the event rail\'s inline scroll keeper', () => {
     expect(walk(DIST).filter((f) => /\.m?js$/.test(f))).toEqual([]);
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
       // speculation rules are JSON the browser reads natively; no script runs
       const html = fs.readFileSync(f, 'utf8').replace(/<script type="speculationrules">[^<]*<\/script>/, '');
-      expect(html, f).not.toMatch(/<script/i);
+      const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
+      expect(scripts.length, f).toBeLessThanOrEqual(1);
+      for (const [tag, body] of scripts) {
+        expect(tag, f).not.toMatch(/\ssrc=/i);
+        expect(body, f).toContain('event-rail-scroll');
+        expect(body!.length, f).toBeLessThan(1500);
+      }
     }
   });
 
-  it('prerenders event pages on intent via speculation rules', () => {
+  it('prerenders every event page up front via speculation rules', () => {
     const html = read('index.html');
     const m = html.match(/<script type="speculationrules">([^<]*)<\/script>/);
     expect(m, 'speculationrules script').not.toBeNull();
     const rules = JSON.parse(m![1]!);
     expect(rules.prerender[0].where.href_matches).toBe('/events/*');
+    expect(rules.prerender[0].eagerness).toBe('eager');
   });
 
   it("loads the first card rows' headshots eagerly, the rest lazily", () => {

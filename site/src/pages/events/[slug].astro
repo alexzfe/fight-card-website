@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
-import ChipNav from '../../components/ChipNav.astro';
+import EventRail from '../../components/EventRail.astro';
 import EventCard from '../../components/EventCard.astro';
 import { formatLongDate } from '../../lib/format';
 import type { Event } from '../../lib/schema';
@@ -17,7 +17,7 @@ const { event } = Astro.props as { event: Event };
   title={`${event.name} · UFC fight card`}
   description={`${event.name}, ${formatLongDate(event.date)}: full card with finish chances.`}
 >
-  <ChipNav events={site.events} current={event} />
+  <EventRail events={site.events} current={event} />
   <main>
     <EventCard event={event} fighters={site.fighters} />
   </main>

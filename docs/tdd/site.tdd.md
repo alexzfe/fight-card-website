@@ -122,3 +122,25 @@ RED: `each finish tier has its own colour` failed because Medium used the body t
 | 35 | Form tile carries `data-tip` "<opponent> · <method round · month year>". Its tooltip is hidden until hover, then shows the opponent | `site.spec.ts › hovering a form tile names the opponent` | e2e | PASS |
 
 Checked by hand: tier text on its 12% tinted pill is ≥5.1:1 in light mode and ≥6.3:1 in dark. No horizontal overflow while a tooltip is shown at 390 px or 1440 px. Tiles use `tabindex="-1"`, so a tap focuses them and shows the tip without adding Tab stops. The Stats panel lists the same fights for keyboard and screen-reader users. Touch tap behaviour was not tested on a real iOS or Android device.
+
+## Round 4: event rail (2026-10-25)
+
+This replaces the chip row. With real data, four of six chips read "Fight Night · <date>", and the fighter names showed only in a hover title. Options A (rail), B (popover switcher) and C (prev/next stepper) were proposed. B was built as an uncommitted preview and compared side by side; the user chose A.
+
+RED (`4662c6a`): 7 unit tests failed (`eventTile is not a function`, `byDateAscending` missing). 6 e2e tests failed: tile count, touch target, selected tile in view, kept scroll, sticky, eager prerender with a view transition. GREEN: `npm test` 85/85, `npm run test:e2e` 24/24, `astro check` 0 errors.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 36 | Tile = "<Mon D> · <prefix unless UFC Fight Night> · Results if completed" over the headliners. No colon → the whole name is the headline | `format.test.ts › eventTile` | unit | PASS |
+| 37 | The rail runs in calendar order, past then upcoming | `events.test.ts › byDateAscending` | unit | PASS |
+| 38 | Tiles in date order with headliners; no "Fight Night" text; the today marker sits between past and upcoming; clicking navigates and moves `aria-current` | `site.spec.ts › event tiles run in date order…` | e2e | PASS |
+| 39 | Every tile is ≥44 px tall at 360 px | `site.spec.ts › event tiles are comfortable touch targets` | e2e | PASS |
+| 40 | Landing on the last event at 360 px, its tile is fully on screen | `site.spec.ts › the selected tile is in view on a phone` | e2e | PASS |
+| 41 | The rail's scrollLeft carries over to the next event page | `site.spec.ts › the rail keeps its scroll position…` | e2e | PASS |
+| 42 | The rail is pinned to the top after scrolling the page | `site.spec.ts › the event rail stays at the top…` | e2e | PASS |
+| 43 | Speculation rules prerender eagerly; an active `@view-transition` rule exists; the selected tile is `view-transition-name: current-event` | `site.spec.ts › switching events prerenders eagerly…`, `build.test.ts` | e2e/build | PASS |
+| 44 | No JS files, and at most one inline script per page (the rail scroll keeper, <1.5 KB, no `src`) | `build.test.ts › ships no JavaScript beyond…` | build | PASS (replaces "ships zero JavaScript") |
+
+Decision: the "zero JavaScript" invariant was relaxed to allow one inline scroll keeper, as approved in the plan. Without it, the rail jumps back to the start on every page, and a selected tile past the phone's edge stays hidden. The script restores position at `pagereveal`, so pages prerendered before the click still pick up the latest scroll. The user can still opt to remove it.
+
+Checked by hand (screenshots at 390×844, 900 px and 1440×900, light and dark, real data): one centred row on desktop, and a swipeable row with a fade on narrower screens. The first desktop pass wrapped to two rows and made the sticky header tall; that was fixed with `justify-content: safe center` and no wrap. Not tested: the transition motion itself, keyboard traversal beyond the focus-ring style, and Safari/Firefox (the transition falls back to a plain navigation there).

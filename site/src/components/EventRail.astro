@@ -1,0 +1,71 @@
+---
+import { byDateAscending } from '../lib/events';
+import { eventTile } from '../lib/format';
+import type { Event } from '../lib/schema';
+
+interface Props {
+  events: Event[];
+  current: Event | undefined;
+}
+
+const { events, current } = Astro.props;
+const rail = byDateAscending(events);
+// The today marker goes before the first upcoming event, when there are past events to its left.
+const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
+---
+
+<nav class="rail-nav" aria-label="Events">
+  <ul class="rail">
+    {
+      rail.map((e, i) => {
+        const tile = eventTile(e);
+        return (
+          <>
+            {i > 0 && i === firstUpcoming && <li class="rail-today" data-testid="rail-today" aria-hidden="true" />}
+            <li>
+              <a
+                class:list={['tile', { 'tile-past': e.status === 'completed' }]}
+                data-testid="event-tile"
+                href={`/events/${e.slug}/`}
+                aria-current={e.id === current?.id ? 'page' : undefined}
+                title={e.name}
+              >
+                <span class="tile-meta">{tile.meta}</span>
+                <span class="tile-headline">{tile.headline}</span>
+              </a>
+            </li>
+          </>
+        );
+      })
+    }
+  </ul>
+</nav>
+<script is:inline>
+  // Keep the rail where the visitor left it across event pages; scroll the selected tile into view only
+  // when it would be hidden. Runs at pagereveal so prerendered pages pick up the latest position.
+  (() => {
+    const rail = document.querySelector('.rail');
+    if (!rail) return;
+    const KEY = 'event-rail-scroll';
+    const save = () => {
+      try {
+        sessionStorage.setItem(KEY, String(rail.scrollLeft));
+      } catch {}
+    };
+    const place = () => {
+      try {
+        const saved = sessionStorage.getItem(KEY);
+        if (saved !== null) rail.scrollLeft = Number(saved);
+      } catch {}
+      const tile = rail.querySelector('[aria-current="page"]');
+      if (!tile) return;
+      const r = rail.getBoundingClientRect();
+      const t = tile.getBoundingClientRect();
+      if (t.left < r.left || t.right > r.right) rail.scrollLeft += t.left - r.left - (r.width - t.width) / 2;
+    };
+    rail.addEventListener('click', save);
+    addEventListener('pagehide', save);
+    if ('onpagereveal' in window) addEventListener('pagereveal', place, { once: true });
+    else place();
+  })();
+</script>

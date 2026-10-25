@@ -1,4 +1,4 @@
-import type { FinishTier, PastFight, PastResult, Record, Result } from './schema';
+import type { Event, FinishTier, PastFight, PastResult, Record, Result } from './schema';
 
 const DASH = '—';
 
@@ -83,8 +83,21 @@ export function formatLongDate(date: string): string {
   });
 }
 
-/** "UFC 323: A vs. B" -> "UFC 323"; "UFC Fight Night: …" -> "Fight Night". */
-export function chipLabel(name: string): string {
-  const prefix = name.split(':')[0]!.trim();
-  return prefix === 'UFC Fight Night' ? 'Fight Night' : prefix;
+/** "UFC 323: Alpha vs. Bravo" -> kicker "UFC 323", headline "Alpha vs. Bravo"; no colon -> no kicker. */
+export function splitEventName(name: string): { kicker: string | null; headline: string } {
+  const colon = name.indexOf(':');
+  return colon > 0
+    ? { kicker: name.slice(0, colon).trim(), headline: name.slice(colon + 1).trim() }
+    : { kicker: null, headline: name };
+}
+
+/** Event rail tile: "Oct 31 · UFC 323" over "Alpha vs. Bravo". "UFC Fight Night" is every other week, so it's dropped. */
+export function eventTile(event: Pick<Event, 'name' | 'date' | 'status'>): { meta: string; headline: string } {
+  const { kicker, headline } = splitEventName(event.name);
+  const meta = [
+    chipDate(event.date),
+    kicker === 'UFC Fight Night' ? null : kicker,
+    event.status === 'completed' ? 'Results' : null,
+  ];
+  return { meta: meta.filter(Boolean).join(' · '), headline };
 }

@@ -10,9 +10,10 @@ interface Props {
 
 const { title, description } = Astro.props;
 const model = site.index.model;
-// Chromium prerenders event pages on hover/touch, so chip taps feel instant. No JS runs.
+// Chromium prerenders every event page up front (there are only a handful), so tile taps feel instant
+// on phones too, where there is no hover to warn it.
 const SPECULATION_RULES = JSON.stringify({
-  prerender: [{ where: { href_matches: '/events/*' }, eagerness: 'moderate' }],
+  prerender: [{ where: { href_matches: '/events/*' }, eagerness: 'eager' }],
 });
 ---
 

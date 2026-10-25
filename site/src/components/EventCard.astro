@@ -1,7 +1,7 @@
 ---
 import FightRow from './FightRow.astro';
 import { groupBySegment, segmentLabel } from '../lib/card';
-import { formatLongDate } from '../lib/format';
+import { formatLongDate, splitEventName } from '../lib/format';
 import type { Event, Fighter } from '../lib/schema';
 
 interface Props {
@@ -15,11 +15,8 @@ const EAGER_ROWS = 3;
 const meta = [formatLongDate(event.date), event.location, event.status === 'completed' ? 'Results' : null]
   .filter(Boolean)
   .join(' · ');
-// "UFC 323: Alpha vs. Bravo" -> kicker "UFC 323", headline "Alpha vs. Bravo". The colon stays in the
-// text (visually hidden) so the heading still reads as the full event name.
-const colon = event.name.indexOf(':');
-const kicker = colon > 0 ? event.name.slice(0, colon) : null;
-const headline = colon > 0 ? event.name.slice(colon + 1).trim() : event.name;
+// The colon stays in the text (visually hidden) so the heading still reads as the full event name.
+const { kicker, headline } = splitEventName(event.name);
 const groups = groupBySegment(event.fights);
 const labelled = groups.some((g) => g.segment);
 const indexOf = new Map(event.fights.map((f, i) => [f.id, i]));

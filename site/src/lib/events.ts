@@ -9,6 +9,11 @@ export function orderEvents(events: readonly Event[]): Event[] {
   return [...upcoming, ...past];
 }
 
+/** Every event in calendar order, past then upcoming: the event rail. */
+export function byDateAscending(events: readonly Event[]): Event[] {
+  return [...events].sort(byDate);
+}
+
 /** The soonest upcoming event, else the latest completed one. */
 export function nextEvent(events: readonly Event[]): Event | undefined {
   return orderEvents(events)[0];

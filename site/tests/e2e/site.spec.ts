@@ -106,9 +106,15 @@ test('switching events prerenders eagerly and animates the selection', async ({ 
   await page.goto('/');
   const rules = JSON.parse((await page.locator('script[type="speculationrules"]').textContent())!);
   expect(rules.prerender[0].eagerness).toBe('eager');
-  const hasViewTransition = await page.evaluate(() =>
-    [...document.styleSheets].some((sheet) => [...sheet.cssRules].some((r) => r.cssText.startsWith('@view-transition'))),
-  );
+  const hasViewTransition = await page.evaluate(() => {
+    const active = (rules: CSSRuleList): CSSRule[] =>
+      [...rules].flatMap((r) =>
+        r instanceof CSSMediaRule ? (matchMedia(r.conditionText).matches ? active(r.cssRules) : []) : [r],
+      );
+    return [...document.styleSheets].some((sheet) =>
+      active(sheet.cssRules).some((r) => r.cssText.startsWith('@view-transition')),
+    );
+  });
   expect(hasViewTransition).toBe(true);
   const name = await page.locator('nav [aria-current="page"]').evaluate((el) => getComputedStyle(el).viewTransitionName);
   expect(name).toBe('current-event');

@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import ChipNav from '../components/ChipNav.astro';
+import EventRail from '../components/EventRail.astro';
 import EventCard from '../components/EventCard.astro';
 import { nextEvent } from '../lib/events';
 import { formatLongDate } from '../lib/format';
@@ -13,7 +13,7 @@ const event = nextEvent(site.events);
   title={event ? `${event.name} · UFC fight card` : 'UFC fight cards'}
   description={event ? `${event.name}, ${formatLongDate(event.date)}: full card with finish chances.` : 'Upcoming UFC fight cards.'}
 >
-  <ChipNav events={site.events} current={event} />
+  <EventRail events={site.events} current={event} />
   <main>
     {event ? <EventCard event={event} fighters={site.fighters} /> : <p class="empty">No events scheduled.</p>}
   </main>
