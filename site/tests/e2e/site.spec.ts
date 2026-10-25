@@ -92,6 +92,32 @@ test('the rail keeps its scroll position when switching events', async ({ page }
   expect(await page.locator('nav .rail').evaluate((el) => el.scrollLeft)).toBe(before);
 });
 
+test('a swipe on the rail comes to rest with a whole tile centred', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  const rail = page.locator('nav .rail');
+  const box = (await rail.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.wheel(70, 0);
+  // Wait for the rail to settle.
+  let last = -1;
+  await expect
+    .poll(async () => {
+      const now = await rail.evaluate((el) => el.scrollLeft);
+      const settled = now === last;
+      last = now;
+      return settled && now > 0;
+    }, { intervals: [150] })
+    .toBe(true);
+  const offset = await rail.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    const mid = r.left + r.width / 2;
+    const tiles = [...el.querySelectorAll('[data-testid="event-tile"]')].map((t) => t.getBoundingClientRect());
+    return Math.min(...tiles.map((t) => Math.abs(t.left + t.width / 2 - mid)));
+  });
+  expect(offset).toBeLessThanOrEqual(1);
+});
+
 test('the event rail stays at the top while scrolling', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 400 });
   await page.goto('/');
