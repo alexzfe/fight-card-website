@@ -168,6 +168,11 @@ Copy the output into `model/` in this repo and commit it. This is manual for v1.
 
 - Track-record footer stat ("High-rated fights finished X% of the time").
 - Automate the model export (homeserver cron).
+- **Scheduled rounds from ESPN.** v1 guesses: 5 rounds for the main event or a title fight, 3 otherwise. ufcstats doesn't show scheduled rounds for upcoming fights (verified 2026-10-25; only completed fights show "Time format").
+  - ESPN's scoreboard has `competitions[].format.regulation.periods` per fight (the UFC 333 fixture: main event and title fight = 5, the rest = 3).
+  - Plan: the score stage uses ESPN periods when the fight can be matched, reusing the images stage's ESPN scoreboard client and name matching, and falls back to the guess otherwise.
+  - Other events need `?dates=YYYYMMDD` (untested).
+  - This fixes the rare non-title 5-round co-main.
 - Branding, colours, typography.
 - Live fight-night updates (would need a runtime; out of scope for static).
 
