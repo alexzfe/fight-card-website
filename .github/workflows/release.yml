@@ -34,6 +34,20 @@ jobs:
           cache-dependency-path: site/package-lock.json
       - run: npm ci && npm test
         working-directory: site
+      # Browsers keyed on the lockfile (it pins @playwright/test). A cache hit still needs the OS packages.
+      - id: playwright-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('site/package-lock.json') }}
+      - if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+        working-directory: site
+      - if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+        working-directory: site
+      - run: npm run test:e2e
+        working-directory: site
 
   build:
     if: github.ref == 'refs/heads/main'
