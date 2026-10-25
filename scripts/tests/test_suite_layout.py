@@ -4,7 +4,7 @@ import helpers `from conftest` (which one wins depends on sys.path order)."""
 import subprocess
 import sys
 
-from conftest import REPO
+from ops_helpers import REPO
 
 
 def test_pipeline_and_scripts_suites_collect_together():

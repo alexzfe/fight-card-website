@@ -1,4 +1,4 @@
-from conftest import REPO
+from ops_helpers import REPO
 
 
 def test_dockerignore_lists_heavy_paths():

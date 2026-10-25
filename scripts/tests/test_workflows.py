@@ -8,7 +8,7 @@ import subprocess
 
 import pytest
 
-from conftest import REPO
+from ops_helpers import REPO
 from should_run import DAILY_CRON
 from stale_issue import TITLE
 

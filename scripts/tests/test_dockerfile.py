@@ -13,7 +13,7 @@ import uuid
 
 import pytest
 
-from conftest import REPO
+from ops_helpers import REPO
 
 pytestmark = pytest.mark.docker
 
