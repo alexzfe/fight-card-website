@@ -174,3 +174,25 @@ test('the stats toggle is a comfortable touch target', async ({ page }) => {
   expect(box.height).toBeGreaterThanOrEqual(44);
   expect(box.width).toBeGreaterThanOrEqual(200);
 });
+
+test('each finish tier has its own colour', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  const colour = (i: number) => fights.nth(i).getByTestId('badge').evaluate((el) => getComputedStyle(el).color);
+  const [high, medium, low, none] = await Promise.all([0, 1, 2, 3].map(colour));
+  const text = await page.locator('body').evaluate((el) => getComputedStyle(el).color);
+  const muted = await page.locator('.event-meta').evaluate((el) => getComputedStyle(el).color);
+  expect(new Set([high, medium, low, text, muted]).size).toBe(5);
+  expect(none).toBe(muted);
+});
+
+test('hovering a form tile names the opponent', async ({ page }) => {
+  await page.goto('/');
+  const tile = page.getByTestId('fight').first().getByTestId('form').first().locator('span').first();
+  await expect(tile).toHaveAttribute('data-tip', 'Dan Delta · KO/TKO R1 · Jun 2026');
+  const tip = () => tile.evaluate((el) => getComputedStyle(el, '::after').visibility);
+  expect(await tip()).toBe('hidden');
+  await tile.hover();
+  await expect.poll(tip).toBe('visible');
+  expect(await tile.evaluate((el) => getComputedStyle(el, '::after').content)).toContain('Dan Delta');
+});
