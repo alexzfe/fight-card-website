@@ -127,6 +127,12 @@ git push -u origin main
   gh secret set TS_CI_OAUTH_CLIENT_ID --repo alexzfe/fight-card-website
   gh secret set TS_CI_OAUTH_SECRET --repo alexzfe/fight-card-website
   ```
+- **Edge cache purge:** infra caches the HTML at Cloudflare's edge (`edge_cache: true` in its `sites.yml`), and
+  every deploy passes `purge_cache: true`, so deploys fail without `CLOUDFLARE_PURGE_TOKEN`: a Cloudflare API
+  token with only Zone › Cache Purge › Purge on xlobax.com.
+  ```sh
+  gh secret set CLOUDFLARE_PURGE_TOKEN --repo alexzfe/fight-card-website
+  ```
 - **Branch protection (optional):** if you protect `main`, the refresh job still has to push data commits. Either
   leave `main` unprotected against pushes, or add `github-actions[bot]` as a bypass actor in the ruleset.
 - **Environments:** the `staging` and `prod` environments are created by the first deploy. Leave them without

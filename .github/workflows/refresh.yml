@@ -123,4 +123,5 @@ jobs:
       env: prod
       tag: ${{ needs.pipeline.outputs.sha }}
       url: https://ufc.xlobax.com
+      purge_cache: true
     secrets: inherit

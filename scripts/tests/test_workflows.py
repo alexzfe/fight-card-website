@@ -85,6 +85,16 @@ def test_release_targets_ufc_hosts():
     assert 'tags: ["v*"]' in text
 
 
+def test_every_deploy_purges_the_edge_cache():
+    # infra caches ufc's HTML at Cloudflare's edge (sites.yml edge_cache), so each deploy must purge it.
+    for name in ("release.yml", "refresh.yml"):
+        jobs = read(name).split(f"uses: {DEPLOY_APP}")[1:]
+        assert jobs, name
+        for job in jobs:
+            body = job.split("\n\n", 1)[0]  # this job only
+            assert "purge_cache: true" in body, name
+
+
 def test_both_flows_build_through_the_shared_build_workflow():
     assert "./.github/workflows/build.yml" in read("release.yml")
     assert "./.github/workflows/build.yml" in read("refresh.yml")
