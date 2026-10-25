@@ -1,4 +1,4 @@
-import type { Event, FinishTier, PastFight, PastResult, Record, Result } from './schema';
+import type { Event, Fighter, FinishTier, PastFight, PastResult, Record, Result } from './schema';
 
 const DASH = '—';
 
@@ -7,9 +7,21 @@ export function formatRecord({ w, l, d, nc }: Record): string {
   return nc > 0 ? `${base} (${nc} NC)` : base;
 }
 
-/** e.g. "Elo 1612"; null when unknown. */
-export function formatElo(elo: number | null | undefined): string | null {
-  return elo == null ? null : `Elo ${elo}`;
+/** e.g. "Elo 1690 · #4 P4P", or "Elo 1612" when unranked; null when unknown. */
+export function formatElo(elo: number | null | undefined, p4pRank?: number | null): string | null {
+  if (elo == null) return null;
+  return p4pRank != null ? `Elo ${elo} · #${p4pRank} P4P` : `Elo ${elo}`;
+}
+
+/** e.g. "Peak 1793"; null before there is a peak. */
+export function formatEloPeak(peak: number | null | undefined): string | null {
+  return peak == null ? null : `Peak ${peak}`;
+}
+
+export function eloTags(fighter: Pick<Fighter, 'elo_provisional' | 'elo_inactive'>): string[] {
+  return [fighter.elo_provisional && 'provisional', fighter.elo_inactive && 'inactive'].filter(
+    (t): t is string => !!t,
+  );
 }
 
 export function formatHeight(inches: number | null | undefined): string {
