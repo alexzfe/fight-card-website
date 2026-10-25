@@ -1,5 +1,6 @@
 ---
 import FightRow from './FightRow.astro';
+import { groupBySegment, segmentLabel } from '../lib/card';
 import { formatLongDate } from '../lib/format';
 import type { Event, Fighter } from '../lib/schema';
 
@@ -14,19 +15,45 @@ const EAGER_ROWS = 3;
 const meta = [formatLongDate(event.date), event.location, event.status === 'completed' ? 'Results' : null]
   .filter(Boolean)
   .join(' · ');
+// "UFC 323: Alpha vs. Bravo" -> kicker "UFC 323", headline "Alpha vs. Bravo". The colon stays in the
+// text (visually hidden) so the heading still reads as the full event name.
+const colon = event.name.indexOf(':');
+const kicker = colon > 0 ? event.name.slice(0, colon) : null;
+const headline = colon > 0 ? event.name.slice(colon + 1).trim() : event.name;
+const groups = groupBySegment(event.fights);
+const labelled = groups.some((g) => g.segment);
+const indexOf = new Map(event.fights.map((f, i) => [f.id, i]));
 ---
 
 <header class="event-head">
-  <h1>{event.name}</h1>
+  <h1>
+    {kicker && <span class="kicker">{kicker}<span class="sr-only">:</span> </span>}
+    <span class="headline">{headline}</span>
+  </h1>
   <p class="event-meta">{meta}</p>
 </header>
 {
   event.fights.length ? (
-    <ul class="fights">
-      {event.fights.map((fight, i) => (
-        <FightRow fight={fight} event={event} fighters={fighters} eager={i < EAGER_ROWS} />
-      ))}
-    </ul>
+    groups.map((group) => (
+      <section class="segment" data-testid={labelled ? 'segment' : undefined}>
+        {labelled && (
+          <h2 class="segment-head">
+            <span>{group.segment ? segmentLabel(group.segment) : 'Other bouts'}</span>{' '}
+            <span class="segment-count">
+              {group.fights.length} {group.fights.length === 1 ? 'fight' : 'fights'}
+            </span>
+          </h2>
+        )}
+        <ul class="fights">
+          {group.fights.map((fight) => {
+            const i = indexOf.get(fight.id)!;
+            return (
+              <FightRow fight={fight} event={event} fighters={fighters} eager={i < EAGER_ROWS} mainEvent={i === 0} />
+            );
+          })}
+        </ul>
+      </section>
+    ))
   ) : (
     <p class="empty">No fights announced yet.</p>
   )

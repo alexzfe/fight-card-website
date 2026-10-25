@@ -19,24 +19,36 @@
   --avatar-size: 48px;
   --max-width: 44rem;
 
-  --color-bg: #ffffff;
-  --color-surface: #f4f4f5;
-  --color-border: #e4e4e7;
-  --color-text: #18181b;
-  --color-muted: #71717a;
-  --color-strong-bg: #27272a;
-  --color-strong-text: #fafafa;
+  /* Warm "programme paper" neutrals, one ember accent for finish chance,
+     muted corner colours, old gold for title fights. Swap these to re-theme. */
+  --color-bg: #fbfaf8;
+  --color-surface: #f2f0ec;
+  --color-border: #e5e1db;
+  --color-text: #1c1a17;
+  --color-muted: #6b665f;
+  --color-strong-bg: #24211e;
+  --color-strong-text: #faf9f7;
+  --color-accent: #b4471f;
+  --color-bar-off: #dcd7cf;
+  --color-corner-red: #b5463e;
+  --color-corner-blue: #3d6a9c;
+  --color-title: #8a6612;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0f0f10;
-    --color-surface: #1c1c1f;
-    --color-border: #2e2e33;
-    --color-text: #f4f4f5;
-    --color-muted: #a1a1aa;
-    --color-strong-bg: #e4e4e7;
-    --color-strong-text: #18181b;
+    --color-bg: #121110;
+    --color-surface: #1c1a18;
+    --color-border: #2e2b27;
+    --color-text: #f3f1ed;
+    --color-muted: #a39d95;
+    --color-strong-bg: #e8e5e0;
+    --color-strong-text: #1c1a17;
+    --color-accent: #ef8a5f;
+    --color-bar-off: #3a3632;
+    --color-corner-red: #d0675e;
+    --color-corner-blue: #6e9bd0;
+    --color-title: #d9b65c;
   }
 }
 
@@ -94,6 +106,15 @@ ul {
   max-width: var(--max-width);
   margin: 0 auto;
   scrollbar-width: none;
+  /* Fade the trailing edge so a cut-off chip reads as "scroll for more". */
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+}
+
+@media (min-width: 48rem) {
+  .chips {
+    flex-wrap: wrap;
+    mask-image: none;
+  }
 }
 
 .chip {
@@ -105,6 +126,10 @@ ul {
   font-size: var(--font-size-sm);
   text-decoration: none;
   white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: var(--color-muted);
 }
 
 .chip-past {
@@ -119,14 +144,54 @@ ul {
 
 /* Event header */
 .event-head h1 {
-  font-size: var(--font-size-xl);
-  margin: var(--space-2) 0 var(--space-1);
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.kicker {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
 }
 
 .event-meta {
   margin: 0 0 var(--space-4);
   color: var(--color-muted);
   font-size: var(--font-size-sm);
+}
+
+/* Card segments */
+.segment-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: var(--space-6) 0 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--color-text);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.segment:first-child .segment-head {
+  margin-top: var(--space-2);
+}
+
+.segment-count {
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.segment-head + .fights > .fight:first-child {
+  border-top: 0;
 }
 
 /* Fight rows */
@@ -180,6 +245,7 @@ ul {
 
 .record {
   display: block;
+  font-variant-numeric: tabular-nums;
   color: var(--color-muted);
   font-size: var(--font-size-xs);
 }
@@ -208,6 +274,29 @@ ul {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-muted);
+  /* Thin ring in the corner's colour, set off from the photo by a gap. Drawn inside the
+     box so it never pokes past the column edge. */
+  padding: 2px;
+  border: 1.5px solid var(--corner-color);
+  background-clip: content-box;
+}
+
+.corner-red {
+  --corner-color: var(--color-corner-red);
+}
+
+.corner-blue {
+  --corner-color: var(--color-corner-blue);
+}
+
+.main-event {
+  --avatar-size: 64px;
+}
+
+@media (min-width: 34rem) {
+  .main-event .name {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .mid {
@@ -221,32 +310,63 @@ ul {
   color: var(--color-muted);
 }
 
+.main-event-marker,
 .title-marker {
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+}
+
+.main-event-marker {
   color: var(--color-text);
 }
 
+.title-marker {
+  color: var(--color-title);
+}
+
+/* Finish meter: three ascending bars, like signal strength, plus the word. */
 .badge {
-  display: inline-block;
-  min-width: 4.5em;
-  padding: 0.125rem var(--space-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.375em;
   font-size: var(--font-size-xs);
   font-weight: 600;
+  line-height: 1;
   color: var(--color-text);
+}
+
+.meter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.bar {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--color-bar-off);
+}
+
+.bar:nth-child(1) {
+  height: 5px;
+}
+
+.bar:nth-child(2) {
+  height: 8px;
+}
+
+.bar:nth-child(3) {
+  height: 11px;
+}
+
+.bar.on {
+  background: var(--color-accent);
 }
 
 .badge-high {
-  background: var(--color-strong-bg);
-  border-color: var(--color-strong-bg);
-  color: var(--color-strong-text);
-}
-
-.badge-medium {
-  border-color: var(--color-text);
+  font-weight: 700;
+  color: var(--color-accent);
 }
 
 .badge-low,
@@ -264,12 +384,20 @@ ul {
 
 /* Tap-to-expand stats */
 .stats summary {
-  margin-top: var(--space-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  margin-bottom: calc(-1 * var(--space-3));
   color: var(--color-muted);
   font-size: var(--font-size-xs);
-  text-align: center;
   cursor: pointer;
   list-style: none;
+}
+
+.stats summary:hover {
+  color: var(--color-text);
 }
 
 .stats summary::-webkit-details-marker {
@@ -277,11 +405,22 @@ ul {
 }
 
 .stats summary::after {
-  content: ' ▾';
+  content: '';
+  width: 0.4em;
+  height: 0.4em;
+  margin-top: -0.2em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
 }
 
 .stats[open] summary::after {
-  content: ' ▴';
+  margin-top: 0.2em;
+  transform: rotate(-135deg);
+}
+
+.stats[open] {
+  padding-bottom: var(--space-3);
 }
 
 .stats table {
@@ -332,10 +471,34 @@ ul {
 /* Recent form (newest first) and last-fights list */
 .form {
   display: flex;
-  gap: 0.2em;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+  gap: 3px;
+  margin-top: 0.2em;
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Tiles: win filled, loss outlined, draw / no contest dashed. */
+.form > span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.6em;
+  height: 1.6em;
+  padding: 0 0.2em;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
   color: var(--color-muted);
+}
+
+.form > .form-win {
+  border-color: var(--color-strong-bg);
+  background: var(--color-strong-bg);
+  color: var(--color-strong-text);
+}
+
+.form > .form-draw,
+.form > .form-nc {
+  border-style: dashed;
 }
 
 .corner-blue .form {
@@ -386,4 +549,50 @@ ul {
 .past-meta {
   display: block;
   color: var(--color-muted);
+}
+
+/* Motion: only where it explains a change of state, and never for reduced-motion users. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Switching events cross-fades the card while the chip row holds still. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  .chips {
+    view-transition-name: chips;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 160ms;
+  }
+
+  /* Stats open and close by height instead of snapping. */
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .stats::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size 220ms ease,
+      content-visibility 220ms allow-discrete;
+  }
+
+  .stats[open]::details-content {
+    block-size: auto;
+  }
+
+  .stats summary::after {
+    transition: transform 200ms ease, margin-top 200ms ease;
+  }
+
+  .chip,
+  .stats summary {
+    transition:
+      background-color 120ms,
+      border-color 120ms,
+      color 120ms;
+  }
 }

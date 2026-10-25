@@ -8,14 +8,15 @@ interface Props {
   fighter: Fighter;
   winner: boolean;
   eager?: boolean;
+  large?: boolean;
 }
 
-const { side, fighter, winner, eager } = Astro.props;
+const { side, fighter, winner, eager, large } = Astro.props;
 const form = fighter.recent_fights ?? [];
 ---
 
 <div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
-  <Avatar fighter={fighter} eager={eager} />
+  <Avatar fighter={fighter} eager={eager} size={large ? 64 : 48} />
   <div class="who">
     <span class="name">{fighter.name}</span>
     <span class="record">{formatRecord(fighter.record)}</span>

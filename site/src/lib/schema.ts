@@ -5,6 +5,7 @@ const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'expected YYYY-MM-DD');
 const isoTimestamp = z.string().regex(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/, 'expected ISO 8601 UTC with Z');
 
 export const FinishTier = z.enum(['high', 'medium', 'low']);
+export const CardSegment = z.enum(['main', 'prelims', 'early_prelims']);
 export const EventStatus = z.enum(['upcoming', 'completed']);
 export const PastResult = z.enum(['win', 'loss', 'draw', 'nc']);
 
@@ -54,6 +55,7 @@ export const Fight = z.object({
   red: z.string().min(1),
   blue: z.string().min(1),
   finish_tier: FinishTier.nullish(),
+  segment: CardSegment.nullish(), // null = unknown; the site shows no heading
   tier_frozen_at: isoTimestamp.nullish(),
   result: Result.nullish(),
 });
@@ -80,6 +82,7 @@ export const Index = z.object({
 export const Fighters = z.record(z.string(), Fighter);
 
 export type FinishTier = z.infer<typeof FinishTier>;
+export type CardSegment = z.infer<typeof CardSegment>;
 export type PastResult = z.infer<typeof PastResult>;
 export type PastFight = z.infer<typeof PastFight>;
 export type Record = z.infer<typeof Record>;

@@ -1,6 +1,7 @@
 ---
 import Corner from './Corner.astro';
-import { ageAt, formatHeight, formatPastFight, formatReach, formatResult, resultLetter, tierLabel } from '../lib/format';
+import TierBadge from './TierBadge.astro';
+import { ageAt, formatHeight, formatPastFight, formatReach, formatResult, resultLetter } from '../lib/format';
 import type { Event, Fight, Fighter } from '../lib/schema';
 
 interface Props {
@@ -8,14 +9,15 @@ interface Props {
   event: Event;
   fighters: { [id: string]: Fighter };
   eager?: boolean;
+  /** First fight on the card: bigger headshots and a "Main event" marker. */
+  mainEvent?: boolean;
 }
 
-const { fight, event, fighters, eager } = Astro.props;
+const { fight, event, fighters, eager, mainEvent = false } = Astro.props;
 const red = fighters[fight.red]!;
 const blue = fighters[fight.blue]!;
 const result = formatResult(fight.result);
 const winner = fight.result?.winner;
-const tier = fight.finish_tier ?? 'none';
 const age = (f: Fighter) => ageAt(f.dob, event.date) ?? '—';
 const stats = [
   ['Height', formatHeight(red.height_in), formatHeight(blue.height_in)],
@@ -26,26 +28,25 @@ const stats = [
 const history = [red, blue].map((f) => f.recent_fights ?? []);
 ---
 
-<li class:list={['fight', { done: result }]} data-testid="fight">
+<li class:list={['fight', { done: result, 'main-event': mainEvent }]} data-testid="fight">
   <div class="bout">
-    <Corner side="red" fighter={red} winner={winner === red.id} eager={eager} />
+    <Corner side="red" fighter={red} winner={winner === red.id} eager={eager} large={mainEvent} />
     <div class="mid">
+      {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
       {fight.weight_class && <span>{fight.weight_class}</span>}
       {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
       {
         result ? (
           <span class="outcome" data-testid="outcome">
-            <span class:list={['badge', `badge-${tier}`]} data-testid="badge">{tierLabel(fight.finish_tier)}</span>{' '}
+            <TierBadge tier={fight.finish_tier} />{' '}
             <span class="result">→ {result}</span>
           </span>
         ) : (
-          <span class:list={['badge', `badge-${tier}`]} data-testid="badge" title="Finish chance">
-            {tierLabel(fight.finish_tier)}
-          </span>
+          <TierBadge tier={fight.finish_tier} title="Finish chance" />
         )
       }
     </div>
-    <Corner side="blue" fighter={blue} winner={winner === blue.id} eager={eager} />
+    <Corner side="blue" fighter={blue} winner={winner === blue.id} eager={eager} large={mainEvent} />
   </div>
   <details class="stats">
     <summary>Stats</summary>

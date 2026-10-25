@@ -87,3 +87,27 @@ $ npx astro check
 - `DATA_DIR` is resolved once in `astro.config.mjs` and injected as `__DATA_DIR__`. Resolving it from `import.meta.url` broke once the code was bundled into `dist/.prerender`.
 - `trailingSlash` is left at its default. `'always'` made `astro preview` 404 on the extensionless `/healthz`.
 - Astro 7's `astro preview` keeps a lock file and can background itself. The Playwright webServer uses `--ignore-lock`.
+
+## Round 2: card segments, quiet accents, finish meter (2026-10-25)
+
+Uncommitted at time of writing. RED was observed in the working tree before implementation:
+
+- vitest: `card.test.ts` fails with `Cannot find module '../../src/lib/card'`. `data.test.ts › fails on an unknown card segment`: `expected [Function] to throw an error`.
+- Playwright: 4 failed / 13 passed: the segment headings, main-event marker and finish meter were not found, and the stats summary was shorter than 44 px.
+
+GREEN: `npm test` 82/82, `npm run test:e2e` 17/17, `astro check` 0 errors. The zero-JS and 50 KB budget tests still pass.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 26 | Segment labels: Main card / Prelims / Early prelims | `tests/unit/card.test.ts › segmentLabel` | unit | PASS |
+| 27 | Fights grouped main card → prelims → early prelims, keeping card order within each, even when ufcstats interleaves them (late additions are appended to its list). Unknown segments form one trailing "Other bouts" group. No segments → one unlabelled group. Empty card → no groups | `card.test.ts › groupBySegment` | unit | PASS |
+| 28 | Loader rejects an unknown `segment` value | `data.test.ts › fails on an unknown card segment` | unit | PASS |
+| 29 | Home shows an h2 per segment, each with its fights | `site.spec.ts › the card is split into…` | e2e | PASS |
+| 30 | An event without segment data shows no h2 | `site.spec.ts › an event without segment data…` | e2e | PASS |
+| 31 | Only the first fight is marked "Main event" | `site.spec.ts › the main event is marked` | e2e | PASS |
+| 32 | Meter lights 3/2/1 bars for High/Medium/Low; unscored has no meter | `site.spec.ts › the finish meter…` | e2e | PASS |
+| 33 | Stats toggle is ≥44 px tall and ≥200 px wide at 360 px | `site.spec.ts › the stats toggle…` | e2e | PASS |
+
+Not covered by tests: palette contrast (checked by hand: every text colour ≥5:1 on its background in both themes), the cross-document view transition and the `<details>` height animation (both CSS-only, behind `prefers-reduced-motion: no-preference`, and inspected in Chromium only).
+
+A second RED/GREEN followed the pipeline backfill. Real data for Bonfim vs. Brady repeated the Main card and Prelims headings because ufcstats appends late bouts at the end of its list. The interleaving test failed (`2 failed | 4 passed`), and the order-by-segment grouping then passed.
