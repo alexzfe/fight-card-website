@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-07",
+  "fights": [
+    {
+      "blue": "d0d0d0d0d0d0d0d0",
+      "finish_tier": "medium",
+      "id": "f0000000000000b1",
+      "red": "c9c9c9c9c9c9c9c9",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "f2f2f2f2f2f2f2f2",
+      "finish_tier": "high",
+      "id": "f0000000000000b2",
+      "red": "e1e1e1e1e1e1e1e1",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    }
+  ],
+  "id": "2222bbbb2222bbbb",
+  "location": "London, England, United Kingdom",
+  "name": "UFC Fight Night: India vs. Juliet",
+  "slug": "ufc-fight-night-india-vs-juliet",
+  "status": "upcoming"
+}

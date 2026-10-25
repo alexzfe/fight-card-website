@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-31",
+  "fights": [
+    {
+      "blue": "b2b2b2b2b2b2b2b2",
+      "finish_tier": "high",
+      "id": "f0000000000000a1",
+      "red": "a1a1a1a1a1a1a1a1",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": true,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "d4d4d4d4d4d4d4d4",
+      "finish_tier": "medium",
+      "id": "f0000000000000a2",
+      "red": "c3c3c3c3c3c3c3c3",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    },
+    {
+      "blue": "f6f6f6f6f6f6f6f6",
+      "finish_tier": "low",
+      "id": "f0000000000000a3",
+      "red": "e5e5e5e5e5e5e5e5",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "b4b4b4b4b4b4b4b4",
+      "finish_tier": null,
+      "id": "f0000000000000a4",
+      "red": "a3a3a3a3a3a3a3a3",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    }
+  ],
+  "id": "1111aaaa1111aaaa",
+  "location": "Las Vegas, Nevada, USA",
+  "name": "UFC 323: Alpha vs. Bravo",
+  "slug": "ufc-323-alpha-vs-bravo",
+  "status": "upcoming"
+}

@@ -1,0 +1,240 @@
+{
+  "a1a1a1a1a1a1a1a1": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1992-11-01",
+    "height_in": 71,
+    "id": "a1a1a1a1a1a1a1a1",
+    "image": "images/a1a1a1a1a1a1a1a1.png",
+    "name": "Alex Alpha",
+    "nickname": "The Anchor",
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 21
+    },
+    "stance": "Orthodox"
+  },
+  "a3a3a3a3a3a3a3a3": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "2002-01-20",
+    "height_in": 71,
+    "id": "a3a3a3a3a3a3a3a3",
+    "image": null,
+    "name": "Max Mike",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 0
+    },
+    "stance": "Orthodox"
+  },
+  "a7a7a7a7a7a7a7a7": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "a7a7a7a7a7a7a7a7",
+    "image": "images/a7a7a7a7a7a7a7a7.png",
+    "name": "Gus Golf",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Orthodox"
+  },
+  "b2b2b2b2b2b2b2b2": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 73,
+    "id": "b2b2b2b2b2b2b2b2",
+    "image": "images/b2b2b2b2b2b2b2b2.png",
+    "name": "Bruno Bravo",
+    "nickname": null,
+    "reach_in": 75.5,
+    "record": {
+      "d": 1,
+      "l": 2,
+      "nc": 1,
+      "w": 18
+    },
+    "stance": "Southpaw"
+  },
+  "b4b4b4b4b4b4b4b4": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "b4b4b4b4b4b4b4b4",
+    "image": null,
+    "name": "Nia November",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 13
+    },
+    "stance": "Orthodox"
+  },
+  "b8b8b8b8b8b8b8b8": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "b8b8b8b8b8b8b8b8",
+    "image": null,
+    "name": "Hugo Hotel",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 14
+    },
+    "stance": "Orthodox"
+  },
+  "c3c3c3c3c3c3c3c3": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1997-06-30",
+    "height_in": 65,
+    "id": "c3c3c3c3c3c3c3c3",
+    "image": null,
+    "name": "Carla Charlie",
+    "nickname": null,
+    "reach_in": 66,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
+  "c9c9c9c9c9c9c9c9": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "c9c9c9c9c9c9c9c9",
+    "image": null,
+    "name": "Ivan India",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 7
+    },
+    "stance": "Orthodox"
+  },
+  "d0d0d0d0d0d0d0d0": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "d0d0d0d0d0d0d0d0",
+    "image": null,
+    "name": "Jo Juliet",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Southpaw"
+  },
+  "d4d4d4d4d4d4d4d4": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "d4d4d4d4d4d4d4d4",
+    "image": "images/d4d4d4d4d4d4d4d4.png",
+    "name": "Dana Delta",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Switch"
+  },
+  "e1e1e1e1e1e1e1e1": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "e1e1e1e1e1e1e1e1",
+    "image": null,
+    "name": "Kim Kilo",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 6
+    },
+    "stance": "Orthodox"
+  },
+  "e5e5e5e5e5e5e5e5": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": null,
+    "height_in": null,
+    "id": "e5e5e5e5e5e5e5e5",
+    "image": null,
+    "name": "Eli Echo",
+    "nickname": null,
+    "reach_in": null,
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": null
+  },
+  "f2f2f2f2f2f2f2f2": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "f2f2f2f2f2f2f2f2",
+    "image": null,
+    "name": "Lee Lima",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "f6f6f6f6f6f6f6f6": {
+    "details_fetched_at": "2026-10-20T06:00:00Z",
+    "dob": "1994-03-15",
+    "height_in": 71,
+    "id": "f6f6f6f6f6f6f6f6",
+    "image": null,
+    "name": "Finn Foxtrot",
+    "nickname": null,
+    "reach_in": 72,
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
+  }
+}

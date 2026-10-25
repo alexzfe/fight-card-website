@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-14",
+  "fights": [
+    {
+      "blue": "f2f2f2f2f2f2f2f2",
+      "finish_tier": null,
+      "id": "2026-11-14-1",
+      "red": "e1e1e1e1e1e1e1e1",
+      "result": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": null
+    }
+  ],
+  "id": "3333cccc3333cccc",
+  "location": null,
+  "name": "UFC Fight Night: Kilo vs. Lima",
+  "slug": "ufc-fight-night-kilo-vs-lima",
+  "status": "upcoming"
+}

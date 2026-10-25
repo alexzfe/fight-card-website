@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-18",
+  "fights": [
+    {
+      "blue": "b8b8b8b8b8b8b8b8",
+      "finish_tier": "high",
+      "id": "f0000000000000d1",
+      "red": "a7a7a7a7a7a7a7a7",
+      "result": {
+        "method": "KO/TKO",
+        "round": 1,
+        "time": "4:12",
+        "winner": "a7a7a7a7a7a7a7a7"
+      },
+      "tier_frozen_at": "2026-10-18T22:00:00Z",
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "b4b4b4b4b4b4b4b4",
+      "finish_tier": "low",
+      "id": "f0000000000000d2",
+      "red": "c9c9c9c9c9c9c9c9",
+      "result": {
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00",
+        "winner": "b4b4b4b4b4b4b4b4"
+      },
+      "tier_frozen_at": "2026-10-18T22:00:00Z",
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "d0d0d0d0d0d0d0d0",
+      "finish_tier": "medium",
+      "id": "f0000000000000d3",
+      "red": "e5e5e5e5e5e5e5e5",
+      "result": {
+        "method": "Draw",
+        "round": 3,
+        "time": "5:00",
+        "winner": null
+      },
+      "tier_frozen_at": "2026-10-18T22:00:00Z",
+      "title_fight": false,
+      "weight_class": "Flyweight"
+    }
+  ],
+  "id": "0000dddd0000dddd",
+  "location": "Abu Dhabi, United Arab Emirates",
+  "name": "UFC Fight Night: Golf vs. Hotel",
+  "slug": "ufc-fight-night-golf-vs-hotel",
+  "status": "completed"
+}
