@@ -7,6 +7,7 @@
       "id": "fc11508eb5ae83b0",
       "red": "07225ba28ae309b6",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Lightweight"
@@ -17,6 +18,7 @@
       "id": "5a4802117b3f5fc3",
       "red": "f14cf73e51b29254",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Heavyweight"
@@ -27,6 +29,7 @@
       "id": "18e7758b06ce465c",
       "red": "c1085e1701b13eca",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Middleweight"
@@ -37,6 +40,7 @@
       "id": "01751a4065e30e97",
       "red": "792be9a24df82ed6",
       "result": null,
+      "segment": "early_prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Flyweight"
@@ -47,6 +51,7 @@
       "id": "c1e90dd65e631ebf",
       "red": "6a740daf1b279661",
       "result": null,
+      "segment": "early_prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Women's Flyweight"
@@ -57,6 +62,7 @@
       "id": "2b9718094cda9645",
       "red": "15b1f83a90302adf",
       "result": null,
+      "segment": "early_prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Light Heavyweight"

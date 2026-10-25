@@ -7,6 +7,7 @@
       "id": "7de3df8199eafe71",
       "red": "009341ed974bad72",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Light Heavyweight"
@@ -17,6 +18,7 @@
       "id": "07ea5460ba2f04c6",
       "red": "cb696ebfb6598724",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Featherweight"
@@ -27,6 +29,7 @@
       "id": "739aaa5e3a1e5ed1",
       "red": "193b9d1858bc4df3",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Lightweight"
@@ -37,6 +40,7 @@
       "id": "7ba7765e1a7cd03f",
       "red": "13a0275fa13c4d26",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Middleweight"
@@ -47,6 +51,7 @@
       "id": "351ea63e6b4b119a",
       "red": "6747ccd6d1acd266",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Heavyweight"
@@ -57,6 +62,7 @@
       "id": "16abc15d8c49da5c",
       "red": "a845f0735bc67405",
       "result": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"
@@ -67,6 +73,7 @@
       "id": "2b56b3fec86892ef",
       "red": "4a6dff1b260bcf61",
       "result": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Bantamweight"
@@ -77,6 +84,7 @@
       "id": "c74522e1edb21972",
       "red": "8d3273573b85be09",
       "result": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Flyweight"
@@ -87,6 +95,7 @@
       "id": "70a8f7eec6ea77ab",
       "red": "6d35bf94f7d30241",
       "result": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Flyweight"
