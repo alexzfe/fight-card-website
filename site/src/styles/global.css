@@ -113,6 +113,8 @@ ul {
   /* One row at every width: centred while it fits, scrolling once it doesn't. */
   justify-content: safe center;
   overflow-x: auto;
+  /* A swipe always lands with a whole tile centred, never half-hidden at an edge. */
+  scroll-snap-type: x mandatory;
   padding: var(--space-2) var(--space-4);
   scrollbar-width: none;
   /* Fade both edges so a cut-off tile reads as "scroll for more". */
@@ -190,6 +192,7 @@ ul {
 
 .rail li:not(.rail-today) {
   flex: none;
+  scroll-snap-align: center;
 }
 
 /* Event header */

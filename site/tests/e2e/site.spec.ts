@@ -85,9 +85,13 @@ test('the rail keeps its scroll position when switching events', async ({ page }
   await page.setViewportSize({ width: 360, height: 740 });
   await page.goto('/');
   const rail = page.locator('nav .rail');
-  await rail.evaluate((el) => (el.scrollLeft = 120));
+  const target = page.getByTestId('event-tile').nth(2);
+  // Swipe the rail so the target sits centred (a snap position), away from where the page opened it.
+  const opened = await rail.evaluate((el) => el.scrollLeft);
+  await target.evaluate((el) => el.scrollIntoView({ inline: 'center', block: 'nearest' }));
   const before = await rail.evaluate((el) => el.scrollLeft);
-  await page.getByTestId('event-tile').nth(2).click();
+  expect(before).not.toBe(opened);
+  await target.click();
   await expect(page).toHaveURL(/india-vs-juliet/);
   expect(await page.locator('nav .rail').evaluate((el) => el.scrollLeft)).toBe(before);
 });

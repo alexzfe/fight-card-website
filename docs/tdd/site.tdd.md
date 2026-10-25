@@ -144,3 +144,13 @@ RED (`4662c6a`): 7 unit tests failed (`eventTile is not a function`, `byDateAsce
 Decision: the "zero JavaScript" invariant was relaxed to allow one inline scroll keeper, as approved in the plan. Without it, the rail jumps back to the start on every page, and a selected tile past the phone's edge stays hidden. The script restores position at `pagereveal`, so pages prerendered before the click still pick up the latest scroll. The user can still opt to remove it.
 
 Checked by hand (screenshots at 390×844, 900 px and 1440×900, light and dark, real data): one centred row on desktop, and a swipeable row with a fade on narrower screens. The first desktop pass wrapped to two rows and made the sticky header tall; that was fixed with `justify-content: safe center` and no wrap. Not tested: the transition motion itself, keyboard traversal beyond the focus-ring style, and Safari/Firefox (the transition falls back to a plain navigation there).
+
+### Round 4b: snap the rail (2026-10-25)
+
+RED (`eb2b373`): `a swipe on the rail comes to rest with a whole tile centred` failed (the nearest tile was 6.4 px off centre). GREEN: `scroll-snap-type: x mandatory` on the rail and `scroll-snap-align: center` on the tile items (the today marker is not a snap point). Result: `npm test` 85/85, `npm run test:e2e` 25/25.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 45 | After a horizontal swipe at 360 px, the rail settles with a tile centred within 1 px | `site.spec.ts › a swipe on the rail comes to rest…` | e2e | PASS |
+
+The test for #41 was changed. It used to park the rail at an arbitrary 120 px, which snapping now moves to a snap point, leaving the target tile half hidden; Playwright then scrolled the tile into view before clicking, so the saved position was no longer the one the test measured. It now centres the target (a real snap position) and checks that this differs from where the page opened. Checked by hand on real data at 390 px: a 60 px nudge springs back to the current tile, and a 200 px swipe lands one tile over, centred.
