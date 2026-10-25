@@ -131,7 +131,7 @@ Copy the output into `model/` in this repo and commit it. This is manual for v1.
 - **Release:** `infra/templates/app-release.yml` → reusable `deploy-app.yml`.
   - Push to main → staging.
   - `v*` tag → prod.
-  - Secrets: `TS_CI_OAUTH_CLIENT_ID`, `TS_CI_OAUTH_SECRET`.
+  - Secrets: `TS_CI_OAUTH_CLIENT_ID`, `TS_CI_OAUTH_SECRET`, `CLOUDFLARE_PURGE_TOKEN` (edge cache purge on deploy).
 - **Cron (`refresh.yml`):**
   - Runs daily at 06:00 UTC, plus hourly on event days (the job checks `data/index.json` for an event today and exits early otherwise).
   - Steps: run pipeline → commit data → build image → tag a release → **auto-deploy to prod**.

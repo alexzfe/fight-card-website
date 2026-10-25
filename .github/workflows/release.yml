@@ -67,6 +67,7 @@ jobs:
       env: staging
       tag: ${{ github.sha }}
       url: https://ufc-staging.xlobax.com
+      purge_cache: true
     secrets: inherit
 
   prod:
@@ -77,6 +78,7 @@ jobs:
       env: prod
       tag: ${{ github.sha }}
       url: https://ufc.xlobax.com
+      purge_cache: true
     secrets: inherit
 
   release:

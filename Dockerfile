@@ -20,7 +20,9 @@ server {
     index index.html;
     error_page 404 /404.html;
 
+    # HTML: Cloudflare caches it at the edge until the next deploy purges it; browsers revalidate each visit.
     location / {
+        add_header Cache-Control "no-cache";
         try_files $uri $uri/ =404;
     }
     location /_astro/ {

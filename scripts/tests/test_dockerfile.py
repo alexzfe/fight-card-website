@@ -101,6 +101,15 @@ def test_directory_urls_serve_index(container):
     assert get(container, "/events/x/") == (200, "<p>event</p>")
 
 
+def test_html_tells_browsers_to_revalidate(container):
+    # Cloudflare holds the HTML at the edge (infra edge_cache) and passes this header on, so browsers check back
+    # with the edge each visit instead of guessing a freshness from Last-Modified.
+    host_port = docker("port", container, "8080/tcp").stdout.split()[0]
+    for path in ("/", "/events/x/"):
+        with urllib.request.urlopen(f"http://{host_port}{path}", timeout=5) as resp:
+            assert resp.headers.get("Cache-Control") == "no-cache", path
+
+
 def test_unknown_path_serves_site_404_page(container):
     assert get(container, "/no-such-page/") == (404, "<p>stub not found</p>")
 
