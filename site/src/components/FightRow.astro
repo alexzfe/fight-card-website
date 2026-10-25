@@ -1,0 +1,79 @@
+---
+import Avatar from './Avatar.astro';
+import { ageAt, formatHeight, formatReach, formatRecord, formatResult, tierLabel } from '../lib/format';
+import type { Event, Fight, Fighter } from '../lib/schema';
+
+interface Props {
+  fight: Fight;
+  event: Event;
+  fighters: { [id: string]: Fighter };
+}
+
+const { fight, event, fighters } = Astro.props;
+const corners = [
+  { side: 'red', fighter: fighters[fight.red]! },
+  { side: 'blue', fighter: fighters[fight.blue]! },
+] as const;
+const [red, blue] = corners.map((c) => c.fighter) as [Fighter, Fighter];
+const result = formatResult(fight.result);
+const winner = fight.result?.winner;
+const tier = fight.finish_tier ?? 'none';
+const age = (f: Fighter) => ageAt(f.dob, event.date) ?? '—';
+const stats = [
+  ['Height', formatHeight(red.height_in), formatHeight(blue.height_in)],
+  ['Reach', formatReach(red.reach_in), formatReach(blue.reach_in)],
+  ['Stance', red.stance ?? '—', blue.stance ?? '—'],
+  ['Age', age(red), age(blue)],
+] as const;
+---
+
+<li class:list={['fight', { done: result }]} data-testid="fight">
+  <div class="bout">
+    {
+      corners.map(({ side, fighter }) => (
+        <div
+          class:list={['corner', `corner-${side}`, { winner: winner === fighter.id }]}
+          data-testid={winner === fighter.id ? 'winner' : undefined}
+        >
+          <Avatar fighter={fighter} />
+          <div class="who">
+            <span class="name">{fighter.name}</span>
+            <span class="record">{formatRecord(fighter.record)}</span>
+            {winner === fighter.id && <span class="sr-only">(winner)</span>}
+          </div>
+        </div>
+      ))
+    }
+    <div class="mid">
+      {fight.weight_class && <span>{fight.weight_class}</span>}
+      {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
+      {
+        result ? (
+          <span class="outcome" data-testid="outcome">
+            <span class:list={['badge', `badge-${tier}`]} data-testid="badge">{tierLabel(fight.finish_tier)}</span> → {result}
+          </span>
+        ) : (
+          <span class:list={['badge', `badge-${tier}`]} data-testid="badge" title="Finish chance">
+            {tierLabel(fight.finish_tier)}
+          </span>
+        )
+      }
+    </div>
+  </div>
+  <details class="stats">
+    <summary>Stats</summary>
+    <table>
+      <tbody>
+        {
+          stats.map(([label, r, b]) => (
+            <tr>
+              <td>{r}</td>
+              <th scope="row">{label}</th>
+              <td>{b}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </details>
+</li>

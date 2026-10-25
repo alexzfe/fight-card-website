@@ -1,0 +1,30 @@
+---
+import { chipDate, chipLabel } from '../lib/format';
+import type { Event } from '../lib/schema';
+
+interface Props {
+  events: Event[];
+  current: Event | undefined;
+}
+
+const { events, current } = Astro.props;
+---
+
+<nav aria-label="Events">
+  <ul class="chips">
+    {
+      events.map((e) => (
+        <li>
+          <a
+            class:list={['chip', { 'chip-past': e.status === 'completed' }]}
+            href={`/events/${e.slug}/`}
+            aria-current={e.id === current?.id ? 'page' : undefined}
+            title={e.name}
+          >
+            {chipLabel(e.name)} · {chipDate(e.date)}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

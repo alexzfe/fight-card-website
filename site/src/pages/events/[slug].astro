@@ -1,0 +1,24 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import ChipNav from '../../components/ChipNav.astro';
+import EventCard from '../../components/EventCard.astro';
+import { formatLongDate } from '../../lib/format';
+import type { Event } from '../../lib/schema';
+import { site } from '../../lib/site-data';
+
+export const getStaticPaths = (() =>
+  site.events.map((event) => ({ params: { slug: event.slug }, props: { event } }))) satisfies GetStaticPaths;
+
+const { event } = Astro.props as { event: Event };
+---
+
+<Base
+  title={`${event.name} · UFC fight card`}
+  description={`${event.name}, ${formatLongDate(event.date)}: full card with finish chances.`}
+>
+  <ChipNav events={site.events} current={event} />
+  <main>
+    <EventCard event={event} fighters={site.fighters} />
+  </main>
+</Base>

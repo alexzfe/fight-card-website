@@ -9,7 +9,7 @@ export default defineConfig({
   use: { baseURL: `http://localhost:${PORT}` },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: `npx astro preview --port ${PORT}`,
+    command: `npx astro preview --port ${PORT} --ignore-lock`,
     url: `http://localhost:${PORT}/healthz`,
     reuseExistingServer: false,
   },

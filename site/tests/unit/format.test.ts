@@ -3,6 +3,7 @@ import {
   ageAt,
   chipDate,
   chipLabel,
+  formatDate,
   formatHeight,
   formatLongDate,
   formatReach,
@@ -116,6 +117,9 @@ describe('initials', () => {
 describe('dates', () => {
   it('formats a chip date without timezone drift', () => {
     expect(chipDate('2026-11-01')).toBe('Nov 1');
+  });
+  it('formats a plain date', () => {
+    expect(formatDate('2026-10-01')).toBe('Oct 1, 2026');
   });
   it('formats a long date', () => {
     expect(formatLongDate('2026-10-31')).toBe('Sat, Oct 31, 2026');

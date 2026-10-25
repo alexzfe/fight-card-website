@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import ChipNav from '../components/ChipNav.astro';
+import EventCard from '../components/EventCard.astro';
+import { nextEvent } from '../lib/events';
+import { formatLongDate } from '../lib/format';
+import { site } from '../lib/site-data';
+
+const event = nextEvent(site.events);
+---
+
+<Base
+  title={event ? `${event.name} · UFC fight card` : 'UFC fight cards'}
+  description={event ? `${event.name}, ${formatLongDate(event.date)}: full card with finish chances.` : 'Upcoming UFC fight cards.'}
+>
+  <ChipNav events={site.events} current={event} />
+  <main>
+    {event ? <EventCard event={event} fighters={site.fighters} /> : <p class="empty">No events scheduled.</p>}
+  </main>
+</Base>

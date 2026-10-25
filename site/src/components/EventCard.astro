@@ -1,0 +1,31 @@
+---
+import FightRow from './FightRow.astro';
+import { formatLongDate } from '../lib/format';
+import type { Event, Fighter } from '../lib/schema';
+
+interface Props {
+  event: Event;
+  fighters: { [id: string]: Fighter };
+}
+
+const { event, fighters } = Astro.props;
+const meta = [formatLongDate(event.date), event.location, event.status === 'completed' ? 'Results' : null]
+  .filter(Boolean)
+  .join(' · ');
+---
+
+<header class="event-head">
+  <h1>{event.name}</h1>
+  <p class="event-meta">{meta}</p>
+</header>
+{
+  event.fights.length ? (
+    <ul class="fights">
+      {event.fights.map((fight) => (
+        <FightRow fight={fight} event={event} fighters={fighters} />
+      ))}
+    </ul>
+  ) : (
+    <p class="empty">No fights announced yet.</p>
+  )
+}
