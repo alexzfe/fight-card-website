@@ -111,3 +111,14 @@ GREEN: `npm test` 82/82, `npm run test:e2e` 17/17, `astro check` 0 errors. The z
 Not covered by tests: palette contrast (checked by hand: every text colour ≥5:1 on its background in both themes), the cross-document view transition and the `<details>` height animation (both CSS-only, behind `prefers-reduced-motion: no-preference`, and inspected in Chromium only).
 
 A second RED/GREEN followed the pipeline backfill. Real data for Bonfim vs. Brady repeated the Main card and Prelims headings because ufcstats appends late bouts at the end of its list. The interleaving test failed (`2 failed | 4 passed`), and the order-by-segment grouping then passed.
+
+## Round 3: tier colours, no corner colours, opponent tooltips (2026-10-25)
+
+RED: `each finish tier has its own colour` failed because Medium used the body text colour and Low the muted grey. `hovering a form tile names the opponent` failed because the tile had no `data-tip`. GREEN: `npm test` 82/82, `npm run test:e2e` 19/19, `astro check` 0 errors.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 34 | High, Medium and Low each have a colour distinct from body text, from muted text and from each other. Unscored stays muted | `site.spec.ts › each finish tier has its own colour` | e2e | PASS |
+| 35 | Form tile carries `data-tip` "<opponent> · <method round · month year>". Its tooltip is hidden until hover, then shows the opponent | `site.spec.ts › hovering a form tile names the opponent` | e2e | PASS |
+
+Checked by hand: tier text on its 12% tinted pill is ≥5.1:1 in light mode and ≥6.3:1 in dark. No horizontal overflow while a tooltip is shown at 390 px or 1440 px. Tiles use `tabindex="-1"`, so a tap focuses them and shows the tip without adding Tab stops. The Stats panel lists the same fights for keyboard and screen-reader users. Touch tap behaviour was not tested on a real iOS or Android device.

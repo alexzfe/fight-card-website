@@ -19,8 +19,8 @@
   --avatar-size: 48px;
   --max-width: 44rem;
 
-  /* Warm "programme paper" neutrals, one ember accent for finish chance,
-     muted corner colours, old gold for title fights. Swap these to re-theme. */
+  /* Warm "programme paper" neutrals, and colour only for finish chance:
+     ember (High), amber (Medium), slate (Low). Swap these to re-theme. */
   --color-bg: #fbfaf8;
   --color-surface: #f2f0ec;
   --color-border: #e5e1db;
@@ -30,9 +30,9 @@
   --color-strong-text: #faf9f7;
   --color-accent: #b4471f;
   --color-bar-off: #dcd7cf;
-  --color-corner-red: #b5463e;
-  --color-corner-blue: #3d6a9c;
-  --color-title: #8a6612;
+  --color-tier-high: #a33f19;
+  --color-tier-medium: #7f5900;
+  --color-tier-low: #46616f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,9 +46,9 @@
     --color-strong-text: #1c1a17;
     --color-accent: #ef8a5f;
     --color-bar-off: #3a3632;
-    --color-corner-red: #d0675e;
-    --color-corner-blue: #6e9bd0;
-    --color-title: #d9b65c;
+    --color-tier-high: #ef8a5f;
+    --color-tier-medium: #dcaa45;
+    --color-tier-low: #8ea8b6;
   }
 }
 
@@ -274,19 +274,6 @@ ul {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-muted);
-  /* Thin ring in the corner's colour, set off from the photo by a gap. Drawn inside the
-     box so it never pokes past the column edge. */
-  padding: 2px;
-  border: 1.5px solid var(--corner-color);
-  background-clip: content-box;
-}
-
-.corner-red {
-  --corner-color: var(--color-corner-red);
-}
-
-.corner-blue {
-  --corner-color: var(--color-corner-blue);
 }
 
 .main-event {
@@ -322,7 +309,7 @@ ul {
 }
 
 .title-marker {
-  color: var(--color-title);
+  color: var(--color-text);
 }
 
 /* Finish meter: three ascending bars, like signal strength, plus the word. */
@@ -360,16 +347,36 @@ ul {
   height: 11px;
 }
 
-.bar.on {
-  background: var(--color-accent);
+/* Each tier tints its word, its lit bars and a faint pill behind both. */
+.badge-high {
+  --tier: var(--color-tier-high);
+}
+
+.badge-medium {
+  --tier: var(--color-tier-medium);
+}
+
+.badge-low {
+  --tier: var(--color-tier-low);
+}
+
+.badge-high,
+.badge-medium,
+.badge-low {
+  padding: 0.25em 0.55em 0.25em 0.45em;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--tier) 12%, transparent);
+  color: var(--tier);
 }
 
 .badge-high {
   font-weight: 700;
-  color: var(--color-accent);
 }
 
-.badge-low,
+.bar.on {
+  background: var(--tier);
+}
+
 .badge-none {
   color: var(--color-muted);
 }
@@ -501,6 +508,43 @@ ul {
   border-style: dashed;
 }
 
+/* Opponent tooltip: hover with a mouse, or tap (focus) on touch. Red corner tips grow
+   rightwards from the tile, blue corner tips leftwards, so neither leaves the column. */
+.form > [data-tip] {
+  position: relative;
+  cursor: default;
+  outline: none;
+}
+
+.form > [data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  z-index: 1;
+  padding: 0.4em 0.6em;
+  border-radius: 4px;
+  background: var(--color-strong-bg);
+  color: var(--color-strong-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.corner-blue .form > [data-tip]::after {
+  left: auto;
+  right: 0;
+}
+
+.form > [data-tip]:hover::after,
+.form > [data-tip]:focus::after {
+  visibility: visible;
+  opacity: 1;
+}
+
 .corner-blue .form {
   justify-content: flex-end;
 }
@@ -586,6 +630,12 @@ ul {
 
   .stats summary::after {
     transition: transform 200ms ease, margin-top 200ms ease;
+  }
+
+  .form > [data-tip]::after {
+    transition:
+      opacity 120ms ease,
+      visibility 120ms;
   }
 
   .chip,

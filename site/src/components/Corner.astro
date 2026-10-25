@@ -1,6 +1,6 @@
 ---
 import Avatar from './Avatar.astro';
-import { formatRecord, resultLetter } from '../lib/format';
+import { formatPastFight, formatRecord, resultLetter } from '../lib/format';
 import type { Fighter } from '../lib/schema';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 const { side, fighter, winner, eager, large } = Astro.props;
 const form = fighter.recent_fights ?? [];
+const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filter(Boolean).join(' · ');
 ---
 
 <div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
@@ -26,7 +27,10 @@ const form = fighter.recent_fights ?? [];
           {form.map((f, i) => (
             <>
               {i > 0 && ' '}
-              <span class={`form-${f.result}`}>{resultLetter(f.result)}</span>
+              {/* tabindex -1: a tap focuses the tile to show its tip, without adding Tab stops (Stats lists the same fights). */}
+              <span class={`form-${f.result}`} data-tip={tip(f)} tabindex="-1">
+                {resultLetter(f.result)}
+              </span>
             </>
           ))}
         </span>
