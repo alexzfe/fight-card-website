@@ -1,0 +1,35 @@
+# Builds ghcr.io/alexzfe/fight-card-website:<sha> from a commit. Called by release.yml (code pushed to main) and
+# refresh.yml (data commits, which never trigger release.yml because they are pushed with GITHUB_TOKEN).
+name: build
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit SHA to build; also the image tag
+        type: string
+        required: true
+
+env:
+  IMAGE: ghcr.io/alexzfe/fight-card-website
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}:${{ inputs.ref }}

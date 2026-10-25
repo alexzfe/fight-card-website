@@ -1,0 +1,126 @@
+# Scheduled data refresh: scrape -> images -> score -> commit data/ -> build -> deploy to prod.
+#
+# Runs daily at 06:00 UTC, and hourly around event days (scripts/should_run.py decides; other hourly runs exit
+# early). Any stage exiting non-zero fails the job before anything is committed or deployed.
+#
+# Prod is deployed by calling infra's deploy-app.yml directly rather than by pushing a v* tag: a tag pushed with
+# GITHUB_TOKEN doesn't trigger release.yml. The data commit doesn't trigger release.yml either, so staging keeps
+# running the last code push. See docs/DEPLOY.md.
+name: refresh
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily; keep in sync with DAILY_CRON in scripts/should_run.py
+    - cron: "17 * * * *" # hourly, off the daily slot; only does work around event days
+  workflow_dispatch: # always runs, and always rebuilds and redeploys prod
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - id: check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: python3 scripts/should_run.py --data data --event-name "$EVENT_NAME" --schedule "$SCHEDULE"
+
+  pipeline:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      issues: write
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: pipeline/uv.lock
+
+      # The ufcstats `_fmc` cookie (valid 7 days). Cache keys are immutable, so each run saves a new entry and
+      # restores the newest one.
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .cache/ufcstats
+          key: ufcstats-cookie-${{ github.run_id }}
+          restore-keys: ufcstats-cookie-
+
+      - name: Scrape ufcstats
+        run: uv run --project pipeline fightcard --data data scrape --cookie-file .cache/ufcstats/cookies.json
+      - name: Fetch headshots
+        run: uv run --project pipeline fightcard --data data images
+      - name: Score finish tiers
+        run: uv run --project pipeline fightcard --data data score
+
+      - name: Commit data
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "data: refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+            # A code push may have landed meanwhile; data/ is only written here, so the rebase can't conflict.
+            git push origin HEAD:main || { git pull --rebase origin main && git push origin HEAD:main; }
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build stale-model issue body
+        id: stale
+        run: python3 scripts/stale_issue.py --data data --out "$RUNNER_TEMP/stale-issue.md"
+      - name: Open, update or close the "Re-export finish model" issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STALE: ${{ steps.stale.outputs.stale }}
+          TITLE: Re-export finish model
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$TITLE\" in:title" \
+            --json number,title --jq ".[] | select(.title == env.TITLE) | .number" | head -n1)
+          if [ "$STALE" = true ]; then
+            if [ -n "$number" ]; then
+              gh issue edit "$number" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/stale-issue.md"
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body-file "$RUNNER_TEMP/stale-issue.md"
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --repo "$GITHUB_REPOSITORY" --comment "Nothing stale after the latest refresh."
+          fi
+
+  build:
+    needs: pipeline
+    if: needs.pipeline.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: ${{ needs.pipeline.outputs.sha }}
+
+  prod:
+    needs: [pipeline, build]
+    uses: alexzfe/infra/.github/workflows/deploy-app.yml@main
+    with:
+      app: ufc
+      env: prod
+      tag: ${{ needs.pipeline.outputs.sha }}
+      url: https://ufc.xlobax.com
+    secrets: inherit

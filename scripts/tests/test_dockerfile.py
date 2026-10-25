@@ -7,6 +7,8 @@ import json
 import shutil
 import subprocess
 import time
+import urllib.error
+import urllib.request
 import uuid
 
 import pytest
@@ -22,6 +24,7 @@ mkdirSync("dist/events/x", { recursive: true });
 writeFileSync("dist/index.html", `<p>${JSON.parse(index).generated_at}</p>`);
 writeFileSync("dist/events/x/index.html", "<p>event</p>");
 writeFileSync("dist/healthz", "ok\\n");
+writeFileSync("dist/404.html", "<p>stub not found</p>");
 """
 
 
@@ -64,7 +67,7 @@ def image(tmp_path_factory) -> str:
 @pytest.fixture(scope="module")
 def container(image: str):
     name = f"fightcard-test-{uuid.uuid4().hex[:8]}"
-    docker("run", "-d", "--name", name, image)
+    docker("run", "-d", "--name", name, "-p", "127.0.0.1::8080", image)
     try:
         for _ in range(30):
             if docker("exec", name, "wget", "-qO", "/dev/null", "http://127.0.0.1:8080/healthz", check=False).returncode == 0:
@@ -75,20 +78,31 @@ def container(image: str):
         docker("rm", "-f", name, check=False)
 
 
-def fetch(container: str, path: str) -> subprocess.CompletedProcess:
-    return docker("exec", container, "wget", "-qO-", f"http://127.0.0.1:8080{path}", check=False)
+def get(container: str, path: str) -> tuple[int, str]:
+    host_port = docker("port", container, "8080/tcp").stdout.split()[0]
+    try:
+        with urllib.request.urlopen(f"http://{host_port}{path}", timeout=5) as resp:
+            return resp.status, resp.read().decode()
+    except urllib.error.HTTPError as e:
+        return e.code, e.read().decode()
 
 
 def test_health_path_answers_like_infra_probes_it(container):
-    assert fetch(container, "/healthz").returncode == 0
+    # Same probe as infra's compose healthcheck: wget inside the container.
+    probe = docker("exec", container, "wget", "-qO", "/dev/null", "http://127.0.0.1:8080/healthz", check=False)
+    assert probe.returncode == 0
 
 
 def test_build_saw_data_dir(container):
-    assert "STUB-DATA-OK" in fetch(container, "/").stdout
+    assert get(container, "/") == (200, "<p>STUB-DATA-OK</p>")
 
 
 def test_directory_urls_serve_index(container):
-    assert "event" in fetch(container, "/events/x/").stdout
+    assert get(container, "/events/x/") == (200, "<p>event</p>")
+
+
+def test_unknown_path_serves_site_404_page(container):
+    assert get(container, "/no-such-page/") == (404, "<p>stub not found</p>")
 
 
 def test_exposes_8080_and_runs_unprivileged(image):

@@ -1,6 +1,7 @@
 """Structural checks on the workflow files. No YAML parser is available in the pipeline env, so these
 read the text; actionlint covers the syntax and expression types."""
 
+import os
 import re
 import shutil
 import subprocess
@@ -97,8 +98,15 @@ def test_third_party_actions_are_pinned_to_commit_shas():
             assert re.fullmatch(r"[\w.-]+/[\w./-]+@[0-9a-f]{40}", ref), f"{path.name}: {ref}"
 
 
-@pytest.mark.skipif(shutil.which("actionlint") is None, reason="actionlint not installed")
+def actionlint() -> str | None:
+    exe = os.environ.get("ACTIONLINT") or shutil.which("actionlint")
+    if exe and subprocess.run([exe, "--version"], capture_output=True).returncode == 0:
+        return exe
+    return None
+
+
+@pytest.mark.skipif(actionlint() is None, reason="actionlint not available (set ACTIONLINT=/path)")
 def test_actionlint_passes():
     files = sorted(str(p) for p in WORKFLOWS.glob("*.yml"))
-    result = subprocess.run(["actionlint", *files], capture_output=True, text=True)
+    result = subprocess.run([actionlint(), *files], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr

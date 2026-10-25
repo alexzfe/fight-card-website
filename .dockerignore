@@ -1,0 +1,16 @@
+# The image only needs site/ and data/.
+**/node_modules
+site/dist
+site/.astro
+site/test-results
+site/playwright-report
+.git
+.github
+.claude
+.cache
+.venv
+**/__pycache__
+pipeline
+model
+scripts
+docs
