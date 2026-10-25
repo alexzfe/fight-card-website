@@ -46,11 +46,11 @@ export function loadData(dir: string): SiteData {
     }
   }
 
-  const listed: [string, Event['status']][] = [
-    ...index.upcoming.map((id) => [id, 'upcoming'] as [string, Event['status']]),
-    ...index.recent.map((id) => [id, 'completed'] as [string, Event['status']]),
+  const listed = [
+    ...index.upcoming.map((id) => ({ id, status: 'upcoming' as const })),
+    ...index.recent.map((id) => ({ id, status: 'completed' as const })),
   ];
-  const events = listed.map(([id, status]) => {
+  const events = listed.map(({ id, status }) => {
     const rel = `events/${id}.json`;
     if (!fs.existsSync(path.join(dir, rel))) throw new DataError(`${rel} listed in index.json but missing`);
     const event = readJson(dir, rel, Event);
