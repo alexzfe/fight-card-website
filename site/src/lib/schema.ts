@@ -39,6 +39,7 @@ export const Fighter = z.object({
   image: z.string().nullish(),
   details_fetched_at: isoTimestamp.nullish(),
   recent_fights: z.array(PastFight).nullish(), // newest first, at most 3
+  elo: z.number().int().nullish(), // current Elo; null = unknown
 });
 
 export const Result = z.object({
