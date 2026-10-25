@@ -43,7 +43,9 @@ Ruled out: skip-ci markers, missing `workflow` scope, webhooks, rulesets, path f
 private-reusable-workflow access, and interference from the Vercel app (its suites are only `queued` and
 don't stop Actions creating its own suite).
 
-## Fix (NOT applied: it needs a repo-settings change)
+## Fix (applied 2026-10-25: clicked the banner button, and the page confirmed "Actions Enabled.")
+
+The next push to `main` (5002a94) started `release` run 40177652341 automatically, so triggers work again.
 
 Exact change: open `https://github.com/alexzfe/fight-card-website/actions` and click
 **"Enable Actions on this repository"** in the banner. Signed in as `alexzfe` (repo admin).

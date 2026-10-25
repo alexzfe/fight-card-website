@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # From infra/templates/static-site.Dockerfile. Builds site/ against data/, then serves it with nginx on :8080, the
 # port infra's sites.yml expects. The unprivileged image runs as a non-root user and listens on 8080 out of the box.
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /src/site
 # Dependencies first, so a data-only refresh reuses the npm ci layer.
 COPY site/package.json site/package-lock.json ./
