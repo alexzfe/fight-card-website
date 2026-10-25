@@ -112,3 +112,13 @@ def test_actionlint_passes():
     files = sorted(str(p) for p in WORKFLOWS.glob("*.yml"))
     result = subprocess.run([actionlint(), *files], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_release_runs_site_e2e_with_cached_chromium():
+    text = read("release.yml")
+    assert "npm run test:e2e" in text
+    assert "playwright install --with-deps chromium" in text
+    # On a cache hit the browser is restored, but the OS packages still have to be installed.
+    assert "playwright install-deps chromium" in text
+    assert "~/.cache/ms-playwright" in text
+    assert text.index("npm ci") < text.index("npm run test:e2e")
