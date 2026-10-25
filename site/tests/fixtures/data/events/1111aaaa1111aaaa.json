@@ -7,6 +7,7 @@
       "id": "f0000000000000a1",
       "red": "a1a1a1a1a1a1a1a1",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": true,
       "weight_class": "Lightweight"
@@ -17,6 +18,7 @@
       "id": "f0000000000000a2",
       "red": "c3c3c3c3c3c3c3c3",
       "result": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Women's Flyweight"
@@ -27,6 +29,7 @@
       "id": "f0000000000000a3",
       "red": "e5e5e5e5e5e5e5e5",
       "result": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"
@@ -37,6 +40,7 @@
       "id": "f0000000000000a4",
       "red": "a3a3a3a3a3a3a3a3",
       "result": null,
+      "segment": "early_prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Bantamweight"

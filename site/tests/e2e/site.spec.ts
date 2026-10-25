@@ -133,3 +133,44 @@ test('fight row is mirrored: red left, badge centre, blue right, names readable 
   const lineHeight = await main.getByText('Alex Alpha').evaluate((el) => parseFloat(getComputedStyle(el).lineHeight));
   expect(red.height).toBeLessThanOrEqual(lineHeight * 2 + 1);
 });
+
+test('the card is split into main card, prelims and early prelims', async ({ page }) => {
+  await page.goto('/');
+  const heads = page.getByRole('heading', { level: 2 });
+  await expect(heads).toHaveText([/Main card/, /Prelims/, /Early prelims/]);
+  const segments = page.getByTestId('segment');
+  await expect(segments.nth(0).getByTestId('fight')).toHaveCount(2);
+  await expect(segments.nth(1).getByTestId('fight')).toHaveCount(1);
+  await expect(segments.nth(2).getByTestId('fight')).toHaveCount(1);
+});
+
+test('an event without segment data shows no segment headings', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-india-vs-juliet/');
+  await expect(page.getByRole('heading', { level: 2 })).toHaveCount(0);
+  await expect(page.getByTestId('fight')).toHaveCount(2);
+});
+
+test('the main event is marked', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  await expect(fights.first().getByTestId('main-event')).toBeVisible();
+  await expect(fights.nth(1).getByTestId('main-event')).toHaveCount(0);
+});
+
+test('the finish meter fills one bar per tier and none for unscored fights', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  const filled = (i: number) => fights.nth(i).locator('[data-testid="badge"] .bar.on');
+  await expect(filled(0)).toHaveCount(3);
+  await expect(filled(1)).toHaveCount(2);
+  await expect(filled(2)).toHaveCount(1);
+  await expect(fights.nth(3).locator('[data-testid="badge"] .bar')).toHaveCount(0);
+});
+
+test('the stats toggle is a comfortable touch target', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  const box = (await page.getByTestId('fight').first().locator('summary').boundingBox())!;
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  expect(box.width).toBeGreaterThanOrEqual(200);
+});

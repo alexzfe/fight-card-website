@@ -63,6 +63,12 @@ describe('loadData contract violations', () => {
     writeJson(EVENT, e);
     expect(() => loadData(dir)).toThrow(/finish_tier/);
   });
+  it('fails on an unknown card segment', () => {
+    const e = readJson(EVENT);
+    e.fights[0].segment = 'undercard';
+    writeJson(EVENT, e);
+    expect(() => loadData(dir)).toThrow(/segment/);
+  });
   it('fails on a malformed date', () => {
     const e = readJson(EVENT);
     e.date = '31/10/2026';
