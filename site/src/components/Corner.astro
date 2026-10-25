@@ -1,0 +1,22 @@
+---
+import Avatar from './Avatar.astro';
+import { formatRecord } from '../lib/format';
+import type { Fighter } from '../lib/schema';
+
+interface Props {
+  side: 'red' | 'blue';
+  fighter: Fighter;
+  winner: boolean;
+}
+
+const { side, fighter, winner } = Astro.props;
+---
+
+<div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
+  <Avatar fighter={fighter} />
+  <div class="who">
+    <span class="name">{fighter.name}</span>
+    <span class="record">{formatRecord(fighter.record)}</span>
+    {winner && <span class="sr-only">(winner)</span>}
+  </div>
+</div>
