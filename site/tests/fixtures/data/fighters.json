@@ -3,6 +3,7 @@
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1992-11-01",
     "elo": 1612,
+    "elo_peak": 1655,
     "height_in": 71,
     "id": "a1a1a1a1a1a1a1a1",
     "image": "images/a1a1a1a1a1a1a1a1.png",
@@ -86,6 +87,8 @@
   "b2b2b2b2b2b2b2b2": {
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1994-03-15",
+    "elo": null,
+    "elo_inactive": true,
     "height_in": 73,
     "id": "b2b2b2b2b2b2b2b2",
     "image": "images/b2b2b2b2b2b2b2b2.png",
@@ -149,11 +152,14 @@
   "c3c3c3c3c3c3c3c3": {
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1997-06-30",
+    "elo": 1690,
+    "elo_peak": 1793,
     "height_in": 65,
     "id": "c3c3c3c3c3c3c3c3",
     "image": null,
     "name": "Carla Charlie",
     "nickname": null,
+    "p4p_rank": 4,
     "reach_in": 66,
     "recent_fights": [],
     "record": {
@@ -201,6 +207,8 @@
   "d4d4d4d4d4d4d4d4": {
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1994-03-15",
+    "elo": 1488,
+    "elo_provisional": true,
     "height_in": 71,
     "id": "d4d4d4d4d4d4d4d4",
     "image": "images/d4d4d4d4d4d4d4d4.png",
@@ -235,6 +243,9 @@
   "e5e5e5e5e5e5e5e5": {
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": null,
+    "elo": 1531,
+    "elo_inactive": true,
+    "elo_peak": 1604,
     "height_in": null,
     "id": "e5e5e5e5e5e5e5e5",
     "image": null,
