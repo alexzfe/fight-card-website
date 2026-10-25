@@ -10,6 +10,7 @@ import pytest
 
 from conftest import REPO
 from should_run import DAILY_CRON
+from stale_issue import TITLE
 
 WORKFLOWS = REPO / ".github" / "workflows"
 IMAGE = "ghcr.io/alexzfe/fight-card-website"
@@ -59,6 +60,7 @@ def test_refresh_maintains_the_stale_model_issue():
     text = read("refresh.yml")
     assert "scripts/stale_issue.py" in text
     assert "gh issue" in text
+    assert f"TITLE: {TITLE}\n" in text
 
 
 def test_refresh_deploys_prod_through_the_reusable_workflow():
