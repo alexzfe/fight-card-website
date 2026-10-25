@@ -23,7 +23,7 @@ test.describe('home page', () => {
     await expect(third.getByTestId('avatar-initials').first()).toHaveText('EE');
   });
 
-  test('marks the current event chip', async ({ page }) => {
+  test('marks the current event tile', async ({ page }) => {
     await page.goto('/');
     const current = page.locator('nav [aria-current="page"]');
     await expect(current).toHaveCount(1);
@@ -39,19 +39,79 @@ test.describe('home page', () => {
   });
 });
 
-test('chips are ordered upcoming then past, and navigate', async ({ page }) => {
+test('event tiles run in date order, name the headliners, and navigate', async ({ page }) => {
   await page.goto('/');
-  const chips = page.locator('nav a');
-  await expect(chips).toHaveCount(4);
-  await expect(chips.nth(0)).toContainText('Oct 31');
-  await expect(chips.nth(1)).toContainText('Nov 7');
-  await expect(chips.nth(2)).toContainText('Nov 14');
-  await expect(chips.nth(3)).toContainText('Oct 18');
+  const tiles = page.getByTestId('event-tile');
+  await expect(tiles).toHaveCount(4);
+  await expect(tiles.nth(0)).toContainText('Oct 18 · Results');
+  await expect(tiles.nth(0)).toContainText('Golf vs. Hotel');
+  await expect(tiles.nth(1)).toContainText('Oct 31 · UFC 323');
+  await expect(tiles.nth(1)).toContainText('Alpha vs. Bravo');
+  await expect(tiles.nth(2)).toContainText('India vs. Juliet');
+  await expect(tiles.nth(3)).toContainText('Kilo vs. Lima');
+  await expect(page.locator('nav')).not.toContainText('Fight Night');
 
-  await chips.nth(1).click();
+  // The today marker sits between the past and the upcoming events.
+  const past = (await tiles.nth(0).boundingBox())!;
+  const today = (await page.getByTestId('rail-today').boundingBox())!;
+  const next = (await tiles.nth(1).boundingBox())!;
+  expect(past.x + past.width).toBeLessThanOrEqual(today.x);
+  expect(today.x + today.width).toBeLessThanOrEqual(next.x);
+
+  await tiles.nth(2).click();
   await expect(page).toHaveURL(/\/events\/ufc-fight-night-india-vs-juliet\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('UFC Fight Night: India vs. Juliet');
-  await expect(page.locator('nav [aria-current="page"]')).toContainText('Nov 7');
+  await expect(page.locator('nav [aria-current="page"]')).toContainText('India vs. Juliet');
+});
+
+test('event tiles are comfortable touch targets', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  await expect(page.getByTestId('event-tile')).toHaveCount(4);
+  for (const tile of await page.getByTestId('event-tile').all()) {
+    expect((await tile.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test('the selected tile is in view on a phone', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/events/ufc-fight-night-kilo-vs-lima/');
+  const box = (await page.locator('nav [aria-current="page"]').boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(360);
+});
+
+test('the rail keeps its scroll position when switching events', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  const rail = page.locator('nav .rail');
+  await rail.evaluate((el) => (el.scrollLeft = 120));
+  const before = await rail.evaluate((el) => el.scrollLeft);
+  await page.getByTestId('event-tile').nth(2).click();
+  await expect(page).toHaveURL(/india-vs-juliet/);
+  expect(await page.locator('nav .rail').evaluate((el) => el.scrollLeft)).toBe(before);
+});
+
+test('the event rail stays at the top while scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 400 });
+  await page.goto('/');
+  await page.mouse.wheel(0, 600);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+  const box = (await page.locator('nav .rail').boundingBox())!;
+  expect(box.y).toBeGreaterThanOrEqual(-1);
+  expect(box.y).toBeLessThanOrEqual(1);
+});
+
+test('switching events prerenders eagerly and animates the selection', async ({ page }) => {
+  await page.goto('/');
+  const rules = JSON.parse((await page.locator('script[type="speculationrules"]').textContent())!);
+  expect(rules.prerender[0].eagerness).toBe('eager');
+  const hasViewTransition = await page.evaluate(() =>
+    [...document.styleSheets].some((sheet) => [...sheet.cssRules].some((r) => r.cssText.startsWith('@view-transition'))),
+  );
+  expect(hasViewTransition).toBe(true);
+  const name = await page.locator('nav [aria-current="page"]').evaluate((el) => getComputedStyle(el).viewTransitionName);
+  expect(name).toBe('current-event');
 });
 
 test('details expand to show height, reach, stance and age', async ({ page }) => {

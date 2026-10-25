@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { findBySlug, nextEvent, orderEvents } from '../../src/lib/events';
+import { byDateAscending, findBySlug, nextEvent, orderEvents } from '../../src/lib/events';
 import type { Event } from '../../src/lib/schema';
 
 const ev = (id: string, date: string, status: Event['status']): Event => ({
@@ -27,6 +27,17 @@ describe('orderEvents', () => {
   it('does not mutate its input', () => {
     const copy = [...events];
     orderEvents(events);
+    expect(events).toEqual(copy);
+  });
+});
+
+describe('byDateAscending', () => {
+  it('runs past and upcoming events in calendar order', () => {
+    expect(byDateAscending(events).map((e) => e.id)).toEqual(['past-old', 'past-new', 'up-soon', 'up-mid', 'up-late']);
+  });
+  it('does not mutate its input', () => {
+    const copy = [...events];
+    byDateAscending(events);
     expect(events).toEqual(copy);
   });
 });
