@@ -9,7 +9,7 @@ export function formatRecord({ w, l, d, nc }: Record): string {
 
 /** e.g. "Elo 1612"; null when unknown. */
 export function formatElo(elo: number | null | undefined): string | null {
-  return null;
+  return elo == null ? null : `Elo ${elo}`;
 }
 
 export function formatHeight(inches: number | null | undefined): string {
