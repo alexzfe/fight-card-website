@@ -7,6 +7,7 @@ import {
   formatHeight,
   formatLongDate,
   formatReach,
+  formatElo,
   formatRecord,
   formatPastFight,
   formatResult,
@@ -24,6 +25,16 @@ describe('formatRecord', () => {
   });
   it('handles a debut record', () => {
     expect(formatRecord({ w: 0, l: 0, d: 0, nc: 0 })).toBe('0-0-0');
+  });
+});
+
+describe('formatElo', () => {
+  it('labels a rating', () => {
+    expect(formatElo(1612)).toBe('Elo 1612');
+  });
+  it('is null when unknown', () => {
+    expect(formatElo(null)).toBeNull();
+    expect(formatElo(undefined)).toBeNull();
   });
 });
 

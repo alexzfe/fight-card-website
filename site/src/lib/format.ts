@@ -7,6 +7,11 @@ export function formatRecord({ w, l, d, nc }: Record): string {
   return nc > 0 ? `${base} (${nc} NC)` : base;
 }
 
+/** e.g. "Elo 1612"; null when unknown. */
+export function formatElo(elo: number | null | undefined): string | null {
+  return null;
+}
+
 export function formatHeight(inches: number | null | undefined): string {
   if (inches == null) return DASH;
   const total = Math.round(inches);

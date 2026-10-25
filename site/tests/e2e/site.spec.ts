@@ -181,6 +181,15 @@ test('each corner shows recent form, and details list the last 3 fights', async 
   await expect(details.getByTestId('last-fights').nth(1).locator('li')).toHaveCount(1);
 });
 
+test('a corner shows the Elo next to the record, and nothing when it is unknown', async ({ page }) => {
+  await page.goto('/');
+  const main = page.getByTestId('fight').first();
+  await expect(main.getByTestId('elo')).toHaveCount(1);
+  await expect(main.locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1612');
+  await expect(main.locator('.corner-red .record')).toContainText('21-4-0');
+  await expect(main.locator('.corner-blue').getByTestId('elo')).toHaveCount(0);
+});
+
 test('fighters without history show no form and no last-fights list', async ({ page }) => {
   await page.goto('/');
   const second = page.getByTestId('fight').nth(1);
