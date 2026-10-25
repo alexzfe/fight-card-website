@@ -234,18 +234,20 @@ test('screen readers hear the peak without hovering', async ({ page }) => {
   await expect(page.getByTestId('fight').nth(1).locator('.corner-blue').getByTestId('elo-peak')).toHaveCount(0);
 });
 
-test('an Elo with a peak is a 44px tap target', async ({ page }) => {
+test('an Elo with a peak is a 44px tap target that leaves the Stats toggle alone', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('/');
-  const elo = page.getByTestId('fight').nth(1).locator('.corner-red').getByTestId('elo');
-  const box = (await elo.boundingBox())!;
+  const fight = page.getByTestId('fight').nth(1);
+  const box = (await fight.locator('.corner-red').getByTestId('elo').boundingBox())!;
   const x = box.x + box.width / 2;
-  const mid = box.y + box.height / 2;
-  for (const y of [mid - 21, mid + 21]) {
-    expect(await page.evaluate(([x, y]) => document.elementFromPoint(x!, y!)?.getAttribute('data-testid'), [x, y])).toBe(
-      'elo',
-    );
-  }
+  const bottom = box.y + box.height;
+  const hit = (y: number) =>
+    page.evaluate(([x, y]) => document.elementFromPoint(x!, y!)?.closest('[data-testid="elo"], summary')?.tagName, [x, y]);
+  // The hit area runs 44px up from the label's bottom edge.
+  expect(await hit(bottom - 1)).toBe('SPAN');
+  expect(await hit(bottom - 43)).toBe('SPAN');
+  const summary = (await fight.locator('summary').boundingBox())!;
+  expect(await hit(summary.y + 2)).toBe('SUMMARY');
 });
 
 test('fighters without history show no form and no last-fights list', async ({ page }) => {
