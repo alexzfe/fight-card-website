@@ -63,6 +63,8 @@ jobs:
 
       - name: Scrape ufcstats
         run: uv run --project pipeline fightcard --data data scrape --cookie-file .cache/ufcstats/cookies.json
+      - name: Tag card segments
+        run: uv run --project pipeline fightcard --data data segments
       - name: Fetch headshots
         run: uv run --project pipeline fightcard --data data images
       - name: Score finish tiers
