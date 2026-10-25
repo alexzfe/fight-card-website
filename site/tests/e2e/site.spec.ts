@@ -95,3 +95,17 @@ test('healthz returns ok', async ({ request }) => {
   expect(res.status()).toBe(200);
   expect((await res.text()).trim()).toBe('ok');
 });
+
+test('fight row is mirrored: red left, badge centre, blue right, names readable at 360px', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  const main = page.getByTestId('fight').first();
+  const red = (await main.getByText('Alex Alpha').boundingBox())!;
+  const badge = (await main.getByTestId('badge').boundingBox())!;
+  const blue = (await main.getByText('Bruno Bravo').boundingBox())!;
+  expect(red.x + red.width).toBeLessThanOrEqual(badge.x);
+  expect(badge.x + badge.width).toBeLessThanOrEqual(blue.x);
+  // No word broken mid-letter: a name wraps onto at most two lines.
+  const lineHeight = await main.getByText('Alex Alpha').evaluate((el) => parseFloat(getComputedStyle(el).lineHeight));
+  expect(red.height).toBeLessThanOrEqual(lineHeight * 2 + 1);
+});
