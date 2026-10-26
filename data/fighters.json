@@ -666,7 +666,7 @@
   "1af1170ed937cba7": {
     "best_win": {
       "date": "2024-10-05",
-      "elo": 1563,
+      "elo": 1564,
       "opponent": "Ketlen Vieira",
       "opponent_id": "b9706f80d005036c"
     },
@@ -1194,7 +1194,7 @@
     "dob": null,
     "elo": 1565,
     "elo_inactive": true,
-    "elo_peak": 1582,
+    "elo_peak": 1583,
     "elo_provisional": false,
     "height_in": 66.0,
     "id": "3143bf892608139a",
@@ -3526,7 +3526,7 @@
     "image": "images/7dda2cf308f24a02.webp",
     "name": "Virna Jandiroba",
     "nickname": "Carcara",
-    "p4p_rank": 10,
+    "p4p_rank": null,
     "reach_in": 64.0,
     "recent_fights": [
       {
@@ -3750,16 +3750,16 @@
   },
   "80fa8218c99f9c58": {
     "best_win": {
-      "date": "2018-12-29",
-      "elo": 1647,
-      "opponent": "Cristiane Justino",
-      "opponent_id": "634bb0de2eb043b4"
+      "date": "2016-12-30",
+      "elo": 1658,
+      "opponent": "Ronda Rousey",
+      "opponent_id": "8bdac25ce0bb874d"
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": "1988-05-30",
     "elo": 1614,
     "elo_inactive": true,
-    "elo_peak": 1741,
+    "elo_peak": 1743,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "80fa8218c99f9c58",
@@ -4397,7 +4397,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1430,
+    "elo": 1431,
     "elo_inactive": false,
     "elo_peak": 1561,
     "elo_provisional": false,
@@ -4672,7 +4672,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1444,
+    "elo": 1443,
     "elo_inactive": false,
     "elo_peak": 1502,
     "elo_provisional": false,
@@ -6437,7 +6437,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1548,
+    "elo": 1547,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
