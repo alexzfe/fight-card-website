@@ -18,7 +18,8 @@ the [infra](https://github.com/alexzfe/infra) repo's `deploy-app` on the Hetzner
 | `.github/workflows/release.yml` | From `infra/templates/app-release.yml`. PR → tests. Push to main → tests, build, deploy staging. `v*` tag → deploy that commit's image to prod and cut a GitHub Release. |
 | `.github/workflows/refresh.yml` | Cron. Gets `data/` from the pipeline or the engine's `/v1/` API (`DATA_SOURCE`, below), commits it, then builds and deploys prod. In pipeline mode it also maintains the stale-model issue and shadows `/v1/`. |
 | `scripts/should_run.py` | Decides whether a pipeline-mode refresh run does any work (see below). |
-| `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or refuses it when it is unsafe or not contract 1.x (exit 1), stale (exit 3, plus the "Data API stale" issue body) or no newer than `data/` (exit 0, nothing changes). |
+| `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or refuses it when it is unsafe, broken, from the future or not contract 1.x (exit 1), stale (exit 3, plus the "Data API stale" issue body) or no newer than `data/` (exit 0, nothing changes). Keeps the pipeline's bookkeeping files. |
+| `site/scripts/validate-data.mjs` | `npm run validate-data [-- <dir>]`: loads a data dir through the site's `loadData` and zod schema without building. `v1` mode runs it before committing. |
 | `scripts/v1_shadow.py` | `pipeline` mode: writes how `/v1/` differs from the pipeline's `data/` to the job summary. Never fails. |
 | `scripts/stale_issue.py` | Builds the "Re-export finish model" issue body from `data/stale_fighters.json`. |
 | infra `sites.yml` | The `ufc` entry: image, port 8080, `health_path: /healthz`, both hosts, default memory caps (1g prod, 256m staging). On branch `add-ufc-site` in the infra repo. |
@@ -35,7 +36,7 @@ committed `data/`, never from the browser, and `data/` stays in git (audit trail
 | `DATA_SOURCE` | Jobs | What happens |
 |---|---|---|
 | `pipeline` (default; also when unset) | gate → pipeline → build → prod, plus `shadow` | Today's refresh (below). The `shadow` job then downloads the [fightcard-engine](https://github.com/alexzfe/fightcard-engine)'s `https://ufc-data.xlobax.com/v1/snapshot.tar.gz` and writes a diff summary to its job summary: how many events, fights, finish tiers and fighter Elos differ, with examples and the largest Elo gap. `generated_at` and what only `/v1/` has (`contract_version`, `Result.outcome`, `schema.json`) don't count. It never fails or holds up the refresh: nothing waits for it, it has `continue-on-error`, and when the API is down it notes "v1 not reachable" and succeeds. |
-| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick (the download is ~1.5 MB) and maintains the "Data API stale" issue (below). |
+| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, `npm run validate-data` checks it with the site's schema, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick (the download is ~1.5 MB) and maintains the "Data API stale" issue (below). |
 
 **Switch to `/v1/`** once the shadow summaries have shown no unexplained differences for a while:
 
@@ -66,15 +67,30 @@ the rest fail the run (exit 1):
   `fightcard-service health --staleness`). Hourly runs then succeed with the committed `data/` (a warning in the
   log, no failure email); the daily 06:00 UTC run and manual runs still fail, so at most one failure email a day.
   The first fresh fetch closes the issue with a comment. If the engine is down for long, roll back to `pipeline`.
+  Hourly stale runs staying green is deliberate (accepted in the PR #7 review): the alert is the issue plus the
+  daily run's failure, not an hourly failure email.
 - **Older than `data/`:** a snapshot whose `generated_at` is older than the committed `data/index.json`'s is skipped
   (exit 0, "not going backwards"); an equal one is a no-op. Either way there is no data commit, so nothing is built
   on a scheduled run. This can happen right after switching from `pipeline`, while the engine is a few minutes
-  behind; the next run catches up. If `data/index.json` has no readable `generated_at`, nothing blocks the swap.
+  behind; the next run catches up. If `data/index.json` has no readable `generated_at`, or one more than 10 minutes
+  in the future, nothing blocks the swap.
+- **From the future:** `generated_at` more than 10 minutes ahead of the runner's clock. Taking it would make every
+  later real snapshot look older than `data/` and freeze the site.
 - **Another contract:** `index.json`'s `contract_version` isn't `1` or `1.x`.
+- **Broken content:** a JSON file that doesn't parse, `fighters.json` that isn't an object, an event in
+  `index.json`'s `upcoming` or `recent` without its `events/<id>.json`, an event file whose `id` isn't its file
+  name, or a fight whose `red` or `blue` isn't in `fighters.json`.
 - **Unsafe archive:** absolute paths, `..`, links, devices or anything but regular files and directories, names
   outside the `/v1/` layout (`index.json`, `fighters.json`, `schema.json`, `events/*`, `images/*`), duplicate
-  entries, over 100 MB downloaded or 200 MB extracted.
+  entries, over 100 MB downloaded, 200 MB of member contents, or 250 MB decompressed (headers included, so an
+  oversized PAX header can't get round the caps).
 - **Unreachable or broken:** a download error, or a file that isn't a `.tar.gz` with `index.json` and `fighters.json`.
+  The base URL must be `https://` (plain `http://` only to `127.0.0.1` or `localhost`, for tests), and a redirect to
+  another scheme, host or port is refused.
+
+After `fetch_v1.py`, the job runs `npm run validate-data` in `site/` on the new `data/`: the site's own loader and
+zod schema (`site/src/lib/data.ts`, `schema.ts`), the same checks a build runs. If it fails, the job fails before
+the commit step, so nothing reaches `main`. Run it locally with `cd site && npm run validate-data -- ../data`.
 
 The swap extracts into a temp dir beside `data/` and renames it into place; if the second rename fails, the old
 `data/` is put back.
@@ -226,7 +242,8 @@ This deploys the image staging already ran and cuts a GitHub Release. Check http
   mode it fails like any other refusal when `/v1/` is stale.
 - **Refresh failed:** nothing was committed or deployed, and the site keeps serving the previous data. Read the
   failing step's log. A ufcstats challenge failure or a 0-events parse fails the `scrape` step on purpose. In `v1`
-  mode, the "Fetch /v1/ snapshot" step says why it refused (stale, contract, unsafe, unreachable): see above.
+  mode, the "Fetch /v1/ snapshot" step says why it refused (stale, future, contract, content, unsafe, unreachable),
+  and "Validate data/ with the site schema" lists the schema violations: see above.
 - **Which source is live:** `gh variable get DATA_SOURCE --repo alexzfe/fight-card-website` (unset means
   `pipeline`). Data commits from `/v1/` read "data: refresh from /v1/ …".
 - **"Re-export finish model" issue:** follow the steps in its body. The next refresh rescores and closes it.
