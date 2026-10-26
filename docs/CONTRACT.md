@@ -26,6 +26,19 @@ data/
   - `Fighter.best_win`: `{"opponent_id", "opponent", "elo", "date"}` or `null` (no win, or an export without the best-win columns). The beaten opponent rated highest going into the bout (split/majority wins count; draws, NC, CNC and Overturned don't; a tie goes to the most recent). `elo` is that pre-bout rating on the displayed scale. The site shows it under Stats.
 - Dates are `YYYY-MM-DD`; timestamps are ISO 8601 UTC with `Z`.
 
+### From the /v1/ API (`DATA_SOURCE=v1`, docs/DEPLOY.md)
+
+`scripts/fetch_v1.py` replaces `data/` with the fightcard-engine's `/v1/snapshot.tar.gz` (its `docs/CONTRACT.md`
+is then the source of truth). It's the layout above, additively:
+
+- `index.json` has `contract_version` (`"1"`, `"1.1"`, …); `fetch_v1.py` refuses any other major.
+- `Fight.result.outcome`: `"win" | "draw" | "nc" | null`. `winner` is `null` for both a draw and a no contest;
+  `outcome` tells them apart. The site validates it but doesn't show it yet.
+- `schema.json` is the JSON Schema of the API. The site ignores it.
+- No `images/misses.json` or `stale_fighters.json`: they are pipeline bookkeeping.
+
+`site/src/lib/schema.ts` accepts both shapes; `site/tests/fixtures/v1/` is a real snapshot and the site tests build it.
+
 ## model/ layout (vendored export from fight-auto-research)
 
 ```

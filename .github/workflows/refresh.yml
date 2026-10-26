@@ -1,7 +1,12 @@
-# Scheduled data refresh: scrape -> images -> score -> commit data/ -> build -> deploy to prod.
+# Scheduled data refresh: get data/ -> commit -> build -> deploy to prod. The repo variable DATA_SOURCE picks where
+# data/ comes from (docs/DEPLOY.md):
 #
-# Runs daily at 06:00 UTC, and hourly around event days (scripts/should_run.py decides; other hourly runs exit
-# early). Any stage exiting non-zero fails the job before anything is committed or deployed.
+# - pipeline (default, or unset): scrape -> segments -> images -> score here, daily at 06:00 UTC and hourly around
+#   event days (scripts/should_run.py decides; other hourly runs exit early). A non-blocking shadow job then diffs
+#   data/ against the fightcard-engine's /v1/ API into the job summary.
+# - v1: download the engine's /v1/ snapshot (scripts/fetch_v1.py) every run; a stale or unusable one fails the run.
+#
+# Any step exiting non-zero fails the job before anything is committed or deployed.
 #
 # Prod is deployed by calling infra's deploy-app.yml directly rather than by pushing a v* tag: a tag pushed with
 # GITHUB_TOKEN doesn't trigger release.yml. The data commit doesn't trigger release.yml either, so staging keeps
@@ -22,6 +27,7 @@ permissions: {}
 
 jobs:
   gate:
+    if: vars.DATA_SOURCE != 'v1'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -107,23 +113,83 @@ jobs:
             gh issue close "$number" --repo "$GITHUB_REPOSITORY" --comment "Nothing stale after the latest refresh."
           fi
 
-  build:
+  # Non-blocking: reports how /v1/ differs from what the pipeline just committed. Nothing waits for it.
+  shadow:
     needs: pipeline
-    if: needs.pipeline.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+    if: needs.pipeline.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ needs.pipeline.outputs.sha }}
+      - name: Diff data/ against /v1/
+        env:
+          V1_BASE: https://ufc-data.xlobax.com
+        run: python3 scripts/v1_shadow.py --base "$V1_BASE" --ours data --summary "$GITHUB_STEP_SUMMARY"
+
+  v1:
+    if: vars.DATA_SOURCE == 'v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      # Refuses a stale (> 26 h), unsafe or non-1.x snapshot: the run fails, data/ stays as committed.
+      - name: Fetch /v1/ snapshot
+        env:
+          V1_BASE: https://ufc-data.xlobax.com
+        run: python3 scripts/fetch_v1.py --base "$V1_BASE" --data data
+
+      - name: Commit data
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "data: refresh from /v1/ $(date -u +%Y-%m-%dT%H:%MZ)"
+            # A code push may have landed meanwhile; data/ is only written here, so the rebase can't conflict.
+            git push origin HEAD:main || { git pull --rebase origin main && git push origin HEAD:main; }
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  # One of pipeline/v1 is always skipped, hence always(); a failed or cancelled source never builds.
+  build:
+    needs: [pipeline, v1]
+    if: >-
+      always() && (
+        (needs.pipeline.result == 'success' &&
+          (needs.pipeline.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')) ||
+        (needs.v1.result == 'success' &&
+          (needs.v1.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'))
+      )
     permissions:
       contents: read
       packages: write
     uses: ./.github/workflows/build.yml
     with:
-      ref: ${{ needs.pipeline.outputs.sha }}
+      ref: ${{ needs.pipeline.outputs.sha || needs.v1.outputs.sha }}
 
   prod:
-    needs: [pipeline, build]
+    needs: [pipeline, v1, build]
+    if: always() && needs.build.result == 'success'
     uses: alexzfe/infra/.github/workflows/deploy-app.yml@main
     with:
       app: ufc
       env: prod
-      tag: ${{ needs.pipeline.outputs.sha }}
+      tag: ${{ needs.pipeline.outputs.sha || needs.v1.outputs.sha }}
       url: https://ufc.xlobax.com
       purge_cache: true
     secrets: inherit

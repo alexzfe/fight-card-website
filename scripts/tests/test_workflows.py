@@ -250,8 +250,13 @@ def jobs(name: str) -> dict[str, str]:
 
 
 def job_if(body: str) -> str:
-    m = re.search(r"^    if: (.+)$", body, re.M)
-    return m.group(1) if m else ""
+    """The job's `if:`, a folded `>-` block joined into one line."""
+    m = re.search(r"^    if: (.+)$((?:\n      .*)*)", body, re.M)
+    if not m:
+        return ""
+    if m.group(1) != ">-":
+        return m.group(1)
+    return " ".join(line.strip() for line in m.group(2).splitlines() if line.strip())
 
 
 def test_refresh_pipeline_jobs_run_unless_data_source_is_v1():
