@@ -11,7 +11,8 @@ name: release
 on:
   pull_request:
   push:
-    branches: [main]
+    # model-export: fight-auto-research's Export model workflow pushes it; model-export.yml merges it once tested.
+    branches: [main, model-export]
     tags: ["v*"]
 
 jobs:

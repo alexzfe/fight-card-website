@@ -1,0 +1,64 @@
+# Land a model re-export from fight-auto-research.
+#
+# Its Export model workflow pushes a new model/ to branch `model-export` with a deploy key (write access to this
+# repo only; no personal token). The push runs release.yml's tests; when they finish, this opens or updates the
+# PR and, if they passed and the tier thresholds didn't move, merges it and runs refresh.yml, which re-scores
+# every unfrozen bout with the new model and deploys prod. Moved thresholds or failed tests leave the PR open.
+#
+# Runs from main's copy of this file and never checks out the branch, so nothing on it executes with these
+# permissions. Needs "Allow GitHub Actions to create and approve pull requests" (Settings > Actions).
+
+name: model-export
+
+on:
+  workflow_run:
+    workflows: [release]
+    types: [completed]
+    branches: [model-export]
+
+concurrency:
+  group: model-export
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  land:
+    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'model-export'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      SHA: ${{ github.event.workflow_run.head_sha }}
+      PASSED: ${{ github.event.workflow_run.conclusion == 'success' }}
+      RUN_URL: ${{ github.event.workflow_run.html_url }}
+    steps:
+      - name: Open or update the PR, and merge it when it's safe
+        run: |
+          as_of=$(gh api "repos/$GH_REPO/contents/model/manifest.json?ref=$SHA" --jq .content | base64 -d | jq -r .as_of)
+          moved=false
+          if gh api "repos/$GH_REPO/compare/main...$SHA" --jq '.files[].filename' | grep -qx model/thresholds.json; then
+            moved=true
+          fi
+          title="chore(model): re-export as of $as_of"
+          body="Pushed by fight-auto-research's Export model workflow. Tests: $RUN_URL"
+          if $moved; then
+            body+=$'\n\n**Tier thresholds changed**, so this waits for a review instead of merging itself.'
+          fi
+          if [ "$(gh pr list --head model-export --state open --json number --jq length)" = 0 ]; then
+            gh pr create --head model-export --base main --title "$title" --body "$body"
+          else
+            gh pr edit model-export --title "$title" --body "$body"
+          fi
+          if [ "$PASSED" != true ]; then
+            gh pr comment model-export --body "Tests failed on ${SHA:0:7} ($RUN_URL); not merging."
+          elif $moved; then
+            echo "thresholds moved; leaving the PR for review"
+          else
+            gh pr merge model-export --squash --delete-branch --match-head-commit "$SHA"
+            gh workflow run refresh.yml --ref main
+          fi
