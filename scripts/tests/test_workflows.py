@@ -69,7 +69,8 @@ def test_refresh_asks_the_research_repo_to_re_export_when_stale():
     assert "repos/alexzfe/fight-auto-research/dispatches" in text
     assert "event_type=site-stale" in text
     assert "secrets.RESEARCH_DISPATCH_TOKEN" in text
-    assert f'"$SCHEDULE" = "{DAILY_CRON}"' in text
+    assert "steps.issue.outputs.new == 'true'" in text
+    assert f"github.event.schedule == '{DAILY_CRON}'" in text
 
 
 def test_refresh_deploys_prod_through_the_reusable_workflow():
