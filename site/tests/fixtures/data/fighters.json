@@ -1,5 +1,11 @@
 {
   "a1a1a1a1a1a1a1a1": {
+    "best_win": {
+      "date": "2025-09-20",
+      "elo": 1702,
+      "opponent": "Finn Foxtrot",
+      "opponent_id": "f6f6f6f6f6f6f6f6"
+    },
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1992-11-01",
     "elo": 1612,

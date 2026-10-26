@@ -181,12 +181,18 @@ test('each corner shows recent form, and details list the last 3 fights', async 
   await expect(details.getByTestId('last-fights').nth(1).locator('li')).toHaveCount(1);
 });
 
-test('a corner shows the Elo next to the record, and nothing when it is unknown', async ({ page }) => {
+test('a corner shows the Elo on its own line under the record, in full-strength text', async ({ page }) => {
   await page.goto('/');
   const main = page.getByTestId('fight').first();
+  const red = main.locator('.corner-red');
   await expect(main.getByTestId('elo')).toHaveCount(1);
-  await expect(main.locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1612');
-  await expect(main.locator('.corner-red .record')).toContainText('21-4-0');
+  await expect(red.getByTestId('elo')).toHaveText('Elo 1612');
+  await expect(red.locator('.record')).toHaveText('21-4-0');
+  const record = (await red.locator('.record').boundingBox())!;
+  const elo = (await red.getByTestId('elo').boundingBox())!;
+  expect(elo.y).toBeGreaterThanOrEqual(record.y + record.height - 1);
+  const text = await page.locator('body').evaluate((el) => getComputedStyle(el).color);
+  expect(await red.getByTestId('elo').evaluate((el) => getComputedStyle(el).color)).toBe(text);
   await expect(main.locator('.corner-blue').getByTestId('elo')).toHaveCount(0);
 });
 
@@ -197,7 +203,7 @@ test('a ranked fighter shows the P4P rank after the Elo', async ({ page }) => {
   await expect(fights.nth(0).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1612');
 });
 
-test('provisional and inactive are quiet tags, and an unknown Elo shows no tag', async ({ page }) => {
+test('provisional and inactive are quiet unboxed words, and an unknown Elo shows no tag', async ({ page }) => {
   await page.goto('/');
   const fights = page.getByTestId('fight');
   const tags = (fight: number, side: 'red' | 'blue') =>
@@ -208,46 +214,29 @@ test('provisional and inactive are quiet tags, and an unknown Elo shows no tag',
   await expect(tags(0, 'blue')).toHaveCount(0); // inactive, but no Elo
   const muted = await page.locator('.event-meta').evaluate((el) => getComputedStyle(el).color);
   expect(await tags(1, 'blue').evaluate((el) => getComputedStyle(el).color)).toBe(muted);
+  expect(await tags(1, 'blue').evaluate((el) => getComputedStyle(el).borderStyle)).toBe('none');
 });
 
-test('the peak shows in a tooltip on the Elo, on hover or on tap', async ({ page }) => {
+test('Stats lists each corner\'s Elo, peak and best win', async ({ page }) => {
   await page.goto('/');
-  const elo = page.getByTestId('fight').nth(1).locator('.corner-red').getByTestId('elo');
-  await expect(elo).toHaveAttribute('data-tip', 'Peak 1793');
-  const tip = () => elo.evaluate((el) => getComputedStyle(el, '::after').visibility);
-  expect(await tip()).toBe('hidden');
-  await elo.hover();
-  await expect.poll(tip).toBe('visible');
-  await page.mouse.move(0, 0);
-  await expect.poll(tip).toBe('hidden');
-  await elo.focus();
-  await expect.poll(tip).toBe('visible');
-  const noPeak = page.getByTestId('fight').nth(1).locator('.corner-blue').getByTestId('elo');
-  await expect(noPeak).not.toHaveAttribute('data-tip');
-  await expect(noPeak).not.toHaveAttribute('tabindex');
+  const fights = page.getByTestId('fight');
+  const row = (fight: number, label: string) =>
+    fights.nth(fight).locator('.stats tr', { has: page.locator('th', { hasText: new RegExp(`^${label}$`) }) }).locator('td');
+  await fights.first().locator('summary').click();
+  await expect(row(0, 'Elo')).toHaveText(['1612', '—']);
+  await expect(row(0, 'Peak')).toHaveText(['1655', '—']);
+  await expect(row(0, 'Best win')).toHaveText(['Finn FoxtrotElo 1702 · Sep 2025', '—']);
+  await fights.nth(1).locator('summary').click();
+  await expect(row(1, 'Elo')).toHaveText(['1690 · #4 P4P', '1488']);
+  await expect(row(1, 'Best win')).toHaveCount(0); // neither corner has one
+  await expect(fights.nth(3).locator('.stats th', { hasText: /^Elo$/ })).toHaveCount(0); // no Elo on either side
 });
 
-test('screen readers hear the peak without hovering', async ({ page }) => {
-  await page.goto('/');
-  const corner = page.getByTestId('fight').nth(1).locator('.corner-red');
-  await expect(corner.getByTestId('elo-peak')).toHaveText('Peak 1793');
-  await expect(page.getByTestId('fight').nth(1).locator('.corner-blue').getByTestId('elo-peak')).toHaveCount(0);
-});
-
-test('an Elo with a peak is a 44px tap target that leaves the Stats toggle alone', async ({ page }) => {
-  await page.setViewportSize({ width: 360, height: 800 });
-  await page.goto('/');
-  const fight = page.getByTestId('fight').nth(1);
-  const box = (await fight.locator('.corner-red').getByTestId('elo').boundingBox())!;
-  const x = box.x + box.width / 2;
-  const bottom = box.y + box.height;
-  const hit = (y: number) =>
-    page.evaluate(([x, y]) => document.elementFromPoint(x!, y!)?.closest('[data-testid="elo"], summary')?.tagName, [x, y]);
-  // The hit area runs 44px up from the label's bottom edge.
-  expect(await hit(bottom - 1)).toBe('SPAN');
-  expect(await hit(bottom - 43)).toBe('SPAN');
-  const summary = (await fight.locator('summary').boundingBox())!;
-  expect(await hit(summary.y + 2)).toBe('SUMMARY');
+test('nothing on the card hides behind a tooltip', async ({ page }) => {
+  for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {
+    await page.goto(url);
+    await expect(page.locator('[data-tip], [title]'), url).toHaveCount(0);
+  }
 });
 
 test('fighters without history show no form and no last-fights list', async ({ page }) => {
@@ -351,13 +340,30 @@ test('each finish tier has its own colour', async ({ page }) => {
   expect(none).toBe(muted);
 });
 
-test('hovering a form tile names the opponent', async ({ page }) => {
+test('the finish meter is labelled on upcoming and completed fights', async ({ page }) => {
+  for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {
+    await page.goto(url);
+    const fights = page.getByTestId('fight');
+    const labels = page.getByTestId('finish-label');
+    await expect(labels, url).toHaveCount(await fights.count());
+    await expect(labels.first(), url).toHaveText('Finish chance');
+    await expect(labels.first(), url).toBeVisible();
+  }
+});
+
+test('headshots are 64px on phones and 72px wider, the main event 88px and 96px', async ({ page }) => {
+  const size = (fight: number) =>
+    page.getByTestId('fight').nth(fight).locator('.corner-red .avatar').evaluate((el) => el.getBoundingClientRect().width);
+  await page.setViewportSize({ width: 360, height: 740 });
   await page.goto('/');
-  const tile = page.getByTestId('fight').first().getByTestId('form').first().locator('span').first();
-  await expect(tile).toHaveAttribute('data-tip', 'Dan Delta · KO/TKO R1 · Jun 2026');
-  const tip = () => tile.evaluate((el) => getComputedStyle(el, '::after').visibility);
-  expect(await tip()).toBe('hidden');
-  await tile.hover();
-  await expect.poll(tip).toBe('visible');
-  expect(await tile.evaluate((el) => getComputedStyle(el, '::after').content)).toContain('Dan Delta');
+  expect([await size(0), await size(1)]).toEqual([88, 64]);
+  await page.setViewportSize({ width: 1024, height: 800 });
+  expect([await size(0), await size(1)]).toEqual([96, 72]);
+});
+
+test('the footer explains the Elo tags', async ({ page }) => {
+  await page.goto('/');
+  const footer = page.locator('footer');
+  await expect(footer).toContainText('provisional means fewer than 3 UFC fights');
+  await expect(footer).toContainText('inactive means no fight in the last 12 months');
 });
