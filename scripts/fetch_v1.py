@@ -37,6 +37,7 @@ from pathlib import Path
 from gh_output import emit
 
 MAX_AGE_HOURS = 26.0  # the daily run plus slack; the engine refreshes more often than that
+CLOCK_SKEW = timedelta(minutes=10)  # a generated_at further ahead than this is wrong, not early
 MAX_DOWNLOAD_BYTES = 100 * 2**20  # the snapshot is ~1.5 MB today
 MAX_EXTRACTED_BYTES = 200 * 2**20
 MAX_MEMBERS = 20_000
@@ -154,20 +155,30 @@ def age_hours(index: dict, now: datetime) -> float:
     return (now - datetime.fromisoformat(index["generated_at"])) / timedelta(hours=1)
 
 
+def check_not_future(index: dict, now: datetime) -> None:
+    """A future generated_at would make every later real snapshot look older than data/ and freeze the site."""
+    if datetime.fromisoformat(index["generated_at"]) > now + CLOCK_SKEW:
+        raise FetchError(f"snapshot generated_at {index['generated_at']} is in the future "
+                         f"(now {now:%Y-%m-%dT%H:%M:%SZ}, allowing {CLOCK_SKEW} of clock skew)")
+
+
 def check_fresh(index: dict, now: datetime, max_age_hours: float) -> None:
     hours = age_hours(index, now)
     if hours > max_age_hours:
         raise StaleError(index, hours, max_age_hours)
 
 
-def committed_at(data: Path) -> str | None:
-    """generated_at of the committed data/index.json, or None when it can't be told (then nothing blocks the swap)."""
+def committed_at(data: Path, now: datetime) -> str | None:
+    """generated_at of the committed data/index.json, or None when it can't be told (then nothing blocks the swap).
+    A future one counts as unknown, so a bad snapshot that got committed can't block every later one."""
     try:
         index = json.loads((data / "index.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
     generated_at = index.get("generated_at") if isinstance(index, dict) else None
-    return generated_at if isinstance(generated_at, str) and _UTC_Z.fullmatch(generated_at) else None
+    if not (isinstance(generated_at, str) and _UTC_Z.fullmatch(generated_at)):
+        return None
+    return None if datetime.fromisoformat(generated_at) > now + CLOCK_SKEW else generated_at
 
 
 def stale_issue_body(error: StaleError, url: str) -> str:
@@ -220,8 +231,9 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple
         new = staging / data.name
         extract(blob, new)
         index = read_index(new)
+        check_not_future(index, now)
         check_fresh(index, now, max_age_hours)
-        ours = committed_at(data)
+        ours = committed_at(data, now)
         if ours and datetime.fromisoformat(index["generated_at"]) <= datetime.fromisoformat(ours):
             return index, ours
         swap(new, data)
