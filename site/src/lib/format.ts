@@ -25,6 +25,25 @@ export function eloTags(fighter: Pick<Fighter, 'elo_provisional' | 'elo_inactive
   );
 }
 
+/** Elo tooltip, e.g. "Peak 1659 · Best win: Chris Duncan (1634)"; null when neither is known. */
+export function eloTip(fighter: Pick<Fighter, 'elo_peak' | 'best_win'>): string | null {
+  const parts = [
+    fighter.elo_peak != null ? `Peak ${fighter.elo_peak}` : null,
+    fighter.best_win ? `Best win: ${fighter.best_win.opponent} (${fighter.best_win.elo})` : null,
+  ].filter(Boolean);
+  return parts.length ? parts.join(' · ') : null;
+}
+
+const TAG_TIPS: { [tag: string]: string } = {
+  provisional: 'Fewer than 3 UFC fights',
+  inactive: 'No fight in the last 12 months',
+};
+
+/** What an Elo tag means, for its tooltip. */
+export function tagTip(tag: string): string | undefined {
+  return TAG_TIPS[tag];
+}
+
 export function formatHeight(inches: number | null | undefined): string {
   if (inches == null) return DASH;
   const total = Math.round(inches);

@@ -319,6 +319,12 @@ ul {
   white-space: nowrap;
 }
 
+.elo-line > [data-tip] {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--color-muted);
+  text-underline-offset: 2px;
+}
+
 .winner .name::after {
   content: ' W';
   font-size: var(--font-size-xs);
@@ -597,6 +603,48 @@ ul {
   border-style: dashed;
 }
 
+/* Tooltips (form tile: opponent; Elo: peak and best win; tag: what it means): hover with a mouse, or tap (focus)
+   on touch. Red corner tips grow rightwards from their anchor, blue corner tips leftwards. */
+.form > [data-tip],
+.elo-line > [data-tip] {
+  position: relative;
+  cursor: default;
+  outline: none;
+}
+
+.form > [data-tip]::after,
+.elo-line > [data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  z-index: 1;
+  padding: 0.4em 0.6em;
+  border-radius: 4px;
+  background: var(--color-strong-bg);
+  color: var(--color-strong-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.corner-blue .form > [data-tip]::after,
+.corner-blue .elo-line > [data-tip]::after {
+  left: auto;
+  right: 0;
+}
+
+.form > [data-tip]:hover::after,
+.form > [data-tip]:focus::after,
+.elo-line > [data-tip]:hover::after,
+.elo-line > [data-tip]:focus::after {
+  visibility: visible;
+  opacity: 1;
+}
+
 .corner-blue .form {
   justify-content: flex-end;
 }
@@ -702,6 +750,13 @@ ul {
 
   .stats summary::after {
     transition: transform 200ms ease, margin-top 200ms ease;
+  }
+
+  .form > [data-tip]::after,
+  .elo-line > [data-tip]::after {
+    transition:
+      opacity 120ms ease,
+      visibility 120ms;
   }
 
   .tile,
