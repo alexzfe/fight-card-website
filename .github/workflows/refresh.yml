@@ -4,8 +4,9 @@
 # - pipeline (default, or unset): scrape -> segments -> images -> score here, daily at 06:00 UTC and hourly around
 #   event days (scripts/should_run.py decides; other hourly runs exit early). A non-blocking shadow job then diffs
 #   data/ against the fightcard-engine's /v1/ API into the job summary.
-# - v1: download the engine's /v1/ snapshot (scripts/fetch_v1.py) every run; an unusable one fails the run. A stale
-#   one keeps data/ and opens the single "Data API stale" issue; only the daily and manual runs also fail on it.
+# - v1: download the engine's /v1/ snapshot (scripts/fetch_v1.py) every run, then validate data/ with the site's
+#   schema (npm run validate-data); an unusable one fails the run. A stale one keeps data/ and opens the single
+#   "Data API stale" issue; only the daily and manual runs also fail on it.
 #
 # Any step exiting non-zero fails the job before anything is committed or deployed.
 #
@@ -165,6 +166,17 @@ jobs:
             exit 0
           fi
           exit "$status"
+
+      # The site's own loader and schema (site/src/lib/data.ts) over the data/ about to be committed: a snapshot the
+      # build would reject fails the run here, before anything reaches main.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: site/.nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Validate data/ with the site schema
+        run: npm ci && npm run validate-data
+        working-directory: site
 
       - name: Commit data
         id: commit
