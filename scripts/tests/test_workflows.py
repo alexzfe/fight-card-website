@@ -71,6 +71,8 @@ def test_refresh_asks_the_research_repo_to_re_export_when_stale():
     assert "secrets.RESEARCH_DISPATCH_TOKEN" in text
     assert "steps.issue.outputs.new == 'true'" in text
     assert f"github.event.schedule == '{DAILY_CRON}'" in text
+    step = text[text.index("Ask fight-auto-research"):]
+    assert "continue-on-error: true" in step[: step.index("gh api")]  # never blocks build and deploy
 
 
 def test_refresh_deploys_prod_through_the_reusable_workflow():
