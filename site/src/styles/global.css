@@ -28,9 +28,9 @@
   --color-muted: #6b665f;
   --color-strong-bg: #24211e;
   --color-strong-text: #faf9f7;
-  --color-accent: #b4471f;
+  --color-accent: #a33f19;
   --color-bar-off: #dcd7cf;
-  --color-tier-high: #a33f19;
+  --color-tier-high: var(--color-accent); /* ember is the brand and "High finish chance" on purpose */
   --color-tier-medium: #7f5900;
   --color-tier-low: #46616f;
 }
@@ -46,7 +46,6 @@
     --color-strong-text: #1c1a17;
     --color-accent: #ef8a5f;
     --color-bar-off: #3a3632;
-    --color-tier-high: #ef8a5f;
     --color-tier-medium: #dcaa45;
     --color-tier-low: #8ea8b6;
   }
@@ -895,7 +894,7 @@ ul {
 }
 
 .chart-mark circle {
-  fill: var(--color-accent);
+  fill: var(--color-text);
   stroke: var(--color-bg);
   stroke-width: 2;
 }
@@ -1125,10 +1124,6 @@ ul {
   display: block;
   font-size: var(--font-size-xl);
   font-weight: 700;
-}
-
-.stat:first-child .stat-value {
-  color: var(--color-accent);
 }
 
 .stat-label {
