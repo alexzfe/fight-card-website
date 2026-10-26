@@ -561,15 +561,17 @@ ul {
   border-style: dashed;
 }
 
-/* Opponent tooltip: hover with a mouse, or tap (focus) on touch. Red corner tips grow
-   rightwards from the tile, blue corner tips leftwards, so neither leaves the column. */
-.form > [data-tip] {
+/* Tooltips (form tile: opponent; Elo: peak): hover with a mouse, or tap (focus) on touch. Red corner
+   tips grow rightwards from the tile, blue corner tips leftwards, so neither leaves the column. */
+.form > [data-tip],
+.elo[data-tip] {
   position: relative;
   cursor: default;
   outline: none;
 }
 
-.form > [data-tip]::after {
+.form > [data-tip]::after,
+.elo[data-tip]::after {
   content: attr(data-tip);
   position: absolute;
   bottom: calc(100% + 6px);
@@ -587,15 +589,56 @@ ul {
   pointer-events: none;
 }
 
-.corner-blue .form > [data-tip]::after {
+.corner-blue .form > [data-tip]::after,
+.corner-blue .elo[data-tip]::after {
   left: auto;
   right: 0;
 }
 
 .form > [data-tip]:hover::after,
-.form > [data-tip]:focus::after {
+.form > [data-tip]:focus::after,
+.elo[data-tip]:hover::after,
+.elo[data-tip]:focus::after {
   visibility: visible;
   opacity: 1;
+}
+
+/* The label never breaks inside itself; on a narrow corner it moves to its own line. */
+.elo {
+  white-space: nowrap;
+}
+
+/* The Elo is a Tab stop (nothing else lists the peak), so it keeps a ring for keyboards, a dotted
+   hint that it has a tip, and a 44px-tall hit area. The area grows upward over the name, so it never
+   covers the form tiles or the Stats toggle below. */
+.elo[data-tip] {
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+
+.elo[data-tip]::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 44px;
+}
+
+.elo[data-tip]:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* provisional / inactive: quiet, outlined like a loss tile. */
+.elo-tag {
+  display: inline-block;
+  margin-left: var(--space-1);
+  padding: 0 0.35em;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  font-size: 0.625rem;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .corner-blue .form {
@@ -700,7 +743,8 @@ ul {
     transition: transform 200ms ease, margin-top 200ms ease;
   }
 
-  .form > [data-tip]::after {
+  .form > [data-tip]::after,
+  .elo[data-tip]::after {
     transition:
       opacity 120ms ease,
       visibility 120ms;

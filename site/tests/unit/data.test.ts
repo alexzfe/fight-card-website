@@ -116,6 +116,21 @@ describe('loadData contract violations', () => {
     writeJson(EVENT, e);
     expect(() => loadData(dir)).toThrow(/slug/);
   });
+  it('defaults the Elo fields for fighters written before them', () => {
+    const fighters = readJson('fighters.json');
+    for (const f of Object.values(fighters) as { [k: string]: unknown }[]) {
+      for (const k of ['elo', 'elo_peak', 'p4p_rank', 'elo_provisional', 'elo_inactive']) delete f[k];
+    }
+    writeJson('fighters.json', fighters);
+    const f = loadData(dir).fighters['c3c3c3c3c3c3c3c3']!;
+    expect([f.elo_peak, f.p4p_rank, f.elo_provisional, f.elo_inactive]).toEqual([undefined, undefined, false, false]);
+  });
+  it('fails on a P4P rank below 1', () => {
+    const fighters = readJson('fighters.json');
+    fighters['c3c3c3c3c3c3c3c3'].p4p_rank = 0;
+    writeJson('fighters.json', fighters);
+    expect(() => loadData(dir)).toThrow(/p4p_rank/);
+  });
   it('allows a missing model', () => {
     const idx = readJson('index.json');
     idx.model = null;

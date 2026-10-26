@@ -39,6 +39,11 @@ export const Fighter = z.object({
   image: z.string().nullish(),
   details_fetched_at: isoTimestamp.nullish(),
   recent_fights: z.array(PastFight).nullish(), // newest first, at most 3
+  elo: z.number().int().nullish(), // current Elo, re-anchored; null = unknown
+  elo_peak: z.number().int().nullish(), // highest Elo after the 5th UFC bout; null = none yet
+  p4p_rank: z.number().int().positive().nullish(), // pound-for-pound rank; null = unranked
+  elo_provisional: z.boolean().default(false), // fewer than 3 UFC bouts
+  elo_inactive: z.boolean().default(false), // no bout in the last 12 months
 });
 
 export const Result = z.object({

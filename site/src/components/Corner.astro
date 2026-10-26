@@ -1,6 +1,6 @@
 ---
 import Avatar from './Avatar.astro';
-import { formatPastFight, formatRecord, resultLetter } from '../lib/format';
+import { eloTags, formatElo, formatEloPeak, formatPastFight, formatRecord, resultLetter } from '../lib/format';
 import type { Fighter } from '../lib/schema';
 
 interface Props {
@@ -13,6 +13,9 @@ interface Props {
 
 const { side, fighter, winner, eager, large } = Astro.props;
 const form = fighter.recent_fights ?? [];
+const elo = formatElo(fighter.elo, fighter.p4p_rank);
+const peak = formatEloPeak(fighter.elo_peak);
+const tags = eloTags(fighter);
 const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filter(Boolean).join(' · ');
 ---
 
@@ -20,7 +23,22 @@ const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filte
   <Avatar fighter={fighter} eager={eager} size={large ? 64 : 48} />
   <div class="who">
     <span class="name">{fighter.name}</span>
-    <span class="record">{formatRecord(fighter.record)}</span>
+    <span class="record">
+      {formatRecord(fighter.record)}
+      {
+        elo && (
+          <>
+            <span aria-hidden="true"> · </span>
+            {/* Peak tip: hover, tap or Tab focuses it like a form tile; screen readers get it as text. */}
+            <span class="elo" data-testid="elo" data-tip={peak} tabindex={peak ? '0' : undefined}>{elo}</span>
+            {peak && <span class="sr-only" data-testid="elo-peak">{peak}</span>}
+            {tags.map((t) => (
+              <span class="elo-tag" data-testid="elo-tag">{t}</span>
+            ))}
+          </>
+        )
+      }
+    </span>
     {
       form.length > 0 && (
         <span class="form" data-testid="form" aria-label={`Last ${form.length}: ${form.map((f) => f.result).join(', ')}`}>
