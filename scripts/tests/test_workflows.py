@@ -63,16 +63,25 @@ def test_refresh_maintains_the_stale_model_issue():
     assert f"TITLE: {TITLE}\n" in text
 
 
-def test_refresh_asks_the_research_repo_to_re_export_when_stale():
-    """A new stale episode, then at most once a day: hourly event-day runs mustn't queue an export each hour."""
-    text = read("refresh.yml")
-    assert "repos/alexzfe/fight-auto-research/dispatches" in text
-    assert "event_type=site-stale" in text
-    assert "secrets.RESEARCH_DISPATCH_TOKEN" in text
-    assert "steps.issue.outputs.new == 'true'" in text
-    assert f"github.event.schedule == '{DAILY_CRON}'" in text
-    step = text[text.index("Ask fight-auto-research"):]
-    assert "continue-on-error: true" in step[: step.index("gh api")]  # never blocks build and deploy
+def test_release_tests_pushes_to_the_model_export_branch():
+    """fight-auto-research pushes model-export with a deploy key; its tests gate the merge (build stays main-only)."""
+    text = read("release.yml")
+    assert re.search(r"branches: \[main, model-export\]", text)
+    assert "if: github.ref == 'refs/heads/main'" in text
+
+
+def test_model_export_merges_only_tested_unchanged_threshold_exports():
+    text = read("model-export.yml")
+    assert "workflow_run:" in text and "workflows: [release]" in text and "branches: [model-export]" in text
+    assert "github.event.workflow_run.conclusion == 'success'" in text
+    assert "--match-head-commit" in text  # never merges a newer push than the one that was tested
+    assert "model/thresholds.json" in text  # moved thresholds wait for review
+    assert "gh workflow run refresh.yml" in text  # re-score and deploy with the new model right away
+
+
+def test_refresh_no_longer_dispatches_to_the_research_repo():
+    """The research workflow reads data/stale_fighters.json from this public repo instead: no token needed."""
+    assert "dispatches" not in read("refresh.yml")
 
 
 def test_refresh_deploys_prod_through_the_reusable_workflow():
