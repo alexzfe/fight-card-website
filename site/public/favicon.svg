@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>polygon { stroke: #a33f19 } @media (prefers-color-scheme: dark) { polygon { stroke: #ef8a5f } }</style>
+  <polygon points="10,2 22,2 30,10 30,22 22,30 10,30 2,22 2,10" fill="none" stroke-width="4" stroke-linejoin="miter"/>
+</svg>

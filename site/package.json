@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "npm run build:fixtures && playwright test",
-    "check": "astro check"
+    "check": "astro check",
+    "icons": "node scripts/build-icons.mjs"
   },
   "dependencies": {
     "astro": "^7.4.2",
