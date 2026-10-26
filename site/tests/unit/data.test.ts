@@ -119,11 +119,25 @@ describe('loadData contract violations', () => {
   it('defaults the Elo fields for fighters written before them', () => {
     const fighters = readJson('fighters.json');
     for (const f of Object.values(fighters) as { [k: string]: unknown }[]) {
-      for (const k of ['elo', 'elo_peak', 'p4p_rank', 'elo_provisional', 'elo_inactive']) delete f[k];
+      for (const k of ['elo', 'elo_peak', 'p4p_rank', 'elo_provisional', 'elo_inactive', 'best_win']) delete f[k];
     }
     writeJson('fighters.json', fighters);
     const f = loadData(dir).fighters['c3c3c3c3c3c3c3c3']!;
-    expect([f.elo_peak, f.p4p_rank, f.elo_provisional, f.elo_inactive]).toEqual([undefined, undefined, false, false]);
+    expect([f.elo_peak, f.p4p_rank, f.elo_provisional, f.elo_inactive, f.best_win]).toEqual([
+      undefined,
+      undefined,
+      false,
+      false,
+      undefined,
+    ]);
+  });
+  it('keeps the best win', () => {
+    expect(loadData(dir).fighters['a1a1a1a1a1a1a1a1']!.best_win).toEqual({
+      opponent_id: 'f6f6f6f6f6f6f6f6',
+      opponent: 'Finn Foxtrot',
+      elo: 1702,
+      date: '2025-09-20',
+    });
   });
   it('fails on a P4P rank below 1', () => {
     const fighters = readJson('fighters.json');

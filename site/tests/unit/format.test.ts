@@ -9,7 +9,7 @@ import {
   formatReach,
   eloTags,
   formatElo,
-  formatEloPeak,
+  formatBestWin,
   formatRecord,
   formatPastFight,
   formatResult,
@@ -50,13 +50,16 @@ describe('formatElo', () => {
   });
 });
 
-describe('formatEloPeak', () => {
-  it('labels the peak', () => {
-    expect(formatEloPeak(1793)).toBe('Peak 1793');
+describe('formatBestWin', () => {
+  it('names the opponent over their rating and the month', () => {
+    expect(formatBestWin({ opponent_id: 'x', opponent: 'Glover Teixeira', elo: 1684, date: '2022-06-11' })).toEqual({
+      opponent: 'Glover Teixeira',
+      meta: 'Elo 1684 · Jun 2022',
+    });
   });
-  it('is null before there is a peak', () => {
-    expect(formatEloPeak(null)).toBeNull();
-    expect(formatEloPeak(undefined)).toBeNull();
+  it('is null without a win', () => {
+    expect(formatBestWin(null)).toBeNull();
+    expect(formatBestWin(undefined)).toBeNull();
   });
 });
 
