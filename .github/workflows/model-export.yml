@@ -56,7 +56,7 @@ jobs:
           fi
           if [ -n "$outside" ]; then
             body+=$'\n\n**Changes outside model/**, so this waits for a review instead of merging itself:\n'
-            body+=$(sed 's/^/- `/; s/$/`/' <<< "$outside")
+            body+=$(sed 's/^/- /' <<< "$outside")
           fi
           if [ "$(gh pr list --head model-export --state open --json number --jq length)" = 0 ]; then
             gh pr create --head model-export --base main --title "$title" --body "$body"
