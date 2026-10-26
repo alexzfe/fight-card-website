@@ -16,8 +16,10 @@ the [infra](https://github.com/alexzfe/infra) repo's `deploy-app` on the Hetzner
 | `.dockerignore` | Only `site/` and `data/` go into the build context. |
 | `.github/workflows/build.yml` | Reusable: builds and pushes the image for one commit, tagged with its SHA. |
 | `.github/workflows/release.yml` | From `infra/templates/app-release.yml`. PR → tests. Push to main → tests, build, deploy staging. `v*` tag → deploy that commit's image to prod and cut a GitHub Release. |
-| `.github/workflows/refresh.yml` | Cron. Runs the pipeline, commits `data/`, maintains the stale-model issue, then builds and deploys prod. |
-| `scripts/should_run.py` | Decides whether a refresh run does any work (see below). |
+| `.github/workflows/refresh.yml` | Cron. Gets `data/` from the pipeline or the engine's `/v1/` API (`DATA_SOURCE`, below), commits it, then builds and deploys prod. In pipeline mode it also maintains the stale-model issue and shadows `/v1/`. |
+| `scripts/should_run.py` | Decides whether a pipeline-mode refresh run does any work (see below). |
+| `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or fails the run when it is stale, unsafe or not contract 1.x. |
+| `scripts/v1_shadow.py` | `pipeline` mode: writes how `/v1/` differs from the pipeline's `data/` to the job summary. Never fails. |
 | `scripts/stale_issue.py` | Builds the "Re-export finish model" issue body from `data/stale_fighters.json`. |
 | infra `sites.yml` | The `ufc` entry: image, port 8080, `health_path: /healthz`, both hosts, default memory caps (1g prod, 256m staging). On branch `add-ufc-site` in the infra repo. |
 
@@ -25,7 +27,50 @@ Tests: `uv run --project pipeline pytest scripts/tests`. Add `-m docker` to buil
 probe it the way infra's compose healthcheck does. The actionlint test runs when `actionlint` is on `PATH` or
 `ACTIONLINT=/path/to/actionlint` is set; CI runs it as its own step too.
 
-## How the refresh works
+## Data source: pipeline or /v1/
+
+The repo variable `DATA_SOURCE` picks where `refresh.yml` gets `data/` from. Either way, the site is built from the
+committed `data/`, never from the browser, and `data/` stays in git (audit trail, rollback).
+
+| `DATA_SOURCE` | Jobs | What happens |
+|---|---|---|
+| `pipeline` (default; also when unset) | gate → pipeline → build → prod, plus `shadow` | Today's refresh (below). The `shadow` job then downloads the [fightcard-engine](https://github.com/alexzfe/fightcard-engine)'s `https://ufc-data.xlobax.com/v1/snapshot.tar.gz` and writes a diff summary to its job summary: how many events, fights, finish tiers and fighter Elos differ, with examples and the largest Elo gap. `generated_at` and what only `/v1/` has (`contract_version`, `Result.outcome`, `schema.json`) don't count. It never fails or holds up the refresh: nothing waits for it, it has `continue-on-error`, and when the API is down it notes "v1 not reachable" and succeeds. |
+| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick (the download is ~1.5 MB). |
+
+**Switch to `/v1/`** once the shadow summaries have shown no unexplained differences for a while:
+
+```sh
+gh variable set DATA_SOURCE --body v1 --repo alexzfe/fight-card-website
+gh workflow run refresh.yml --repo alexzfe/fight-card-website   # optional: refresh and deploy now
+```
+
+**Roll back** to the pipeline by setting it back (or deleting the variable). The next run scrapes again from the
+committed `data/`:
+
+```sh
+gh variable set DATA_SOURCE --body pipeline --repo alexzfe/fight-card-website
+```
+
+The first `/v1/` commit drops `images/misses.json` and `stale_fighters.json` from `data/` (the snapshot doesn't carry
+them, and the site reads neither) and adds `schema.json` and `contract_version`. After a rollback, `images` retries
+the old misses once and `score` writes `stale_fighters.json` again, so nothing needs restoring.
+
+**What `fetch_v1.py` refuses.** Each refusal fails the run with one line saying why, before anything is committed,
+and the site keeps serving the last committed `data/`:
+
+- **Stale:** `generated_at` older than 26 hours (`--max-age-hours` to change it). This is the staleness alert: a
+  failed scheduled run emails the owner. Expect one failed run per cron tick (hourly) until the engine catches up;
+  if the engine is down for long, roll back to `pipeline`.
+- **Another contract:** `index.json`'s `contract_version` isn't `1` or `1.x`.
+- **Unsafe archive:** absolute paths, `..`, links, devices or anything but regular files and directories, names
+  outside the `/v1/` layout (`index.json`, `fighters.json`, `schema.json`, `events/*`, `images/*`), duplicate
+  entries, over 100 MB downloaded or 200 MB extracted.
+- **Unreachable or broken:** a download error, or a file that isn't a `.tar.gz` with `index.json` and `fighters.json`.
+
+The swap extracts into a temp dir beside `data/` and renames it into place; if the second rename fails, the old
+`data/` is put back.
+
+## How the refresh works (pipeline mode)
 
 ```
 cron 06:00 UTC daily ─┐
@@ -170,5 +215,8 @@ This deploys the image staging already ran and cuts a GitHub Release. Check http
   On the box: `sudo deploy-app ufc prod <old-sha>`.
 - **Redeploy without new data:** `gh workflow run refresh.yml` (a manual run always rebuilds and deploys).
 - **Refresh failed:** nothing was committed or deployed, and the site keeps serving the previous data. Read the
-  failing step's log. A ufcstats challenge failure or a 0-events parse fails the `scrape` step on purpose.
+  failing step's log. A ufcstats challenge failure or a 0-events parse fails the `scrape` step on purpose. In `v1`
+  mode, the "Fetch /v1/ snapshot" step says why it refused (stale, contract, unsafe, unreachable): see above.
+- **Which source is live:** `gh variable get DATA_SOURCE --repo alexzfe/fight-card-website` (unset means
+  `pipeline`). Data commits from `/v1/` read "data: refresh from /v1/ …".
 - **"Re-export finish model" issue:** follow the steps in its body. The next refresh rescores and closes it.

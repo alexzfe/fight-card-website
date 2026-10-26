@@ -61,7 +61,7 @@ def test_fields_only_v1_has_are_additions_not_differences(tmp_path, ours):
 
 
 def test_counts_event_and_fight_differences(tmp_path, ours):
-    changed = FIGHT | {"weight_class": "Lightweight"}
+    changed = FIGHT | {"blue": "c"}
     extra = FIGHT | {"id": "x2"}
     d = v1_shadow.diff(ours, theirs(tmp_path, events={"e1": [changed, extra], "e2": []}))
     assert d.events == 2  # e1 differs, e2 only in v1

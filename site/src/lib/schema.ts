@@ -8,6 +8,7 @@ export const FinishTier = z.enum(['high', 'medium', 'low']);
 export const CardSegment = z.enum(['main', 'prelims', 'early_prelims']);
 export const EventStatus = z.enum(['upcoming', 'completed']);
 export const PastResult = z.enum(['win', 'loss', 'draw', 'nc']);
+export const Outcome = z.enum(['win', 'draw', 'nc']);
 
 export const Record = z.object({
   w: z.number().int().nonnegative().default(0),
@@ -59,6 +60,7 @@ export const Result = z.object({
   method: z.string().nullish(),
   round: z.number().int().positive().nullish(),
   time: z.string().nullish(),
+  outcome: Outcome.nullish(), // /v1/ only: tells a draw from a no contest (winner is null for both)
 });
 
 export const Fight = z.object({
@@ -104,6 +106,7 @@ export const Index = z.object({
   upcoming: z.array(z.string()),
   recent: z.array(z.string()),
   model: ModelInfo.nullish(),
+  contract_version: z.string().regex(/^\d+(\.\d+)*$/, 'expected a version like "1" or "1.2"').nullish(), // /v1/ only
 });
 
 export const Fighters = z.record(z.string(), Fighter);
@@ -111,6 +114,7 @@ export const Fighters = z.record(z.string(), Fighter);
 export type FinishTier = z.infer<typeof FinishTier>;
 export type CardSegment = z.infer<typeof CardSegment>;
 export type PastResult = z.infer<typeof PastResult>;
+export type Outcome = z.infer<typeof Outcome>;
 export type PastFight = z.infer<typeof PastFight>;
 export type BestWin = z.infer<typeof BestWin>;
 export type Record = z.infer<typeof Record>;
