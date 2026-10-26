@@ -8,8 +8,9 @@
 
 1. As a visitor, I read each fighter's Elo at a glance: on its own line under the record, in full-strength text.
    `provisional` / `inactive` follow it as quiet, unboxed words.
-2. As a visitor, nothing on the card hides behind a tooltip. Peak and best win are under Stats, next to height,
-   reach, stance and age.
+2. As a visitor, peak and best win are under Stats, next to height, reach, stance and age. Tooltips stay where they
+   help: W/L tiles (opponent), the Elo (peak, best win), the tags (what they mean), rail tiles (full event name).
+   The first pass removed every tooltip; the user wanted fewer, not none, so these came back.
 3. As a visitor, I can tell what the meter means: every fight says "Finish chance" above it, upcoming or completed.
 4. As a visitor, I can see the fighters: headshots are 64 px on phones and 72 px wider (main event 88/96 px).
 5. As a visitor, the footer tells me what Elo, provisional and inactive mean, and links to a page that explains
@@ -25,6 +26,9 @@
 | `fbe0bb3` | RED (page) | vitest: `elo-math.test.ts` and `finish-model.test.ts` fail to load (modules missing); 97 passed. Playwright not run at this commit; the page tests failed against the card-only tree before `03c4d36` (no footer link, no page styles). |
 | `e0ed4d2` | GREEN (card) | Card e2e tests all pass. The two page tests that need the footer link and page styles still fail, as expected until the next commit. |
 | `03c4d36` | GREEN (page) | `npm test` 107/107, `npm run test:e2e` 37/37, `astro check` 0 errors. One test changed after RED: the page's h1 includes its kicker ("Methodology: How finish chance and Elo work"), as event headings do. |
+| `9935a6d` | RED (tooltips) | Playwright: 1 failed / 37 passed (form tile had no `data-tip`). |
+| `22b4c54` | RED (tooltips) | The tooltip-ban test removed. vitest: 4 failed / 107 passed (`eloTip`, `tagTip` missing). Playwright: 2 failed / 37 passed (no Elo or tag `data-tip`; rail tile without `title`). |
+| `23241b4` | GREEN (tooltips) | `npm test` 111/111, `npm run test:e2e` 39/39, `astro check` 0 errors. |
 
 ## Test specification
 
@@ -37,7 +41,8 @@
 | 5 | The Elo sits on its own line under the record, in the body text colour; nothing when unknown | `site.spec.ts › a corner shows the Elo on its own line…` | e2e |
 | 6 | Tags are muted, unboxed words; none on an established, active fighter or an unknown Elo | `site.spec.ts › provisional and inactive are quiet unboxed words…` | e2e |
 | 7 | Stats has Elo (with P4P), Peak and Best win rows, each only when either corner has a value | `site.spec.ts › Stats lists each corner's Elo, peak and best win` | e2e |
-| 8 | No `[data-tip]` or `[title]` on the upcoming or the completed card | `site.spec.ts › nothing on the card hides behind a tooltip` | e2e |
+| 8 | A form tile's tip names opponent, method and date on hover or tap, without a Tab stop | `site.spec.ts › hovering or tapping a form tile names the opponent` | e2e |
+| 8a | The Elo's tip gives peak and best win (none when neither is known); tags say what they mean; rail tiles carry the full event name | `format.test.ts › eloTip`, `› tagTip`; `site.spec.ts › the Elo and its tags explain themselves…`, `› an event tile shows the full event name…` | unit, e2e |
 | 9 | Every fight has a visible "Finish chance" caption, upcoming and completed | `site.spec.ts › the finish meter is labelled…` | e2e |
 | 10 | Headshots are 64/72 px, main event 88/96 px | `site.spec.ts › headshots are 64px on phones…` | e2e |
 | 11 | The footer explains provisional and inactive | `site.spec.ts › the footer explains the Elo tags` | e2e |
@@ -49,10 +54,10 @@ Fixture change: Alex Alpha gains `best_win` {Finn Foxtrot, 1702, 2025-09-20}.
 
 ```
 $ cd site && npm test
-      Tests  107 passed (107)
+      Tests  111 passed (111)
 
 $ npm run test:e2e
-  37 passed
+  39 passed
 
 $ npx astro check
 - 0 errors
