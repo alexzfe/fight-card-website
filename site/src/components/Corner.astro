@@ -1,6 +1,6 @@
 ---
 import Avatar from './Avatar.astro';
-import { eloTags, formatElo, formatEloPeak, formatPastFight, formatRecord, resultLetter } from '../lib/format';
+import { eloTags, formatElo, formatRecord, resultLetter } from '../lib/format';
 import type { Fighter } from '../lib/schema';
 
 interface Props {
@@ -14,41 +14,36 @@ interface Props {
 const { side, fighter, winner, eager, large } = Astro.props;
 const form = fighter.recent_fights ?? [];
 const elo = formatElo(fighter.elo, fighter.p4p_rank);
-const peak = formatEloPeak(fighter.elo_peak);
 const tags = eloTags(fighter);
-const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filter(Boolean).join(' · ');
 ---
 
 <div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
-  <Avatar fighter={fighter} eager={eager} size={large ? 64 : 48} />
+  {/* Sized for the widest layout; CSS shrinks it on phones. */}
+  <Avatar fighter={fighter} eager={eager} size={large ? 96 : 72} />
   <div class="who">
     <span class="name">{fighter.name}</span>
-    <span class="record">
-      {formatRecord(fighter.record)}
-      {
-        elo && (
-          <>
-            <span aria-hidden="true"> · </span>
-            {/* Peak tip: hover, tap or Tab focuses it like a form tile; screen readers get it as text. */}
-            <span class="elo" data-testid="elo" data-tip={peak} tabindex={peak ? '0' : undefined}>{elo}</span>
-            {peak && <span class="sr-only" data-testid="elo-peak">{peak}</span>}
-            {tags.map((t) => (
-              <span class="elo-tag" data-testid="elo-tag">{t}</span>
-            ))}
-          </>
-        )
-      }
-    </span>
+    <span class="record">{formatRecord(fighter.record)}</span>
+    {
+      elo && (
+        <span class="elo-line">
+          <span class="elo" data-testid="elo">
+            {elo}
+          </span>
+          {tags.map((t) => (
+            <span class="elo-tag" data-testid="elo-tag">
+              {t}
+            </span>
+          ))}
+        </span>
+      )
+    }
     {
       form.length > 0 && (
         <span class="form" data-testid="form" aria-label={`Last ${form.length}: ${form.map((f) => f.result).join(', ')}`}>
           {form.map((f, i) => (
             <>
               {i > 0 && ' '}
-              {/* tabindex -1: a tap focuses the tile to show its tip, without adding Tab stops (Stats lists the same fights). */}
-              <span class={`form-${f.result}`} data-tip={tip(f)} tabindex="-1">
-                {resultLetter(f.result)}
-              </span>
+              <span class={`form-${f.result}`}>{resultLetter(f.result)}</span>
             </>
           ))}
         </span>

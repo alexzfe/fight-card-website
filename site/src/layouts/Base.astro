@@ -34,6 +34,11 @@ const SPECULATION_RULES = JSON.stringify({
         {model ? `Finish model as of ${formatDate(model.as_of)}` : 'Finish model not yet available'}.
         High / Medium / Low is the model's chance the fight ends inside the distance; — means too little data.
       </p>
+      <p>
+        Elo rates fighters from their results, weighted by opponent strength; 1500 is the average active fighter.
+        provisional means fewer than 3 UFC fights; inactive means no fight in the last 12 months. Peak and best win are under
+        Stats.
+      </p>
       <p>Data: <a href="http://ufcstats.com">ufcstats.com</a>. Headshots: ESPN, Wikipedia. Not affiliated with the UFC.</p>
     </footer>
   </body>

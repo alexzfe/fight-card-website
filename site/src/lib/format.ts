@@ -1,4 +1,4 @@
-import type { Event, Fighter, FinishTier, PastFight, PastResult, Record, Result } from './schema';
+import type { BestWin, Event, Fighter, FinishTier, PastFight, PastResult, Record, Result } from './schema';
 
 const DASH = '—';
 
@@ -13,9 +13,10 @@ export function formatElo(elo: number | null | undefined, p4pRank?: number | nul
   return p4pRank != null ? `Elo ${elo} · #${p4pRank} P4P` : `Elo ${elo}`;
 }
 
-/** e.g. "Peak 1793"; null before there is a peak. */
-export function formatEloPeak(peak: number | null | undefined): string | null {
-  return peak == null ? null : `Peak ${peak}`;
+/** e.g. opponent "Glover Teixeira" over meta "Elo 1684 · Jun 2022"; null without a win. */
+export function formatBestWin(win: BestWin | null | undefined): { opponent: string; meta: string } | null {
+  if (!win) return null;
+  return { opponent: win.opponent, meta: `Elo ${win.elo} · ${monthYear(win.date)}` };
 }
 
 export function eloTags(fighter: Pick<Fighter, 'elo_provisional' | 'elo_inactive'>): string[] {
@@ -60,9 +61,7 @@ export function resultLetter(result: PastResult): string {
 /** e.g. "KO/TKO R1 · Jun 2026"; empty when nothing is known. */
 export function formatPastFight(fight: Pick<PastFight, 'method' | 'round' | 'date'>): string {
   const how = [fight.method, fight.round != null ? `R${fight.round}` : null].filter(Boolean).join(' ');
-  const when = fight.date
-    ? utc(fight.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })
-    : null;
+  const when = fight.date ? monthYear(fight.date) : null;
   return [how, when].filter(Boolean).join(' · ');
 }
 
@@ -81,6 +80,9 @@ export function initials(name: string): string {
 }
 
 const utc = (date: string) => new Date(`${date}T00:00:00Z`);
+
+const monthYear = (date: string) =>
+  utc(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 export function chipDate(date: string): string {
   return utc(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });

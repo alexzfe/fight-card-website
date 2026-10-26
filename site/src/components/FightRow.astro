@@ -1,7 +1,15 @@
 ---
 import Corner from './Corner.astro';
 import TierBadge from './TierBadge.astro';
-import { ageAt, formatHeight, formatPastFight, formatReach, formatResult, resultLetter } from '../lib/format';
+import {
+  ageAt,
+  formatBestWin,
+  formatHeight,
+  formatPastFight,
+  formatReach,
+  formatResult,
+  resultLetter,
+} from '../lib/format';
 import type { Event, Fight, Fighter } from '../lib/schema';
 
 interface Props {
@@ -25,6 +33,14 @@ const stats = [
   ['Stance', red.stance ?? '—', blue.stance ?? '—'],
   ['Age', age(red), age(blue)],
 ] as const;
+// Elo detail lives in Stats; the corner shows only the current rating. A row shows when either side has a value.
+const rating = (f: Fighter) =>
+  f.elo == null ? null : [f.elo, f.p4p_rank != null ? `#${f.p4p_rank} P4P` : null].filter(Boolean).join(' · ');
+const eloRows = [
+  ['Elo', rating(red), rating(blue)],
+  ['Peak', red.elo_peak, blue.elo_peak],
+].filter(([, r, b]) => r != null || b != null);
+const bestWins = [formatBestWin(red.best_win), formatBestWin(blue.best_win)] as const;
 const history = [red, blue].map((f) => f.recent_fights ?? []);
 ---
 
@@ -35,6 +51,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
       {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
       {fight.weight_class && <span>{fight.weight_class}</span>}
       {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
+      <span class="finish-label" data-testid="finish-label">Finish chance</span>
       {
         result ? (
           <span class="outcome" data-testid="outcome">
@@ -42,7 +59,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
             <span class="result">→ {result}</span>
           </span>
         ) : (
-          <TierBadge tier={fight.finish_tier} title="Finish chance" />
+          <TierBadge tier={fight.finish_tier} />
         )
       }
     </div>
@@ -60,6 +77,42 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
               <td>{b}</td>
             </tr>
           ))
+        }
+        {
+          eloRows.map(([label, r, b]) => (
+            <tr>
+              <td>{r ?? '—'}</td>
+              <th scope="row">{label}</th>
+              <td>{b ?? '—'}</td>
+            </tr>
+          ))
+        }
+        {
+          bestWins.some(Boolean) && (
+            <tr>
+              <td>
+                {bestWins[0] ? (
+                  <>
+                    {bestWins[0].opponent}
+                    <span class="best-win-meta">{bestWins[0].meta}</span>
+                  </>
+                ) : (
+                  '—'
+                )}
+              </td>
+              <th scope="row">Best win</th>
+              <td>
+                {bestWins[1] ? (
+                  <>
+                    {bestWins[1].opponent}
+                    <span class="best-win-meta">{bestWins[1].meta}</span>
+                  </>
+                ) : (
+                  '—'
+                )}
+              </td>
+            </tr>
+          )
         }
       </tbody>
     </table>

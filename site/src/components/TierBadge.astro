@@ -4,16 +4,15 @@ import type { FinishTier } from '../lib/schema';
 
 interface Props {
   tier: FinishTier | null | undefined;
-  title?: string;
 }
 
-const { tier, title } = Astro.props;
+const { tier } = Astro.props;
 // Bars lit per tier; unscored fights get no meter, just the dash.
 const LIT = { high: 3, medium: 2, low: 1 } as const;
 const lit = tier ? LIT[tier] : null;
 ---
 
-<span class:list={['badge', `badge-${tier ?? 'none'}`]} data-testid="badge" title={title}>
+<span class:list={['badge', `badge-${tier ?? 'none'}`]} data-testid="badge">
   {
     lit != null && (
       <span class="meter" aria-hidden="true">
