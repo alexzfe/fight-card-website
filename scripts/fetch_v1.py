@@ -7,8 +7,9 @@ than --max-age-hours, 26 by default) exits 3 instead, so refresh.yml can tell it
 data/ quietly and keep the "Data API stale" issue (body from --stale-issue) open, the daily and manual runs fail.
 
 A snapshot no newer than the committed data/index.json is skipped with exit 0: data/ never goes backwards.
-Otherwise the snapshot is extracted beside data/ and swapped in with two renames. data/ then holds exactly the
-snapshot: the pipeline's bookkeeping (images/misses.json, stale_fighters.json) goes, since the site reads neither.
+Otherwise the snapshot is extracted beside data/ and swapped in with two renames. data/ then holds the snapshot plus
+the pipeline's bookkeeping (images/misses.json, stale_fighters.json) carried over from the old data/: the API doesn't
+publish them and the site reads neither, but a rollback to DATA_SOURCE=pipeline picks them up again.
 
 Writes stale=true|false, generated_at and age_hours to $GITHUB_OUTPUT, except on other failures.
 
@@ -48,6 +49,7 @@ TIMEOUT = 60
 TOP_FILES = {"index.json", "fighters.json", "schema.json"}
 TOP_DIRS = {"events", "images"}  # each holds files only, one level deep
 REQUIRED = ("index.json", "fighters.json")
+BOOKKEEPING = ("images/misses.json", "stale_fighters.json")  # the pipeline's; kept across a swap
 _UTC_Z = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z")
 _VERSION = re.compile(r"\d+(\.\d+)*")
 EXIT_STALE = 3  # not 1 (any other refusal) or 2 (argparse's usage error)
@@ -267,6 +269,15 @@ def stale_issue_body(error: StaleError, url: str) -> str:
     ])
 
 
+def carry_over(old: Path, new: Path) -> None:
+    """Copy the pipeline's bookkeeping files from old into new, unless the snapshot has its own."""
+    for rel in BOOKKEEPING:
+        src, dst = old / rel, new / rel
+        if src.is_file() and not src.is_symlink() and not dst.exists():
+            dst.parent.mkdir(exist_ok=True)
+            shutil.copyfile(src, dst)
+
+
 def swap(new: Path, data: Path) -> None:
     """Move new to data, replacing it. Two renames; if the second fails, the old data/ is put back."""
     if not data.exists():
@@ -301,6 +312,7 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple
         ours = committed_at(data, now)
         if ours and datetime.fromisoformat(index["generated_at"]) <= datetime.fromisoformat(ours):
             return index, ours
+        carry_over(data, new)
         swap(new, data)
         return index, None
     finally:

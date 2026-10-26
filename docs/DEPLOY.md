@@ -51,9 +51,10 @@ committed `data/`:
 gh variable set DATA_SOURCE --body pipeline --repo alexzfe/fight-card-website
 ```
 
-The first `/v1/` commit drops `images/misses.json` and `stale_fighters.json` from `data/` (the snapshot doesn't carry
-them, and the site reads neither) and adds `schema.json` and `contract_version`. After a rollback, `images` retries
-the old misses once and `score` writes `stale_fighters.json` again, so nothing needs restoring.
+The first `/v1/` commit adds `schema.json` and `contract_version` to `data/`. The pipeline's bookkeeping,
+`images/misses.json` and `stale_fighters.json`, isn't in the snapshot (and the site reads neither), so `fetch_v1.py`
+copies both from the old `data/` into the new one on every swap. They stay in git as the pipeline last wrote them,
+and a rollback carries on from there.
 
 **What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
 committed and the site keeps serving the last committed `data/`. The first two have their own handling;
