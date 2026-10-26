@@ -16,6 +16,10 @@ from v1_helpers import V1_FIXTURE, dumps, files, member, snapshot, tree_files
 NOW = datetime(2026, 10, 26, 12, 0, tzinfo=UTC)
 
 
+# Pipeline bookkeeping the API doesn't publish; carried over so a rollback to DATA_SOURCE=pipeline keeps it.
+BOOKKEEPING = {"images/misses.json": b'{"f9": "2026-10-20"}\n', "stale_fighters.json": b'["f9"]\n'}
+
+
 @pytest.fixture
 def data(tmp_path):
     """A committed data/ as the pipeline leaves it, with files the API doesn't carry."""
@@ -24,8 +28,8 @@ def data(tmp_path):
     (d / "images").mkdir()
     (d / "index.json").write_bytes(dumps({"generated_at": "2026-10-25T06:00:00Z", "upcoming": [], "recent": []}))
     (d / "events" / "old.json").write_text("{}")
-    (d / "images" / "misses.json").write_text("{}")
-    (d / "stale_fighters.json").write_text("[]")
+    for rel, body in BOOKKEEPING.items():
+        (d / rel).write_bytes(body)
     (d / ".gitkeep").write_text("")
     return d
 
@@ -40,15 +44,37 @@ def run(data, blob, monkeypatch, *args):
 
 def test_replaces_data_with_the_snapshot(data, monkeypatch):
     assert run(data, snapshot(files()), monkeypatch) == 0
+    assert tree_files(data) == files() | BOOKKEEPING
+
+
+def test_keeps_the_pipeline_bookkeeping(data, monkeypatch):
+    """images/misses.json and stale_fighters.json: the API doesn't publish them, the site reads neither, and a
+    rollback to the pipeline wants them back. Everything else the snapshot lacks goes."""
+    run(data, snapshot(files()), monkeypatch)
+    for rel, body in BOOKKEEPING.items():
+        assert (data / rel).read_bytes() == body, rel
+    assert not (data / "events" / "old.json").exists()
+    assert not (data / ".gitkeep").exists()
+
+
+def test_bookkeeping_is_optional(data, monkeypatch):
+    for rel in BOOKKEEPING:
+        (data / rel).unlink()
+    assert run(data, snapshot(files()), monkeypatch) == 0
     assert tree_files(data) == files()
 
 
-def test_drops_files_the_api_does_not_carry(data, monkeypatch):
-    """images/misses.json and stale_fighters.json are pipeline bookkeeping; the site reads neither."""
-    run(data, snapshot(files()), monkeypatch)
-    assert not (data / "images" / "misses.json").exists()
-    assert not (data / "stale_fighters.json").exists()
-    assert not (data / "events" / "old.json").exists()
+def test_snapshot_copy_of_a_bookkeeping_file_wins(data, monkeypatch):
+    contents = files() | {"images/misses.json": b"{}\n"}
+    assert run(data, snapshot(contents), monkeypatch) == 0
+    assert (data / "images" / "misses.json").read_bytes() == b"{}\n"
+
+
+def test_bookkeeping_survives_a_snapshot_without_images(data, monkeypatch):
+    contents = {k: v for k, v in files().items() if not k.startswith("images/")}
+    contents["fighters.json"] = dumps({"f1": {"id": "f1", "name": "One", "image": None}})
+    assert run(data, snapshot(contents), monkeypatch) == 0
+    assert (data / "images" / "misses.json").read_bytes() == BOOKKEEPING["images/misses.json"]
 
 
 def test_leaves_no_temp_dirs_beside_data(data, monkeypatch):
@@ -66,7 +92,7 @@ def test_accepts_the_real_publish_fixture(data, monkeypatch):
     """The committed fixture is `fightcard publish` output over the site's data/ (see v1-source.tdd.md)."""
     contents = tree_files(V1_FIXTURE)
     assert run(data, snapshot(contents), monkeypatch, "--max-age-hours", "100000") == 0
-    assert tree_files(data) == contents
+    assert tree_files(data) == contents | BOOKKEEPING
 
 
 def test_downloads_the_snapshot_url(data, monkeypatch):
@@ -288,7 +314,7 @@ def test_download_unreachable_is_a_fetch_error():
 def test_end_to_end_over_http(server, data):
     server["body"] = snapshot(files())
     assert fetch_v1.main(["--base", server["base"], "--data", str(data), "--now", NOW.isoformat()]) == 0
-    assert tree_files(data) == files()
+    assert tree_files(data) == files() | BOOKKEEPING
 
 
 def test_now_defaults_to_the_clock(data, monkeypatch):
@@ -384,7 +410,7 @@ def test_equal_snapshot_is_a_no_op(data, monkeypatch, capsys):
 def test_newer_snapshot_replaces_data(data, monkeypatch):
     commit_index(data, "2026-10-26T05:59:59Z")
     assert run(data, snapshot(files()), monkeypatch) == 0
-    assert tree_files(data) == files()
+    assert tree_files(data) == files() | BOOKKEEPING
 
 
 @pytest.mark.parametrize("index", [b"{nope", b"[]", dumps({"upcoming": []}), dumps({"generated_at": "soon"})],
@@ -392,7 +418,7 @@ def test_newer_snapshot_replaces_data(data, monkeypatch):
 def test_unknown_committed_age_does_not_block(data, monkeypatch, index):
     (data / "index.json").write_bytes(index)
     assert run(data, snapshot(files()), monkeypatch) == 0
-    assert tree_files(data) == files()
+    assert tree_files(data) == files() | BOOKKEEPING
 
 
 def test_staleness_wins_over_going_backwards(data, monkeypatch):
