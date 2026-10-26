@@ -166,3 +166,77 @@ $ cd site && npx astro check                          # 0 errors, 0 warnings, 0 
   sends no notification. The job only fails on the daily run.
 - As before, nothing here has run on GitHub. `!cancelled()` and the skip behaviour are asserted as text and with
   actionlint.
+
+# Review fixes (PR #7 code review)
+
+Source: the code-review findings on PR #7 and the fixes decided for them (brief `p6-review-fixes.md`). One RED → GREEN
+pair per finding. Finding 5 is documentation only.
+
+## Journeys
+
+- As the owner, I want a snapshot with a wrong clock to be refused, so that one bad `generated_at` can't freeze the
+  site behind "not going backwards".
+- As the owner, I want a broken snapshot to fail the run before anything is committed to `main`, rather than failing
+  the build after the commit.
+- As the owner, I want rolling back to `pipeline` to find its bookkeeping where it left it.
+- As the owner, I want the fetch to stay on https and on the API's origin.
+
+## Task report
+
+| # | Finding | Fix | RED | GREEN |
+|---|---|---|---|---|
+| 1 | HIGH: a future `generated_at` freezes the site | `check_not_future`: `generated_at > now + 10 min` → exit 1, "in the future". `committed_at(data, now)` treats a committed future value as unknown, so a valid snapshot replaces it. | `a3b5bc9`: 2 failed (future snapshot swapped in; committed future kept data/), 2 passed (the within-skew guards) | `e124026`: 168 passed |
+| 2 | HIGH: content not validated before the commit | `check_content` before the swap: every `*.json` parses, `fighters.json` is an object, every `upcoming`/`recent` id has `events/<id>.json`, every event file's `id` is its name, `fights` is a list of objects, every `red`/`blue` is a key in `fighters.json`. Site: `npm run validate-data [-- dir]` (`site/scripts/validate-data.mjs` loads `src/lib/data.ts` and so `schema.ts` with Vite's `runnerImport`, then `loadData`). `refresh.yml` v1: `setup-node` (`site/.nvmrc`) and "Validate data/ with the site schema" (`npm ci && npm run validate-data`, `working-directory: site`) between the fetch and "Commit data". | `9a9561f`: scripts 14 failed (all the content cases plus 2 workflow tests); site 3 failed (no `validate-data` script) | `22cd35c`: scripts 183 passed, site 131 passed |
+| 3 | MEDIUM: PAX headers bypass the size cap | `extract` gunzips through `_Capped` (raises past `MAX_STREAM_BYTES` = 250 MiB, headers included) and reads the tar in stream mode (`r|`), checking and writing each member as it comes (into the staging dir, which is thrown away on refusal). Members are copied with `shutil.copyfileobj` in 1 MiB chunks. | `93946b9`: 1 failed (a 300 kB PAX header under a 200 kB cap was swapped in) | `1bdd450`: 186 passed |
+| 4 | MEDIUM: rollback loses bookkeeping | `carry_over` copies `images/misses.json` and `stale_fighters.json` from the old `data/` into the new tree before the swap, when present and the snapshot has none. DEPLOY.md updated. | `ee3dac0`: 10 failed (the files were dropped) | `c0c1c43`: 189 passed |
+| 5 | Accepted: hourly stale runs stay green | DEPLOY.md says so: the alert is the issue plus the daily failure. | n/a | `880b485` (docs) |
+| 6 | LOW: redirects / http | `download` accepts `https://` only (plain `http://` only to `127.0.0.1`/`localhost`). `_SameOriginRedirects` refuses a redirect whose scheme or host:port differs. | `2f65e16`: 9 failed (http/.invalid hosts tried, off-origin redirects followed; `ftp://`/`file://` were already refused, but the message didn't say "https") | `785de24`: 200 passed |
+
+Tests changed, not weakened: the `data` fixture's bookkeeping files now come from `BOOKKEEPING`.
+`test_drops_files_the_api_does_not_carry` became `test_keeps_the_pipeline_bookkeeping` (it still asserts that
+`events/old.json` and `.gitkeep` go), and the whole-tree comparisons now expect `files() | BOOKKEEPING`.
+
+## Test specification (additions)
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 19 | A snapshot more than 10 min ahead is refused; within 10 min it's accepted; a committed future `generated_at` doesn't block, a committed one within skew still does | `test_fetch_v1.py::test_snapshot_from_the_future_is_refused`, `::test_snapshot_within_clock_skew_is_accepted`, `::test_committed_future_generated_at_does_not_block`, `::test_committed_within_clock_skew_still_blocks` | unit | PASS |
+| 20 | Broken content is refused with data/ untouched: garbage or non-object `fighters.json`, garbage event/schema/unlisted event file, id ≠ file name, `fights` not a list, unknown red/blue (named), indexed upcoming/recent event without its file | `::test_invalid_content_is_refused[*]` (9), `::test_listed_event_without_its_file_is_refused`, `::test_recent_event_without_its_file_is_refused`, `::test_unknown_fighter_is_named`, `::test_fights_between_known_fighters_are_accepted` | unit | PASS |
+| 21 | `npm run validate-data` passes the `/v1/` fixture and fails, naming the file, on a schema violation and on a missing dir | `site/tests/build/validate-data.test.ts` (runs the real script) | integration | PASS |
+| 22 | v1 runs setup-node from `site/.nvmrc` and `npm run validate-data` in `site/` after the fetch, before `git add data` | `test_workflows.py::test_refresh_v1_validates_data_with_the_site_schema_before_committing`, `::test_refresh_v1_validate_step_runs_in_site` | structural | PASS |
+| 23 | An oversized PAX header is refused by the decompressed-stream cap; a small one is fine; a 5 MB member arrives intact | `::test_oversize_pax_header_is_refused`, `::test_small_pax_header_is_fine`, `::test_large_member_is_copied_whole` | unit | PASS |
+| 24 | Bookkeeping files are carried over, optional, overridden by a snapshot copy, and survive a snapshot without `images/` | `::test_keeps_the_pipeline_bookkeeping`, `::test_bookkeeping_is_optional`, `::test_snapshot_copy_of_a_bookkeeping_file_wins`, `::test_bookkeeping_survives_a_snapshot_without_images` | unit | PASS |
+| 25 | https only (http to 127.0.0.1/localhost allowed); same-origin redirects followed; other host, scheme or port refused | `::test_download_refuses_non_https_urls[*]`, `::test_main_refuses_a_plain_http_base`, `::test_download_allows_plain_http_to_localhost`, `::test_download_follows_a_same_origin_redirect`, `::test_download_refuses_a_redirect_off_the_origin[*]` | integration (local HTTP server) | PASS |
+
+## Commands and output
+
+```
+$ mise x actionlint@1.7.12 shellcheck@0.11.0 -- bash -c 'ACTIONLINT=$(command -v actionlint) uv run --project pipeline pytest scripts/tests -q'
+# RED a3b5bc9 (fix 1 tests only):  2 failed, 2 passed
+# RED 9a9561f:                     14 failed, 169 passed
+# RED 93946b9 (test_fetch_v1.py):  1 failed, 87 passed
+# RED ee3dac0 (test_fetch_v1.py):  10 failed, 81 passed
+# RED 2f65e16 (test_fetch_v1.py):  9 failed, 93 passed
+# GREEN 785de24, with --cov=scripts --cov-report=term-missing:
+scripts/fetch_v1.py   263   3   99%   139, 219, 386
+200 passed, 7 deselected in 6.27s
+$ mise x actionlint@1.7.12 shellcheck@0.11.0 -- actionlint .github/workflows/*.yml   # exit 0
+$ uv run --project pipeline pytest pipeline/tests scripts/tests -q
+517 passed, 8 skipped, 1 deselected in 18.22s
+$ cd site && npx vitest run tests/build/validate-data.test.ts   # RED 9a9561f: 3 failed (3)
+$ cd site && npx vitest run                                     # GREEN: 131 passed (131)
+$ cd site && npx astro check                                    # 0 errors, 0 warnings, 0 hints
+```
+
+## Known gaps
+
+- Uncovered in `fetch_v1.py`: `_Capped.readable()` (tarfile never asks), the "`upcoming`/`recent` is not a list of
+  event ids" refusal (the zod check in validate-data also covers it), and `__main__`.
+- `fetch_v1.py`'s content check covers the cross-references only. The full schema is the site's, in `validate-data`,
+  so a schema-invalid snapshot is in `data/` on the runner for a moment but never committed. The step and its
+  `npm ci` run on every v1 run, including no-op ones (about 20–30 s).
+- `extract` now writes members as it reads them, so a refusal can leave a partial tree. It's always inside the
+  staging dir (or v1_shadow's temp dir), which is removed either way.
+- Same-origin means scheme plus host:port. A redirect from `https://ufc-data.xlobax.com` to a CDN host would be
+  refused; the engine serves `/v1/` from its own origin today.
+- As before, nothing here has run on GitHub: the new steps are checked as text and with actionlint.
