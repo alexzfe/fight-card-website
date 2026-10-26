@@ -79,6 +79,89 @@ def test_model_export_merges_only_tested_unchanged_threshold_exports():
     assert "gh workflow run refresh.yml" in text  # re-score and deploy with the new model right away
 
 
+FAKE_GH = """#!/usr/bin/env bash
+# Stands in for gh: logs each call, answers the reads model-export.yml makes.
+echo "$*" >> "$GH_LOG"
+case "$*" in
+  *contents/model/manifest.json*) echo '{"as_of": "2026-11-02"}' | base64 ;;
+  *compare/*) printf '%s\\n' $CHANGED ;;
+  "pr list"*) echo 0 ;;
+esac
+"""
+
+
+def land_script() -> str:
+    """The `run: |` block of model-export.yml's land step, dedented."""
+    lines = read("model-export.yml").splitlines()
+    start = next(i for i, line in enumerate(lines) if line.strip() == "run: |") + 1
+    indent = len(lines[start]) - len(lines[start].lstrip())
+    body = []
+    for line in lines[start:]:
+        if line.strip() and len(line) - len(line.lstrip()) < indent:
+            break
+        body.append(line[indent:])
+    return "\n".join(body) + "\n"
+
+
+def run_land(tmp_path, changed: list[str], passed: bool = True) -> list[str]:
+    """Run the land step as Actions does (bash -eo pipefail) with a fake gh; returns the gh calls."""
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    gh = bin_dir / "gh"
+    gh.write_text(FAKE_GH)
+    gh.chmod(0o755)
+    script = tmp_path / "land.sh"
+    script.write_text(land_script())
+    log = tmp_path / "gh.log"
+    log.touch()
+    env = os.environ | {
+        "PATH": f"{bin_dir}:{os.environ['PATH']}", "GH_LOG": str(log), "CHANGED": " ".join(changed),
+        "GH_REPO": "alexzfe/fight-card-website", "SHA": "abc1234def", "PASSED": "true" if passed else "false",
+        "RUN_URL": "https://example.invalid/run",
+    }
+    subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", str(script)], env=env, check=True,
+                   capture_output=True, text=True)
+    return log.read_text().splitlines()
+
+
+def merged(calls: list[str]) -> bool:
+    return any(c.startswith("pr merge") for c in calls)
+
+
+def test_model_export_lands_a_model_only_export(tmp_path):
+    calls = run_land(tmp_path, ["model/model.txt", "model/manifest.json", "model/fighter_snapshot.parquet"])
+    assert merged(calls)
+    assert "workflow run refresh.yml --ref main" in calls
+
+
+@pytest.mark.parametrize("outside", [
+    "pipeline/src/fightcard/score/stage.py",
+    "site/src/pages/index.astro",
+    "pipeline/tests/score/test_elo.py",
+    "data/index.json",
+    "modelx/notes.txt",  # model/ is the prefix, not model*
+])
+def test_model_export_leaves_anything_outside_model_for_review(tmp_path, outside):
+    """The branch's pusher also controls the tests release.yml runs on it, so passing tests can't vouch for code:
+    only a change confined to model/ lands by itself."""
+    calls = run_land(tmp_path, ["model/model.txt", outside])
+    assert not merged(calls)
+    assert not any("refresh.yml" in c for c in calls)
+    body = next(c for c in calls if c.startswith(("pr create", "pr edit")))
+    assert outside in body  # the PR says what needs a look
+
+
+def test_model_export_leaves_moved_thresholds_for_review(tmp_path):
+    calls = run_land(tmp_path, ["model/model.txt", "model/thresholds.json"])
+    assert not merged(calls)
+
+
+def test_model_export_does_not_merge_failed_tests(tmp_path):
+    calls = run_land(tmp_path, ["model/model.txt"], passed=False)
+    assert not merged(calls)
+    assert any(c.startswith("pr comment") for c in calls)
+
+
 def test_refresh_no_longer_dispatches_to_the_research_repo():
     """The research workflow reads data/stale_fighters.json from this public repo instead: no token needed."""
     assert "dispatches" not in read("refresh.yml")
