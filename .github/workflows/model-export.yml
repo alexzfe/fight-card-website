@@ -2,8 +2,9 @@
 #
 # Its Export model workflow pushes a new model/ to branch `model-export` with a deploy key (write access to this
 # repo only; no personal token). The push runs release.yml's tests; when they finish, this opens or updates the
-# PR and, if they passed and the tier thresholds didn't move, merges it and runs refresh.yml, which re-scores
-# every unfrozen bout with the new model and deploys prod. Moved thresholds or failed tests leave the PR open.
+# PR and, if they passed, only model/ changed and the tier thresholds didn't move, merges it and runs refresh.yml,
+# which re-scores every unfrozen bout with the new model and deploys prod. Anything else leaves the PR open.
+# The repo's rulesets keep the deploy key off main and v* tags, so this PR is its only way in.
 #
 # Runs from main's copy of this file and never checks out the branch, so nothing on it executes with these
 # permissions. Needs "Allow GitHub Actions to create and approve pull requests" (Settings > Actions).
@@ -40,14 +41,22 @@ jobs:
       - name: Open or update the PR, and merge it when it's safe
         run: |
           as_of=$(gh api "repos/$GH_REPO/contents/model/manifest.json?ref=$SHA" --jq .content | base64 -d | jq -r .as_of)
+          # Read once: grep -q in a pipe can SIGPIPE gh, and under pipefail that reads as "not found".
+          changed=$(gh api "repos/$GH_REPO/compare/main...$SHA" --jq '.files[].filename')
+          # The pusher also controls the tests release ran on this branch, so only a model/-only change lands itself.
+          outside=$(grep -v '^model/' <<< "$changed" || true)
           moved=false
-          if gh api "repos/$GH_REPO/compare/main...$SHA" --jq '.files[].filename' | grep -qx model/thresholds.json; then
+          if grep -qx model/thresholds.json <<< "$changed"; then
             moved=true
           fi
           title="chore(model): re-export as of $as_of"
           body="Pushed by fight-auto-research's Export model workflow. Tests: $RUN_URL"
           if $moved; then
             body+=$'\n\n**Tier thresholds changed**, so this waits for a review instead of merging itself.'
+          fi
+          if [ -n "$outside" ]; then
+            body+=$'\n\n**Changes outside model/**, so this waits for a review instead of merging itself:\n'
+            body+=$(sed 's/^/- `/; s/$/`/' <<< "$outside")
           fi
           if [ "$(gh pr list --head model-export --state open --json number --jq length)" = 0 ]; then
             gh pr create --head model-export --base main --title "$title" --body "$body"
@@ -56,8 +65,8 @@ jobs:
           fi
           if [ "$PASSED" != true ]; then
             gh pr comment model-export --body "Tests failed on ${SHA:0:7} ($RUN_URL); not merging."
-          elif $moved; then
-            echo "thresholds moved; leaving the PR for review"
+          elif $moved || [ -n "$outside" ]; then
+            echo "thresholds moved or files outside model/ changed; leaving the PR for review"
           else
             gh pr merge model-export --squash --delete-branch --match-head-commit "$SHA"
             gh workflow run refresh.yml --ref main
