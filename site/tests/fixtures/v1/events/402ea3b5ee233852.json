@@ -1,0 +1,142 @@
+{
+  "date": "2026-11-14",
+  "fights": [
+    {
+      "blue": "955da1675ad58a50",
+      "finish_tier": "high",
+      "id": "30dbf1eceb2e1f8d",
+      "red": "787bb1f087ccff8a",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": true,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "80fa8218c99f9c58",
+      "finish_tier": "high",
+      "id": "32112fd0aaf7fba2",
+      "red": "1af1170ed937cba7",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": true,
+      "weight_class": "Women's Bantamweight"
+    },
+    {
+      "blue": "7674b836ce0698a0",
+      "finish_tier": "high",
+      "id": "b8e1d974531a3d86",
+      "red": "4126a78111c0855a",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "3a46b268013afede",
+      "finish_tier": "high",
+      "id": "79c49d244eab9005",
+      "red": "681399317dbf4701",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "29162be25ebef5f0",
+      "finish_tier": "medium",
+      "id": "fdefe4d1a8ef2997",
+      "red": "5182316da3c1d891",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Flyweight"
+    },
+    {
+      "blue": "feedf3053472fe56",
+      "finish_tier": "high",
+      "id": "7c4d24762cdfdae5",
+      "red": "4a28cb716c19157a",
+      "result": null,
+      "segment": "prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "fd406a32a6fb3a29",
+      "finish_tier": "high",
+      "id": "f11b0e41c0c97900",
+      "red": "519e4fe37ce9ff75",
+      "result": null,
+      "segment": "prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "809bd1a871491508",
+      "finish_tier": "high",
+      "id": "cb2fd3afd5031f0d",
+      "red": "d1941565abf50b16",
+      "result": null,
+      "segment": "prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "d1feea7a4bdcd503",
+      "finish_tier": "high",
+      "id": "84a55182d520b9de",
+      "red": "ad5cb64af10fc946",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "eff9074bc066f0f2",
+      "finish_tier": "medium",
+      "id": "f24ca8e51be2ba77",
+      "red": "9cdd2da1a9104a0b",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Bantamweight"
+    },
+    {
+      "blue": "74939a16c7b56f33",
+      "finish_tier": "high",
+      "id": "9913aecc67755c7c",
+      "red": "0232cabbc30a2372",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "4b85abc5abbe657c",
+      "finish_tier": "high",
+      "id": "349a6570cc687e83",
+      "red": "ff62013d2fce6d13",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    }
+  ],
+  "id": "402ea3b5ee233852",
+  "location": "New York City, New York, USA",
+  "name": "UFC 334: Gane vs. Hokit",
+  "slug": "ufc-334-gane-vs-hokit",
+  "status": "upcoming"
+}

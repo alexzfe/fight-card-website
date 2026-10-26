@@ -237,3 +237,105 @@ def test_release_runs_site_e2e_with_cached_chromium():
     assert "playwright install-deps chromium" in text
     assert "~/.cache/ms-playwright" in text
     assert text.index("npm ci") < text.index("npm run test:e2e")
+
+
+# --- DATA_SOURCE: pipeline (default) | v1 ---------------------------------------------------------------------
+
+
+def jobs(name: str) -> dict[str, str]:
+    """Top-level jobs of a workflow: {job id: its text, header line included}."""
+    text = read(name).split("\njobs:\n", 1)[1]
+    parts = re.split(r"^  ([\w-]+):\n", text, flags=re.M)
+    return {parts[i]: f"  {parts[i]}:\n{parts[i + 1]}" for i in range(1, len(parts), 2)}
+
+
+def job_if(body: str) -> str:
+    m = re.search(r"^    if: (.+)$", body, re.M)
+    return m.group(1) if m else ""
+
+
+def test_refresh_pipeline_jobs_run_unless_data_source_is_v1():
+    """Unset DATA_SOURCE means pipeline, so the variable only has to exist to switch to v1."""
+    refresh = jobs("refresh.yml")
+    assert "vars.DATA_SOURCE != 'v1'" in job_if(refresh["gate"])
+    assert "needs: gate" in refresh["pipeline"]  # skipped with the gate
+
+
+def test_refresh_v1_job_runs_only_when_data_source_is_v1():
+    v1 = jobs("refresh.yml")["v1"]
+    assert job_if(v1) == "vars.DATA_SOURCE == 'v1'"
+    assert "needs:" not in v1  # no gate: the fetch is cheap and a stale API must alert every run
+
+
+def test_refresh_v1_fetches_commits_and_skips_the_pipeline():
+    v1 = jobs("refresh.yml")["v1"]
+    assert "python3 scripts/fetch_v1.py" in v1
+    assert "https://ufc-data.xlobax.com" in v1
+    assert "git add data" in v1 and "git push origin HEAD:main" in v1
+    assert v1.index("scripts/fetch_v1.py") < v1.index("git add data")
+    for absent in ("fightcard --data data", "actions/cache", ".cache/ufcstats", "should_run", "setup-uv"):
+        assert absent not in v1, absent
+
+
+def test_refresh_stale_model_issue_is_pipeline_only():
+    refresh = jobs("refresh.yml")
+    assert "scripts/stale_issue.py" in refresh["pipeline"]
+    for job, body in refresh.items():
+        if job != "pipeline":
+            assert "stale_issue" not in body and "gh issue" not in body, job
+
+
+def test_refresh_v1_job_permissions_are_minimal():
+    v1 = jobs("refresh.yml")["v1"]
+    perms = re.search(r"^    permissions:\n((?:      .+\n)+)", v1, re.M).group(1)
+    assert perms.split() == ["contents:", "write"]
+
+
+def test_refresh_shadow_job_reports_v1_without_blocking():
+    refresh = jobs("refresh.yml")
+    shadow = refresh["shadow"]
+    assert "needs: pipeline" in shadow
+    assert "needs.pipeline.result == 'success'" in job_if(shadow)
+    assert "continue-on-error: true" in shadow
+    assert "python3 scripts/v1_shadow.py" in shadow and "$GITHUB_STEP_SUMMARY" in shadow
+    perms = re.search(r"^    permissions:\n((?:      .+\n)+)", shadow, re.M).group(1)
+    assert perms.split() == ["contents:", "read"]
+    for job in ("build", "prod"):
+        assert "shadow" not in refresh[job], f"{job} must not wait for the shadow job"
+
+
+def test_refresh_build_and_deploy_follow_either_source():
+    refresh = jobs("refresh.yml")
+    build, prod = refresh["build"], refresh["prod"]
+    for body in (build, prod):
+        assert "needs.pipeline.outputs.sha || needs.v1.outputs.sha" in body
+    cond = job_if(build)
+    assert cond.startswith("always() && ")  # one of pipeline/v1 is always skipped
+    assert "needs.pipeline.result == 'success'" in cond and "needs.v1.result == 'success'" in cond
+    assert "needs.v1.outputs.changed == 'true'" in cond
+    assert "needs.build.result == 'success'" in job_if(prod)
+
+
+def test_refresh_v1_outputs_changed_and_sha():
+    v1 = jobs("refresh.yml")["v1"]
+    assert "changed: ${{ steps.commit.outputs.changed }}" in v1
+    assert "sha: ${{ steps.commit.outputs.sha }}" in v1
+
+
+def test_refresh_interpolates_no_expressions_into_run_scripts():
+    """Values reach shell through env:, never ${{ }} inside run: (script injection)."""
+    lines = read("refresh.yml").splitlines()
+    in_run, indent = False, 0
+    for line in lines:
+        stripped = line.strip()
+        if in_run:
+            if stripped and len(line) - len(line.lstrip()) <= indent:
+                in_run = False
+            else:
+                assert "${{" not in line, line
+                continue
+        indent = len(line) - len(line.lstrip())
+        # A step's run: ("- run:", or "run:" under a "- name:"); a job output named `run` sits at 6 spaces.
+        if stripped.startswith("- run:") or (stripped.startswith("run:") and indent >= 8):
+            in_run = True
+            assert "${{" not in stripped, line
