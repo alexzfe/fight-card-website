@@ -151,6 +151,47 @@ def read_index(root: Path) -> dict:
     return index
 
 
+def _load(root: Path, rel: str):
+    try:
+        return json.loads((root / rel).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        raise FetchError(f"snapshot {rel} is unreadable: {e}") from e
+
+
+def check_content(root: Path, index: dict) -> None:
+    """The cross-references the site needs, so a broken snapshot is refused here rather than committed: every JSON
+    file parses, each indexed event has its file, each event file's id is its name, each fighter it names exists.
+    The full schema check is the site's (`npm run validate-data` in refresh.yml)."""
+    names = [p.relative_to(root).as_posix() for p in sorted(root.rglob("*.json"))]
+    loaded = {rel: _load(root, rel) for rel in names}
+    fighters = loaded["fighters.json"]
+    if not isinstance(fighters, dict):
+        raise FetchError("snapshot fighters.json is not an object")
+    for key in ("upcoming", "recent"):
+        ids = index.get(key)
+        if not (isinstance(ids, list) and all(isinstance(i, str) for i in ids)):
+            raise FetchError(f"snapshot index.json {key} is not a list of event ids")
+        for event_id in ids:
+            if f"events/{event_id}.json" not in loaded:
+                raise FetchError(f"snapshot index.json lists events/{event_id}.json, which is missing")
+    for rel in names:
+        if not rel.startswith("events/"):
+            continue
+        event = loaded[rel]
+        event_id = event.get("id") if isinstance(event, dict) else None
+        if event_id != rel.removeprefix("events/").removesuffix(".json"):
+            raise FetchError(f"snapshot {rel}: id {event_id!r} does not match the file name")
+        fights = event.get("fights")
+        if not (isinstance(fights, list) and all(isinstance(f, dict) for f in fights)):
+            raise FetchError(f"snapshot {rel}: fights is not a list of objects")
+        for fight in fights:
+            for corner in ("red", "blue"):
+                fighter = fight.get(corner)
+                if not (isinstance(fighter, str) and fighter in fighters):
+                    raise FetchError(f"snapshot {rel}: fight {fight.get('id')!r} {corner} {fighter!r} "
+                                     "is not in fighters.json")
+
+
 def age_hours(index: dict, now: datetime) -> float:
     return (now - datetime.fromisoformat(index["generated_at"])) / timedelta(hours=1)
 
@@ -232,6 +273,7 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple
         extract(blob, new)
         index = read_index(new)
         check_not_future(index, now)
+        check_content(new, index)
         check_fresh(index, now, max_age_hours)
         ours = committed_at(data, now)
         if ours and datetime.fromisoformat(index["generated_at"]) <= datetime.fromisoformat(ours):
