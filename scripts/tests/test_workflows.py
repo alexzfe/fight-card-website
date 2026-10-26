@@ -81,7 +81,8 @@ def test_model_export_merges_only_tested_unchanged_threshold_exports():
 
 FAKE_GH = """#!/usr/bin/env bash
 # Stands in for gh: logs each call, answers the reads model-export.yml makes.
-echo "$*" >> "$GH_LOG"
+args="$*"
+echo "${args//$'\\n'/ }" >> "$GH_LOG"  # one line per call, even with a multi-line --body
 case "$*" in
   *contents/model/manifest.json*) echo '{"as_of": "2026-11-02"}' | base64 ;;
   *compare/*) printf '%s\\n' $CHANGED ;;
