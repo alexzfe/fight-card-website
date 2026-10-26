@@ -267,10 +267,16 @@ def test_failed_swap_restores_the_old_data(data, monkeypatch, capsys):
 @pytest.fixture
 def server():
     """A local HTTP server: /v1/snapshot.tar.gz answers with `body`, anything else 404s."""
-    state = {"body": b""}
+    state = {"body": b"", "redirects": {}}
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):  # noqa: N802
+            if self.path in state["redirects"]:
+                self.send_response(302)
+                self.send_header("Location", state["redirects"][self.path])
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
             if self.path != "/v1/snapshot.tar.gz":
                 self.send_error(404)
                 return
@@ -284,7 +290,8 @@ def server():
 
     httpd = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
-    state["base"] = f"http://127.0.0.1:{httpd.server_address[1]}"
+    state["port"] = httpd.server_address[1]
+    state["base"] = f"http://127.0.0.1:{state['port']}"
     yield state
     httpd.shutdown()
     httpd.server_close()
@@ -541,3 +548,40 @@ def test_large_member_is_copied_whole(data, monkeypatch):
     big = bytes(range(256)) * 20_000  # 5 MB
     assert run(data, snapshot(files() | {"images/big.webp": big}), monkeypatch) == 0
     assert (data / "images" / "big.webp").read_bytes() == big
+
+
+# --- review fix 6: https only (plain http just for local tests), and no redirects off the origin --------------
+
+
+@pytest.mark.parametrize("url", ["http://ufc-data.invalid/v1/snapshot.tar.gz", "ftp://ufc-data.invalid/x",
+                                 "file:///etc/passwd", "http://127.0.0.1.invalid/x", "http://localhost.invalid/x"])
+def test_download_refuses_non_https_urls(url):
+    with pytest.raises(fetch_v1.FetchError, match="https"):
+        fetch_v1.download(url, 1000)
+
+
+def test_main_refuses_a_plain_http_base(data, capsys):
+    assert fetch_v1.main(["--base", "http://ufc-data.invalid", "--data", str(data), "--now", NOW.isoformat()]) == 1
+    assert unchanged(data) and "https" in capsys.readouterr().err
+
+
+def test_download_allows_plain_http_to_localhost(server):
+    server["body"] = b"ok"
+    assert fetch_v1.download(f"http://localhost:{server['port']}/v1/snapshot.tar.gz", 1000) == b"ok"
+
+
+def test_download_follows_a_same_origin_redirect(server):
+    server["body"] = b"ok"
+    server["redirects"]["/v1/latest"] = "/v1/snapshot.tar.gz"
+    assert fetch_v1.download(server["base"] + "/v1/latest", 1000) == b"ok"
+
+
+@pytest.mark.parametrize("target", ["http://localhost:{port}/v1/snapshot.tar.gz",
+                                    "https://127.0.0.1:{port}/v1/snapshot.tar.gz",
+                                    "http://127.0.0.1:1/v1/snapshot.tar.gz"],
+                         ids=["other-host", "other-scheme", "other-port"])
+def test_download_refuses_a_redirect_off_the_origin(server, target):
+    server["body"] = b"ok"
+    server["redirects"]["/v1/latest"] = target.format(port=server["port"])
+    with pytest.raises(fetch_v1.FetchError, match="redirect"):
+        fetch_v1.download(server["base"] + "/v1/latest", 1000)
