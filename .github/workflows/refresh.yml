@@ -90,6 +90,7 @@ jobs:
         id: stale
         run: python3 scripts/stale_issue.py --data data --out "$RUNNER_TEMP/stale-issue.md"
       - name: Open, update or close the "Re-export finish model" issue
+        id: issue
         env:
           GH_TOKEN: ${{ github.token }}
           STALE: ${{ steps.stale.outputs.stale }}
@@ -106,6 +107,16 @@ jobs:
           elif [ -n "$number" ]; then
             gh issue close "$number" --repo "$GITHUB_REPOSITORY" --comment "Nothing stale after the latest refresh."
           fi
+          echo "new=$([ "$STALE" = true ] && [ -z "$number" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Ask fight-auto-research to re-export the model
+        # Its Export model workflow opens a model-export PR here. On a new stale episode, then once a day (the
+        # daily slot) while it lasts, so hourly event-day runs don't queue an export each hour.
+        if: >-
+          steps.stale.outputs.stale == 'true' &&
+          (steps.issue.outputs.new == 'true' || github.event_name == 'workflow_dispatch' || github.event.schedule == '0 6 * * *')
+        env:
+          GH_TOKEN: ${{ secrets.RESEARCH_DISPATCH_TOKEN }}
+        run: gh api repos/alexzfe/fight-auto-research/dispatches -f event_type=site-stale
 
   build:
     needs: pipeline
