@@ -28,6 +28,7 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
                 data-testid="event-tile"
                 href={`/events/${e.slug}/`}
                 aria-current={e.id === current?.id ? 'page' : undefined}
+                title={e.name}
               >
                 <span class="tile-meta">{tile.meta}</span>
                 <span class="tile-headline">{tile.headline}</span>

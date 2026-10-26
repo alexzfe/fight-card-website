@@ -1,6 +1,6 @@
 ---
 import Avatar from './Avatar.astro';
-import { eloTags, formatElo, formatRecord, resultLetter } from '../lib/format';
+import { eloTags, eloTip, formatElo, formatPastFight, formatRecord, resultLetter, tagTip } from '../lib/format';
 import type { Fighter } from '../lib/schema';
 
 interface Props {
@@ -15,6 +15,8 @@ const { side, fighter, winner, eager, large } = Astro.props;
 const form = fighter.recent_fights ?? [];
 const elo = formatElo(fighter.elo, fighter.p4p_rank);
 const tags = eloTags(fighter);
+const eloHint = eloTip(fighter);
+const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filter(Boolean).join(' · ');
 ---
 
 <div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
@@ -26,11 +28,12 @@ const tags = eloTags(fighter);
     {
       elo && (
         <span class="elo-line">
-          <span class="elo" data-testid="elo">
+          {/* Tips show on hover or tap (tabindex -1 lets a tap focus them); Stats lists the same peak and best win. */}
+          <span class="elo" data-testid="elo" data-tip={eloHint} tabindex={eloHint ? '-1' : undefined}>
             {elo}
           </span>
           {tags.map((t) => (
-            <span class="elo-tag" data-testid="elo-tag">
+            <span class="elo-tag" data-testid="elo-tag" data-tip={tagTip(t)} tabindex="-1">
               {t}
             </span>
           ))}
@@ -43,7 +46,10 @@ const tags = eloTags(fighter);
           {form.map((f, i) => (
             <>
               {i > 0 && ' '}
-              <span class={`form-${f.result}`}>{resultLetter(f.result)}</span>
+              {/* tabindex -1: a tap focuses the tile to show its tip, without adding Tab stops (Stats lists the same fights). */}
+              <span class={`form-${f.result}`} data-tip={tip(f)} tabindex="-1">
+                {resultLetter(f.result)}
+              </span>
             </>
           ))}
         </span>
