@@ -27,6 +27,13 @@ export const PastFight = z.object({
   date: isoDate.nullish(),
 });
 
+export const BestWin = z.object({
+  opponent_id: z.string().min(1),
+  opponent: z.string().min(1),
+  elo: z.number().int(), // the opponent's Elo going into that bout
+  date: isoDate,
+});
+
 export const Fighter = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -44,6 +51,7 @@ export const Fighter = z.object({
   p4p_rank: z.number().int().positive().nullish(), // pound-for-pound rank; null = unranked
   elo_provisional: z.boolean().default(false), // fewer than 3 UFC bouts
   elo_inactive: z.boolean().default(false), // no bout in the last 12 months
+  best_win: BestWin.nullish(), // the beaten opponent rated highest going into the bout; null = no win
 });
 
 export const Result = z.object({
@@ -90,6 +98,7 @@ export type FinishTier = z.infer<typeof FinishTier>;
 export type CardSegment = z.infer<typeof CardSegment>;
 export type PastResult = z.infer<typeof PastResult>;
 export type PastFight = z.infer<typeof PastFight>;
+export type BestWin = z.infer<typeof BestWin>;
 export type Record = z.infer<typeof Record>;
 export type Fighter = z.infer<typeof Fighter>;
 export type Result = z.infer<typeof Result>;

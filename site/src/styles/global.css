@@ -16,7 +16,7 @@
   --space-6: 1.5rem;
   --radius: 0.5rem;
   --radius-pill: 999px;
-  --avatar-size: 48px;
+  --avatar-size: 64px;
   --max-width: 44rem;
 
   /* Warm "programme paper" neutrals, and colour only for finish chance:
@@ -296,11 +296,27 @@ ul {
   overflow-wrap: break-word;
 }
 
-.record {
+.record,
+.elo-line {
   display: block;
   font-variant-numeric: tabular-nums;
-  color: var(--color-muted);
   font-size: var(--font-size-xs);
+}
+
+.record {
+  color: var(--color-muted);
+}
+
+/* The Elo reads at a glance: full-strength text on its own line, with any tags as quiet words after it. */
+.elo {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.elo-tag {
+  margin-left: 0.4em;
+  color: var(--color-muted);
+  white-space: nowrap;
 }
 
 .winner .name::after {
@@ -330,7 +346,17 @@ ul {
 }
 
 .main-event {
-  --avatar-size: 64px;
+  --avatar-size: 88px;
+}
+
+@media (min-width: 34rem) {
+  .fight {
+    --avatar-size: 72px;
+  }
+
+  .main-event {
+    --avatar-size: 96px;
+  }
 }
 
 @media (min-width: 34rem) {
@@ -363,6 +389,16 @@ ul {
 
 .title-marker {
   color: var(--color-text);
+}
+
+/* Names the meter below it, so the bars never stand unexplained. */
+.finish-label {
+  margin-top: var(--space-1);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 /* Finish meter: three ascending bars, like signal strength, plus the word. */
@@ -561,86 +597,6 @@ ul {
   border-style: dashed;
 }
 
-/* Tooltips (form tile: opponent; Elo: peak): hover with a mouse, or tap (focus) on touch. Red corner
-   tips grow rightwards from the tile, blue corner tips leftwards, so neither leaves the column. */
-.form > [data-tip],
-.elo[data-tip] {
-  position: relative;
-  cursor: default;
-  outline: none;
-}
-
-.form > [data-tip]::after,
-.elo[data-tip]::after {
-  content: attr(data-tip);
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 0;
-  z-index: 1;
-  padding: 0.4em 0.6em;
-  border-radius: 4px;
-  background: var(--color-strong-bg);
-  color: var(--color-strong-text);
-  font-size: 0.75rem;
-  font-weight: 500;
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.corner-blue .form > [data-tip]::after,
-.corner-blue .elo[data-tip]::after {
-  left: auto;
-  right: 0;
-}
-
-.form > [data-tip]:hover::after,
-.form > [data-tip]:focus::after,
-.elo[data-tip]:hover::after,
-.elo[data-tip]:focus::after {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* The label never breaks inside itself; on a narrow corner it moves to its own line. */
-.elo {
-  white-space: nowrap;
-}
-
-/* The Elo is a Tab stop (nothing else lists the peak), so it keeps a ring for keyboards, a dotted
-   hint that it has a tip, and a 44px-tall hit area. The area grows upward over the name, so it never
-   covers the form tiles or the Stats toggle below. */
-.elo[data-tip] {
-  text-decoration: underline dotted;
-  text-underline-offset: 2px;
-}
-
-.elo[data-tip]::before {
-  content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: 44px;
-}
-
-.elo[data-tip]:focus-visible {
-  border-radius: 2px;
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/* provisional / inactive: quiet, outlined like a loss tile. */
-.elo-tag {
-  display: inline-block;
-  margin-left: var(--space-1);
-  padding: 0 0.35em;
-  border: 1px solid var(--color-border);
-  border-radius: 3px;
-  font-size: 0.625rem;
-  line-height: 1.4;
-  white-space: nowrap;
-}
-
 .corner-blue .form {
   justify-content: flex-end;
 }
@@ -686,9 +642,14 @@ ul {
   overflow-wrap: break-word;
 }
 
-.past-meta {
+.past-meta,
+.best-win-meta {
   display: block;
   color: var(--color-muted);
+}
+
+.best-win-meta {
+  font-size: var(--font-size-xs);
 }
 
 /* Motion: only where it explains a change of state, and never for reduced-motion users. */
@@ -741,13 +702,6 @@ ul {
 
   .stats summary::after {
     transition: transform 200ms ease, margin-top 200ms ease;
-  }
-
-  .form > [data-tip]::after,
-  .elo[data-tip]::after {
-    transition:
-      opacity 120ms ease,
-      visibility 120ms;
   }
 
   .tile,
