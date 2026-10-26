@@ -114,6 +114,8 @@ jobs:
         if: >-
           steps.stale.outputs.stale == 'true' &&
           (steps.issue.outputs.new == 'true' || github.event_name == 'workflow_dispatch' || github.event.schedule == '0 6 * * *')
+        # Best effort: a failed dispatch (e.g. no token yet) must not skip build and deploy; Monday's export runs anyway.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.RESEARCH_DISPATCH_TOKEN }}
         run: gh api repos/alexzfe/fight-auto-research/dispatches -f event_type=site-stale
