@@ -367,3 +367,44 @@ test('the footer explains the Elo tags', async ({ page }) => {
   await expect(footer).toContainText('provisional means fewer than 3 UFC fights');
   await expect(footer).toContainText('inactive means no fight in the last 12 months');
 });
+
+test.describe('how it works page', () => {
+  test('the footer links to it', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('footer').getByRole('link', { name: 'How finish chance and Elo work' }).click();
+    await expect(page).toHaveURL(/\/how-it-works\/$/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('How finish chance and Elo work');
+  });
+
+  test('explains both numbers with formulas and charts', async ({ page }) => {
+    await page.goto('/how-it-works/');
+    await expect(page.getByRole('heading', { level: 2 })).toHaveText([/Finish chance/, /Elo/]);
+    expect(await page.locator('math').count()).toBeGreaterThanOrEqual(6);
+    const charts = page.getByRole('img');
+    expect(await charts.count()).toBeGreaterThanOrEqual(5);
+    for (const chart of await charts.all()) await expect(chart).toHaveAttribute('aria-label', /\w/);
+  });
+
+  test('quotes the tier cut points and how often each tier finished', async ({ page }) => {
+    await page.goto('/how-it-works/');
+    const tiers = page.getByTestId('tier-table');
+    await expect(tiers).toContainText('43%');
+    await expect(tiers).toContainText('56%');
+    await expect(tiers).toContainText('62%'); // High tier's actual finish rate
+  });
+
+  test('works through an Elo update with real numbers', async ({ page }) => {
+    await page.goto('/how-it-works/');
+    await expect(page.getByTestId('elo-example')).toContainText('+32');
+  });
+
+  test('fits a 360px phone', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.goto('/how-it-works/');
+    const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+    }));
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+  });
+});
