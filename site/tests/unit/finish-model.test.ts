@@ -1,38 +1,44 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { FINISH_MODEL } from '../../src/lib/finish-model';
+import { finishModel, IMPORTANCE_GROUPS } from '../../src/lib/finish-model';
+import { Index } from '../../src/lib/schema';
 
-// The explainer page quotes the vendored export's numbers. On a re-export these fail until
-// src/lib/finish-model.ts is updated (importance included: recompute it from model/model.txt).
-const model = (file: string) => JSON.parse(fs.readFileSync(new URL(`../../../model/${file}`, import.meta.url), 'utf8'));
+// The explainer page quotes index.model, which `fightcard score` writes from the vendored export. A re-export
+// needs no hand edits; a new importance group (a new feature theme in the pipeline) needs a label here.
+const info = Index.parse(JSON.parse(fs.readFileSync(new URL('../fixtures/data/index.json', import.meta.url), 'utf8'))).model!;
 
-describe('FINISH_MODEL matches the vendored export', () => {
-  const thresholds = model('thresholds.json');
-  const manifest = model('manifest.json');
-
-  it('is for the same export', () => {
-    expect(FINISH_MODEL.version).toBe(manifest.version);
-    expect(FINISH_MODEL.asOf).toBe(manifest.as_of);
-    expect(FINISH_MODEL.trainRows).toBe(manifest.train.rows);
+describe('finishModel', () => {
+  it('reads the export summary from index.model', () => {
+    const m = finishModel(info);
+    expect(m.version).toBe(info.version);
+    expect(m.asOf).toBe(info.as_of);
+    expect(m.trainRows).toBe(info.train_rows);
+    expect(m.trees).toBe(info.trees);
+    expect(m.lowMax).toBe(info.low_max);
+    expect(m.mediumMax).toBe(info.medium_max);
+    expect(m.oos).toEqual({
+      bouts: info.oos!.bouts,
+      logLoss: info.oos!.log_loss,
+      constantLogLoss: info.oos!.constant_log_loss,
+    });
+    expect(m.tiers.high).toEqual({
+      bouts: info.tiers!.high.bouts,
+      finishRate: info.tiers!.high.finish_rate,
+      meanPredicted: info.tiers!.high.mean_predicted,
+    });
   });
-  it('quotes the tier cut points', () => {
-    expect(FINISH_MODEL.lowMax).toBe(thresholds.low_max);
-    expect(FINISH_MODEL.mediumMax).toBe(thresholds.medium_max);
+  it('labels importance groups in the pipeline order', () => {
+    const m = finishModel(info);
+    expect(m.importance.map((g) => g.share)).toEqual(info.importance!.map((g) => g.share));
+    expect(m.importance[0]).toEqual({ ...IMPORTANCE_GROUPS[info.importance![0]!.group], share: info.importance![0]!.share });
   });
-  it('quotes the out-of-sample evidence', () => {
-    expect(FINISH_MODEL.oos.bouts).toBe(thresholds.oos.n);
-    expect(FINISH_MODEL.oos.logLoss).toBe(thresholds.oos.log_loss);
-    expect(FINISH_MODEL.oos.constantLogLoss).toBe(thresholds.oos.constant_log_loss);
-    for (const t of ['low', 'medium', 'high'] as const) {
-      expect(FINISH_MODEL.tiers[t]).toEqual({
-        bouts: thresholds.tier_counts[t],
-        finishRate: thresholds.tier_finish_rates[t],
-        meanPredicted: thresholds.tier_mean_pred[t],
-      });
-    }
+  it('fails the build without a summary, or on a group it has no label for', () => {
+    expect(() => finishModel({ as_of: '2026-10-14', version: 'v' })).toThrow(/summary/);
+    expect(() => finishModel({ ...info, importance: [{ group: 'new_theme', share: 100 }] })).toThrow(/new_theme/);
+    expect(() => finishModel(null)).toThrow(/summary/);
   });
-  it('splits importance into shares that add up to 100%', () => {
-    const total = FINISH_MODEL.importance.reduce((s, g) => s + g.share, 0);
-    expect(total).toBeCloseTo(100, 0);
+  it('has a label for every group in the real data', () => {
+    const real = JSON.parse(fs.readFileSync(new URL('../../../data/index.json', import.meta.url), 'utf8'));
+    expect(() => finishModel(Index.parse(real).model)).not.toThrow();
   });
 });
