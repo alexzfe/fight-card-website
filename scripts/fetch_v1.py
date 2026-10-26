@@ -20,6 +20,7 @@ Stdlib only, so the job doesn't have to install the pipeline.
 from __future__ import annotations
 
 import argparse
+import gzip
 import io
 import json
 import os
@@ -39,7 +40,9 @@ from gh_output import emit
 MAX_AGE_HOURS = 26.0  # the daily run plus slack; the engine refreshes more often than that
 CLOCK_SKEW = timedelta(minutes=10)  # a generated_at further ahead than this is wrong, not early
 MAX_DOWNLOAD_BYTES = 100 * 2**20  # the snapshot is ~1.5 MB today
-MAX_EXTRACTED_BYTES = 200 * 2**20
+MAX_EXTRACTED_BYTES = 200 * 2**20  # the members' sizes
+MAX_STREAM_BYTES = 250 * 2**20  # the decompressed tar stream, headers included (PAX headers have no member size)
+CHUNK = 2**20
 MAX_MEMBERS = 20_000
 TIMEOUT = 60
 TOP_FILES = {"index.json", "fighters.json", "schema.json"}
@@ -103,13 +106,35 @@ def _check_member(info: tarfile.TarInfo) -> None:
     raise _unsafe(info, "not part of the /v1/ layout")
 
 
+class _Capped(io.RawIOBase):
+    """Reads from `raw` and raises once more than `cap` bytes have come out."""
+
+    def __init__(self, raw, cap: int):
+        self.raw, self.cap, self.count = raw, cap, 0
+
+    def readable(self) -> bool:
+        return True
+
+    def readinto(self, buffer) -> int:
+        chunk = self.raw.read(min(len(buffer), self.cap + 1 - self.count) or 1)
+        self.count += len(chunk)
+        if self.count > self.cap:
+            raise FetchError(f"unsafe snapshot: more than {self.cap} bytes once decompressed")
+        buffer[:len(chunk)] = chunk
+        return len(chunk)
+
+
 def extract(blob: bytes, dest: Path) -> None:
-    """Check every member of the .tar.gz `blob`, then write the files under dest (created if missing)."""
+    """Check each member of the .tar.gz `blob` and write it under dest (created if missing). Streams, so the
+    decompressed size is bounded before tarfile parses any header; a refusal leaves a partial dest, which the caller
+    throws away."""
     try:
-        with tarfile.open(fileobj=io.BytesIO(blob), mode="r:gz") as tar:
-            members, seen, total = [], set(), 0
+        stream = _Capped(gzip.GzipFile(fileobj=io.BytesIO(blob)), MAX_STREAM_BYTES)
+        with tarfile.open(fileobj=stream, mode="r|") as tar:
+            seen, total = set(), 0
+            dest.mkdir(parents=True, exist_ok=True)
             for info in tar:
-                if len(members) >= MAX_MEMBERS:
+                if len(seen) >= MAX_MEMBERS:
                     raise _unsafe(info, f"more than {MAX_MEMBERS} members")
                 _check_member(info)
                 if info.name in seen:
@@ -118,16 +143,14 @@ def extract(blob: bytes, dest: Path) -> None:
                 total += info.size
                 if total > MAX_EXTRACTED_BYTES:
                     raise _unsafe(info, f"contents larger than {MAX_EXTRACTED_BYTES} bytes")
-                members.append(info)
-            dest.mkdir(parents=True, exist_ok=True)
-            for info in members:  # directories come before their files, so parents exist
                 target = dest / info.name
                 if info.isdir():
                     target.mkdir(exist_ok=True)
-                else:
-                    target.parent.mkdir(exist_ok=True)
-                    target.write_bytes(tar.extractfile(info).read())
-    except (tarfile.TarError, EOFError, zlib.error) as e:
+                    continue
+                target.parent.mkdir(exist_ok=True)  # one level deep at most (_check_member)
+                with tar.extractfile(info) as src, open(target, "wb") as out:
+                    shutil.copyfileobj(src, out, CHUNK)
+    except (tarfile.TarError, EOFError, zlib.error, gzip.BadGzipFile) as e:
         raise FetchError(f"snapshot is not a readable .tar.gz: {e}") from e
 
 
