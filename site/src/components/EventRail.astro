@@ -12,6 +12,9 @@ const { events, current } = Astro.props;
 const rail = byDateAscending(events);
 // The today marker goes before the first upcoming event, when there are past events to its left.
 const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
+// The inline script below ships unminified under a size budget (tests/build), so its longer notes live here.
+// Tabbing to a tile centres it: the scroll that focus does by itself gets pulled back by the mandatory snap,
+// leaving the focused tile under the edge fade. Keyboard focus only, so a tap doesn't scroll mid-navigation.
 ---
 
 <nav class="rail-nav" aria-label="Events">
@@ -63,6 +66,11 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
       const t = tile.getBoundingClientRect();
       if (t.left < r.left || t.right > r.right) rail.scrollLeft += t.left - r.left - (r.width - t.width) / 2;
     };
+    rail.addEventListener('focusin', (e) => {
+      if (!e.target.matches(':focus-visible')) return;
+      const smooth = matchMedia('(prefers-reduced-motion: no-preference)').matches;
+      e.target.scrollIntoView({ inline: 'center', block: 'nearest', behavior: smooth ? 'smooth' : 'instant' });
+    });
     rail.addEventListener('click', save);
     addEventListener('pagehide', save);
     if ('onpagereveal' in window) addEventListener('pagereveal', place, { once: true });

@@ -122,6 +122,26 @@ test('a swipe on the rail comes to rest with a whole tile centred', async ({ pag
   expect(offset).toBeLessThanOrEqual(1);
 });
 
+test('tabbing through the rail brings each tile fully into view', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  const rail = page.locator('nav .rail');
+  const tiles = page.getByTestId('event-tile');
+  for (let i = 0; i < (await tiles.count()); i++) {
+    await page.keyboard.press('Tab');
+    await expect(tiles.nth(i)).toBeFocused();
+    await expect
+      .poll(() =>
+        rail.evaluate((el) => {
+          const r = el.getBoundingClientRect();
+          const t = document.activeElement!.getBoundingClientRect();
+          return t.left >= r.left && t.right <= r.right;
+        }),
+      )
+      .toBe(true);
+  }
+});
+
 test('the event rail stays at the top while scrolling', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 400 });
   await page.goto('/');
