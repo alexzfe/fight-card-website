@@ -399,3 +399,30 @@ def test_staleness_wins_over_going_backwards(data, monkeypatch):
     commit_index(data, "2026-10-26T08:00:00Z")
     assert run(data, snapshot(files(generated_at=STALE_AT)), monkeypatch) == fetch_v1.EXIT_STALE
     assert unchanged(data)
+
+
+# --- review fix 1: a future generated_at must not freeze the site ---------------------------------------------
+
+
+def test_snapshot_from_the_future_is_refused(data, monkeypatch, capsys):
+    """NOW + 11 min: past the 10 min clock-skew allowance. Accepting it would block every later real snapshot."""
+    err = refused(data, snapshot(files(generated_at="2026-10-26T12:11:00Z")), monkeypatch, capsys)
+    assert "future" in err and "2026-10-26T12:11:00Z" in err
+
+
+def test_snapshot_within_clock_skew_is_accepted(data, monkeypatch):
+    assert run(data, snapshot(files(generated_at="2026-10-26T12:09:00Z")), monkeypatch) == 0
+    assert (data / "index.json").read_bytes() == files(generated_at="2026-10-26T12:09:00Z")["index.json"]
+
+
+def test_committed_future_generated_at_does_not_block(data, monkeypatch):
+    """A data/index.json from the future (an earlier bad snapshot) counts as unknown, so a valid one replaces it."""
+    commit_index(data, "2026-10-27T12:00:00Z")
+    assert run(data, snapshot(files()), monkeypatch) == 0
+    assert (data / "index.json").read_bytes() == files()["index.json"]
+
+
+def test_committed_within_clock_skew_still_blocks(data, monkeypatch):
+    commit_index(data, "2026-10-26T12:05:00Z")
+    assert run(data, snapshot(files()), monkeypatch) == 0
+    assert unchanged(data)
