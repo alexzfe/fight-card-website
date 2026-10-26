@@ -426,3 +426,52 @@ def test_committed_within_clock_skew_still_blocks(data, monkeypatch):
     commit_index(data, "2026-10-26T12:05:00Z")
     assert run(data, snapshot(files()), monkeypatch) == 0
     assert unchanged(data)
+
+
+# --- review fix 2: content is checked before it can be committed ----------------------------------------------
+
+
+def event(event_id="e1", red="f1", blue="f1") -> bytes:
+    return dumps({"id": event_id, "slug": event_id, "name": "E1", "date": "2026-10-31", "status": "upcoming",
+                  "fights": [{"id": "b1", "red": red, "blue": blue}]})
+
+
+INVALID = {
+    "garbage fighters.json": {"fighters.json": b"\x00\xffnot json"},
+    "fighters.json not an object": {"fighters.json": b"[]"},
+    "garbage event file": {"events/e1.json": b"{nope"},
+    "garbage schema.json": {"schema.json": b"<html>"},
+    "garbage unlisted event": {"events/e2.json": b"{nope"},
+    "event id does not match its name": {"events/e1.json": dumps({"id": "e9", "fights": []})},
+    "unknown red fighter": {"events/e1.json": event(red="ghost")},
+    "unknown blue fighter": {"events/e1.json": event(blue="ghost")},
+    "fights not a list": {"events/e1.json": dumps({"id": "e1", "fights": {}})},
+}
+
+
+@pytest.mark.parametrize("case", sorted(INVALID))
+def test_invalid_content_is_refused(data, monkeypatch, capsys, case):
+    err = refused(data, snapshot(files() | INVALID[case]), monkeypatch, capsys)
+    assert "snapshot" in err
+
+
+def test_listed_event_without_its_file_is_refused(data, monkeypatch, capsys):
+    contents = {k: v for k, v in files().items() if k != "events/e1.json"}
+    assert "events/e1.json" in refused(data, snapshot(contents), monkeypatch, capsys)
+
+
+def test_recent_event_without_its_file_is_refused(data, monkeypatch, capsys):
+    contents = files()
+    idx = json.loads(contents["index.json"])
+    idx["recent"] = ["e0"]
+    contents["index.json"] = dumps(idx)
+    assert "events/e0.json" in refused(data, snapshot(contents), monkeypatch, capsys)
+
+
+def test_unknown_fighter_is_named(data, monkeypatch, capsys):
+    err = refused(data, snapshot(files() | {"events/e1.json": event(blue="ghost")}), monkeypatch, capsys)
+    assert "ghost" in err and "events/e1.json" in err
+
+
+def test_fights_between_known_fighters_are_accepted(data, monkeypatch):
+    assert run(data, snapshot(files() | {"events/e1.json": event()}), monkeypatch) == 0

@@ -490,3 +490,20 @@ def test_refresh_v1_closes_the_issue_when_fresh(tmp_path):
 def test_refresh_v1_does_nothing_when_fresh_and_no_issue(tmp_path):
     calls = run_issue(tmp_path, "false")
     assert [c for c in calls if not c.startswith("issue list")] == []
+
+
+# --- review fix 2: v1 validates data/ with the site's own schema before committing -----------------------------
+
+
+def test_refresh_v1_validates_data_with_the_site_schema_before_committing():
+    v1 = jobs("refresh.yml")["v1"]
+    assert "node-version-file: site/.nvmrc" in v1
+    assert "npm ci" in v1 and "npm run validate-data" in v1
+    assert v1.index("scripts/fetch_v1.py") < v1.index("npm run validate-data") < v1.index("git add data")
+
+
+def test_refresh_v1_validate_step_runs_in_site():
+    v1 = jobs("refresh.yml")["v1"]
+    validate = v1[v1.rindex("      - ", 0, v1.index("npm run validate-data")):]
+    validate = validate[:validate.find("\n      - ", 1) + 1 or None]
+    assert "working-directory: site" in validate
