@@ -63,6 +63,15 @@ def test_refresh_maintains_the_stale_model_issue():
     assert f"TITLE: {TITLE}\n" in text
 
 
+def test_refresh_asks_the_research_repo_to_re_export_when_stale():
+    """A new stale episode, then at most once a day: hourly event-day runs mustn't queue an export each hour."""
+    text = read("refresh.yml")
+    assert "repos/alexzfe/fight-auto-research/dispatches" in text
+    assert "event_type=site-stale" in text
+    assert "secrets.RESEARCH_DISPATCH_TOKEN" in text
+    assert f'"$SCHEDULE" = "{DAILY_CRON}"' in text
+
+
 def test_refresh_deploys_prod_through_the_reusable_workflow():
     text = read("refresh.yml")
     assert DEPLOY_APP in text
