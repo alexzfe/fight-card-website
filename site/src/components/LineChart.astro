@@ -1,0 +1,81 @@
+---
+// One-series line chart for the how-it-works page: hairline grid, 2px line, direct labels on a few points.
+// Every labelled value is also in the surrounding text, so there is no hover layer.
+
+interface Tick {
+  v: number;
+  label: string;
+}
+
+interface Props {
+  /** Read out in place of the chart. */
+  label: string;
+  points: [number, number][];
+  x: { min: number; max: number; ticks: Tick[]; title: string };
+  y: { min: number; max: number; ticks: Tick[]; title: string };
+  /** Points to mark and label, e.g. "+100 → 64%". */
+  marks?: { x: number; y: number; label: string; anchor?: 'start' | 'end'; below?: boolean }[];
+  /** A reference rule across the plot, e.g. the 1500 average. */
+  rule?: { y: number; label: string };
+}
+
+const { label, points, x, y, marks = [], rule } = Astro.props;
+
+// viewBox units; the SVG scales to the column, which is capped so 13-unit text stays 11–16px.
+const W = 400;
+const H = 230;
+const pad = { top: 14, right: 16, bottom: 42, left: 60 };
+const sx = (v: number) => pad.left + ((v - x.min) / (x.max - x.min)) * (W - pad.left - pad.right);
+const sy = (v: number) => H - pad.bottom - ((v - y.min) / (y.max - y.min)) * (H - pad.top - pad.bottom);
+const d = points.map(([px, py], i) => `${i ? 'L' : 'M'}${sx(px).toFixed(1)},${sy(py).toFixed(1)}`).join('');
+const yMid = (pad.top + H - pad.bottom) / 2;
+---
+
+<svg class="chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label}>
+  <g class="chart-grid">
+    {y.ticks.map((t) => <line x1={pad.left} x2={W - pad.right} y1={sy(t.v)} y2={sy(t.v)} />)}
+  </g>
+  <g class="chart-axis">
+    {
+      y.ticks.map((t) => (
+        <text x={pad.left - 6} y={sy(t.v)} text-anchor="end" dominant-baseline="middle">
+          {t.label}
+        </text>
+      ))
+    }
+    {
+      x.ticks.map((t) => (
+        <text x={sx(t.v)} y={H - pad.bottom + 16} text-anchor="middle">
+          {t.label}
+        </text>
+      ))
+    }
+    <text class="chart-title" x={(pad.left + W - pad.right) / 2} y={H - 6} text-anchor="middle">{x.title}</text>
+    <text class="chart-title" x="11" y={yMid} text-anchor="middle" transform={`rotate(-90 11 ${yMid})`}>{y.title}</text>
+  </g>
+  {
+    rule && (
+      <g class="chart-rule">
+        <line x1={pad.left} x2={W - pad.right} y1={sy(rule.y)} y2={sy(rule.y)} />
+        <text x={W - pad.right} y={sy(rule.y) - 5} text-anchor="end">
+          {rule.label}
+        </text>
+      </g>
+    )
+  }
+  <path class="chart-line" d={d} />
+  {
+    marks.map((m) => (
+      <g class="chart-mark">
+        <circle cx={sx(m.x)} cy={sy(m.y)} r="4.5" />
+        <text
+          x={sx(m.x) + (m.anchor === 'end' ? -9 : 9)}
+          y={sy(m.y) + (m.below ? 18 : -8)}
+          text-anchor={m.anchor ?? 'start'}
+        >
+          {m.label}
+        </text>
+      </g>
+    ))
+  }
+</svg>

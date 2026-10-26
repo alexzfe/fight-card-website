@@ -373,7 +373,7 @@ test.describe('how it works page', () => {
     await page.goto('/');
     await page.locator('footer').getByRole('link', { name: 'How finish chance and Elo work' }).click();
     await expect(page).toHaveURL(/\/how-it-works\/$/);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('How finish chance and Elo work');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Methodology: How finish chance and Elo work');
   });
 
   test('explains both numbers with formulas and charts', async ({ page }) => {

@@ -713,3 +713,448 @@ ul {
       color 120ms;
   }
 }
+
+/* How it works */
+.explainer {
+  line-height: 1.55;
+}
+
+.explainer .event-meta {
+  line-height: var(--line-height);
+}
+
+.toc {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.toc a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  border-color: var(--color-muted);
+}
+
+.explainer-section {
+  scroll-margin-top: 5rem;
+}
+
+.explainer-section h2 {
+  margin: var(--space-6) 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--color-text);
+  font-size: var(--font-size-xl);
+  letter-spacing: -0.01em;
+}
+
+.explainer-section h3 {
+  margin: var(--space-6) 0 var(--space-2);
+  font-size: var(--font-size-md);
+}
+
+.explainer p {
+  margin: 0 0 var(--space-3);
+}
+
+.lede {
+  font-size: 1.0625rem;
+}
+
+.fine {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+.back-link {
+  margin-top: var(--space-6);
+}
+
+/* A wide formula scrolls inside its own box rather than widening the page. */
+.math-block {
+  overflow-x: auto;
+  margin: var(--space-3) 0 var(--space-4);
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.math-block math {
+  font-size: 1.15em;
+}
+
+.explainer figure {
+  margin: var(--space-4) 0 var(--space-6);
+}
+
+.explainer figcaption {
+  margin-top: var(--space-2);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Line charts: hairline grid, 2px line in the text colour, accent marks. */
+.chart {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  height: auto;
+  overflow: visible;
+}
+
+.chart text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  fill: var(--color-muted);
+}
+
+.chart .chart-title {
+  fill: var(--color-text);
+}
+
+.chart-grid line {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.chart-line {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-rule line {
+  stroke: var(--color-muted);
+  stroke-width: 1;
+}
+
+.chart-mark circle {
+  fill: var(--color-accent);
+  stroke: var(--color-bg);
+  stroke-width: 2;
+}
+
+.chart-mark text,
+.chart-rule text {
+  fill: var(--color-text);
+  font-weight: 600;
+  /* A halo in the page colour keeps a label legible where it crosses the line or the grid. */
+  paint-order: stroke;
+  stroke: var(--color-bg);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.chart-rule text {
+  fill: var(--color-muted);
+  font-weight: 400;
+}
+
+/* Horizontal bars: label above on phones, one row wider. */
+.hbars {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.hbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3.5rem;
+  grid-template-areas:
+    'label label'
+    'track value';
+  column-gap: var(--space-2);
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+@media (min-width: 34rem) {
+  .hbar {
+    grid-template-columns: 15rem minmax(0, 1fr) 3.5rem;
+    grid-template-areas: 'label track value';
+  }
+}
+
+.hbar-label {
+  grid-area: label;
+  font-weight: 600;
+  line-height: var(--line-height);
+}
+
+.hbar-hint {
+  display: block;
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+}
+
+.hbar-track {
+  grid-area: track;
+  height: 12px;
+}
+
+.hbar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--color-text);
+}
+
+.hbar-value {
+  grid-area: value;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Tier scale: 0–100% with the three bands drawn to scale. */
+.tier-scale {
+  display: flex;
+  gap: 2px;
+  height: 2.5rem;
+}
+
+.tier-band {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--tier) 18%, transparent);
+}
+
+.tier-band .badge {
+  background: none;
+}
+
+.tier-scale-axis {
+  position: relative;
+  height: 1.5rem;
+  margin: 0 1rem;
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+
+.tier-scale-axis span {
+  position: absolute;
+  top: 0.25rem;
+  transform: translateX(-50%);
+}
+
+/* Calibration: a bar for what happened, a tick for what was predicted. */
+.calib {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  max-width: 24rem;
+}
+
+.calib-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.calib-value {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.calib-plot {
+  position: relative;
+  width: 100%;
+  height: 9rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.calib-bar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 24px;
+  transform: translateX(-50%);
+  border-radius: 4px 4px 0 0;
+  background: var(--tier);
+}
+
+.calib-pred {
+  position: absolute;
+  left: 50%;
+  width: 44px;
+  height: 2px;
+  transform: translateX(-50%);
+  background: var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+.key {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.3em 0 0.6em;
+}
+
+.key:first-child {
+  margin-left: 0;
+}
+
+.key-bar {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--color-tier-high);
+}
+
+.key-pred {
+  width: 14px;
+  height: 2px;
+  background: var(--color-text);
+}
+
+/* Tables and stats */
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 0 var(--space-4);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--line-height);
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table thead th {
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.data-table tbody th {
+  font-weight: 600;
+}
+
+.stat-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+}
+
+.stat {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.stat-value {
+  display: block;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.stat:first-child .stat-value {
+  color: var(--color-accent);
+}
+
+.stat-label {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height);
+}
+
+.example {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.example .data-table th,
+.example .data-table td {
+  border-bottom-color: var(--color-border);
+}
+
+.example p:last-child {
+  margin-bottom: 0;
+}
+
+/* Result score W on a 0–1 line; labels alternate above and below so close points don't collide. */
+.w-scale {
+  position: relative;
+  height: 6rem;
+  margin: 0 2.25rem;
+}
+
+.w-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-border);
+}
+
+.w-point {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: var(--font-size-xs);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.w-dot {
+  position: absolute;
+  top: calc(50% - 5px);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+.w-value {
+  font-weight: 700;
+}
+
+.w-label {
+  color: var(--color-muted);
+}
+
+.w-point-low {
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+}
+
+.defs {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding-left: 1.1rem;
+  list-style: disc;
+}

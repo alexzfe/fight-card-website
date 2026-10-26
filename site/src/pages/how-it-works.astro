@@ -1,0 +1,461 @@
+---
+import Base from '../layouts/Base.astro';
+import EventRail from '../components/EventRail.astro';
+import LineChart from '../components/LineChart.astro';
+import TierBadge from '../components/TierBadge.astro';
+import { decay, eloChange, expectedScore, kFactor } from '../lib/elo-math';
+import { FINISH_MODEL as M } from '../lib/finish-model';
+import { formatDate } from '../lib/format';
+import { site } from '../lib/site-data';
+
+const pct = (v: number) => `${Math.round(v * 100)}%`;
+const signed = (v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(Math.round(v))}`;
+const count = (v: number) => v.toLocaleString('en-US');
+const range = (from: number, to: number, step: number) =>
+  Array.from({ length: Math.round((to - from) / step) + 1 }, (_, i) => from + i * step);
+
+// Finish chance
+const tiers = (['low', 'medium', 'high'] as const).map((tier) => ({ tier, ...M.tiers[tier] }));
+const bands = [
+  { tier: 'low', from: 0, to: M.lowMax },
+  { tier: 'medium', from: M.lowMax, to: M.mediumMax },
+  { tier: 'high', from: M.mediumMax, to: 1 },
+] as const;
+const maxShare = Math.max(...M.importance.map((g) => g.share));
+const cut = (v: number) => `<mn>${v.toFixed(3)}</mn>`;
+const sumMath = `<math display="block">
+  <mi>p</mi><mo>=</mo><mi>σ</mi><mrow><mo>(</mo>
+    <munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mn>${M.trees}</mn></munderover>
+    <msub><mi>f</mi><mi>t</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+  <mo>)</mo></mrow><mo>,</mo><mspace width="1.2em"></mspace>
+  <mi>σ</mi><mo>(</mo><mi>z</mi><mo>)</mo><mo>=</mo>
+  <mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>z</mi></mrow></msup></mrow></mfrac>
+</math>`;
+const tierMath = `<math display="block">
+  <mtext>tier</mtext><mo>=</mo>
+  <mrow><mo>{</mo><mtable columnalign="left">
+    <mtr><mtd><mtext>Low</mtext></mtd><mtd><mi>p</mi><mo>≤</mo>${cut(M.lowMax)}</mtd></mtr>
+    <mtr><mtd><mtext>Medium</mtext></mtd><mtd>${cut(M.lowMax)}<mo>&lt;</mo><mi>p</mi><mo>≤</mo>${cut(M.mediumMax)}</mtd></mtr>
+    <mtr><mtd><mtext>High</mtext></mtd><mtd><mi>p</mi><mo>&gt;</mo>${cut(M.mediumMax)}</mtd></mtr>
+  </mtable></mrow>
+</math>`;
+
+// Elo charts
+const expected = range(-400, 400, 10).map((gap) => [gap, expectedScore(1500 + gap, 1500)] as [number, number]);
+const k = range(0, 40, 1).map((n) => [n, kFactor(n)] as [number, number]);
+const idle = range(0, 8, 0.25).map((yrs) => [yrs, decay(1700, yrs)] as [number, number]);
+
+// Worked example: A (1600, 12 previous bouts) beats B (1500, 3 previous bouts).
+const A = { r: 1600, n: 12 };
+const B = { r: 1500, n: 3 };
+const ex = {
+  eA: expectedScore(A.r, B.r),
+  eB: expectedScore(B.r, A.r),
+  kA: kFactor(A.n),
+  kB: kFactor(B.n),
+  win: [eloChange(A.r, B.r, A.n, 1), eloChange(B.r, A.r, B.n, 0)] as const,
+  split: [eloChange(A.r, B.r, A.n, 0.6), eloChange(B.r, A.r, B.n, 0.4)] as const,
+};
+const scores = [
+  { w: 0, label: 'Loss' },
+  { w: 0.5, label: 'Draw' },
+  { w: 0.6, label: 'Split win' },
+  { w: 0.8, label: 'Majority win' },
+  { w: 1, label: 'Win' },
+];
+---
+
+<Base
+  title="How finish chance and Elo work · UFC fight card"
+  description="How the finish-chance tiers and the fighter Elo ratings on the fight cards are calculated, with formulas and charts."
+>
+  <EventRail events={site.events} current={undefined} />
+  <main class="explainer">
+    <header class="event-head">
+      <h1>
+        <span class="kicker">Methodology<span class="sr-only">:</span> </span>
+        <span class="headline">How finish chance and Elo work</span>
+      </h1>
+      <p class="event-meta">
+        Every fight gets a finish chance and every fighter gets an Elo. This is where both numbers come from, and how
+        far to trust them.
+      </p>
+    </header>
+
+    <nav class="toc" aria-label="On this page">
+      <a href="#finish">Finish chance</a>
+      <a href="#elo">Elo</a>
+    </nav>
+
+    <section id="finish" class="explainer-section">
+      <h2>Finish chance</h2>
+      <p class="lede">
+        The badge is a machine-learning model’s estimate that the fight ends <strong>inside the distance</strong>: a
+        KO/TKO (doctor stoppages included) or a submission. A decision, split or draw included, counts as no finish.
+      </p>
+
+      <h3>1. Describe the matchup</h3>
+      <p>
+        For each fighter the model looks up 47 career statistics going into the bout: how their fights usually end,
+        striking and grappling rates per minute, reach, age, layoff, recent results, Elo and more. Red and blue
+        corners are arbitrary, so the order mustn’t matter. Each statistic <em>s</em> becomes four symmetric numbers:
+      </p>
+      <div class="math-block">
+        <math display="block">
+          <mo>min</mo><mo>(</mo><msub><mi>s</mi><mtext>red</mtext></msub><mo>,</mo><msub><mi>s</mi><mtext>blue</mtext></msub><mo>)</mo><mo>,</mo><mspace width="0.6em"></mspace>
+          <mo>max</mo><mo>(</mo><msub><mi>s</mi><mtext>red</mtext></msub><mo>,</mo><msub><mi>s</mi><mtext>blue</mtext></msub><mo>)</mo><mo>,</mo><mspace width="0.6em"></mspace>
+          <msub><mi>s</mi><mtext>red</mtext></msub><mo>+</mo><msub><mi>s</mi><mtext>blue</mtext></msub><mo>,</mo><mspace width="0.6em"></mspace>
+          <mo>|</mo><msub><mi>s</mi><mtext>red</mtext></msub><mo>−</mo><msub><mi>s</mi><mtext>blue</mtext></msub><mo>|</mo>
+        </math>
+      </div>
+      <p>
+        Add the bout itself (weight class, venue, scheduled rounds, title fight, year) and the matchup becomes a row of
+        190 numbers, <em>x</em>.
+      </p>
+
+      <h3>2. Add up {M.trees} small decision trees</h3>
+      <p>
+        The model is a gradient-boosted tree ensemble (LightGBM). Each tree asks a handful of yes/no questions and
+        lands on a small score. The very first question is whether the two fighters’ decision rates add up to more
+        than 1.0. The {M.trees} scores are summed and squashed into a probability:
+      </p>
+      <div class="math-block" set:html={sumMath} />
+      <p>
+        Each tree is fitted to the mistakes of the trees before it. Training used all {count(M.trainRows)} eligible
+        UFC bouts since 2005; no-contests, DQs and non-standard formats are left out.
+      </p>
+      <p>Which kinds of input the trees lean on most, as a share of the total improvement their splits make:</p>
+      <figure>
+        <div
+          class="hbars"
+          role="img"
+          aria-label={`Feature importance: ${M.importance.map((g) => `${g.group} ${g.share}%`).join(', ')}`}
+        >
+          {
+            M.importance.map((g) => (
+              <div class="hbar">
+                <span class="hbar-label">
+                  {g.group}
+                  <span class="hbar-hint">{g.examples}</span>
+                </span>
+                <span class="hbar-track">
+                  <span class="hbar-fill" style={`width: ${(g.share / maxShare) * 100}%`} />
+                </span>
+                <span class="hbar-value">{g.share}%</span>
+              </div>
+            ))
+          }
+        </div>
+        <figcaption>
+          No single kind of input dominates. The strongest is the fighters’ own history of going the distance.
+        </figcaption>
+      </figure>
+
+      <h3>3. Turn the probability into a tier</h3>
+      <p>
+        A raw “47%” promises more precision than the model has, so the card shows a tier. The cut points split
+        {' '}{count(M.oos.bouts)} historical bouts into equal thirds by predicted chance:
+      </p>
+      <div class="math-block" set:html={tierMath} />
+      <figure>
+        <div
+          class="tier-scale"
+          role="img"
+          aria-label={`Predicted chance from 0 to 100%: Low up to ${pct(M.lowMax)}, Medium up to ${pct(M.mediumMax)}, High above`}
+        >
+          {
+            bands.map((b) => (
+              <span class="tier-band" style={`flex: ${b.to - b.from}; --tier: var(--color-tier-${b.tier})`}>
+                <TierBadge tier={b.tier} />
+              </span>
+            ))
+          }
+        </div>
+        <div class="tier-scale-axis" aria-hidden="true">
+          <span style="left: 0">0%</span>
+          <span style={`left: ${M.lowMax * 100}%`}>{pct(M.lowMax)}</span>
+          <span style={`left: ${M.mediumMax * 100}%`}>{pct(M.mediumMax)}</span>
+          <span style="left: 100%">100%</span>
+        </div>
+        <figcaption>Predicted chance of a finish, and the tier each range gets.</figcaption>
+      </figure>
+      <p>
+        A fight shows <strong>—</strong> instead when either fighter has no UFC bouts yet, or has fought since the model’s
+        data was last refreshed. Once an event’s date passes its tiers are frozen, so a results page shows what was
+        predicted beforehand.
+      </p>
+
+      <h3>4. Does it work?</h3>
+      <p>
+        Every number below is <strong>out of sample</strong>: ten yearly folds from Oct 2015 to Sep 2025, each predicted
+        by a model trained only on earlier bouts.
+      </p>
+      <figure>
+        <div
+          class="calib"
+          role="img"
+          aria-label={`Share of fights that finished, by tier: ${tiers.map((t) => `${t.tier} ${pct(t.finishRate)}, predicted ${pct(t.meanPredicted)}`).join('; ')}`}
+        >
+          {
+            tiers.map((t) => (
+              <div class="calib-col" style={`--tier: var(--color-tier-${t.tier})`}>
+                <span class="calib-value">{pct(t.finishRate)}</span>
+                <span class="calib-plot">
+                  <span class="calib-bar" style={`height: ${t.finishRate * 100}%`} />
+                  <span class="calib-pred" style={`bottom: ${t.meanPredicted * 100}%`} />
+                </span>
+                <TierBadge tier={t.tier} />
+              </div>
+            ))
+          }
+        </div>
+        <figcaption>
+          <span class="key key-bar" aria-hidden="true"></span> Share that actually finished
+          <span class="key key-pred" aria-hidden="true"></span> Average predicted chance
+        </figcaption>
+      </figure>
+      <div class="table-scroll">
+        <table class="data-table" data-testid="tier-table">
+          <thead>
+            <tr>
+              <th scope="col">Tier</th>
+              <th scope="col">Predicted chance</th>
+              <th scope="col">Bouts</th>
+              <th scope="col">Avg. predicted</th>
+              <th scope="col">Finished</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              [...tiers].reverse().map((t) => (
+                <tr>
+                  <th scope="row">
+                    <TierBadge tier={t.tier} />
+                  </th>
+                  <td>
+                    {t.tier === 'high'
+                      ? `above ${pct(M.mediumMax)}`
+                      : t.tier === 'medium'
+                        ? `${pct(M.lowMax)} to ${pct(M.mediumMax)}`
+                        : `up to ${pct(M.lowMax)}`}
+                  </td>
+                  <td>{count(t.bouts)}</td>
+                  <td>{pct(t.meanPredicted)}</td>
+                  <td>{pct(t.finishRate)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p>
+        High-tier fights finished {pct(M.tiers.high.finishRate)} of the time, Low-tier fights
+        {' '}{pct(M.tiers.low.finishRate)}. Each tier’s predictions land close to what actually happened, but the edge is
+        modest: a Low fight still ends early more than a third of the time. Accuracy is scored with log loss, where
+        {' '}<em>y</em> is 1 for a finish and 0 otherwise, and lower is better:
+      </p>
+      <div class="math-block">
+        <math display="block">
+          <mi>L</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mi>N</mi></mfrac>
+          <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover>
+          <mrow><mo>[</mo><msub><mi>y</mi><mi>i</mi></msub><mi>ln</mi><msub><mi>p</mi><mi>i</mi></msub><mo>+</mo>
+          <mo>(</mo><mn>1</mn><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mo>)</mo><mi>ln</mi><mo>(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>i</mi></msub><mo>)</mo><mo>]</mo></mrow>
+        </math>
+      </div>
+      <div class="stat-pair">
+        <div class="stat">
+          <span class="stat-value">{M.oos.logLoss.toFixed(3)}</span>
+          <span class="stat-label">this model</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{M.oos.constantLogLoss.toFixed(3)}</span>
+          <span class="stat-label">the same guess for every fight</span>
+        </div>
+      </div>
+      <p class="fine">Model export as of {formatDate(M.asOf)} (version {M.version}).</p>
+    </section>
+
+    <section id="elo" class="explainer-section">
+      <h2>Elo</h2>
+      <p class="lede">
+        Elo is one number for how good a fighter is <strong>today</strong>. Beat someone you were expected to beat and
+        you gain a little; beat someone better and you gain a lot. It’s the chess rating system, tuned for MMA.
+      </p>
+
+      <h3>1. The expected result</h3>
+      <p>Before a bout, the rating gap gives each fighter an expected score, their chance of winning:</p>
+      <div class="math-block">
+        <math display="block">
+          <msub><mi>E</mi><mi>A</mi></msub><mo>=</mo>
+          <mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mn>10</mn><mrow><mo>(</mo><msub><mi>R</mi><mi>B</mi></msub><mo>−</mo><msub><mi>R</mi><mi>A</mi></msub><mo>)</mo><mo>/</mo><mn>400</mn></mrow></msup></mrow></mfrac>
+        </math>
+      </div>
+      <figure>
+        <LineChart
+          label={`Chance of winning by rating gap: even at 0, ${pct(expectedScore(1600, 1500))} at +100, ${pct(expectedScore(1700, 1500))} at +200, ${pct(expectedScore(1900, 1500))} at +400`}
+          points={expected}
+          x={{
+            min: -400,
+            max: 400,
+            title: 'Rating gap (yours − theirs)',
+            ticks: [-400, -200, 0, 200, 400].map((v) => ({ v, label: v > 0 ? `+${v}` : `${v}` })),
+          }}
+          y={{ min: 0, max: 1, title: 'Chance of winning', ticks: [0, 0.25, 0.5, 0.75, 1].map((v) => ({ v, label: pct(v) })) }}
+          marks={[
+            { x: 100, y: expectedScore(1600, 1500), label: `+100 → ${pct(expectedScore(1600, 1500))}`, anchor: 'end' },
+            { x: 200, y: expectedScore(1700, 1500), label: `+200 → ${pct(expectedScore(1700, 1500))}`, anchor: 'end' },
+          ]}
+        />
+        <figcaption>Being 100 points ahead means winning about two fights in three.</figcaption>
+      </figure>
+
+      <h3>2. The update</h3>
+      <p>After the bout, the rating moves by how surprising the result was:</p>
+      <div class="math-block">
+        <math display="block">
+          <msubsup><mi>R</mi><mi>A</mi><mo>′</mo></msubsup><mo>=</mo><msub><mi>R</mi><mi>A</mi></msub><mo>+</mo>
+          <mi>K</mi><mo>·</mo><mo>(</mo><mi>W</mi><mo>−</mo><msub><mi>E</mi><mi>A</mi></msub><mo>)</mo>
+        </math>
+      </div>
+      <p>
+        <em>W</em> is the result. A clear win (KO, submission, unanimous decision) is 1, a close win earns less, and the
+        loser gets the rest, 1 − <em>W</em>. The method otherwise doesn’t matter: a knockout counts the same as a
+        unanimous decision. No-contests don’t count at all.
+      </p>
+      <figure>
+        <div class="w-scale" role="img" aria-label={`Result score W: ${scores.map((s) => `${s.label} ${s.w}`).join(', ')}`}>
+          <span class="w-line"></span>
+          {
+            scores.map((s) => (
+              <span class:list={['w-point', { 'w-point-low': s.w === 0.5 || s.w === 0.8 }]} style={`left: ${s.w * 100}%`}>
+                <span class="w-dot" />
+                <span class="w-value">{s.w}</span>
+                <span class="w-label">{s.label}</span>
+              </span>
+            ))
+          }
+        </div>
+        <figcaption>The result score <em>W</em>, from the winner’s side.</figcaption>
+      </figure>
+
+      <h3>3. How far ratings move</h3>
+      <p>
+        <em>K</em> sets the step size. A newcomer’s rating is a guess, so it moves fast; a veteran’s is well established,
+        so it moves slowly. Here <em>n</em> is the fighter’s number of previous bouts, and each fighter uses their own
+        {' '}<em>K</em>:
+      </p>
+      <div class="math-block">
+        <math display="block">
+          <mi>K</mi><mo>=</mo><mfrac><mn>275</mn><msup><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>5</mn><mo>)</mo></mrow><mn>0.4</mn></msup></mfrac>
+        </math>
+      </div>
+      <figure>
+        <LineChart
+          label={`Step size K by previous bouts: ${Math.round(kFactor(0))} at debut, ${Math.round(kFactor(10))} after 10, ${Math.round(kFactor(30))} after 30`}
+          points={k}
+          x={{ min: 0, max: 40, title: 'Previous bouts (n)', ticks: [0, 10, 20, 30, 40].map((v) => ({ v, label: `${v}` })) }}
+          y={{ min: 0, max: 160, title: 'K', ticks: [0, 40, 80, 120, 160].map((v) => ({ v, label: `${v}` })) }}
+          marks={[
+            { x: 0, y: kFactor(0), label: `Debut: ${Math.round(kFactor(0))}` },
+            { x: 10, y: kFactor(10), label: `10 bouts: ${Math.round(kFactor(10))}` },
+            { x: 30, y: kFactor(30), label: `30 bouts: ${Math.round(kFactor(30))}`, below: true },
+          ]}
+        />
+        <figcaption>Ratings settle over a fighter’s first ten or so bouts.</figcaption>
+      </figure>
+
+      <h3>A worked example</h3>
+      <div class="example" data-testid="elo-example">
+        <p>
+          Fighter A is rated <strong>{A.r}</strong> with {A.n} previous bouts. Fighter B is rated <strong>{B.r}</strong>
+          {' '}with {B.n}. A is the favourite: <em>E</em><sub>A</sub> = {ex.eA.toFixed(3)} and <em>E</em><sub>B</sub> =
+          {' '}{ex.eB.toFixed(3)}. Their step sizes are <em>K</em><sub>A</sub> = {ex.kA.toFixed(1)} and <em>K</em><sub>B</sub> =
+          {' '}{ex.kB.toFixed(1)}.
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">A wins by</th>
+                <th scope="col">A’s change</th>
+                <th scope="col">B’s change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Unanimous decision, <em>W</em> = 1</th>
+                <td>{ex.kA.toFixed(1)} × (1 − {ex.eA.toFixed(3)}) = <strong>{signed(ex.win[0])}</strong></td>
+                <td>{ex.kB.toFixed(1)} × (0 − {ex.eB.toFixed(3)}) = <strong>{signed(ex.win[1])}</strong></td>
+              </tr>
+              <tr>
+                <th scope="row">Split decision, <em>W</em> = 0.6</th>
+                <td>{ex.kA.toFixed(1)} × (0.6 − {ex.eA.toFixed(3)}) = <strong>{signed(ex.split[0])}</strong></td>
+                <td>{ex.kB.toFixed(1)} × (0.4 − {ex.eB.toFixed(3)}) = <strong>{signed(ex.split[1])}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          B loses more than A gains, because B’s rating is less settled. And a split-decision win <em>costs</em> A points:
+          a fighter that much better was expected to win clearly.
+        </p>
+      </div>
+
+      <h3>4. Time off</h3>
+      <p>Ratings drift 10% of the way back to 1500 for each year without a fight, starting from the last one:</p>
+      <div class="math-block">
+        <math display="block">
+          <mi>R</mi><mo>←</mo><mn>1500</mn><mo>+</mo><mo>(</mo><mi>R</mi><mo>−</mo><mn>1500</mn><mo>)</mo><mo>·</mo>
+          <msup><mn>0.9</mn><mtext>years since last bout</mtext></msup>
+        </math>
+      </div>
+      <figure>
+        <LineChart
+          label={`A 1700 fighter's rating while inactive: ${Math.round(decay(1700, 1))} after 1 year, ${Math.round(decay(1700, 3))} after 3, ${Math.round(decay(1700, 8))} after 8`}
+          points={idle}
+          x={{ min: 0, max: 8, title: 'Years without a fight', ticks: [0, 2, 4, 6, 8].map((v) => ({ v, label: `${v}` })) }}
+          y={{ min: 1480, max: 1720, title: 'Rating', ticks: [1500, 1550, 1600, 1650, 1700].map((v) => ({ v, label: `${v}` })) }}
+          rule={{ y: 1500, label: 'Average: 1500' }}
+          marks={[
+            { x: 1, y: decay(1700, 1), label: `1 year: ${Math.round(decay(1700, 1))}` },
+            { x: 3, y: decay(1700, 3), label: `3 years: ${Math.round(decay(1700, 3))}` },
+          ]}
+        />
+        <figcaption>A 1700 fighter sitting out. A comeback starts from a lower number.</figcaption>
+      </figure>
+
+      <h3>5. What the card shows</h3>
+      <ul class="defs">
+        <li>
+          <strong>The number.</strong> Every debutant starts at 1500. All ratings are then shifted equally so that the
+          average established, active fighter (3+ bouts, one in the last two years) sits at exactly 1500. The shift
+          doesn’t change who is ahead of whom.
+        </li>
+        <li>
+          <strong>#4 P4P.</strong> Pound-for-pound rank: the top 15 men and top 10 women by rating, among fighters with
+          5+ UFC bouts and one in the last 12 months. There is one rating per fighter, across weight classes.
+        </li>
+        <li><strong>provisional.</strong> Fewer than 3 UFC bouts, so the rating is still mostly a guess.</li>
+        <li><strong>inactive.</strong> No fight in the last 12 months, so the rating has been decaying.</li>
+        <li><strong>Peak</strong>, under Stats. The highest rating after any bout, once the fighter has 5+ UFC bouts.</li>
+        <li><strong>Best win</strong>, under Stats. The beaten opponent who was rated highest going into the fight.</li>
+      </ul>
+      <p>
+        The history covers every bout ufcstats records, including Strikeforce, PRIDE, WEC and Dana White’s Contender
+        Series, so most fighters arrive in the UFC with a rating already moving.
+      </p>
+
+      <h3>6. Does it work?</h3>
+      <p>
+        The settings above were tuned for one job: predicting the winners of future fights. Tested on 5,432 UFC bouts
+        from Oct 2015 to Oct 2026, the higher-rated fighter won <strong>59.8%</strong> of the time, against 55.4% for plain
+        chess-style Elo (a fixed step of 32, no decay). MMA is hard to predict, and no rating comes close to certainty.
+      </p>
+      <p class="fine">
+        Also tried and dropped, because they predicted worse or no better: Glicko-2, a weight-class handicap, separate
+        per-division ratings, extra credit for finishes, a grace period before decay, and a smaller step for newcomers.
+      </p>
+    </section>
+    <p class="fine back-link"><a href="/">← Back to the fight card</a></p>
+  </main>
+</Base>
