@@ -31,6 +31,7 @@ import sys
 import tarfile
 import tempfile
 import urllib.error
+import urllib.parse
 import urllib.request
 import zlib
 from datetime import UTC, datetime, timedelta
@@ -75,12 +76,32 @@ def snapshot_url(base: str) -> str:
     return base.rstrip("/") + "/v1/snapshot.tar.gz"
 
 
+LOCAL_HOSTS = {"127.0.0.1", "localhost"}  # plain http is allowed to these only, for tests
+
+
+def _origin(url: str) -> tuple[str, str]:
+    parts = urllib.parse.urlsplit(url)
+    return parts.scheme, parts.netloc
+
+
+class _SameOriginRedirects(urllib.request.HTTPRedirectHandler):
+    def __init__(self, url: str):
+        self.origin = _origin(url)
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if _origin(newurl) != self.origin:
+            raise FetchError(f"cannot download {req.full_url}: refusing a redirect to {newurl} (another origin)")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 def download(url: str, max_bytes: int) -> bytes:
-    if not url.startswith(("https://", "http://")):
-        raise FetchError(f"cannot download {url}: not an http(s) URL")
+    parts = urllib.parse.urlsplit(url)
+    if not (parts.scheme == "https" or (parts.scheme == "http" and parts.hostname in LOCAL_HOSTS)):
+        raise FetchError(f"cannot download {url}: only https:// URLs (plain http only to 127.0.0.1 or localhost)")
     request = urllib.request.Request(url, headers={"User-Agent": "fight-card-website refresh"})
+    opener = urllib.request.build_opener(_SameOriginRedirects(url))
     try:
-        with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
+        with opener.open(request, timeout=TIMEOUT) as response:
             body = response.read(max_bytes + 1)
     except OSError as e:  # URLError, HTTPError and timeouts are all OSErrors
         raise FetchError(f"cannot download {url}: {e}") from e
