@@ -86,15 +86,16 @@ def unchanged(data) -> bool:
     return (data / "images" / "misses.json").exists() and (data / "events" / "old.json").exists()
 
 
-def refused(data, blob, monkeypatch, capsys, *args) -> str:
-    assert run(data, blob, monkeypatch, *args) == 1
+def refused(data, blob, monkeypatch, capsys, *args, code=1) -> str:
+    assert run(data, blob, monkeypatch, *args) == code
     assert unchanged(data)
     assert sorted(p.name for p in data.parent.iterdir()) == ["data"]
     return capsys.readouterr().err
 
 
 def test_stale_snapshot_fails_with_its_age(data, monkeypatch, capsys):
-    err = refused(data, snapshot(files(generated_at="2026-10-25T09:00:00Z")), monkeypatch, capsys)
+    blob = snapshot(files(generated_at="2026-10-25T09:00:00Z"))
+    err = refused(data, blob, monkeypatch, capsys, code=fetch_v1.EXIT_STALE)
     assert "stale" in err and "27" in err and "2026-10-25T09:00:00Z" in err
 
 
@@ -294,3 +295,107 @@ def test_now_defaults_to_the_clock(data, monkeypatch):
     fresh = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     monkeypatch.setattr(fetch_v1, "download", lambda url, max_bytes: snapshot(files(generated_at=fresh)))
     assert fetch_v1.main(["--base", "https://v1.invalid", "--data", str(data)]) == 0
+
+
+# --- stale: its own exit code, outputs and issue body, so refresh.yml can stay quiet on hourly runs -------------
+
+STALE_AT = "2026-10-25T09:00:00Z"  # 27 h before NOW
+
+
+def outputs(path) -> dict[str, str]:
+    return dict(line.split("=", 1) for line in path.read_text().splitlines()) if path.exists() else {}
+
+
+def test_stale_has_its_own_exit_code():
+    assert fetch_v1.EXIT_STALE == 3  # not 0/1, not argparse's 2; refresh.yml's tests use 3 too
+
+
+def test_stale_writes_outputs_for_the_workflow(data, monkeypatch, tmp_path):
+    out = tmp_path / "gh_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    assert run(data, snapshot(files(generated_at=STALE_AT)), monkeypatch) == fetch_v1.EXIT_STALE
+    assert outputs(out) == {"stale": "true", "generated_at": STALE_AT, "age_hours": "27.0"}
+
+
+def test_fresh_writes_stale_false(data, monkeypatch, tmp_path):
+    out = tmp_path / "gh_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    assert run(data, snapshot(files()), monkeypatch) == 0
+    assert outputs(out) == {"stale": "false", "generated_at": "2026-10-26T06:00:00Z", "age_hours": "6.0"}
+
+
+def test_other_failures_write_no_outputs(data, monkeypatch, tmp_path):
+    """No `stale` output means "don't know": the workflow neither opens nor closes the issue."""
+    out = tmp_path / "gh_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    assert run(data, b"<html>502</html>", monkeypatch) == 1
+    assert outputs(out) == {}
+
+
+def test_stale_writes_the_issue_body(data, monkeypatch, tmp_path):
+    body = tmp_path / "issue.md"
+    run(data, snapshot(files(generated_at=STALE_AT)), monkeypatch, "--stale-issue", str(body))
+    text = body.read_text()
+    assert text.startswith(fetch_v1.STALE_MARKER)
+    for expected in (STALE_AT, "27.0 h", "https://v1.invalid/v1/snapshot.tar.gz", "container logs",
+                     "fightcard-service health --staleness", "26 h"):
+        assert expected in text, expected
+
+
+@pytest.mark.parametrize("blob", [snapshot(files()), b"garbage"], ids=["fresh", "broken"])
+def test_issue_body_only_when_stale(data, monkeypatch, tmp_path, blob):
+    body = tmp_path / "issue.md"
+    run(data, blob, monkeypatch, "--stale-issue", str(body))
+    assert not body.exists()
+
+
+def test_stale_title_is_data_api_stale():
+    assert fetch_v1.STALE_TITLE == "Data API stale"
+
+
+# --- never backwards: a snapshot older than the committed data/ is skipped -------------------------------------
+
+
+def commit_index(data, generated_at):
+    (data / "index.json").write_bytes(dumps({"generated_at": generated_at, "upcoming": [], "recent": []}))
+
+
+def test_older_snapshot_keeps_data(data, monkeypatch, capsys, tmp_path):
+    commit_index(data, "2026-10-26T08:00:00Z")
+    out = tmp_path / "gh_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    assert run(data, snapshot(files(generated_at="2026-10-26T07:59:59Z")), monkeypatch) == 0
+    assert unchanged(data)
+    assert sorted(p.name for p in data.parent.iterdir()) == ["data", "gh_output"]
+    printed = capsys.readouterr().out
+    assert "older than" in printed and "2026-10-26T08:00:00Z" in printed and "2026-10-26T07:59:59Z" in printed
+    assert outputs(out)["stale"] == "false"  # the API is fresh, just behind; the issue can close
+
+
+def test_equal_snapshot_is_a_no_op(data, monkeypatch, capsys):
+    commit_index(data, "2026-10-26T06:00:00Z")
+    before = tree_files(data)
+    assert run(data, snapshot(files(generated_at="2026-10-26T06:00:00Z")), monkeypatch) == 0
+    assert tree_files(data) == before
+    assert "already" in capsys.readouterr().out
+
+
+def test_newer_snapshot_replaces_data(data, monkeypatch):
+    commit_index(data, "2026-10-26T05:59:59Z")
+    assert run(data, snapshot(files()), monkeypatch) == 0
+    assert tree_files(data) == files()
+
+
+@pytest.mark.parametrize("index", [b"{nope", b"[]", dumps({"upcoming": []}), dumps({"generated_at": "soon"})],
+                         ids=["unreadable", "not-object", "missing", "malformed"])
+def test_unknown_committed_age_does_not_block(data, monkeypatch, index):
+    (data / "index.json").write_bytes(index)
+    assert run(data, snapshot(files()), monkeypatch) == 0
+    assert tree_files(data) == files()
+
+
+def test_staleness_wins_over_going_backwards(data, monkeypatch):
+    """Stale and older than data/: still the stale alert, not a quiet skip."""
+    commit_index(data, "2026-10-26T08:00:00Z")
+    assert run(data, snapshot(files(generated_at=STALE_AT)), monkeypatch) == fetch_v1.EXIT_STALE
+    assert unchanged(data)

@@ -8,6 +8,7 @@ import subprocess
 
 import pytest
 
+import fetch_v1
 from ops_helpers import REPO
 from should_run import DAILY_CRON
 from stale_issue import TITLE
@@ -269,7 +270,7 @@ def test_refresh_pipeline_jobs_run_unless_data_source_is_v1():
 def test_refresh_v1_job_runs_only_when_data_source_is_v1():
     v1 = jobs("refresh.yml")["v1"]
     assert job_if(v1) == "vars.DATA_SOURCE == 'v1'"
-    assert "needs:" not in v1  # no gate: the fetch is cheap and a stale API must alert every run
+    assert "needs:" not in v1  # no gate: the fetch is cheap, and every run checks /v1/ for staleness
 
 
 def test_refresh_v1_fetches_commits_and_skips_the_pipeline():
@@ -287,13 +288,15 @@ def test_refresh_stale_model_issue_is_pipeline_only():
     assert "scripts/stale_issue.py" in refresh["pipeline"]
     for job, body in refresh.items():
         if job != "pipeline":
-            assert "stale_issue" not in body and "gh issue" not in body, job
+            assert "stale_issue" not in body and f"TITLE: {TITLE}" not in body, job
+        if job not in ("pipeline", "v1"):
+            assert "gh issue" not in body, job
 
 
 def test_refresh_v1_job_permissions_are_minimal():
     v1 = jobs("refresh.yml")["v1"]
     perms = re.search(r"^    permissions:\n((?:      .+\n)+)", v1, re.M).group(1)
-    assert perms.split() == ["contents:", "write"]
+    assert perms.split() == ["contents:", "write", "issues:", "write"]  # issues: the "Data API stale" issue
 
 
 def test_refresh_shadow_job_reports_v1_without_blocking():
@@ -344,3 +347,146 @@ def test_refresh_interpolates_no_expressions_into_run_scripts():
         if stripped.startswith("- run:") or (stripped.startswith("run:") and indent >= 8):
             in_run = True
             assert "${{" not in stripped, line
+
+
+# --- v1: stale /v1/ alerts through one issue; only the daily and manual runs fail -------------------------------
+
+
+def step(job: str, name: str) -> str:
+    """The text of the step `- name: <name>` in refresh.yml's job, up to the next step."""
+    body = jobs("refresh.yml")[job]
+    start = body.index(f"      - name: {name}\n")
+    end = body.find("\n      - ", start + 1)
+    return body[start:] if end < 0 else body[start:end + 1]
+
+
+def step_script(job: str, name: str) -> str:
+    """The `run: |` block of that step, dedented."""
+    lines = step(job, name).splitlines()
+    start = next(i for i, line in enumerate(lines) if line.strip() == "run: |") + 1
+    indent = len(lines[start]) - len(lines[start].lstrip())
+    body = []
+    for line in lines[start:]:
+        if line.strip() and len(line) - len(line.lstrip()) < indent:
+            break
+        body.append(line[indent:])
+    return "\n".join(body) + "\n"
+
+
+def run_step(tmp_path, script: str, fakes: dict[str, str], env: dict[str, str]) -> subprocess.CompletedProcess:
+    """Run a step script as Actions does (bash -eo pipefail) with fake commands first on PATH."""
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir(exist_ok=True)
+    for name, text in fakes.items():
+        (bin_dir / name).write_text(text)
+        (bin_dir / name).chmod(0o755)
+    path = tmp_path / "step.sh"
+    path.write_text(script)
+    full_env = os.environ | {"PATH": f"{bin_dir}:{os.environ['PATH']}", "RUNNER_TEMP": str(tmp_path),
+                             "GITHUB_REPOSITORY": "alexzfe/fight-card-website"} | env
+    return subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", str(path)], env=full_env,
+                          capture_output=True, text=True)
+
+
+FETCH = "Fetch /v1/ snapshot"
+DATA_ISSUE = 'Open, update or close the "Data API stale" issue'
+HOURLY = next(c for c in crons(read("refresh.yml")) if c != DAILY_CRON)
+STALE = 3  # fetch_v1.EXIT_STALE (test_fetch_v1.py checks it)
+
+FAKE_PYTHON = """#!/usr/bin/env bash
+echo "$*" >> "$PY_LOG"
+exit "$FAKE_STATUS"
+"""
+
+
+def run_fetch(tmp_path, status: int, event: str, schedule: str = "") -> subprocess.CompletedProcess:
+    env = dict(env_block(step("v1", FETCH)))
+    for key in ("EVENT_NAME", "SCHEDULE"):
+        env.pop(key, None)
+    return run_step(tmp_path, step_script("v1", FETCH), {"python3": FAKE_PYTHON},
+                    env | {"FAKE_STATUS": str(status), "PY_LOG": str(tmp_path / "py.log"),
+                           "EVENT_NAME": event, "SCHEDULE": schedule})
+
+
+def env_block(text: str) -> dict[str, str]:
+    """A step's `env:` entries with literal values ("${{ ... }}" values kept as text)."""
+    m = re.search(r"^        env:\n((?:          .+\n)+)", text, re.M)
+    pairs = (line.strip().split(": ", 1) for line in m.group(1).splitlines()) if m else ()
+    return {k: v.strip('"') for k, v in pairs}
+
+
+def test_refresh_v1_fetch_step_knows_the_schedule_through_env():
+    env = env_block(step("v1", FETCH))
+    assert env["EVENT_NAME"] == "${{ github.event_name }}"
+    assert env["SCHEDULE"] == "${{ github.event.schedule }}"
+    assert env["DAILY_CRON"] == DAILY_CRON
+    assert "id: fetch" in step("v1", FETCH)
+    assert "--stale-issue" in step_script("v1", FETCH)
+
+
+@pytest.mark.parametrize(("status", "event", "schedule", "expected"), [
+    (0, "schedule", HOURLY, 0),
+    (0, "schedule", DAILY_CRON, 0),
+    (STALE, "schedule", HOURLY, 0),  # quiet: the issue carries the alert
+    (STALE, "schedule", DAILY_CRON, STALE),
+    (STALE, "workflow_dispatch", "", STALE),
+    (1, "schedule", HOURLY, 1),  # unsafe, unreachable, wrong contract: always fail
+    (1, "schedule", DAILY_CRON, 1),
+])
+def test_refresh_v1_stale_fails_only_daily_and_manual_runs(tmp_path, status, event, schedule, expected):
+    result = run_fetch(tmp_path, status, event, schedule)
+    assert result.returncode == expected, result.stderr
+    assert "scripts/fetch_v1.py" in (tmp_path / "py.log").read_text()
+
+
+FAKE_GH_ISSUES = """#!/usr/bin/env bash
+args="$*"
+echo "${args//$'\\n'/ }" >> "$GH_LOG"
+case "$1 $2" in
+  "issue list") [ -n "$OPEN_ISSUE" ] && echo "$OPEN_ISSUE" ;;
+esac
+exit 0
+"""
+
+
+def run_issue(tmp_path, stale: str, open_issue: str = "") -> list[str]:
+    log = tmp_path / "gh.log"
+    log.touch()
+    env = {k: v for k, v in env_block(step("v1", DATA_ISSUE)).items() if "${{" not in v}
+    result = run_step(tmp_path, step_script("v1", DATA_ISSUE), {"gh": FAKE_GH_ISSUES},
+                      env | {"GH_LOG": str(log), "OPEN_ISSUE": open_issue, "STALE": stale,
+                             "GENERATED_AT": "2026-10-26T06:00:00Z", "GH_TOKEN": "x"})
+    assert result.returncode == 0, result.stderr
+    return log.read_text().splitlines()
+
+
+def test_refresh_v1_issue_step_title_and_condition():
+    text = step("v1", DATA_ISSUE)
+    assert f"TITLE: {fetch_v1.STALE_TITLE}\n" in text
+    cond = re.search(r"^        if: (.+)$", text, re.M).group(1)
+    assert "!cancelled()" in cond and "steps.fetch.outputs.stale" in cond  # also after a failed daily run
+    v1 = jobs("refresh.yml")["v1"]
+    assert v1.index(FETCH) < v1.index(DATA_ISSUE)
+
+
+def test_refresh_v1_opens_the_issue_when_stale(tmp_path):
+    calls = run_issue(tmp_path, "true")
+    created = [c for c in calls if c.startswith("issue create")]
+    assert len(created) == 1 and "Data API stale" in created[0] and "--body-file" in created[0]
+
+
+def test_refresh_v1_updates_an_open_issue_when_still_stale(tmp_path):
+    calls = run_issue(tmp_path, "true", open_issue="7")
+    assert any(c.startswith("issue edit 7") and "--body-file" in c for c in calls)
+    assert not any(c.startswith("issue create") for c in calls)
+
+
+def test_refresh_v1_closes_the_issue_when_fresh(tmp_path):
+    calls = run_issue(tmp_path, "false", open_issue="7")
+    closed = [c for c in calls if c.startswith("issue close 7")]
+    assert len(closed) == 1 and "--comment" in closed[0] and "2026-10-26T06:00:00Z" in closed[0]
+
+
+def test_refresh_v1_does_nothing_when_fresh_and_no_issue(tmp_path):
+    calls = run_issue(tmp_path, "false")
+    assert [c for c in calls if not c.startswith("issue list")] == []
