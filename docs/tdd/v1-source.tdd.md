@@ -102,3 +102,67 @@ One-off end to end (not in the suite): the engine's real `snapshot.tar.gz` serve
 - The fixture ages: `test_publish_fixture_matches_the_data_it_was_built_from` skips once `data/` moves on, and
   `test_accepts_the_real_publish_fixture` passes `--max-age-hours 100000`. Rebuild it with the command above when
   the contract gains fields.
+
+---
+
+# Follow-up: stale-API alerts and no going backwards (2026-10-26)
+
+Source: orchestrator decisions on the open questions above (brief `p6-fixes.md`). RED `23e734a`, GREEN `1cd1a76`.
+
+## Journeys
+
+- As the owner, I want a stale `/v1/` to raise one issue rather than a failure email every hour, so that I notice it
+  without getting spammed. The daily run should still fail so there's a hard signal once a day.
+- As the owner, I want `data/` never to move back to an older generation, so that a lagging engine can't roll the
+  site backwards.
+
+## Task report
+
+| Behaviour | RED | GREEN |
+|---|---|---|
+| `fetch_v1.py`: stale exits `EXIT_STALE = 3` (other refusals stay 1). Writes `stale`, `generated_at` and `age_hours` to `$GITHUB_OUTPUT` when stale or fresh, nothing on other failures. `--stale-issue PATH` writes the issue body (marker, `generated_at`, age, limit, API URL, container logs, `fightcard-service health --staleness`, rollback) only when stale. | `AttributeError: EXIT_STALE`/`STALE_TITLE`, `SystemExit: 2` (unknown `--stale-issue`), `{} == {'stale': 'false', …}` | pass |
+| `fetch_v1.py`: a snapshot older than the committed `data/index.json` is skipped (exit 0, "older than … not going backwards", `stale=false`). An equal one is a no-op ("already holds"). An unknown committed age (unreadable, not an object, missing or malformed) doesn't block. Staleness is checked first, so stale and older still gives exit 3. | `unchanged(data)` False; data replaced by the equal snapshot | pass |
+| `refresh.yml` v1 fetch step (`id: fetch`): `EVENT_NAME`, `SCHEDULE` (`github.event.schedule`) and `DAILY_CRON` reach it through `env:`. Exit 3 on an hourly scheduled run becomes 0 with a `::warning::`; daily and manual stale runs keep 3; exit 1 always fails. The test runs the real step script under `bash -eo pipefail` with a fake `python3`. | `ValueError: substring not found` (no step) | 7/7 cases |
+| `refresh.yml` "Data API stale" issue step, mirroring the stale-model one. `if: ${{ !cancelled() && steps.fetch.outputs.stale != '' }}` makes it run after a failed daily stale fetch too, and never after other failures. Stale: create, or edit the open one. Fresh: close with a comment naming `generated_at`. Fresh with no issue: nothing. `issues: write` added to the v1 job only. The test runs the real script with a fake `gh`. | `StopIteration`/`ValueError` (no step); permissions `['contents:', 'write']` | pass |
+| Docs: `DEPLOY.md` (scripts table, mode table, both refusals, manual redeploy in v1 mode, the issue in Operating). | n/a | n/a |
+
+Tests adjusted, not weakened: `test_stale_snapshot_fails_with_its_age` now expects exit 3. The stale-model check now
+allows `gh issue` in `v1`, but still forbids `stale_issue` and the "Re-export finish model" title outside `pipeline`.
+During GREEN, the test's `env:` reader didn't understand an inline YAML comment, so the comment moved to the step's
+comment block.
+
+## Test specification (additions)
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 15 | Stale has its own exit code (3), outputs and issue body; other failures emit nothing; fresh emits `stale=false` | `test_fetch_v1.py::test_stale_*`, `::test_fresh_writes_stale_false`, `::test_other_failures_write_no_outputs`, `::test_issue_body_only_when_stale[*]` | unit | PASS |
+| 16 | Never backwards: older is skipped, equal is a no-op, newer replaces, unknown committed age doesn't block, staleness wins | `::test_older_*`, `::test_equal_*`, `::test_newer_*`, `::test_unknown_committed_age_does_not_block[*]`, `::test_staleness_wins_over_going_backwards` | unit | PASS |
+| 17 | Hourly stale passes; daily/manual stale and any exit 1 fail | `test_workflows.py::test_refresh_v1_stale_fails_only_daily_and_manual_runs[*]` (step script executed) | integration | PASS |
+| 18 | One issue: open, update, close with comment, or nothing; runs after a failed daily fetch; `issues: write` on v1 only | `test_workflows.py::test_refresh_v1_*issue*`, `::test_refresh_v1_job_permissions_are_minimal` | integration | PASS |
+
+## Commands and output
+
+```
+# RED (23e734a)
+$ mise x actionlint@1.7.12 shellcheck@0.11.0 -- bash -c 'ACTIONLINT=$(command -v actionlint) uv run --project pipeline pytest scripts/tests -q'
+25 failed, 139 passed, 7 deselected in 3.53s
+
+# GREEN (1cd1a76)
+$ (same, with --cov=scripts --cov-report=term-missing)
+scripts/fetch_v1.py   184   2   99%   74, 276        (non-http URL guard, __main__)
+164 passed, 7 deselected in 3.57s
+$ actionlint .github/workflows/*.yml                  # exit 0
+$ uv run --project pipeline pytest pipeline/tests scripts/tests -q
+481 passed, 8 skipped, 1 deselected in 15.72s
+$ cd site && npx vitest run                           # 128 passed (128)
+$ cd site && npx astro check                          # 0 errors, 0 warnings, 0 hints
+```
+
+## Known gaps
+
+- `DAILY_CRON` is now in two places in `refresh.yml` (the cron and the fetch step's env). A test pins both to
+  `should_run.DAILY_CRON`.
+- On an hourly stale run, the `gh issue edit` refreshes the body (and its age) every hour. That's one API call and
+  sends no notification. The job only fails on the daily run.
+- As before, nothing here has run on GitHub. `!cancelled()` and the skip behaviour are asserted as text and with
+  actionlint.
