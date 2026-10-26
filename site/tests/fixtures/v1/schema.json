@@ -1,0 +1,785 @@
+{
+  "$defs": {
+    "BestWin": {
+      "description": "The beaten opponent rated highest going into the bout (docs/ELO.md).",
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        },
+        "elo": {
+          "title": "Elo",
+          "type": "integer"
+        },
+        "opponent": {
+          "title": "Opponent",
+          "type": "string"
+        },
+        "opponent_id": {
+          "title": "Opponent Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "opponent_id",
+        "opponent",
+        "elo",
+        "date"
+      ],
+      "title": "BestWin",
+      "type": "object"
+    },
+    "Event": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        },
+        "fights": {
+          "items": {
+            "$ref": "#/$defs/Fight"
+          },
+          "title": "Fights",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "slug": {
+          "title": "Slug",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "upcoming",
+            "completed"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "date",
+        "status",
+        "fights"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "Fight": {
+      "properties": {
+        "blue": {
+          "title": "Blue",
+          "type": "string"
+        },
+        "finish_tier": {
+          "anyOf": [
+            {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Finish Tier"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "red": {
+          "title": "Red",
+          "type": "string"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Result"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "segment": {
+          "anyOf": [
+            {
+              "enum": [
+                "main",
+                "prelims",
+                "early_prelims"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Segment"
+        },
+        "tier_frozen_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tier Frozen At"
+        },
+        "title_fight": {
+          "default": false,
+          "title": "Title Fight",
+          "type": "boolean"
+        },
+        "weight_class": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weight Class"
+        }
+      },
+      "required": [
+        "id",
+        "red",
+        "blue"
+      ],
+      "title": "Fight",
+      "type": "object"
+    },
+    "Fighter": {
+      "properties": {
+        "best_win": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BestWin"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "details_fetched_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Details Fetched At"
+        },
+        "dob": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dob"
+        },
+        "elo": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elo"
+        },
+        "elo_inactive": {
+          "default": false,
+          "title": "Elo Inactive",
+          "type": "boolean"
+        },
+        "elo_peak": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elo Peak"
+        },
+        "elo_provisional": {
+          "default": false,
+          "title": "Elo Provisional",
+          "type": "boolean"
+        },
+        "height_in": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height In"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "nickname": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nickname"
+        },
+        "p4p_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "P4P Rank"
+        },
+        "reach_in": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reach In"
+        },
+        "recent_fights": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/PastFight"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recent Fights"
+        },
+        "record": {
+          "$ref": "#/$defs/Record"
+        },
+        "stance": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stance"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "Fighter",
+      "type": "object"
+    },
+    "Fighters": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Fighter"
+      },
+      "type": "object"
+    },
+    "ImportanceShare": {
+      "properties": {
+        "group": {
+          "title": "Group",
+          "type": "string"
+        },
+        "share": {
+          "title": "Share",
+          "type": "number"
+        }
+      },
+      "required": [
+        "group",
+        "share"
+      ],
+      "title": "ImportanceShare",
+      "type": "object"
+    },
+    "Index": {
+      "description": "/v1/index.json: data/index.json plus the contract version.",
+      "properties": {
+        "contract_version": {
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModelInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "recent": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Recent",
+          "type": "array"
+        },
+        "upcoming": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Upcoming",
+          "type": "array"
+        }
+      },
+      "required": [
+        "generated_at",
+        "upcoming",
+        "recent",
+        "contract_version"
+      ],
+      "title": "Index",
+      "type": "object"
+    },
+    "ModelInfo": {
+      "properties": {
+        "as_of": {
+          "title": "As Of",
+          "type": "string"
+        },
+        "importance": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ImportanceShare"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Importance"
+        },
+        "low_max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Low Max"
+        },
+        "medium_max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Medium Max"
+        },
+        "oos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OosEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "tiers": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/TierStats"
+              },
+              "propertyNames": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tiers"
+        },
+        "train_rows": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Train Rows"
+        },
+        "trees": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trees"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "as_of",
+        "version"
+      ],
+      "title": "ModelInfo",
+      "type": "object"
+    },
+    "OosEvidence": {
+      "properties": {
+        "bouts": {
+          "title": "Bouts",
+          "type": "integer"
+        },
+        "constant_log_loss": {
+          "title": "Constant Log Loss",
+          "type": "number"
+        },
+        "log_loss": {
+          "title": "Log Loss",
+          "type": "number"
+        }
+      },
+      "required": [
+        "bouts",
+        "log_loss",
+        "constant_log_loss"
+      ],
+      "title": "OosEvidence",
+      "type": "object"
+    },
+    "PastFight": {
+      "description": "One completed bout from the fighter's ufcstats history, from their side.",
+      "properties": {
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "event": {
+          "title": "Event",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "opponent": {
+          "title": "Opponent",
+          "type": "string"
+        },
+        "opponent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Opponent Id"
+        },
+        "result": {
+          "enum": [
+            "win",
+            "loss",
+            "draw",
+            "nc"
+          ],
+          "title": "Result",
+          "type": "string"
+        },
+        "round": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Round"
+        },
+        "time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time"
+        }
+      },
+      "required": [
+        "result",
+        "opponent",
+        "event"
+      ],
+      "title": "PastFight",
+      "type": "object"
+    },
+    "Record": {
+      "properties": {
+        "d": {
+          "default": 0,
+          "title": "D",
+          "type": "integer"
+        },
+        "l": {
+          "default": 0,
+          "title": "L",
+          "type": "integer"
+        },
+        "nc": {
+          "default": 0,
+          "title": "Nc",
+          "type": "integer"
+        },
+        "w": {
+          "default": 0,
+          "title": "W",
+          "type": "integer"
+        }
+      },
+      "title": "Record",
+      "type": "object"
+    },
+    "Result": {
+      "properties": {
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "win",
+                "draw",
+                "nc"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Outcome"
+        },
+        "round": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Round"
+        },
+        "time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time"
+        },
+        "winner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Winner"
+        }
+      },
+      "title": "Result",
+      "type": "object"
+    },
+    "TierStats": {
+      "properties": {
+        "bouts": {
+          "title": "Bouts",
+          "type": "integer"
+        },
+        "finish_rate": {
+          "title": "Finish Rate",
+          "type": "number"
+        },
+        "mean_predicted": {
+          "title": "Mean Predicted",
+          "type": "number"
+        }
+      },
+      "required": [
+        "bouts",
+        "finish_rate",
+        "mean_predicted"
+      ],
+      "title": "TierStats",
+      "type": "object"
+    }
+  },
+  "$id": "https://ufc-data.xlobax.com/v1/schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "index.json is #/$defs/Index, events/{id}.json is #/$defs/Event, fighters.json is #/$defs/Fighters.",
+  "title": "fightcard /v1 (contract 1)"
+}

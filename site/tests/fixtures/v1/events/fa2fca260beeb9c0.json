@@ -1,0 +1,76 @@
+{
+  "date": "2026-12-12",
+  "fights": [
+    {
+      "blue": "f166e93d04a8c274",
+      "finish_tier": "high",
+      "id": "fc11508eb5ae83b0",
+      "red": "07225ba28ae309b6",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "e5549c82bfb5582d",
+      "finish_tier": "high",
+      "id": "5a4802117b3f5fc3",
+      "red": "f14cf73e51b29254",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "35673bf5204524ee",
+      "finish_tier": "high",
+      "id": "18e7758b06ce465c",
+      "red": "c1085e1701b13eca",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "814e5233e2acf2ee",
+      "finish_tier": "low",
+      "id": "01751a4065e30e97",
+      "red": "792be9a24df82ed6",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Flyweight"
+    },
+    {
+      "blue": "f1ab6f37492c630a",
+      "finish_tier": "low",
+      "id": "c1e90dd65e631ebf",
+      "red": "6a740daf1b279661",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    },
+    {
+      "blue": "c15fa95b9a12fde4",
+      "finish_tier": null,
+      "id": "2b9718094cda9645",
+      "red": "15b1f83a90302adf",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    }
+  ],
+  "id": "fa2fca260beeb9c0",
+  "location": "Las Vegas, Nevada, USA",
+  "name": "UFC 335: Oliveira vs. Lopes",
+  "slug": "ufc-335-oliveira-vs-lopes",
+  "status": "upcoming"
+}
