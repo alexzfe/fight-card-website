@@ -2,6 +2,7 @@
 data/ for it."""
 
 import http.server
+import io
 import json
 import tarfile
 import threading
@@ -475,3 +476,42 @@ def test_unknown_fighter_is_named(data, monkeypatch, capsys):
 
 def test_fights_between_known_fighters_are_accepted(data, monkeypatch):
     assert run(data, snapshot(files() | {"events/e1.json": event()}), monkeypatch) == 0
+
+
+# --- review fix 3: the size cap counts the decompressed stream, headers included ------------------------------
+
+
+def with_pax_header(contents: dict[str, bytes], pax_bytes: int) -> bytes:
+    """contents as a .tar.gz, plus a PAX header on fighters.json carrying pax_bytes of junk (not counted in size)."""
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz", format=tarfile.PAX_FORMAT) as tar:
+        for name in ["events", "images", *sorted(contents)]:
+            info = tarfile.TarInfo(name)
+            if name in ("events", "images"):
+                info.type, info.mode = tarfile.DIRTYPE, 0o755
+                tar.addfile(info)
+                continue
+            info.size, info.mode = len(contents[name]), 0o644
+            if name == "fighters.json":
+                info.pax_headers = {"comment": "x" * pax_bytes}
+            tar.addfile(info, io.BytesIO(contents[name]))
+    return buf.getvalue()
+
+
+def test_oversize_pax_header_is_refused(data, monkeypatch, capsys):
+    """A PAX header isn't part of any member's size, so only a cap on the decompressed stream catches it."""
+    monkeypatch.setattr(fetch_v1, "MAX_STREAM_BYTES", 200_000, raising=False)
+    err = refused(data, with_pax_header(files(), 300_000), monkeypatch, capsys)
+    assert "unsafe" in err and "200000" in err
+
+
+def test_small_pax_header_is_fine(data, monkeypatch):
+    monkeypatch.setattr(fetch_v1, "MAX_STREAM_BYTES", 200_000, raising=False)
+    assert run(data, with_pax_header(files(), 1000), monkeypatch) == 0
+
+
+def test_large_member_is_copied_whole(data, monkeypatch):
+    """Members are copied in chunks; a file bigger than one chunk still arrives intact."""
+    big = bytes(range(256)) * 20_000  # 5 MB
+    assert run(data, snapshot(files() | {"images/big.webp": big}), monkeypatch) == 0
+    assert (data / "images" / "big.webp").read_bytes() == big
