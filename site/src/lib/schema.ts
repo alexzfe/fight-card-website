@@ -83,7 +83,21 @@ export const Event = z.object({
   fights: z.array(Fight),
 });
 
-export const ModelInfo = z.object({ as_of: isoDate, version: z.string() });
+const TierStats = z.object({ bouts: z.number().int(), finish_rate: z.number(), mean_predicted: z.number() });
+
+// The export summary (pipeline/src/fightcard/score/summary.py) is optional so older data still validates;
+// the how-it-works page requires it (lib/finish-model.ts).
+export const ModelInfo = z.object({
+  as_of: isoDate,
+  version: z.string(),
+  train_rows: z.number().int().nullish(),
+  trees: z.number().int().nullish(),
+  low_max: z.number().nullish(),
+  medium_max: z.number().nullish(),
+  oos: z.object({ bouts: z.number().int(), log_loss: z.number(), constant_log_loss: z.number() }).nullish(),
+  tiers: z.object({ low: TierStats, medium: TierStats, high: TierStats }).nullish(),
+  importance: z.array(z.object({ group: z.string(), share: z.number() })).nullish(),
+});
 
 export const Index = z.object({
   generated_at: isoTimestamp,
@@ -105,3 +119,4 @@ export type Result = z.infer<typeof Result>;
 export type Fight = z.infer<typeof Fight>;
 export type Event = z.infer<typeof Event>;
 export type Index = z.infer<typeof Index>;
+export type ModelInfo = z.infer<typeof ModelInfo>;
