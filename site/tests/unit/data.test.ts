@@ -21,7 +21,7 @@ describe('loadData with the fixture set', () => {
     expect(data.fighters['a1a1a1a1a1a1a1a1']?.name).toBe('Alex Alpha');
   });
   it('exposes the model info', () => {
-    expect(data.index.model).toEqual({ as_of: '2026-10-01', version: 'v1-test' });
+    expect(data.index.model).toMatchObject({ as_of: '2026-10-01', version: 'v1-test', trees: 300 });
   });
   it('keeps fights in card order', () => {
     expect(data.events[0]!.fights.map((f) => f.id)[0]).toBe('f0000000000000a1');

@@ -65,7 +65,6 @@ $ npx astro check
 
 ## On a model re-export
 
-`tests/unit/finish-model.test.ts` fails until `site/src/lib/finish-model.ts` matches the new export. Copy the
-values from `model/manifest.json` and `model/thresholds.json`. Recompute `importance` from `model/model.txt`:
-total gain per column, grouped by base feature (strip `_min`/`_max`/`_sum`/`_absdiff`/`_pair`) into the seven
-themes listed in that file.
+Superseded: `score` now writes these numbers into `index.model` (`pipeline/src/fightcard/score/summary.py`), and
+the page reads them from there, so a re-export needs no site edits. The hand grouping described here became
+`summary.GROUPS`; `test_score_summary.py` checks it reproduces the shares first published for the 2026-10-14 export.

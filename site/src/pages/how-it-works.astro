@@ -4,10 +4,11 @@ import EventRail from '../components/EventRail.astro';
 import LineChart from '../components/LineChart.astro';
 import TierBadge from '../components/TierBadge.astro';
 import { decay, eloChange, expectedScore, kFactor } from '../lib/elo-math';
-import { FINISH_MODEL as M } from '../lib/finish-model';
+import { finishModel } from '../lib/finish-model';
 import { formatDate } from '../lib/format';
 import { site } from '../lib/site-data';
 
+const M = finishModel(site.index.model);
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 const signed = (v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(Math.round(v))}`;
 const count = (v: number) => v.toLocaleString('en-US');
