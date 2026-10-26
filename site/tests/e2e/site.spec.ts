@@ -232,11 +232,30 @@ test('Stats lists each corner\'s Elo, peak and best win', async ({ page }) => {
   await expect(fights.nth(3).locator('.stats th', { hasText: /^Elo$/ })).toHaveCount(0); // no Elo on either side
 });
 
-test('nothing on the card hides behind a tooltip', async ({ page }) => {
+test('the form tiles are the only tooltips on the card', async ({ page }) => {
   for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {
     await page.goto(url);
-    await expect(page.locator('[data-tip], [title]'), url).toHaveCount(0);
+    await expect(page.locator('[title]'), url).toHaveCount(0);
+    await expect(page.locator('[data-tip]:not([data-testid="form"] > span)'), url).toHaveCount(0);
   }
+});
+
+test('hovering or tapping a form tile names the opponent', async ({ page }) => {
+  await page.goto('/');
+  const form = page.getByTestId('fight').first().getByTestId('form').first();
+  const tile = form.locator('span').first();
+  await expect(tile).toHaveAttribute('data-tip', 'Dan Delta · KO/TKO R1 · Jun 2026');
+  const tip = () => tile.evaluate((el) => getComputedStyle(el, '::after').visibility);
+  expect(await tip()).toBe('hidden');
+  await tile.hover();
+  await expect.poll(tip).toBe('visible');
+  expect(await tile.evaluate((el) => getComputedStyle(el, '::after').content)).toContain('Dan Delta');
+  await page.mouse.move(0, 0);
+  await expect.poll(tip).toBe('hidden');
+  await tile.focus(); // a tap focuses the tile
+  await expect.poll(tip).toBe('visible');
+  // Not a Tab stop: Stats lists the same fights.
+  await expect(tile).toHaveAttribute('tabindex', '-1');
 });
 
 test('fighters without history show no form and no last-fights list', async ({ page }) => {
