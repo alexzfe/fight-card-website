@@ -8,6 +8,8 @@ import {
   formatLongDate,
   formatReach,
   eloTags,
+  eloTip,
+  tagTip,
   formatElo,
   formatBestWin,
   formatRecord,
@@ -70,6 +72,27 @@ describe('eloTags', () => {
   });
   it('is empty when neither applies', () => {
     expect(eloTags({ elo_provisional: false, elo_inactive: false })).toEqual([]);
+  });
+});
+
+describe('eloTip', () => {
+  const win = { opponent_id: 'x', opponent: 'Chris Duncan', elo: 1634, date: '2026-04-11' };
+  it('names the peak and the best win', () => {
+    expect(eloTip({ elo_peak: 1659, best_win: win })).toBe('Peak 1659 · Best win: Chris Duncan (1634)');
+  });
+  it('gives whichever one is known', () => {
+    expect(eloTip({ elo_peak: 1793, best_win: null })).toBe('Peak 1793');
+    expect(eloTip({ elo_peak: null, best_win: win })).toBe('Best win: Chris Duncan (1634)');
+  });
+  it('is null when neither is known', () => {
+    expect(eloTip({ elo_peak: undefined, best_win: undefined })).toBeNull();
+  });
+});
+
+describe('tagTip', () => {
+  it('says what each tag means', () => {
+    expect(tagTip('provisional')).toBe('Fewer than 3 UFC fights');
+    expect(tagTip('inactive')).toBe('No fight in the last 12 months');
   });
 });
 

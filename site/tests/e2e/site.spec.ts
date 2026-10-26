@@ -232,14 +232,6 @@ test('Stats lists each corner\'s Elo, peak and best win', async ({ page }) => {
   await expect(fights.nth(3).locator('.stats th', { hasText: /^Elo$/ })).toHaveCount(0); // no Elo on either side
 });
 
-test('the form tiles are the only tooltips on the card', async ({ page }) => {
-  for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {
-    await page.goto(url);
-    await expect(page.locator('[title]'), url).toHaveCount(0);
-    await expect(page.locator('[data-tip]:not([data-testid="form"] > span)'), url).toHaveCount(0);
-  }
-});
-
 test('hovering or tapping a form tile names the opponent', async ({ page }) => {
   await page.goto('/');
   const form = page.getByTestId('fight').first().getByTestId('form').first();
@@ -426,4 +418,33 @@ test.describe('how it works page', () => {
     }));
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
   });
+});
+
+test('the Elo and its tags explain themselves on hover or tap', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  const visible = (el: import('@playwright/test').Locator) => () =>
+    el.evaluate((e) => getComputedStyle(e, '::after').visibility);
+
+  const elo = fights.first().locator('.corner-red').getByTestId('elo');
+  await expect(elo).toHaveAttribute('data-tip', 'Peak 1655 · Best win: Finn Foxtrot (1702)');
+  expect(await visible(elo)()).toBe('hidden');
+  await elo.hover();
+  await expect.poll(visible(elo)).toBe('visible');
+  // Nothing to say: no peak, no best win.
+  await expect(fights.nth(1).locator('.corner-blue').getByTestId('elo')).not.toHaveAttribute('data-tip');
+
+  const tag = fights.nth(1).locator('.corner-blue').getByTestId('elo-tag');
+  await expect(tag).toHaveAttribute('data-tip', 'Fewer than 3 UFC fights');
+  await tag.focus(); // a tap focuses it
+  await expect.poll(visible(tag)).toBe('visible');
+  await expect(fights.nth(2).locator('.corner-red').getByTestId('elo-tag')).toHaveAttribute(
+    'data-tip',
+    'No fight in the last 12 months',
+  );
+});
+
+test('an event tile shows the full event name on hover', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByTestId('event-tile').nth(1)).toHaveAttribute('title', 'UFC 323: Alpha vs. Bravo');
 });
