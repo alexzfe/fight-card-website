@@ -4,7 +4,8 @@
 # - pipeline (default, or unset): scrape -> segments -> images -> score here, daily at 06:00 UTC and hourly around
 #   event days (scripts/should_run.py decides; other hourly runs exit early). A non-blocking shadow job then diffs
 #   data/ against the fightcard-engine's /v1/ API into the job summary.
-# - v1: download the engine's /v1/ snapshot (scripts/fetch_v1.py) every run; a stale or unusable one fails the run.
+# - v1: download the engine's /v1/ snapshot (scripts/fetch_v1.py) every run; an unusable one fails the run. A stale
+#   one keeps data/ and opens the single "Data API stale" issue; only the daily and manual runs also fail on it.
 #
 # Any step exiting non-zero fails the job before anything is committed or deployed.
 #
@@ -137,17 +138,33 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+      issues: write
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
       sha: ${{ steps.commit.outputs.sha }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      # Refuses a stale (> 26 h), unsafe or non-1.x snapshot: the run fails, data/ stays as committed.
+      # Refuses an unsafe or non-1.x snapshot (exit 1: the run fails) and a stale (> 26 h) one (exit 3). Stale fails
+      # only the daily and manual runs; hourly runs go on with the committed data/ and leave the alert to the issue.
+      # A snapshot no newer than data/ is skipped (exit 0). data/ stays as committed in all of these. DAILY_CRON must
+      # match the daily cron above (a test checks it).
       - name: Fetch /v1/ snapshot
+        id: fetch
         env:
           V1_BASE: https://ufc-data.xlobax.com
-        run: python3 scripts/fetch_v1.py --base "$V1_BASE" --data data
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+          DAILY_CRON: "0 6 * * *"
+        run: |
+          status=0
+          python3 scripts/fetch_v1.py --base "$V1_BASE" --data data \
+            --stale-issue "$RUNNER_TEMP/v1-stale-issue.md" || status=$?
+          if [ "$status" -eq 3 ] && [ "$EVENT_NAME" = schedule ] && [ "$SCHEDULE" != "$DAILY_CRON" ]; then
+            echo "::warning::/v1/ is stale; kept the committed data/ (see the \"Data API stale\" issue)"
+            exit 0
+          fi
+          exit "$status"
 
       - name: Commit data
         id: commit
@@ -164,6 +181,27 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # Also after a daily run failed on staleness. No `stale` output (any other failure) leaves the issue alone.
+      - name: Open, update or close the "Data API stale" issue
+        if: ${{ !cancelled() && steps.fetch.outputs.stale != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STALE: ${{ steps.fetch.outputs.stale }}
+          GENERATED_AT: ${{ steps.fetch.outputs.generated_at }}
+          TITLE: Data API stale
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$TITLE\" in:title" \
+            --json number,title --jq ".[] | select(.title == env.TITLE) | .number" | head -n1)
+          if [ "$STALE" = true ]; then
+            if [ -n "$number" ]; then
+              gh issue edit "$number" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/v1-stale-issue.md"
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body-file "$RUNNER_TEMP/v1-stale-issue.md"
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --repo "$GITHUB_REPOSITORY" --comment "/v1/ is fresh again (generated_at $GENERATED_AT)."
+          fi
 
   # One of pipeline/v1 is always skipped, hence always(); a failed or cancelled source never builds.
   build:

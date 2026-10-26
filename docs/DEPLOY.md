@@ -18,7 +18,7 @@ the [infra](https://github.com/alexzfe/infra) repo's `deploy-app` on the Hetzner
 | `.github/workflows/release.yml` | From `infra/templates/app-release.yml`. PR → tests. Push to main → tests, build, deploy staging. `v*` tag → deploy that commit's image to prod and cut a GitHub Release. |
 | `.github/workflows/refresh.yml` | Cron. Gets `data/` from the pipeline or the engine's `/v1/` API (`DATA_SOURCE`, below), commits it, then builds and deploys prod. In pipeline mode it also maintains the stale-model issue and shadows `/v1/`. |
 | `scripts/should_run.py` | Decides whether a pipeline-mode refresh run does any work (see below). |
-| `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or fails the run when it is stale, unsafe or not contract 1.x. |
+| `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or refuses it when it is unsafe or not contract 1.x (exit 1), stale (exit 3, plus the "Data API stale" issue body) or no newer than `data/` (exit 0, nothing changes). |
 | `scripts/v1_shadow.py` | `pipeline` mode: writes how `/v1/` differs from the pipeline's `data/` to the job summary. Never fails. |
 | `scripts/stale_issue.py` | Builds the "Re-export finish model" issue body from `data/stale_fighters.json`. |
 | infra `sites.yml` | The `ufc` entry: image, port 8080, `health_path: /healthz`, both hosts, default memory caps (1g prod, 256m staging). On branch `add-ufc-site` in the infra repo. |
@@ -35,7 +35,7 @@ committed `data/`, never from the browser, and `data/` stays in git (audit trail
 | `DATA_SOURCE` | Jobs | What happens |
 |---|---|---|
 | `pipeline` (default; also when unset) | gate → pipeline → build → prod, plus `shadow` | Today's refresh (below). The `shadow` job then downloads the [fightcard-engine](https://github.com/alexzfe/fightcard-engine)'s `https://ufc-data.xlobax.com/v1/snapshot.tar.gz` and writes a diff summary to its job summary: how many events, fights, finish tiers and fighter Elos differ, with examples and the largest Elo gap. `generated_at` and what only `/v1/` has (`contract_version`, `Result.outcome`, `schema.json`) don't count. It never fails or holds up the refresh: nothing waits for it, it has `continue-on-error`, and when the API is down it notes "v1 not reachable" and succeeds. |
-| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick (the download is ~1.5 MB). |
+| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick (the download is ~1.5 MB) and maintains the "Data API stale" issue (below). |
 
 **Switch to `/v1/`** once the shadow summaries have shown no unexplained differences for a while:
 
@@ -55,12 +55,20 @@ The first `/v1/` commit drops `images/misses.json` and `stale_fighters.json` fro
 them, and the site reads neither) and adds `schema.json` and `contract_version`. After a rollback, `images` retries
 the old misses once and `score` writes `stale_fighters.json` again, so nothing needs restoring.
 
-**What `fetch_v1.py` refuses.** Each refusal fails the run with one line saying why, before anything is committed,
-and the site keeps serving the last committed `data/`:
+**What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
+committed and the site keeps serving the last committed `data/`. The first two have their own handling;
+the rest fail the run (exit 1):
 
-- **Stale:** `generated_at` older than 26 hours (`--max-age-hours` to change it). This is the staleness alert: a
-  failed scheduled run emails the owner. Expect one failed run per cron tick (hourly) until the engine catches up;
-  if the engine is down for long, roll back to `pipeline`.
+- **Stale:** `generated_at` older than 26 hours (`--max-age-hours` to change it). Exit 3, so the workflow can tell it
+  apart. The alert is a single issue titled **"Data API stale"**, opened on the first stale run and updated on each
+  one after (body: `generated_at`, its age, the API URL, what to check: the engine's container logs and
+  `fightcard-service health --staleness`). Hourly runs then succeed with the committed `data/` (a warning in the
+  log, no failure email); the daily 06:00 UTC run and manual runs still fail, so at most one failure email a day.
+  The first fresh fetch closes the issue with a comment. If the engine is down for long, roll back to `pipeline`.
+- **Older than `data/`:** a snapshot whose `generated_at` is older than the committed `data/index.json`'s is skipped
+  (exit 0, "not going backwards"); an equal one is a no-op. Either way there is no data commit, so nothing is built
+  on a scheduled run. This can happen right after switching from `pipeline`, while the engine is a few minutes
+  behind; the next run catches up. If `data/index.json` has no readable `generated_at`, nothing blocks the swap.
 - **Another contract:** `index.json`'s `contract_version` isn't `1` or `1.x`.
 - **Unsafe archive:** absolute paths, `..`, links, devices or anything but regular files and directories, names
   outside the `/v1/` layout (`index.json`, `fighters.json`, `schema.json`, `events/*`, `images/*`), duplicate
@@ -213,10 +221,13 @@ This deploys the image staging already ran and cuts a GitHub Release. Check http
 
 - **Roll back prod:** re-run the prod deploy of an earlier tag (Actions → release → that tag's run → Re-run).
   On the box: `sudo deploy-app ufc prod <old-sha>`.
-- **Redeploy without new data:** `gh workflow run refresh.yml` (a manual run always rebuilds and deploys).
+- **Redeploy without new data:** `gh workflow run refresh.yml` (a manual run always rebuilds and deploys). In `v1`
+  mode it fails like any other refusal when `/v1/` is stale.
 - **Refresh failed:** nothing was committed or deployed, and the site keeps serving the previous data. Read the
   failing step's log. A ufcstats challenge failure or a 0-events parse fails the `scrape` step on purpose. In `v1`
   mode, the "Fetch /v1/ snapshot" step says why it refused (stale, contract, unsafe, unreachable): see above.
 - **Which source is live:** `gh variable get DATA_SOURCE --repo alexzfe/fight-card-website` (unset means
   `pipeline`). Data commits from `/v1/` read "data: refresh from /v1/ …".
 - **"Re-export finish model" issue:** follow the steps in its body. The next refresh rescores and closes it.
+- **"Data API stale" issue** (`v1` mode): the engine hasn't published for over 26 hours. Check what its body lists on
+  the engine host. The next fresh fetch closes it; until then hourly runs stay green and the daily run fails.

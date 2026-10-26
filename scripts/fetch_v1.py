@@ -2,11 +2,15 @@
 
 Downloads <base>/v1/snapshot.tar.gz (one generation, see the engine's docs/CONTRACT.md) and refuses it, leaving
 data/ untouched and exiting 1, when it is unsafe to extract (absolute paths, `..`, links or other non-regular
-files, names outside the /v1/ layout, too big), from another contract major, or stale: `generated_at` older than
---max-age-hours (26 by default). A failed scheduled run emails the owner, so that is the staleness alert.
+files, names outside the /v1/ layout, too big) or from another contract major. A stale one (`generated_at` older
+than --max-age-hours, 26 by default) exits 3 instead, so refresh.yml can tell it apart: hourly runs then keep
+data/ quietly and keep the "Data API stale" issue (body from --stale-issue) open, the daily and manual runs fail.
 
+A snapshot no newer than the committed data/index.json is skipped with exit 0: data/ never goes backwards.
 Otherwise the snapshot is extracted beside data/ and swapped in with two renames. data/ then holds exactly the
 snapshot: the pipeline's bookkeeping (images/misses.json, stale_fighters.json) goes, since the site reads neither.
+
+Writes stale=true|false, generated_at and age_hours to $GITHUB_OUTPUT, except on other failures.
 
 Stdlib only, so the job doesn't have to install the pipeline.
 
@@ -30,6 +34,8 @@ import zlib
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from gh_output import emit
+
 MAX_AGE_HOURS = 26.0  # the daily run plus slack; the engine refreshes more often than that
 MAX_DOWNLOAD_BYTES = 100 * 2**20  # the snapshot is ~1.5 MB today
 MAX_EXTRACTED_BYTES = 200 * 2**20
@@ -40,10 +46,23 @@ TOP_DIRS = {"events", "images"}  # each holds files only, one level deep
 REQUIRED = ("index.json", "fighters.json")
 _UTC_Z = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z")
 _VERSION = re.compile(r"\d+(\.\d+)*")
+EXIT_STALE = 3  # not 1 (any other refusal) or 2 (argparse's usage error)
+STALE_TITLE = "Data API stale"
+# Lets a human recognise the bot's issue regardless of edits to the title.
+STALE_MARKER = "<!-- fightcard:v1-stale -->"
 
 
 class FetchError(Exception):
     """The snapshot can't be downloaded or isn't fit to replace data/."""
+
+
+class StaleError(FetchError):
+    """The snapshot is fine but older than --max-age-hours."""
+
+    def __init__(self, index: dict, hours: float, max_age_hours: float):
+        super().__init__(f"/v1/ is stale: generated_at {index['generated_at']} is {hours:.1f} h old "
+                         f"(limit {max_age_hours:g} h); keeping the committed data/")
+        self.index, self.hours, self.max_age_hours = index, hours, max_age_hours
 
 
 def snapshot_url(base: str) -> str:
@@ -138,8 +157,39 @@ def age_hours(index: dict, now: datetime) -> float:
 def check_fresh(index: dict, now: datetime, max_age_hours: float) -> None:
     hours = age_hours(index, now)
     if hours > max_age_hours:
-        raise FetchError(f"/v1/ is stale: generated_at {index['generated_at']} is {hours:.1f} h old "
-                         f"(limit {max_age_hours:g} h); keeping the committed data/")
+        raise StaleError(index, hours, max_age_hours)
+
+
+def committed_at(data: Path) -> str | None:
+    """generated_at of the committed data/index.json, or None when it can't be told (then nothing blocks the swap)."""
+    try:
+        index = json.loads((data / "index.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    generated_at = index.get("generated_at") if isinstance(index, dict) else None
+    return generated_at if isinstance(generated_at, str) and _UTC_Z.fullmatch(generated_at) else None
+
+
+def stale_issue_body(error: StaleError, url: str) -> str:
+    return "\n".join([
+        STALE_MARKER,
+        f"The data API's `/v1/` snapshot is stale: `generated_at` is {error.index['generated_at']}, "
+        f"{error.hours:.1f} h old (the limit is {error.max_age_hours:g} h).",
+        "",
+        "The site keeps serving the last committed `data/`. Hourly refresh runs keep checking without failing; the "
+        "daily 06:00 UTC run and manual runs fail until `/v1/` is fresh again. The first fresh fetch closes this issue.",
+        "",
+        f"API: {url}",
+        "",
+        "What to check on the engine host:",
+        "",
+        "- the fightcard-engine's container logs: did the last refresh or publish fail?",
+        "- `fightcard-service health --staleness`",
+        "",
+        "If the engine stays down, roll back to the pipeline (docs/DEPLOY.md):",
+        "`gh variable set DATA_SOURCE --body pipeline --repo alexzfe/fight-card-website`.",
+        "",
+    ])
 
 
 def swap(new: Path, data: Path) -> None:
@@ -160,8 +210,9 @@ def swap(new: Path, data: Path) -> None:
         shutil.rmtree(graveyard, ignore_errors=True)
 
 
-def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> dict:
-    """Replace data with the snapshot in blob, or raise and leave it alone. Returns the snapshot's index."""
+def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple[dict, str | None]:
+    """Replace data with the snapshot in blob, or raise and leave it alone. Returns the snapshot's index and, when
+    data was kept because the snapshot is no newer than it, the committed generated_at (else None)."""
     data = data.absolute()
     data.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(dir=data.parent, prefix=f".{data.name}.v1-"))
@@ -170,8 +221,11 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> dict:
         extract(blob, new)
         index = read_index(new)
         check_fresh(index, now, max_age_hours)
+        ours = committed_at(data)
+        if ours and datetime.fromisoformat(index["generated_at"]) <= datetime.fromisoformat(ours):
+            return index, ours
         swap(new, data)
-        return index
+        return index, None
     finally:
         shutil.rmtree(staging, ignore_errors=True)
 
@@ -190,16 +244,31 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-age-hours", type=float, default=MAX_AGE_HOURS,
                         help=f"refuse a snapshot generated longer ago than this (default {MAX_AGE_HOURS:g})")
     parser.add_argument("--now", help="ISO 8601 time to judge staleness against (default: the clock)")
+    parser.add_argument("--stale-issue", type=Path, help="when stale, write the issue body here")
     args = parser.parse_args(argv)
 
     url = snapshot_url(args.base)
+    now = parse_now(args.now)
     try:
-        index = fetch(download(url, MAX_DOWNLOAD_BYTES), args.data, parse_now(args.now), args.max_age_hours)
+        index, kept = fetch(download(url, MAX_DOWNLOAD_BYTES), args.data, now, args.max_age_hours)
+    except StaleError as e:
+        print(f"fetch_v1: {e}", file=sys.stderr)
+        emit(stale=True, generated_at=e.index["generated_at"], age_hours=f"{e.hours:.1f}")
+        if args.stale_issue:
+            args.stale_issue.write_text(stale_issue_body(e, url))
+        return EXIT_STALE
     except (FetchError, OSError) as e:
         print(f"fetch_v1: {e}", file=sys.stderr)
         return 1
-    print(f"fetch_v1: {args.data} is now {url} (generated_at {index['generated_at']}, "
-          f"contract {index['contract_version']})")
+    emit(stale=False, generated_at=index["generated_at"], age_hours=f"{age_hours(index, now):.1f}")
+    theirs = index["generated_at"]
+    if kept and datetime.fromisoformat(kept) == datetime.fromisoformat(theirs):
+        print(f"fetch_v1: {args.data} already holds /v1/ generated_at {theirs}; nothing to do")
+    elif kept:
+        print(f"fetch_v1: kept {args.data}: /v1/ generated_at {theirs} is older than the committed {kept}; "
+              "not going backwards")
+    else:
+        print(f"fetch_v1: {args.data} is now {url} (generated_at {theirs}, contract {index['contract_version']})")
     return 0
 
 
