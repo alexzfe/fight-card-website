@@ -111,7 +111,7 @@ export const Index = z.object({
 
 export const Fighters = z.record(z.string(), Fighter);
 
-// data/rankings.json (the engine's /v1/rankings.json, contract 1.x); optional, so older data still validates.
+// data/rankings.json (the engine's /v1/rankings.json, contract 1.2+); optional, so older data still validates.
 const P4pEntry = z.object({
   rank: z.number().int().positive(), // 1..n within its list
   id: z.string().min(1),

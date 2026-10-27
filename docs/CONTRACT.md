@@ -35,7 +35,7 @@ is then the source of truth). It's the layout above, additively:
 - `Fight.result.outcome`: `"win" | "draw" | "nc" | null`. `winner` is `null` for both a draw and a no contest;
   `outcome` tells them apart. The site validates it but doesn't show it yet.
 - `schema.json` is the JSON Schema of the API. The site ignores it.
-- `rankings.json` (optional, contract 1.x): `{as_of, p4p: {men, women}, active}` for the site's Rankings tab. Each P4P
+- `rankings.json` (optional, contract 1.2+): `{as_of, p4p: {men, women}, active}` for the site's Rankings tab. Each P4P
   entry is `{rank, id, name, elo, division, image}` (men up to 15, women up to 10, ranks 1..n in order; `image` is a path
   under `data/` or `null`); each `active` row is `{id, name, elo, division, p4p_rank, provisional}`, best Elo first.
   Without the file the site builds with no Rankings page and no link. The site checks the ranks, the headshot files and
