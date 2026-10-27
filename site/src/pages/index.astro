@@ -3,16 +3,15 @@ import Base from '../layouts/Base.astro';
 import EventRail from '../components/EventRail.astro';
 import EventCard from '../components/EventCard.astro';
 import { nextEvent } from '../lib/events';
-import { formatLongDate } from '../lib/format';
+import { SITE_NAME, eventJsonLd, homeDescription, homeTitle } from '../lib/seo';
 import { site } from '../lib/site-data';
 
 const event = nextEvent(site.events);
+const jsonLd: object[] = [{ '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: Astro.site!.href }];
+if (event) jsonLd.push(eventJsonLd(event, site.fighters, new URL(`/events/${event.slug}/`, Astro.site).href));
 ---
 
-<Base
-  title={event ? `${event.name} · UFC fight card` : 'UFC fight cards'}
-  description={event ? `${event.name}, ${formatLongDate(event.date)}: full card with finish chances.` : 'Upcoming UFC fight cards.'}
->
+<Base title={homeTitle(event)} description={homeDescription(event)} jsonLd={jsonLd}>
   <EventRail events={site.events} current={event} />
   <main>
     {event ? <EventCard event={event} fighters={site.fighters} /> : <p class="empty">No events scheduled.</p>}

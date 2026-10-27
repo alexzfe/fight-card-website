@@ -6,8 +6,12 @@ import TierBadge from '../components/TierBadge.astro';
 import { decay, eloChange, expectedScore, kFactor } from '../lib/elo-math';
 import { finishModel } from '../lib/finish-model';
 import { formatDate } from '../lib/format';
+import { SITE_NAME } from '../lib/seo';
 import { site } from '../lib/site-data';
 
+const TITLE = 'How finish chance and Elo work · UFC fight card';
+const DESCRIPTION =
+  'How the finish-chance tiers and the fighter Elo ratings on the fight cards are calculated, with formulas and charts.';
 const M = finishModel(site.index.model);
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 const signed = (v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(Math.round(v))}`;
@@ -67,8 +71,20 @@ const scores = [
 ---
 
 <Base
-  title="How finish chance and Elo work · UFC fight card"
-  description="How the finish-chance tiers and the fighter Elo ratings on the fight cards are calculated, with formulas and charts."
+  title={TITLE}
+  description={DESCRIPTION}
+  ogType="article"
+  jsonLd={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: TITLE,
+      description: DESCRIPTION,
+      url: new URL(Astro.url.pathname, Astro.site).href,
+      ...(site.index.model && { dateModified: site.index.model.as_of }),
+      publisher: { '@type': 'Organization', name: SITE_NAME },
+    },
+  ]}
 >
   <EventRail events={site.events} current={undefined} />
   <main class="explainer">

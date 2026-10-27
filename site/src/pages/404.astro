@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import EventRail from '../components/EventRail.astro';
+import { site } from '../lib/site-data';
+---
+
+<Base title="Page not found · UFC fight cards" description="This page doesn't exist. The current UFC fight card is on the home page." noindex>
+  <EventRail events={site.events} current={undefined} />
+  <main>
+    <header class="event-head">
+      <h1><span class="headline">Page not found</span></h1>
+      <p class="event-meta">
+        That card may have moved. See <a href="/">the next fight card</a> or <a href="/how-it-works/">how finish chance
+        and Elo work</a>.
+      </p>
+    </header>
+  </main>
+</Base>

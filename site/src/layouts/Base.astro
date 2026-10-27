@@ -1,14 +1,21 @@
 ---
 import '../styles/global.css';
 import { formatDate } from '../lib/format';
+import { SITE_NAME, jsonLdScript } from '../lib/seo';
 import { site } from '../lib/site-data';
 
 interface Props {
   title: string;
   description: string;
+  ogType?: 'website' | 'article';
+  /** schema.org objects, one <script type="application/ld+json"> each */
+  jsonLd?: object[];
+  /** Error pages: keep out of search and give them no canonical URL. */
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogType = 'website', jsonLd = [], noindex = false } = Astro.props;
+const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
 const model = site.index.model;
 const onRankings = Astro.url.pathname === '/rankings/';
 // Chromium prerenders every event page up front (there are only a handful), so tile taps feel instant
@@ -26,6 +33,15 @@ const SPECULATION_RULES = JSON.stringify({
     <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary" />
+    {jsonLd.map((data) => <script type="application/ld+json" is:inline set:html={jsonLdScript(data)} />)}
     <!-- Drawn by scripts/build-icons.mjs from the accent token -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
