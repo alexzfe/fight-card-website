@@ -64,4 +64,5 @@ scripts, as it already did for speculation rules; both are JSON the browser read
   `fetchpriority`) and DOM size 1,272 elements on card pages (warning starts at 1,500). No real network or Cloudflare.
 - Cloudflare's managed robots.txt may be served in place of ours; check `https://ufc.xlobax.com/robots.txt` after
   deploy and turn off the managed one if it lacks the `Sitemap:` line.
-- Rich Results Test run by the user on pasted HTML before the Event-fields fix: valid. Not re-run after it.
+- Google Rich Results Test (Code tab, built event page), run by the user: before the Event-fields fix, 1 valid Event
+  with 5 non-critical issues; after it, 1 valid Event with 1 (`offers`, intentionally absent). Re-run on a live URL after deploy.
