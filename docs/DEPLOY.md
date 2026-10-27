@@ -70,11 +70,14 @@ from the future). If its `generated_at` is stale, the run takes the stale path b
 probe alone; if it is no newer than the committed `data/index.json`, the run ends with exit 0 ("already holds" or
 "not going backwards"). Neither downloads the snapshot. Otherwise the snapshot is downloaded and every check below
 applies to it as before: the snapshot can be newer than the probe, or, behind the CDN's 60 s cache, not newer than
-`data/` after all (then it is a no-op). A probe that fails (a download error, not JSON, another contract, from the
-future, a field missing) prints one line, `probe of <url> failed, downloading the snapshot: <why>`, and the run
-carries on as if there were no probe, so a broken probe never skips a refresh nor lets anything through the snapshot
-checks would refuse. `--no-probe` always downloads the snapshot (for manual runs and debugging); the probe keeps no
-state between runs.
+`data/` after all (then it is a no-op). The same cache works the other way: an `index.json` the CDN still holds from
+the previous generation (`max-age=60`) can delay a refresh, or keep a stale result, by one tick. A probe that fails (a
+download error or malformed HTTP response, not JSON, another contract, from the future, a field missing) prints one
+line, `probe of <url> failed, downloading the snapshot: <why>`, and the run carries on as if there were no probe, so a
+broken probe never skips a refresh nor lets anything through the snapshot checks would refuse. The stale issue's
+`API:` line names the URL found stale: `/v1/index.json` from the probe, else `/v1/snapshot.tar.gz`. `--no-probe`
+always downloads the snapshot; it is for running `fetch_v1.py` by hand and debugging. `refresh.yml` has no input for
+it, so manual workflow runs probe too (they still build and deploy). The probe keeps no state between runs.
 
 **What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
 committed and the site keeps serving the last committed `data/`. The first two have their own handling;
