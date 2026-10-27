@@ -45,3 +45,19 @@ than the test clock, so it was refused as "from the future". That is a fixture c
 - `uv run --project pipeline pytest scripts/tests`: 208 passed, 1 skipped.
 - `npm run validate-data -- ../data` on the committed 1.2 `data/`: ok, one note (`ModelInfo.stale_fighters`).
 - e2e not run: no page changes, and the e2e build uses `tests/fixtures/data`, not the v1 fixture.
+
+## Review fixes
+
+From the PR #12 code review (2026-10-27).
+
+| Finding | Fix | RED (677e337) | GREEN (0b2b09c) |
+|---|---|---|---|
+| `compare` never compared primitive types (`Fighter.elo` or `Index.upcoming[]` to string/integer, `ActiveEntry.elo` integer to number all passed) | A non-enum, non-object, non-list site branch needs every type a scalar contract branch allows (from `type`, a type list, or its enum values); a site `number` takes an `integer`, not the reverse; a contract branch with no type is "allows any value" | 6 type-change tests failed (0 errors) | pass |
+| `const` read as "allows any value" or passed silently | `const: x` is `enum: [x]` on both sides (`const: null` is a null) | failed ("allows any value") | pass |
+| `allOf` ignored; an unresolvable `$ref` was an empty branch list | A one-schema `allOf` is followed (the older pydantic `$ref`-with-siblings style), a longer one is an error; a `$ref` that isn't `#/$defs/…` or names a missing def is an error | `allOf` test failed; `$ref` tests failed on the message (they only got "expects an object") | pass |
+| A contract without `Rankings` (1.0/1.1, an engine rollback) failed validate-data though `rankings.json` is optional | A missing `Rankings` def is a note; `Index`, `Event`, `Fighters` stay errors | unit + validate-data tests failed | pass |
+| `fetch_v1.py` printed skipped names raw: a newline could start a GitHub Actions `::error::` line | Names printed with `repr` | injection test failed (a raw `::error::` line) | pass |
+
+Counts: RED site 2 files failed, 12 tests failed, 212 passed; scripts 2 failed, 207 passed, 1 skipped. GREEN site
+224 passed; scripts 209 passed, 1 skipped; `astro check` 0 errors; build ok. `npm run validate-data -- ../data` on
+the committed 1.2 `data/`: ok, still one note (`ModelInfo.stale_fighters`), no errors.

@@ -90,9 +90,10 @@ the rest fail the run (exit 1):
   `/v1/` layout name of the wrong shape (`index.json` as a directory, `events/a/b.json`, …), duplicate entries, over 100 MB downloaded, 200 MB of member contents, or 250 MB decompressed (headers included, so an
   oversized PAX header can't get round the caps).
 - Not a refusal: a safe file outside the `/v1/` layout (`index.json`, `fighters.json`, `schema.json`,
-  `rankings.json`, `events/*`, `images/*`) is skipped and named on stderr ("skipped files outside the /v1/ layout").
-  `/v1/` may add files (consumers ignore those they don't know), so a new engine file doesn't need a site release
-  first; it lands in `data/` once `fetch_v1.py` lists it. Skipped files still count towards the size caps.
+  `rankings.json`, `events/*`, `images/*`) is skipped and named on stderr ("skipped files outside the /v1/ layout"),
+  each name `repr`-quoted so a newline in one can't start a workflow command (`::error::`). `/v1/` may add files
+  (consumers ignore those they don't know), so a new engine file doesn't need a site release first; it lands in
+  `data/` once `fetch_v1.py` lists it. Skipped files still count towards the size caps.
 - **Unreachable or broken:** a download error, or a file that isn't a `.tar.gz` with `index.json` and `fighters.json`.
   The base URL must be `https://` (plain `http://` only to `127.0.0.1` or `localhost`, for tests), and a redirect to
   another scheme, host or port is refused.
