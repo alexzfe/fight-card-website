@@ -43,12 +43,11 @@ describe('fixture build', () => {
   it('ships no JavaScript beyond the event rail\'s inline scroll keeper and the rankings search', () => {
     expect(walk(DIST).filter((f) => /\.m?js$/.test(f))).toEqual([]);
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
-      // speculation rules and the rankings data are JSON the browser never runs
-      const html = fs
-        .readFileSync(f, 'utf8')
-        .replace(/<script type="(?:speculationrules|application\/json)"[^>]*>[^<]*<\/script>/g, '');
-      const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
       const isRankings = f === path.join(DIST, 'rankings', 'index.html');
+      // speculation rules are JSON the browser never runs, and so is the rankings data, but only on the rankings page
+      const json = isRankings ? 'speculationrules|application\\/json' : 'speculationrules';
+      const html = fs.readFileSync(f, 'utf8').replace(new RegExp(`<script type="(?:${json})"[^>]*>[^<]*<\\/script>`, 'g'), '');
+      const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
       expect(scripts.length, f).toBeLessThanOrEqual(isRankings ? 2 : 1);
       for (const [tag, body] of scripts) {
         expect(tag, f).not.toMatch(/\ssrc=/i);
@@ -56,6 +55,17 @@ describe('fixture build', () => {
         expect(isSearch ? isRankings : true, f).toBe(true);
         expect(body, f).toMatch(isSearch ? /rank-results/ : /event-rail-scroll/);
         expect(body!.length, f).toBeLessThan(isSearch ? 2048 : 1500);
+      }
+    }
+  });
+
+  it('keeps the rankings data, markup and search script off every other page', () => {
+    const others = walk(DIST).filter((p) => p.endsWith('.html') && p !== path.join(DIST, 'rankings', 'index.html'));
+    expect(others.length).toBeGreaterThan(3);
+    for (const f of others) {
+      const html = fs.readFileSync(f, 'utf8');
+      for (const marker of ['rank-data', 'p4p-row', 'rank-search', 'rank-results']) {
+        expect(html, `${f} has ${marker}`).not.toContain(marker);
       }
     }
   });
@@ -105,9 +115,24 @@ describe('fixture build', () => {
     const m = html.match(/<script type="application\/json" id="rank-data">([^<]*)<\/script>/);
     expect(m, 'rank-data script').not.toBeNull();
     const rows = JSON.parse(m![1]!);
-    expect(rows).toHaveLength(8);
+    expect(rows).toHaveLength(9);
     expect(rows[0]).toEqual(['Alex Alpha', 1612, 'Lightweight', '#1 P4P', 0]);
     expect(html).not.toContain('Joaquín Juliét</'); // not rendered as markup until a search finds it
+  });
+
+  it('shows the search box at once, before the lists, and hides it only without JavaScript', () => {
+    const html = read('rankings/index.html');
+    expect(html.match(/<form[^>]*id="rank-search"[^>]*>/)![0]).not.toMatch(/\shidden\b/);
+    expect(html).toMatch(/<noscript><style>[^<]*#rank-search\s*\{\s*display:\s*none/);
+    const script = html.search(/<script>(?:(?!<\/script>)[\s\S])*rank-results/);
+    expect(script).toBeGreaterThan(html.indexOf('id="rank-search"'));
+    expect(script).toBeLessThan(html.indexOf('id="p4p"')); // unhidden before the lists are parsed, so nothing shifts
+    expect(html.indexOf('id="rank-data"')).toBeGreaterThan(html.indexOf('id="p4p"')); // the 29 KB of JSON comes last
+  });
+
+  it('leaves nothing after </html>', () => {
+    const html = read('rankings/index.html');
+    expect(html.slice(html.lastIndexOf('</html>') + '</html>'.length).trim()).toBe('');
   });
 
   it('keeps home page HTML + CSS under 50 KB', () => {

@@ -170,7 +170,7 @@ describe('loadData rankings (optional rankings.json)', () => {
     expect(r.as_of).toBe('2026-10-20');
     expect(r.p4p.men.map((e) => e.name)).toEqual(['Alex Alpha', 'Max Mike', 'Carla Charlie']);
     expect(r.p4p.women.map((e) => e.name)).toEqual(['Dana Delta', 'Nia November']);
-    expect(r.active).toHaveLength(8);
+    expect(r.active).toHaveLength(9);
     expect(r.active[0]).toMatchObject({ name: 'Alex Alpha', elo: 1612, p4p_rank: 1, provisional: false });
   });
   it('is null when the data has no rankings.json, and still loads', () => {
