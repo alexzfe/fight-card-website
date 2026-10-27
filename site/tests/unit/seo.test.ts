@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { eventDescription, eventJsonLd, homeTitle, jsonLdScript, sitemapXml } from '../../src/lib/seo';
+import { eventDescription, eventJsonLd, homeDescription, homeTitle, jsonLdScript, sitemapXml } from '../../src/lib/seo';
 import type { Event, Fight } from '../../src/lib/schema';
 
 const fight = (id: string, red: string, blue: string): Fight => ({
@@ -73,6 +73,23 @@ describe('homeTitle', () => {
 
   it('falls back to the bare site name without events', () => {
     expect(homeTitle(undefined)).toBe('UFC fight cards with finish chances');
+  });
+});
+
+describe('homeDescription', () => {
+  it('describes the site, then names the next card, in the 120-160 character range', () => {
+    const d = homeDescription(event());
+    expect(d).toBe(
+      "Every upcoming UFC card with each bout's chance of a finish and both fighters' Elo ratings. Next: UFC Fight Night: Moicano vs. Nolan, Sat, Oct 31, 2026.",
+    );
+    expect(d.length).toBeGreaterThanOrEqual(120);
+    expect(d.length).toBeLessThanOrEqual(160);
+  });
+
+  it('describes just the site without events', () => {
+    expect(homeDescription(undefined)).toBe(
+      "Every upcoming UFC card with each bout's chance of a finish and both fighters' Elo ratings.",
+    );
   });
 });
 
