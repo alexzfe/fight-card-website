@@ -210,4 +210,28 @@ describe('loadData rankings (optional rankings.json)', () => {
     writeRankings(r);
     expect(() => loadData(dir)).toThrow(/rankings\.json.*active.*order/s);
   });
+  it('fails when an active fighter has a P4P rank but is in no P4P list', () => {
+    const r = readRankings();
+    r.active.find((e: { name: string }) => e.name === 'Eli Echo').p4p_rank = 4; // would be labelled as a men's #4
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*active.*e5e5e5e5e5e5e5e5.*P4P/s);
+  });
+  it('fails when a P4P entry is not in the active list', () => {
+    const r = readRankings();
+    r.active = r.active.filter((e: { name: string }) => e.name !== 'Max Mike');
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*p4p\.men.*a3a3a3a3a3a3a3a3.*active/s);
+  });
+  it('fails when a P4P entry and its active row disagree on the rank', () => {
+    const r = readRankings();
+    r.active.find((e: { name: string }) => e.name === 'Nia November').p4p_rank = 1;
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*p4p\.women.*b4b4b4b4b4b4b4b4.*rank 2.*p4p_rank 1/s);
+  });
+  it('fails when a fighter is in both P4P lists', () => {
+    const r = readRankings();
+    r.p4p.women[1] = { ...r.p4p.men[0], rank: 2 };
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*a1a1a1a1a1a1a1a1.*more than one/s);
+  });
 });
