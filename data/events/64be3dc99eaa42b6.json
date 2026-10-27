@@ -1,0 +1,32 @@
+{
+  "date": "2027-01-30",
+  "fights": [
+    {
+      "blue": "5d1b7e3dd9e11074",
+      "finish_tier": "low",
+      "id": "15fb6ee606a2d8ec",
+      "red": "17e97649403ba428",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": true,
+      "weight_class": "Flyweight"
+    },
+    {
+      "blue": "c32aeb1a59e6272d",
+      "finish_tier": "high",
+      "id": "f5d8a5f5d51d9723",
+      "red": "7ee0fd831c0fe7c3",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": true,
+      "weight_class": "Welterweight"
+    }
+  ],
+  "id": "64be3dc99eaa42b6",
+  "location": "Toronto, Ontario, Canada",
+  "name": "UFC 336: Van vs. Kape",
+  "slug": "ufc-336-van-vs-kape",
+  "status": "upcoming"
+}
