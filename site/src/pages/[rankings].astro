@@ -1,0 +1,215 @@
+---
+// /rankings/, built only when data/ has rankings.json (a dynamic route so that an absent file means no page at all).
+import type { GetStaticPaths } from 'astro';
+import Avatar from '../components/Avatar.astro';
+import EventRail from '../components/EventRail.astro';
+import Base from '../layouts/Base.astro';
+import { formatDate } from '../lib/format';
+import { provisionalIds, scriptJson, searchRows } from '../lib/rankings';
+import type { Rankings } from '../lib/schema';
+import { site } from '../lib/site-data';
+
+export const getStaticPaths = (() =>
+  site.rankings ? [{ params: { rankings: 'rankings' }, props: { rankings: site.rankings } }] : []) satisfies GetStaticPaths;
+
+const { rankings } = Astro.props as { rankings: Rankings };
+const provisional = provisionalIds(rankings);
+const lists = [
+  { key: 'men', title: 'Men', entries: rankings.p4p.men },
+  { key: 'women', title: 'Women', entries: rankings.p4p.women },
+].filter((list) => list.entries.length > 0);
+// The search script ships unminified under a size budget (tests/build), so its notes live here: it reads the rows
+// from #rank-data, lists the first 30 matches (best Elo first) of the folded query (case and accents ignored) in
+// #rank-results, and hides the P4P lists meanwhile. The form is hidden until it runs, so without JS there is no dead box.
+// el() makes each class its own data-testid, as the server-rendered rows have them.
+---
+
+<Base
+  title="Rankings · UFC fight card"
+  description="Pound-for-pound Elo rankings of UFC fighters, men and women, with a search over every active fighter."
+>
+  <EventRail events={site.events} current={undefined} />
+  <main class="rankings">
+    <header class="event-head">
+      <h1>
+        <span class="kicker">Elo<span class="sr-only">:</span> </span>
+        <span class="headline">Pound-for-pound rankings</span>
+      </h1>
+      <p class="event-meta" data-testid="rankings-note">
+        Our own Elo ratings from UFC results, not official UFC rankings. As of {formatDate(rankings.as_of)}.
+        Provisional means fewer than 3 UFC fights. <a href="/how-it-works/#elo">How Elo works</a>
+      </p>
+    </header>
+
+    <form class="rank-search" id="rank-search" role="search" hidden>
+      <label class="sr-only" for="rank-q">Search active fighters</label>
+      <input id="rank-q" type="search" placeholder="Search active fighters" autocomplete="off" spellcheck="false" />
+      <p class="fine" id="rank-status" role="status"></p>
+      <ul class="result-list" id="rank-results"></ul>
+    </form>
+
+    <div id="p4p">
+      {
+        lists.map((list) => (
+          <section class="explainer-section" data-testid={`p4p-${list.key}`}>
+            <h2>{list.title}</h2>
+            <ol class="p4p-list">
+              {list.entries.map((entry) => (
+                <li class="p4p-row" data-testid="p4p-row">
+                  <span class="p4p-rank" data-testid="p4p-rank">{entry.rank}</span>
+                  <Avatar fighter={entry} size={48} />
+                  <span class="p4p-who">
+                    <span class="p4p-name" data-testid="p4p-name">{entry.name}</span>
+                    {entry.division && (
+                      <span class="p4p-division" data-testid="p4p-division">{entry.division}</span>
+                    )}
+                  </span>
+                  <span class="p4p-elo" data-testid="p4p-elo">
+                    {entry.elo}
+                    {provisional.has(entry.id) && <span class="elo-tag" data-testid="elo-tag">provisional</span>}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))
+      }
+      {lists.length === 0 && <p class="empty">No rankings yet.</p>}
+    </div>
+  </main>
+  <script type="application/json" id="rank-data" is:inline set:html={scriptJson(searchRows(rankings))} />
+  <script is:inline>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const [form, input, status, results, lists] = ['rank-search', 'rank-q', 'rank-status', 'rank-results', 'p4p'].map($);
+      const rows = JSON.parse($('rank-data').textContent);
+      const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const names = rows.map((r) => fold(r[0]));
+      const el = (tag, cls, text = '') => {
+        const e = document.createElement(tag);
+        e.className = e.dataset.testid = cls;
+        e.textContent = text;
+        return e;
+      };
+      input.addEventListener('input', () => {
+        const q = fold(input.value).trim().replace(/\s+/g, ' ');
+        const hits = q ? rows.filter((_, i) => names[i].includes(q)) : [];
+        lists.hidden = !!q;
+        results.replaceChildren(
+          ...hits.slice(0, 30).map((r) => {
+            const li = el('li', 'result');
+            const elo = el('span', 'result-elo', r[1]);
+            if (r[4]) elo.append(el('span', 'elo-tag', 'provisional'));
+            li.append(el('span', 'result-name', r[0]), el('span', 'result-meta', [r[2], r[3]].filter(Boolean).join(' · ')), elo);
+            return li;
+          }),
+        );
+        status.textContent = !q ? '' : !hits.length ? `No active fighter matches “${input.value.trim()}”.`
+          : hits.length > 30 ? `Showing the first 30 of ${hits.length} matches` : `${hits.length} of ${rows.length} active fighters`;
+      });
+      form.addEventListener('submit', (e) => e.preventDefault());
+      form.hidden = false;
+    })();
+  </script>
+</Base>
+
+<!-- Only this page carries these rules; the site-wide stylesheet stays as it was. -->
+<style is:global>
+  .rank-search input {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: inherit;
+    font: inherit;
+  }
+
+  .rank-search input:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .rank-search .fine {
+    margin: var(--space-2) 0;
+  }
+
+  .p4p-list,
+  .result-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .p4p-list {
+    --avatar-size: 48px;
+  }
+
+  .p4p-row,
+  .result {
+    display: grid;
+    align-items: center;
+    column-gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .p4p-row {
+    grid-template-columns: 1.5rem auto minmax(0, 1fr) auto;
+  }
+
+  .result {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'name elo' 'meta elo';
+  }
+
+  .p4p-rank {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+    text-align: right;
+  }
+
+  .p4p-name,
+  .result-name {
+    display: block;
+    font-weight: 600;
+    overflow-wrap: break-word;
+  }
+
+  .p4p-division,
+  .result-meta {
+    display: block;
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  .result-name {
+    grid-area: name;
+  }
+
+  .result-meta {
+    grid-area: meta;
+  }
+
+  .result-elo {
+    grid-area: elo;
+  }
+
+  .p4p-elo,
+  .result-elo {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .p4p-elo .elo-tag,
+  .result-elo .elo-tag {
+    display: block;
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+  }
+</style>

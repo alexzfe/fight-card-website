@@ -49,7 +49,7 @@ test('event tiles run in date order, name the headliners, and navigate', async (
   await expect(tiles.nth(1)).toContainText('Alpha vs. Bravo');
   await expect(tiles.nth(2)).toContainText('India vs. Juliet');
   await expect(tiles.nth(3)).toContainText('Kilo vs. Lima');
-  await expect(page.locator('nav')).not.toContainText('Fight Night');
+  await expect(page.getByRole('navigation', { name: 'Events' })).not.toContainText('Fight Night');
 
   // The today marker sits between the past and the upcoming events.
   const past = (await tiles.nth(0).boundingBox())!;
@@ -127,6 +127,8 @@ test('tabbing through the rail brings each tile fully into view', async ({ page 
   await page.goto('/');
   const rail = page.locator('nav .rail');
   const tiles = page.getByTestId('event-tile');
+  // The site tabs come before the rail in tab order; start from the last of them.
+  await page.getByRole('navigation', { name: 'Site' }).getByRole('link').last().focus();
   for (let i = 0; i < (await tiles.count()); i++) {
     await page.keyboard.press('Tab');
     await expect(tiles.nth(i)).toBeFocused();
@@ -495,7 +497,7 @@ test.describe('rankings page', () => {
     await expect(men.nth(2).getByTestId('p4p-name')).toHaveText('Carla Charlie');
     const women = page.getByTestId('p4p-women').getByTestId('p4p-row');
     await expect(women.getByTestId('p4p-name')).toHaveText(['Dana Delta', 'Nia November']);
-    await expect(women.nth(0).getByTestId('p4p-division')).toHaveText('Women’s Flyweight');
+    await expect(women.nth(0).getByTestId('p4p-division')).toHaveText("Women's Flyweight");
   });
 
   test('shows headshots where there is one and initials where there is not', async ({ page }) => {
@@ -520,7 +522,7 @@ test.describe('rankings page', () => {
     await expect(note).toContainText('not official UFC rankings');
     await expect(note).toContainText('Oct 20, 2026');
     await note.getByRole('link', { name: 'How Elo works' }).click();
-    await expect(page).toHaveURL(/\/how-it-works\/$/);
+    await expect(page).toHaveURL(/\/how-it-works\/#elo$/);
   });
 
   test('searches the active fighters ignoring case and accents', async ({ page }) => {

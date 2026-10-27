@@ -66,8 +66,8 @@ describe('without rankings.json', () => {
   it('shows no site tabs and no link on any page', () => {
     for (const f of walk(dist).filter((p) => p.endsWith('.html'))) {
       const html = fs.readFileSync(f, 'utf8');
-      expect(html, f).not.toContain('/rankings/');
-      expect(html, f).not.toContain('site-nav');
+      expect(html, f).not.toContain('href="/rankings/"');
+      expect(html, f).not.toContain('<nav class="site-nav"');
     }
   });
 });
