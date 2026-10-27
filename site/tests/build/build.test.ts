@@ -353,3 +353,19 @@ describe('accent colour', () => {
     expect(rule('.chart-mark circle')).not.toContain('--color-accent');
   });
 });
+
+// Rankings borrowed the event page's header and the method page's sections; they share generic names and one stylesheet.
+describe('shared page styles', () => {
+  it('heads every page with .page-head and splits rankings and how-it-works into .page-section', () => {
+    for (const page of ['index.html', 'events/ufc-323-alpha-vs-bravo/index.html', 'rankings/index.html', 'how-it-works/index.html', '404.html']) {
+      expect(read(page), page).toContain('<header class="page-head"');
+    }
+    expect(read('rankings/index.html')).toContain('class="page-section"');
+    expect(read('how-it-works/index.html')).toContain('class="page-section"');
+  });
+
+  it('keeps the rankings styles in global.css with the rest', () => {
+    expect(fs.readFileSync(path.join(SITE, 'src/styles/global.css'), 'utf8')).toMatch(/\.p4p-row\s*\{/);
+    expect(fs.readFileSync(path.join(SITE, 'src/pages/[rankings].astro'), 'utf8')).not.toContain('<style');
+  });
+});

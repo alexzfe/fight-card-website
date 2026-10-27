@@ -862,3 +862,50 @@ test.describe('rankings page', () => {
     expect((await page.getByTestId('result-next').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
   });
 });
+
+test.describe('polish', () => {
+  test('text is antialiased, headings wrap in balanced lines and short prose avoids lone words', async ({ page }) => {
+    const style = (sel: string) =>
+      page.locator(sel).first().evaluate((el) => {
+        const s = getComputedStyle(el);
+        return { smoothing: s.getPropertyValue('-webkit-font-smoothing'), wrap: s.textWrapStyle };
+      });
+    await page.goto('/');
+    expect((await style('html')).smoothing).toBe('antialiased');
+    for (const sel of ['h1', '.headline', 'h2']) expect((await style(sel)).wrap, sel).toBe('balance');
+    for (const sel of ['.event-meta', '.site-footer p']) expect((await style(sel)).wrap, sel).toBe('pretty');
+    await page.goto('/how-it-works/');
+    expect((await style('.page-section h2')).wrap).toBe('balance');
+    expect((await style('.lede')).wrap).toBe('pretty');
+    await page.goto('/rankings/');
+    expect((await style('.page-head .event-meta')).wrap).toBe('pretty');
+  });
+
+  test('headshots carry a faint inset edge, dark on the light theme and light on the dark', async ({ page }) => {
+    const edge = () =>
+      page.locator('img.avatar').first().evaluate((el) => {
+        const s = getComputedStyle(el);
+        return [s.outlineStyle, s.outlineWidth, s.outlineOffset, s.outlineColor];
+      });
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto('/');
+    expect(await edge()).toEqual(['solid', '1px', '-1px', 'rgba(0, 0, 0, 0.1)']);
+    await page.emulateMedia({ colorScheme: 'dark' });
+    expect(await edge()).toEqual(['solid', '1px', '-1px', 'rgba(255, 255, 255, 0.1)']);
+  });
+
+  test('a form tile answers a tap just outside its edge, up to where its neighbour\'s begins', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    const tiles = page.getByTestId('fight').first().locator('.corner-red [data-testid=form] > span');
+    const [a, b] = [(await tiles.nth(0).boundingBox())!, (await tiles.nth(1).boundingBox())!];
+    const tapped = async (x: number, y: number) => {
+      await page.mouse.click(x, y);
+      return page.evaluate(() => document.activeElement?.getAttribute('data-tip'));
+    };
+    const [tipA, tipB] = [await tiles.nth(0).getAttribute('data-tip'), await tiles.nth(1).getAttribute('data-tip')];
+    expect(await tapped(a.x + a.width / 2, a.y + a.height + 4)).toBe(tipA); // below the tile
+    expect(await tapped(a.x + a.width + 0.5, a.y + a.height / 2)).toBe(tipA); // in the gap, on its side
+    expect(await tapped(b.x - 0.5, b.y + b.height / 2)).toBe(tipB); // in the gap, on the neighbour's side
+  });
+});
