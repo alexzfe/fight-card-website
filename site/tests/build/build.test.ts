@@ -44,8 +44,9 @@ describe('fixture build', () => {
     expect(walk(DIST).filter((f) => /\.m?js$/.test(f))).toEqual([]);
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
       const isRankings = f === path.join(DIST, 'rankings', 'index.html');
-      // speculation rules are JSON the browser never runs, and so is the rankings data, but only on the rankings page
-      const json = isRankings ? 'speculationrules|application\\/json' : 'speculationrules';
+      // speculation rules and JSON-LD are JSON the browser reads natively, and so is the rankings data, but only on
+      // the rankings page; no script runs
+      const json = isRankings ? 'speculationrules|application\\/ld\\+json|application\\/json' : 'speculationrules|application\\/ld\\+json';
       const html = fs.readFileSync(f, 'utf8').replace(new RegExp(`<script type="(?:${json})"[^>]*>[^<]*<\\/script>`, 'g'), '');
       const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
       expect(scripts.length, f).toBeLessThanOrEqual(isRankings ? 2 : 1);
@@ -154,6 +155,92 @@ describe('fixture build', () => {
 
   it('shows the model date in the footer', () => {
     expect(read('index.html')).toContain('Finish model as of Oct 1, 2026');
+  });
+});
+
+describe('search and sharing', () => {
+  const ORIGIN = 'https://ufc.xlobax.com';
+  const EVENT_SLUGS = [
+    'ufc-323-alpha-vs-bravo',
+    'ufc-fight-night-india-vs-juliet',
+    'ufc-fight-night-kilo-vs-lima',
+    'ufc-fight-night-golf-vs-hotel',
+  ];
+  const PAGES = ['index.html', 'how-it-works/index.html', ...EVENT_SLUGS.map((s) => `events/${s}/index.html`)];
+  const urlOf = (rel: string) => `${ORIGIN}/${rel.replace(/index\.html$/, '')}`;
+  const attr = (html: string, re: RegExp) => html.match(re)?.[1];
+  const title = (html: string) => attr(html, /<title>([^<]*)<\/title>/);
+  const description = (html: string) => attr(html, /<meta name="description" content="([^"]*)"/);
+  const jsonLd = (html: string) =>
+    [...html.matchAll(/<script type="application\/ld\+json">([^<]*)<\/script>/g)].map((m) => JSON.parse(m[1]!));
+
+  it('gives every page one self-referencing canonical URL', () => {
+    for (const rel of PAGES) {
+      const html = read(rel);
+      const canonicals = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)].map((m) => m[1]);
+      expect(canonicals, rel).toEqual([urlOf(rel)]);
+    }
+  });
+
+  it('gives the home page its own title, distinct from the event page it shows', () => {
+    const home = title(read('index.html'));
+    expect(home).toBe('UFC fight cards with finish chances · Next: Alpha vs. Bravo');
+    for (const slug of EVENT_SLUGS) expect(title(read(`events/${slug}/index.html`))).not.toBe(home);
+  });
+
+  it('writes a distinct, 120-160 character description for each event page', () => {
+    const descs = EVENT_SLUGS.map((s) => description(read(`events/${s}/index.html`))!);
+    expect(new Set(descs).size).toBe(descs.length);
+    expect(description(read('events/ufc-323-alpha-vs-bravo/index.html'))).toBe(
+      'UFC 323: Alpha vs. Bravo, Sat, Oct 31, 2026 in Las Vegas, Nevada, USA: all 4 bouts with finish chances and fighter Elo ratings.',
+    );
+  });
+
+  it('describes every page for link previews with Open Graph and Twitter tags', () => {
+    for (const rel of PAGES) {
+      const html = read(rel);
+      expect(attr(html, /<meta property="og:title" content="([^"]*)"/), rel).toBe(title(html));
+      expect(attr(html, /<meta property="og:description" content="([^"]*)"/), rel).toBe(description(html));
+      expect(attr(html, /<meta property="og:url" content="([^"]*)"/), rel).toBe(urlOf(rel));
+      expect(attr(html, /<meta property="og:site_name" content="([^"]*)"/), rel).toBe('UFC fight cards');
+      expect(attr(html, /<meta property="og:type" content="([^"]*)"/), rel).toMatch(/^(website|article)$/);
+      expect(attr(html, /<meta name="twitter:card" content="([^"]*)"/), rel).toBe('summary');
+    }
+  });
+
+  it('marks each event page up as a SportsEvent naming its fighters', () => {
+    const [ld] = jsonLd(read('events/ufc-323-alpha-vs-bravo/index.html'));
+    expect(ld['@type']).toBe('SportsEvent');
+    expect(ld.name).toBe('UFC 323: Alpha vs. Bravo');
+    expect(ld.startDate).toBe('2026-10-31');
+    expect(ld.url).toBe(`${ORIGIN}/events/ufc-323-alpha-vs-bravo/`);
+    expect(ld.competitor.length).toBeGreaterThan(0);
+  });
+
+  it('marks the home page up as a WebSite and the explainer as an Article', () => {
+    expect(jsonLd(read('index.html')).map((l) => l['@type'])).toContain('WebSite');
+    expect(jsonLd(read('how-it-works/index.html')).map((l) => l['@type'])).toEqual(['Article']);
+    expect(attr(read('how-it-works/index.html'), /<meta property="og:type" content="([^"]*)"/)).toBe('article');
+  });
+
+  it('lists every indexable page in sitemap.xml', () => {
+    const locs = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
+    expect(locs).toEqual(PAGES.map(urlOf).sort());
+  });
+
+  it('points crawlers at the sitemap from robots.txt', () => {
+    const robots = read('robots.txt');
+    expect(robots).toMatch(/^User-agent: \*$/m);
+    expect(robots).toMatch(/^Allow: \/$/m);
+    expect(robots).toMatch(new RegExp(`^Sitemap: ${ORIGIN}/sitemap\\.xml$`, 'm'));
+  });
+
+  it('builds a 404 page that search engines skip and that leads back to the card', () => {
+    const html = read('404.html');
+    expect(html).toMatch(/<meta name="robots" content="noindex"/);
+    expect(html).not.toMatch(/rel="canonical"/);
+    expect(html).toMatch(/<h1[^>]*>[\s\S]*not found[\s\S]*<\/h1>/i);
+    expect(html).toContain('href="/"');
   });
 });
 
