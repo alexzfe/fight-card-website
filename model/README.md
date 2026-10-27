@@ -97,27 +97,4 @@ Bout context on the site (`fightcard.score.features.bout_context`):
 
 ## Re-exporting
 
-This is automated: fight-auto-research's **Export model** workflow (`.github/workflows/export.yml`) runs these
-steps daily when this repo's `data/stale_fighters.json` exists, and every Monday, then pushes branch
-`model-export` here with a deploy key. `release.yml` tests it, and `model-export.yml` opens the PR, merges it if
-the tests passed and the tier thresholds didn't move, and runs a refresh to re-score and deploy. By hand, when needed:
-
-1. Refresh the research data: `cd ~/Projects/fight-auto-research`, scrape, then `uv run python -m build`.
-2. Export from the research checkout or a worktree that has `export/`:
-   ```
-   uv run python -m export --data-dir ~/Projects/fight-auto-research/data --out /tmp/finish-model
-   ```
-   It refuses to write anything when:
-   - `features.parquet` doesn't match the current `features.FEATURES`
-   - the raw fighter CSV changed after the build
-   - a feature depends on the bout date without a snapshot recipe
-   - snapshot rows don't reproduce the build's rows on 200 historical bouts
-   - the tier finish rates aren't strictly increasing
-3. `cp /tmp/finish-model/* model/`
-4. Update the numbers in this README, run `uv run --project pipeline pytest pipeline/tests/score`, then commit `model/`.
-5. Nothing to update on the site: `score` writes the numbers the how-it-works page quotes into `index.model`
-   (`pipeline/src/fightcard/score/summary.py`, importance by theme from the booster's gain). A model with a new
-   feature fails `score` and the pipeline tests until the feature is given a theme in `summary.GROUPS`; a new
-   theme also needs a label in `site/src/lib/finish-model.ts`.
-
-The next refresh re-scores every unfrozen bout. Tiers already frozen (past events) never change.
+See `model/README.md` "Re-exporting" in fightcard-engine, which now owns the finish model and publishes it to R2.
