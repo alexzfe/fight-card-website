@@ -96,13 +96,12 @@ ul {
   white-space: nowrap;
 }
 
-/* Event rail: the only top bar. Its tiles line up with the card column; the bar's background spans the window. */
+/* Event rail: the only top bar. It spans the window, so every event stays in view on a wide screen. */
 .rail-nav {
   position: sticky;
   top: 0;
   z-index: 10;
   display: flex;
-  padding-inline: max(0px, (100% - var(--max-width)) / 2);
   background: color-mix(in srgb, var(--color-bg) 88%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-border);
