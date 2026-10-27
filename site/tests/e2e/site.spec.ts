@@ -904,8 +904,20 @@ test.describe('polish', () => {
       return page.evaluate(() => document.activeElement?.getAttribute('data-tip'));
     };
     const [tipA, tipB] = [await tiles.nth(0).getAttribute('data-tip'), await tiles.nth(1).getAttribute('data-tip')];
-    expect(await tapped(a.x + a.width / 2, a.y + a.height + 4)).toBe(tipA); // below the tile
+    expect(await tapped(a.x + a.width / 2, a.y - 1.5)).toBe(tipA); // above the tile, toward the Elo line
     expect(await tapped(a.x + a.width + 0.5, a.y + a.height / 2)).toBe(tipA); // in the gap, on its side
     expect(await tapped(b.x - 0.5, b.y + b.height / 2)).toBe(tipB); // in the gap, on the neighbour's side
+  });
+
+  test('a form tile leaves the Stats toggle beneath it whole', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    const fight = page.getByTestId('fight').first();
+    const tile = (await fight.locator('.corner-red [data-testid=form] > span').first().boundingBox())!;
+    const summary = (await fight.locator('summary').first().boundingBox())!;
+    // Just under the tile, and wherever the summary starts if the two sit flush, a tap belongs to the toggle.
+    const y = Math.max(tile.y + tile.height + 1, summary.y + 1);
+    const hit = await page.evaluate(([x, y]) => !!document.elementFromPoint(x, y)?.closest('summary'), [tile.x + tile.width / 2, y]);
+    expect(hit).toBe(true);
   });
 });
