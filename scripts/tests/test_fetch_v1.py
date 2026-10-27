@@ -1,5 +1,5 @@
-"""fetch_v1.py: download /v1/snapshot.tar.gz, refuse anything unsafe, stale or from another contract, then swap
-data/ for it."""
+"""fetch_v1.py: probe /v1/index.json, download /v1/snapshot.tar.gz when it is newer, refuse anything unsafe, stale or
+from another contract, then swap data/ for it."""
 
 import http.server
 import io
@@ -153,10 +153,11 @@ def test_unknown_files_count_towards_the_size_cap(data, monkeypatch, capsys):
 
 
 def test_downloads_the_snapshot_url(data, monkeypatch):
+    """The probe gets the tarball too here, can't parse it, and falls back to the snapshot."""
     seen = []
     monkeypatch.setattr(fetch_v1, "download", lambda url, max_bytes: seen.append(url) or snapshot(files()))
     fetch_v1.main(["--base", "https://ufc-data.example/", "--data", str(data), "--now", NOW.isoformat()])
-    assert seen == ["https://ufc-data.example/v1/snapshot.tar.gz"]
+    assert seen == ["https://ufc-data.example/v1/index.json", "https://ufc-data.example/v1/snapshot.tar.gz"]
 
 
 def test_minor_contract_versions_are_accepted(data, monkeypatch):
@@ -324,24 +325,27 @@ def test_failed_swap_restores_the_old_data(data, monkeypatch, capsys):
 
 @pytest.fixture
 def server():
-    """A local HTTP server: /v1/snapshot.tar.gz answers with `body`, anything else 404s."""
-    state = {"body": b"", "redirects": {}}
+    """A local HTTP server: /v1/snapshot.tar.gz answers with `body`, /v1/index.json with `index` when set, anything
+    else 404s. `requests` lists the paths asked for."""
+    state = {"body": b"", "index": None, "redirects": {}, "requests": []}
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):  # noqa: N802
+            state["requests"].append(self.path)
             if self.path in state["redirects"]:
                 self.send_response(302)
                 self.send_header("Location", state["redirects"][self.path])
                 self.send_header("Content-Length", "0")
                 self.end_headers()
                 return
-            if self.path != "/v1/snapshot.tar.gz":
+            body = {"/v1/snapshot.tar.gz": state["body"], "/v1/index.json": state["index"]}.get(self.path)
+            if body is None:
                 self.send_error(404)
                 return
             self.send_response(200)
-            self.send_header("Content-Length", str(len(state["body"])))
+            self.send_header("Content-Length", str(len(body)))
             self.end_headers()
-            self.wfile.write(state["body"])
+            self.wfile.write(body)
 
         def log_message(self, *args):
             pass
@@ -643,3 +647,168 @@ def test_download_refuses_a_redirect_off_the_origin(server, target):
     server["redirects"]["/v1/latest"] = target.format(port=server["port"])
     with pytest.raises(fetch_v1.FetchError, match="redirect"):
         fetch_v1.download(server["base"] + "/v1/latest", 1000)
+
+
+# --- the probe: /v1/index.json first, the snapshot only when it is newer than data/ --------------------------------
+
+INDEX_URL = "https://v1.invalid/v1/index.json"
+SNAPSHOT_URL = "https://v1.invalid/v1/snapshot.tar.gz"
+
+
+def probe_index(**kw) -> bytes:
+    return files(**kw)["index.json"]
+
+
+def routed(monkeypatch, routes: dict, *args) -> tuple[int, list[tuple[str, int]]]:
+    """main() with download answering from routes (url -> bytes, or an exception to raise; else a 404). Returns
+    the exit code and the (url, max_bytes) of each download, in order."""
+    seen = []
+
+    def fake(url, max_bytes):
+        seen.append((url, max_bytes))
+        body = routes.get(url, fetch_v1.FetchError(f"cannot download {url}: HTTP Error 404: Not Found"))
+        if isinstance(body, Exception):
+            raise body
+        return body
+
+    monkeypatch.setattr(fetch_v1, "download", fake)
+    code = fetch_v1.main(["--base", "https://v1.invalid", "--now", NOW.isoformat(), *args])
+    return code, seen
+
+
+def urls(seen) -> list[str]:
+    return [url for url, _ in seen]
+
+
+def test_probe_older_than_data_skips_the_snapshot(data, monkeypatch, capsys, tmp_path):
+    commit_index(data, "2026-10-26T08:00:00Z")
+    out = tmp_path / "gh_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index(generated_at="2026-10-26T07:00:00Z")},
+                        "--data", str(data))
+    assert code == 0 and urls(seen) == [INDEX_URL]
+    assert unchanged(data)
+    printed = capsys.readouterr().out
+    assert "older than" in printed and "not going backwards" in printed
+    assert outputs(out) == {"stale": "false", "generated_at": "2026-10-26T07:00:00Z", "age_hours": "5.0"}
+
+
+def test_probe_equal_to_data_skips_the_snapshot(data, monkeypatch, capsys):
+    commit_index(data, "2026-10-26T06:00:00Z")
+    before = tree_files(data)
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index()}, "--data", str(data))
+    assert code == 0 and urls(seen) == [INDEX_URL]
+    assert tree_files(data) == before
+    assert "already holds" in capsys.readouterr().out
+
+
+def test_probe_uses_a_small_size_cap(data, monkeypatch):
+    commit_index(data, "2026-10-26T06:00:00Z")
+    _, seen = routed(monkeypatch, {INDEX_URL: probe_index()}, "--data", str(data))
+    assert seen[0][1] <= 2**20
+
+
+def test_stale_probe_exits_3_without_the_snapshot(data, monkeypatch, capsys, tmp_path):
+    out, body = tmp_path / "gh_output", tmp_path / "issue.md"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index(generated_at=STALE_AT)},
+                        "--data", str(data), "--stale-issue", str(body))
+    assert code == fetch_v1.EXIT_STALE and urls(seen) == [INDEX_URL]
+    assert unchanged(data)
+    assert outputs(out) == {"stale": "true", "generated_at": STALE_AT, "age_hours": "27.0"}
+    text = body.read_text()
+    assert text.startswith(fetch_v1.STALE_MARKER) and STALE_AT in text and "27.0 h" in text
+    assert "stale" in capsys.readouterr().err
+
+
+def test_stale_probe_wins_over_going_backwards(data, monkeypatch):
+    commit_index(data, "2026-10-26T08:00:00Z")
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index(generated_at=STALE_AT)}, "--data", str(data))
+    assert code == fetch_v1.EXIT_STALE and urls(seen) == [INDEX_URL]
+
+
+def test_newer_probe_downloads_and_swaps_the_snapshot(data, monkeypatch):
+    commit_index(data, "2026-10-26T05:00:00Z")
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index(), SNAPSHOT_URL: snapshot(files())}, "--data", str(data))
+    assert code == 0 and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert seen[1][1] == fetch_v1.MAX_DOWNLOAD_BYTES
+    assert tree_files(data) == files() | BOOKKEEPING
+
+
+def test_unknown_committed_age_downloads_the_snapshot(data, monkeypatch):
+    (data / "index.json").write_bytes(b"{nope")
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index(), SNAPSHOT_URL: snapshot(files())}, "--data", str(data))
+    assert code == 0 and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert tree_files(data) == files() | BOOKKEEPING
+
+
+def test_snapshot_not_newer_after_a_newer_probe_is_a_no_op(data, monkeypatch, capsys):
+    """The CDN may still hold the previous snapshot (max-age 60) when index.json already says newer."""
+    commit_index(data, "2026-10-26T06:00:00Z")
+    before = tree_files(data)
+    routes = {INDEX_URL: probe_index(generated_at="2026-10-26T07:00:00Z"), SNAPSHOT_URL: snapshot(files())}
+    code, seen = routed(monkeypatch, routes, "--data", str(data))
+    assert code == 0 and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert tree_files(data) == before
+    assert "already holds" in capsys.readouterr().out
+
+
+def test_snapshot_checks_stay_authoritative_after_a_newer_probe(data, monkeypatch, capsys):
+    commit_index(data, "2026-10-26T05:00:00Z")
+    routes = {INDEX_URL: probe_index(), SNAPSHOT_URL: snapshot(files(contract_version="2"))}
+    code, _ = routed(monkeypatch, routes, "--data", str(data))
+    assert code == 1 and unchanged(data)
+    assert "not 1.x" in capsys.readouterr().err
+
+
+def _future_index() -> bytes:
+    return probe_index(generated_at="2026-10-26T12:11:00Z")
+
+
+def _without(key) -> bytes:
+    idx = json.loads(probe_index())
+    del idx[key]
+    return dumps(idx)
+
+
+@pytest.mark.parametrize("probe", [
+    fetch_v1.FetchError("cannot download https://v1.invalid/v1/index.json: HTTP Error 404: Not Found"),
+    b"{nope", b"\xff\xfe", b"[]", b"[" * 100_000, probe_index(contract_version="2"), _future_index(),
+    _without("generated_at"), _without("contract_version"), probe_index(generated_at="2026-10-26 06:00:00"),
+], ids=["404", "junk", "not-utf8", "not-object", "deep", "contract-2", "future", "no-generated-at", "no-contract",
+        "not-utc-z"])
+def test_a_failed_probe_falls_back_to_the_snapshot(data, monkeypatch, capsys, probe):
+    """Older than data/ by its own word, so a probe that was trusted anyway would skip the newer snapshot."""
+    commit_index(data, "2026-10-26T05:00:00Z")
+    code, seen = routed(monkeypatch, {INDEX_URL: probe, SNAPSHOT_URL: snapshot(files())}, "--data", str(data))
+    assert code == 0 and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert tree_files(data) == files() | BOOKKEEPING
+    err = capsys.readouterr().err
+    assert len([line for line in err.splitlines() if "probe" in line]) == 1
+
+
+def test_a_failed_probe_still_gets_the_snapshot_refusals(data, monkeypatch, capsys):
+    code, seen = routed(monkeypatch, {INDEX_URL: b"{nope", SNAPSHOT_URL: snapshot(files(generated_at=STALE_AT))},
+                        "--data", str(data))
+    assert code == fetch_v1.EXIT_STALE and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert unchanged(data)
+
+
+def test_no_probe_always_downloads_the_snapshot(data, monkeypatch, capsys):
+    commit_index(data, "2026-10-26T06:00:00Z")
+    routes = {INDEX_URL: probe_index(), SNAPSHOT_URL: snapshot(files())}
+    code, seen = routed(monkeypatch, routes, "--data", str(data), "--no-probe")
+    assert code == 0 and urls(seen) == [SNAPSHOT_URL]
+    assert "already holds" in capsys.readouterr().out
+
+
+def test_probe_end_to_end_over_http(server, data):
+    commit_index(data, "2026-10-26T06:00:00Z")
+    server["index"], server["body"] = probe_index(), snapshot(files())
+    assert fetch_v1.main(["--base", server["base"], "--data", str(data), "--now", NOW.isoformat()]) == 0
+    assert server["requests"] == ["/v1/index.json"]
+    server["index"] = probe_index(generated_at="2026-10-26T07:00:00Z")
+    server["body"] = snapshot(files(generated_at="2026-10-26T07:00:00Z"))
+    assert fetch_v1.main(["--base", server["base"], "--data", str(data), "--now", NOW.isoformat()]) == 0
+    assert server["requests"] == ["/v1/index.json", "/v1/index.json", "/v1/snapshot.tar.gz"]
+    assert tree_files(data) == files(generated_at="2026-10-26T07:00:00Z") | BOOKKEEPING
