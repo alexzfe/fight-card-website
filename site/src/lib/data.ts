@@ -34,6 +34,9 @@ function readJson<T>(dir: string, rel: string, schema: z.ZodType<T>): T {
 
 function checkRankings(dir: string, rankings: Rankings): string[] {
   const problems: string[] = [];
+  // The men/women label and the provisional tag read active[].p4p_rank against the lists, so the two must agree.
+  const active = new Map(rankings.active.map((e) => [e.id, e]));
+  const listed = new Set<string>();
   for (const sex of ['men', 'women'] as const) {
     rankings.p4p[sex].forEach((e, i) => {
       if (e.rank !== i + 1) {
@@ -42,7 +45,19 @@ function checkRankings(dir: string, rankings: Rankings): string[] {
       if (e.image && !fs.existsSync(path.join(dir, e.image))) {
         problems.push(`rankings.json: p4p.${sex} ${e.id} image ${e.image} not found`);
       }
+      if (listed.has(e.id)) problems.push(`rankings.json: p4p ${e.id} is in more than one P4P place`);
+      listed.add(e.id);
+      const row = active.get(e.id);
+      if (row?.p4p_rank !== e.rank) {
+        const other = row ? `p4p_rank ${row.p4p_rank}` : 'no row';
+        problems.push(`rankings.json: p4p.${sex} ${e.id} has rank ${e.rank}, but active has ${other}`);
+      }
     });
+  }
+  for (const e of rankings.active) {
+    if (e.p4p_rank != null && !listed.has(e.id)) {
+      problems.push(`rankings.json: active ${e.id} has p4p_rank ${e.p4p_rank} but is in no P4P list`);
+    }
   }
   const unordered = rankings.active.findIndex((e, i) => i > 0 && e.elo > rankings.active[i - 1]!.elo);
   if (unordered > 0) problems.push(`rankings.json: active is not in best-Elo-first order at row ${unordered}`);
