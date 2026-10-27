@@ -80,7 +80,22 @@ const manifest = {
   ],
 };
 
+// Link previews (Open Graph / Twitter): 1200x630, opaque, octagon beside the site name. Text is drawn here, with
+// this machine's fonts, and the PNG committed, so the image build never needs fonts.
+const ink = token(lightCss, 'color-text');
+const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="${paper}"/>
+  <g transform="translate(110 195) scale(7.5)">${outline(BARE, ember)}</g>
+  <g font-family="Inter, 'Noto Sans', 'DejaVu Sans', Arial, sans-serif" fill="${ink}">
+    <text x="420" y="290" font-size="84" font-weight="700">UFC fight cards</text>
+    <text x="420" y="370" font-size="40">Finish chances and Elo ratings</text>
+    <text x="420" y="425" font-size="40">for every bout on the card</text>
+  </g>
+</svg>`;
+const og = await sharp(Buffer.from(ogSvg)).flatten({ background: paper }).removeAlpha().png().toBuffer();
+
 const out = {
+  'og.png': og,
   'favicon.svg': faviconSvg,
   'favicon.ico': ico(icoPngs),
   'apple-touch-icon.png': await render(TILE, 180, true),
