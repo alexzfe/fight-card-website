@@ -1,0 +1,115 @@
+{
+  "as_of": "2026-10-20",
+  "p4p": {
+    "men": [
+      {
+        "rank": 1,
+        "id": "a1a1a1a1a1a1a1a1",
+        "name": "Alex Alpha",
+        "elo": 1612,
+        "division": "Lightweight",
+        "image": "images/a1a1a1a1a1a1a1a1.png"
+      },
+      {
+        "rank": 2,
+        "id": "a3a3a3a3a3a3a3a3",
+        "name": "Max Mike",
+        "elo": 1598,
+        "division": "Welterweight",
+        "image": "images/a3a3a3a3a3a3a3a3.png"
+      },
+      {
+        "rank": 3,
+        "id": "c3c3c3c3c3c3c3c3",
+        "name": "Carla Charlie",
+        "elo": 1590,
+        "division": "Middleweight",
+        "image": null
+      }
+    ],
+    "women": [
+      {
+        "rank": 1,
+        "id": "d4d4d4d4d4d4d4d4",
+        "name": "Dana Delta",
+        "elo": 1577,
+        "division": "Women's Flyweight",
+        "image": "images/d4d4d4d4d4d4d4d4.png"
+      },
+      {
+        "rank": 2,
+        "id": "b4b4b4b4b4b4b4b4",
+        "name": "Nia November",
+        "elo": 1561,
+        "division": "Women's Strawweight",
+        "image": null
+      }
+    ]
+  },
+  "active": [
+    {
+      "id": "a1a1a1a1a1a1a1a1",
+      "name": "Alex Alpha",
+      "elo": 1612,
+      "division": "Lightweight",
+      "p4p_rank": 1,
+      "provisional": false
+    },
+    {
+      "id": "a3a3a3a3a3a3a3a3",
+      "name": "Max Mike",
+      "elo": 1598,
+      "division": "Welterweight",
+      "p4p_rank": 2,
+      "provisional": false
+    },
+    {
+      "id": "c3c3c3c3c3c3c3c3",
+      "name": "Carla Charlie",
+      "elo": 1590,
+      "division": "Middleweight",
+      "p4p_rank": 3,
+      "provisional": false
+    },
+    {
+      "id": "d4d4d4d4d4d4d4d4",
+      "name": "Dana Delta",
+      "elo": 1577,
+      "division": "Women's Flyweight",
+      "p4p_rank": 1,
+      "provisional": false
+    },
+    {
+      "id": "b4b4b4b4b4b4b4b4",
+      "name": "Nia November",
+      "elo": 1561,
+      "division": "Women's Strawweight",
+      "p4p_rank": 2,
+      "provisional": false
+    },
+    {
+      "id": "e5e5e5e5e5e5e5e5",
+      "name": "Eli Echo",
+      "elo": 1531,
+      "division": "Lightweight",
+      "p4p_rank": null,
+      "provisional": false
+    },
+    {
+      "id": "j7j7j7j7j7j7j7j7",
+      "name": "Joaquín Juliét",
+      "elo": 1520,
+      "division": "Featherweight",
+      "p4p_rank": null,
+      "provisional": true
+    },
+    {
+      "id": "k9k9k9k9k9k9k9k9",
+      "name": "Kim Kilo",
+      "elo": 1490,
+      "division": null,
+      "p4p_rank": null,
+      "provisional": true
+    }
+  ]
+}

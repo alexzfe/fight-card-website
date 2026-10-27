@@ -152,3 +152,62 @@ describe('loadData contract violations', () => {
     expect(loadData(dir).index.model).toBeNull();
   });
 });
+
+describe('loadData rankings (optional rankings.json)', () => {
+  let dir: string;
+  const rankingsFile = () => path.join(dir, 'rankings.json');
+  const readRankings = () => JSON.parse(fs.readFileSync(rankingsFile(), 'utf8'));
+  const writeRankings = (v: unknown) => fs.writeFileSync(rankingsFile(), JSON.stringify(v));
+
+  beforeEach(() => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fc-rankings-'));
+    fs.cpSync(FIXTURES, dir, { recursive: true });
+  });
+  afterEach(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  it('loads the fixture: both P4P lists in rank order and the active list', () => {
+    const r = loadData(dir).rankings!;
+    expect(r.as_of).toBe('2026-10-20');
+    expect(r.p4p.men.map((e) => e.name)).toEqual(['Alex Alpha', 'Max Mike', 'Carla Charlie']);
+    expect(r.p4p.women.map((e) => e.name)).toEqual(['Dana Delta', 'Nia November']);
+    expect(r.active).toHaveLength(8);
+    expect(r.active[0]).toMatchObject({ name: 'Alex Alpha', elo: 1612, p4p_rank: 1, provisional: false });
+  });
+  it('is null when the data has no rankings.json, and still loads', () => {
+    fs.rmSync(rankingsFile());
+    const data = loadData(dir);
+    expect(data.rankings).toBeNull();
+    expect(data.events.length).toBeGreaterThan(0);
+  });
+  it('keeps null divisions and images', () => {
+    const r = loadData(dir).rankings!;
+    expect(r.p4p.men[2]).toMatchObject({ division: 'Middleweight', image: null });
+    expect(r.active.find((e) => e.name === 'Kim Kilo')!.division).toBeNull();
+  });
+  it('fails on invalid JSON with the file path in the message', () => {
+    fs.writeFileSync(rankingsFile(), '{not json');
+    expect(() => loadData(dir)).toThrow(/rankings\.json/);
+  });
+  it('fails when an entry violates the contract', () => {
+    const r = readRankings();
+    r.active[0].elo = 'high';
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*active\.0\.elo/s);
+  });
+  it('fails when a P4P headshot is missing', () => {
+    fs.rmSync(path.join(dir, 'images/a3a3a3a3a3a3a3a3.png'));
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*images\/a3a3a3a3a3a3a3a3\.png/s);
+  });
+  it('fails when a P4P list does not run 1..n in order', () => {
+    const r = readRankings();
+    r.p4p.women[1].rank = 5;
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*women.*rank/s);
+  });
+  it('fails when the active list is not best Elo first', () => {
+    const r = readRankings();
+    r.active.reverse();
+    writeRankings(r);
+    expect(() => loadData(dir)).toThrow(/rankings\.json.*active.*order/s);
+  });
+});
