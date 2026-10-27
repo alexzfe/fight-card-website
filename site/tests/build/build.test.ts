@@ -166,7 +166,7 @@ describe('search and sharing', () => {
     'ufc-fight-night-kilo-vs-lima',
     'ufc-fight-night-golf-vs-hotel',
   ];
-  const PAGES = ['index.html', 'how-it-works/index.html', ...EVENT_SLUGS.map((s) => `events/${s}/index.html`)];
+  const PAGES = ['index.html', 'how-it-works/index.html', 'rankings/index.html', ...EVENT_SLUGS.map((s) => `events/${s}/index.html`)];
   const urlOf = (rel: string) => `${ORIGIN}/${rel.replace(/index\.html$/, '')}`;
   const attr = (html: string, re: RegExp) => html.match(re)?.[1];
   const title = (html: string) => attr(html, /<title>([^<]*)<\/title>/);
