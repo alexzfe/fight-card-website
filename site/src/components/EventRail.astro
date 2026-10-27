@@ -2,6 +2,7 @@
 import { byDateAscending } from '../lib/events';
 import { eventTile } from '../lib/format';
 import type { Event } from '../lib/schema';
+import { site } from '../lib/site-data';
 
 interface Props {
   events: Event[];
@@ -9,6 +10,10 @@ interface Props {
 }
 
 const { events, current } = Astro.props;
+// The Rankings tile is pinned at the rail's right end (the events scroll beside it), only when there is a rankings page.
+// Its wording lives here alone; the podium icon tells it apart from the event tiles.
+const RANKINGS_LABEL = 'Rankings';
+const onRankings = Astro.url.pathname === '/rankings/';
 const rail = byDateAscending(events);
 // The today marker goes before the first upcoming event, when there are past events to its left.
 const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
@@ -42,6 +47,16 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
       })
     }
   </ul>
+  {
+    site.rankings && (
+      <a href="/rankings/" class="tile tile-pin" aria-current={onRankings ? 'page' : undefined}>
+        <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
+          <path d="M1.5 16.5v-7h5v-6h5v8h5v5zM6.5 9.5v7m5-5v5" />
+        </svg>
+        {RANKINGS_LABEL}
+      </a>
+    )
+  }
 </nav>
 <script is:inline>
   // Keep the rail where the visitor left it across event pages; scroll the selected tile into view only
