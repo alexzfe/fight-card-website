@@ -66,6 +66,17 @@ describe('validate-data', () => {
     expect(r.stdout).toMatch(/Fighter.*new_field/);
   }, 60_000);
 
+  it("passes a snapshot whose schema.json predates Rankings (1.0/1.1), with a note", () => {
+    const dir = copy();
+    const file = path.join(dir, 'schema.json');
+    const schema = JSON.parse(fs.readFileSync(file, 'utf8'));
+    delete schema.$defs.Rankings;
+    fs.writeFileSync(file, JSON.stringify(schema));
+    const r = validate(dir);
+    expect(r.status, r.stderr).toBe(0);
+    expect(r.stdout).toMatch(/schema\.json.*Rankings/);
+  }, 60_000);
+
   it('passes data without a schema.json (pipeline data/)', () => {
     const dir = copy();
     fs.rmSync(path.join(dir, 'schema.json'));
