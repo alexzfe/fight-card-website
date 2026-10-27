@@ -33,7 +33,7 @@ RED (`a64a0e9`): 2 failed, 191 passed, 2 skipped. GREEN (`5fe3af5`): `scripts/te
 
 | # | What is guaranteed | Test | Type | Result |
 |---|---|---|---|---|
-| 1 | A snapshot with `rankings.json` (contract 1.1) is accepted and the file lands in `data/` byte for byte | `test_fetch_v1.py › test_rankings_json_is_optional_and_kept_when_present` | unit | PASS |
+| 1 | A snapshot with `rankings.json` (contract 1.2) is accepted and the file lands in `data/` byte for byte | `test_fetch_v1.py › test_rankings_json_is_optional_and_kept_when_present` | unit | PASS |
 | 2 | Every earlier test still passes without the file, so it stays optional | the existing happy-path tests | unit | PASS |
 | 3 | A `rankings.json` that isn't JSON is refused as "rankings.json is unreadable", `data/` untouched | `… › test_rankings_json_that_is_not_json_is_refused` | unit | PASS |
 | 4 | `rankings.json` as a directory is still "unsafe" | `… › test_rankings_json_as_a_directory_is_refused` | unit | PASS (green already at RED: the check is the existing one) |
