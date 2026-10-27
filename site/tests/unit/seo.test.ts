@@ -86,6 +86,12 @@ describe('homeDescription', () => {
     expect(d.length).toBeLessThanOrEqual(160);
   });
 
+  it('calls a completed event the latest, not the next', () => {
+    expect(homeDescription(event({ status: 'completed' }))).toBe(
+      "Every UFC card with each bout's chance of a finish and both fighters' Elo ratings. Latest: UFC Fight Night: Moicano vs. Nolan, Sat, Oct 31, 2026.",
+    );
+  });
+
   it('describes just the site without events', () => {
     expect(homeDescription(undefined)).toBe(
       "Every upcoming UFC card with each bout's chance of a finish and both fighters' Elo ratings.",
