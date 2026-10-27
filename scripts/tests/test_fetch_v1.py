@@ -129,7 +129,16 @@ def test_unknown_files_are_skipped_not_refused(data, monkeypatch, capsys):
     assert tree_files(data) == contents | BOOKKEEPING
     assert not (data / "extras").exists()
     err = capsys.readouterr().err
-    assert "skipped" in err and "future.json" in err and "extras/a.json" in err
+    assert "skipped" in err and "'future.json'" in err and "'extras/a.json'" in err
+
+
+def test_skipped_names_cannot_inject_workflow_commands(data, monkeypatch, capsys):
+    """Skipped names are printed with repr: a newline in one can't start a GitHub Actions `::error::` line."""
+    contents = files(contract_version="1.3")
+    assert run(data, snapshot(contents | {"x\n::error::pwned": b"x"}), monkeypatch) == 0
+    err = capsys.readouterr().err
+    assert "skipped" in err and "pwned" in err
+    assert not any(line.startswith("::") for line in err.splitlines())
 
 
 def test_no_skip_note_without_unknown_files(data, monkeypatch, capsys):
