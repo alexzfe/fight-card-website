@@ -42,7 +42,29 @@ is then the source of truth). It's the layout above, additively:
   the Elo order; `schema.ts` is `Rankings`. Not in the pipeline's output.
 - No `images/misses.json` or `stale_fighters.json`: they are pipeline bookkeeping.
 
-`site/src/lib/schema.ts` accepts both shapes; `site/tests/fixtures/v1/` is a real snapshot (plus a hand-made `rankings.json`) and the site tests build it.
+- Enum values are closed within `/v1/` (`finish_tier`, `segment`, `status`, `outcome`, `PastFight.result`): a new
+  value is a breaking change and ships as `/v2/`, so the site keeps strict zod enums. New fields and files are
+  additive: zod drops fields the site doesn't read, and `fetch_v1.py` skips files outside the layout above.
+
+`site/src/lib/schema.ts` accepts both shapes; `site/tests/fixtures/v1/` is a real contract 1.2 snapshot (the
+committed `data/` from `/v1/` minus `images/misses.json` and `stale_fighters.json`) and the site tests build it.
+
+#### Checking the contract
+
+The engine's `/v1/schema.json` (from its pydantic `models.py`) is the authoritative shape; `schema.ts` is the site's
+reading of it, and `site/src/lib/contract.ts` (`checkContract`) keeps the two honest. It turns the zod schemas into
+JSON Schema and walks them against `$defs` `Index`, `Event`, `Fighters` and `Rankings`. Errors: a field the site
+reads that the contract doesn't define, an enum value or a `null` the contract allows and the site rejects, a field
+the site requires that the contract makes optional, or a missing `$defs` entry. A contract field the site doesn't
+read is only a note. It runs in two places:
+
+- `site/tests/unit/contract.test.ts`, against the fixture's pinned `schema.json` (which also validates every fixture
+  file with ajv), so a `schema.ts` change that drifts from the contract fails CI.
+- `npm run validate-data` whenever the data dir has a `schema.json`, so a snapshot whose contract breaks the site
+  fails the refresh before anything is committed, even if no current data uses the new value yet.
+
+To refresh the fixture from a newer contract: copy a `data/` committed by a v1 refresh into
+`site/tests/fixtures/v1/` without `images/misses.json` and `stale_fighters.json`, then run the site tests.
 
 ## model/ layout (vendored export from fight-auto-research)
 

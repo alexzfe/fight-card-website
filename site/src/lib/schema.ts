@@ -1,4 +1,5 @@
-// Mirrors pipeline/src/fightcard/models.py. Keep in sync with docs/CONTRACT.md.
+// The site's reading of the engine's /v1/ contract (its models.py, published as /v1/schema.json), also accepting the
+// pipeline's data/. src/lib/contract.ts checks it against schema.json (docs/CONTRACT.md, "Checking the contract").
 import { z } from 'astro/zod';
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'expected YYYY-MM-DD');
