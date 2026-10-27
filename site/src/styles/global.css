@@ -59,6 +59,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -79,6 +81,19 @@ main,
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 var(--space-4);
+}
+
+/* Headings break into even lines; short prose doesn't leave one word alone on its last line. */
+h1,
+h2,
+.headline {
+  text-wrap: balance;
+}
+
+.event-meta,
+.site-footer,
+.lede {
+  text-wrap: pretty;
 }
 
 ul {
@@ -217,7 +232,7 @@ ul {
 }
 
 /* Event header */
-.event-head h1 {
+.page-head h1 {
   margin: var(--space-3) 0 var(--space-1);
   font-size: 1.75rem;
   line-height: 1.15;
@@ -384,6 +399,18 @@ ul {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-muted);
+}
+
+/* A faint inset edge keeps a light-backed headshot from bleeding into the page. Initials have no photo to edge. */
+img.avatar {
+  outline: 1px solid rgb(0 0 0 / 0.1);
+  outline-offset: -1px;
+}
+
+@media (prefers-color-scheme: dark) {
+  img.avatar {
+    outline-color: rgb(255 255 255 / 0.1);
+  }
 }
 
 .main-event {
@@ -617,6 +644,7 @@ ul {
 
 /* Tiles: win filled, loss outlined, draw / no contest dashed. */
 .form > span {
+  position: relative;
   display: inline-grid;
   place-items: center;
   min-width: 1.6em;
@@ -625,6 +653,14 @@ ul {
   border: 1px solid var(--color-border);
   border-radius: 3px;
   color: var(--color-muted);
+}
+
+/* A bigger tap target than the 16px tile: it fills half the gap to each neighbour, so two never overlap, the 2px up
+   to the Elo line, and 6px of the Stats toggle's top padding. ::after is the tooltip, so this is ::before. */
+.form > span::before {
+  content: '';
+  position: absolute;
+  inset: -3px -2.5px -7px; /* from inside the 1px border */
 }
 
 .form > .form-win {
@@ -841,11 +877,11 @@ ul {
   border-color: var(--color-muted);
 }
 
-.explainer-section {
+.page-section {
   scroll-margin-top: 5rem;
 }
 
-.explainer-section h2 {
+.page-section h2 {
   margin: var(--space-6) 0 var(--space-3);
   padding-bottom: var(--space-2);
   border-bottom: 2px solid var(--color-text);
@@ -853,7 +889,7 @@ ul {
   letter-spacing: -0.01em;
 }
 
-.explainer-section h3 {
+.page-section h3 {
   margin: var(--space-6) 0 var(--space-2);
   font-size: var(--font-size-md);
 }

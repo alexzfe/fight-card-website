@@ -143,3 +143,37 @@ RED (5120f15): e2e 4 failed, 61 passed. GREEN: site 206 passed; astro check 0 er
 | 4 | Card pages and rankings each have their own footer line; every page keeps the model date and attribution; the method link is on all but how-it-works | e2e `the footer explains what the page shows, in one line` | e2e | PASS |
 
 Footer height at 390px: 134px on cards and rankings, 98px on how-it-works (220px before).
+
+## Phase 4: polish (`ui/4-polish`)
+
+### User journeys
+
+1. As a visitor reading any page, I want text drawn crisply and headings that break into even lines, with no lone word at the end of a short paragraph.
+2. As a visitor scanning headshots, I want a light-backed photo to keep its edge against the page in either theme.
+3. As a visitor on a phone, I want a form tile to show its opponent when my tap lands just beside the tile, not only dead on it.
+
+### Design
+
+- `html` gets `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale`.
+- `h1`, `h2` and `.headline` get `text-wrap: balance`; `.event-meta`, `.site-footer` and `.lede` get `text-wrap: pretty`.
+- `img.avatar` gets `outline: 1px solid rgb(0 0 0 / 0.1); outline-offset: -1px`, and white at the same alpha in dark mode. The initials avatar has none.
+- `.form > span::before` (`::after` is the tooltip) is an empty absolute box: `inset: -3px -2.5px -7px` from inside the 1px border. So:
+  - it fills half the 3px gap on each side, meeting its neighbour's without overlap;
+  - it takes the 2px up to the Elo line and 6px of the Stats toggle's 44px row.
+  - Each tile is 19×24px to a tap instead of 16×16, and looks the same.
+- `.event-head` → `.page-head` and `.explainer-section` → `.page-section` on every page. The rankings page's `<style is:global>` moved to `src/styles/rankings.css`, which only that page imports, not into `global.css`:
+  - `global.css` is inlined into every page (`inlineStylesheets: 'always'`), so the rankings rules would have added 515 bytes gzipped to each card (8270 → 8785 B on the fixture home page).
+  - They would also have broken the existing guard "keeps the rankings data, markup and search script off every other page".
+- No `transition: all` or `will-change` anywhere (grep).
+
+RED (418e6cc): site 2 failed, 206 passed; e2e 3 failed, 65 passed. GREEN: site 208 passed; astro check 0 errors; e2e 68 passed; build ok.
+
+During GREEN, the build test "keeps the rankings styles in global.css" became "…in a stylesheet beside global.css, which only the rankings page loads", for the reason above.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 1 | Text is antialiased; h1, .headline and h2 wrap balanced (home, how-it-works); .event-meta, footer and .lede wrap pretty (home, how-it-works, rankings) | e2e `polish › text is antialiased…` | e2e | PASS |
+| 2 | Headshots have a 1px inset outline, black at 10% in light and white at 10% in dark | e2e `polish › headshots carry a faint inset edge…` | e2e | PASS |
+| 3 | A tap 4px below a tile, or in the gap on its side, focuses that tile (its tip shows); the other half of the gap belongs to its neighbour | e2e `polish › a form tile answers a tap just outside its edge…` | e2e | PASS |
+| 4 | Every page heads with `.page-head`; rankings and how-it-works use `.page-section` | build `shared page styles › heads every page…` | build | PASS |
+| 5 | The rankings styles live in `src/styles/rankings.css`, with no `<style>` in the page; other pages still carry none of them | build `shared page styles › keeps the rankings styles…`, `keeps the rankings data, markup and search script off every other page` | build | PASS |

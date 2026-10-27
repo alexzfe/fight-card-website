@@ -354,7 +354,8 @@ describe('accent colour', () => {
   });
 });
 
-// Rankings borrowed the event page's header and the method page's sections; they share generic names and one stylesheet.
+// Rankings borrowed the event page's header and the method page's sections; they share generic names, and its styles
+// sit in src/styles beside the rest.
 describe('shared page styles', () => {
   it('heads every page with .page-head and splits rankings and how-it-works into .page-section', () => {
     for (const page of ['index.html', 'events/ufc-323-alpha-vs-bravo/index.html', 'rankings/index.html', 'how-it-works/index.html', '404.html']) {
@@ -364,8 +365,8 @@ describe('shared page styles', () => {
     expect(read('how-it-works/index.html')).toContain('class="page-section"');
   });
 
-  it('keeps the rankings styles in global.css with the rest', () => {
-    expect(fs.readFileSync(path.join(SITE, 'src/styles/global.css'), 'utf8')).toMatch(/\.p4p-row\s*\{/);
+  it('keeps the rankings styles in a stylesheet beside global.css, which only the rankings page loads', () => {
+    expect(fs.readFileSync(path.join(SITE, 'src/styles/rankings.css'), 'utf8')).toMatch(/\.p4p-row\s*\{/);
     expect(fs.readFileSync(path.join(SITE, 'src/pages/[rankings].astro'), 'utf8')).not.toContain('<style');
   });
 });

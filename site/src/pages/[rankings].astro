@@ -5,6 +5,7 @@ import Avatar from '../components/Avatar.astro';
 import EventRail from '../components/EventRail.astro';
 import RankSearch from '../components/RankSearch.astro';
 import Base from '../layouts/Base.astro';
+import '../styles/rankings.css';
 import { formatDate } from '../lib/format';
 import { nextBouts, provisionalIds, scriptJson, searchRows } from '../lib/rankings';
 import type { Rankings } from '../lib/schema';
@@ -20,7 +21,7 @@ const lists = [
   { key: 'men', title: 'Men', entries: rankings.p4p.men },
   { key: 'women', title: 'Women', entries: rankings.p4p.women },
 ].filter((list) => list.entries.length > 0);
-// The <style> at the end is only on this page; the site-wide stylesheet stays as it was.
+// styles/rankings.css is imported here alone, so the site-wide stylesheet stays as it was.
 ---
 
 <Base
@@ -30,7 +31,7 @@ const lists = [
 >
   <EventRail events={site.events} current={undefined} />
   <main class="rankings">
-    <header class="event-head">
+    <header class="page-head">
       <h1>
         <span class="kicker">Elo<span class="sr-only">:</span> </span>
         <span class="headline">Pound-for-pound rankings</span>
@@ -46,7 +47,7 @@ const lists = [
     <div id="p4p">
       {
         lists.map((list) => (
-          <section class="explainer-section" data-testid={`p4p-${list.key}`}>
+          <section class="page-section" data-testid={`p4p-${list.key}`}>
             <h2>{list.title}</h2>
             <ol class="p4p-list">
               {list.entries.map((entry) => (
@@ -81,153 +82,3 @@ const lists = [
   </main>
   <script type="application/json" id="rank-data" is:inline set:html={scriptJson(searchRows(rankings, bouts))} />
 </Base>
-
-<style is:global>
-  .rank-search input {
-    display: block;
-    width: 100%;
-    min-height: 44px;
-    padding: 0 var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-    color: inherit;
-    font: inherit;
-  }
-
-  /* Chrome and Safari draw the clear button in their own blue; this one is a muted cross in the page's colours. */
-  .rank-search input::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1rem;
-    height: 1rem;
-    background-color: var(--color-muted);
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
-    cursor: pointer;
-  }
-
-  .rank-search input::-webkit-search-cancel-button:hover {
-    background-color: var(--color-text);
-  }
-
-  .rank-search input:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-  }
-
-  .rank-search .fine {
-    margin: var(--space-2) 0;
-  }
-
-  .p4p-list {
-    --avatar-size: 48px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .p4p-row,
-  .result {
-    display: grid;
-    align-items: center;
-    column-gap: var(--space-3);
-    padding: var(--space-2) 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .p4p-row {
-    grid-template-columns: 1.5rem auto minmax(0, 1fr) auto;
-    scroll-margin-top: 5rem; /* clear of the sticky rail when a card's P4P rank links here */
-  }
-
-  /* The row a card linked to: a soft band, widened past the text so it doesn't sit flush against it. */
-  .p4p-row:target {
-    background: var(--color-surface);
-    box-shadow:
-      calc(-1 * var(--space-2)) 0 var(--color-surface),
-      var(--space-2) 0 var(--color-surface);
-  }
-
-  .result {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'name elo' 'meta elo' 'next elo';
-  }
-
-  .p4p-rank {
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--color-muted);
-    text-align: right;
-  }
-
-  .p4p-name,
-  .result-name {
-    display: block;
-    font-weight: 600;
-    overflow-wrap: break-word;
-  }
-
-  .p4p-division,
-  .result-meta {
-    display: block;
-    color: var(--color-muted);
-    font-size: var(--font-size-xs);
-  }
-
-  .result-name {
-    grid-area: name;
-  }
-
-  .result-meta {
-    grid-area: meta;
-  }
-
-  .result-elo {
-    grid-area: elo;
-  }
-
-  .result-next {
-    grid-area: next;
-    justify-self: start;
-  }
-
-  /* A booked bout: quiet, like the division above it, until pointed at. The padding makes a 44px target; the equal
-     negative margin keeps it taking the room of a line of xs text. */
-  .p4p-next,
-  .result-next {
-    display: inline-block;
-    padding-block: 14px;
-    margin-block: -12px;
-    color: var(--color-muted);
-    font-size: var(--font-size-xs);
-    text-decoration: none;
-  }
-
-  /* The arrow is drawn, not typed, and its empty alt keeps it out of the link's name. */
-  .p4p-next::after,
-  .result-next::after {
-    content: ' →' / '';
-  }
-
-  .p4p-next:hover,
-  .result-next:hover {
-    color: var(--color-text);
-    text-decoration: underline;
-  }
-
-  .p4p-elo,
-  .result-elo {
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-  }
-
-  .p4p-elo .elo-tag,
-  .result-elo .elo-tag {
-    display: block;
-    margin: 0;
-    font-size: var(--font-size-xs);
-    font-weight: 400;
-  }
-</style>
