@@ -27,20 +27,28 @@ export function homeDescription(event: Event | undefined): string {
   return event ? `${lead} Next: ${event.name}, ${formatLongDate(event.date)}.` : lead;
 }
 
-/** schema.org SportsEvent for one card; fighters missing from the roster are left out. */
+/**
+ * schema.org SportsEvent for one card; fighters missing from the roster are left out. Fills Google's recommended
+ * Event fields except `offers`: the site sells no tickets.
+ */
 export function eventJsonLd(event: Event, fighters: { [id: string]: Pick<Fighter, 'name'> }, url: string) {
   const ids = [...new Set(event.fights.flatMap((f) => [f.red, f.blue]))];
+  const people = ids.flatMap((id) => (fighters[id] ? [{ '@type': 'Person', name: fighters[id].name }] : []));
   return {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: event.name,
     startDate: event.date,
+    endDate: event.date, // cards run one evening
     url,
+    image: new URL('/og.png', url).href,
     description: eventDescription(event),
     sport: 'Mixed martial arts',
     eventStatus: 'https://schema.org/EventScheduled',
+    organizer: { '@type': 'Organization', name: 'UFC', url: 'https://www.ufc.com' },
     ...(event.location && { location: { '@type': 'Place', name: event.location, address: event.location } }),
-    competitor: ids.flatMap((id) => (fighters[id] ? [{ '@type': 'Person', name: fighters[id].name }] : [])),
+    competitor: people,
+    performer: people,
   };
 }
 
