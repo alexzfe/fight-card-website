@@ -40,17 +40,22 @@ describe('fixture build', () => {
     expect(read('healthz').trim()).toBe('ok');
   });
 
-  it('ships no JavaScript beyond the event rail\'s inline scroll keeper', () => {
+  it('ships no JavaScript beyond the event rail\'s inline scroll keeper and the rankings search', () => {
     expect(walk(DIST).filter((f) => /\.m?js$/.test(f))).toEqual([]);
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
-      // speculation rules are JSON the browser reads natively; no script runs
-      const html = fs.readFileSync(f, 'utf8').replace(/<script type="speculationrules">[^<]*<\/script>/, '');
+      // speculation rules and the rankings data are JSON the browser never runs
+      const html = fs
+        .readFileSync(f, 'utf8')
+        .replace(/<script type="(?:speculationrules|application\/json)"[^>]*>[^<]*<\/script>/g, '');
       const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
-      expect(scripts.length, f).toBeLessThanOrEqual(1);
+      const isRankings = f === path.join(DIST, 'rankings', 'index.html');
+      expect(scripts.length, f).toBeLessThanOrEqual(isRankings ? 2 : 1);
       for (const [tag, body] of scripts) {
         expect(tag, f).not.toMatch(/\ssrc=/i);
-        expect(body, f).toContain('event-rail-scroll');
-        expect(body!.length, f).toBeLessThan(1500);
+        const isSearch = body!.includes('rank-results');
+        expect(isSearch ? isRankings : true, f).toBe(true);
+        expect(body, f).toMatch(isSearch ? /rank-results/ : /event-rail-scroll/);
+        expect(body!.length, f).toBeLessThan(isSearch ? 2048 : 1500);
       }
     }
   });
@@ -68,6 +73,41 @@ describe('fixture build', () => {
     const imgs = [...read('index.html').matchAll(/<img[^>]*>/g)].map((m) => m[0]);
     expect(imgs[0]).toMatch(/loading="eager"/);
     expect(imgs.at(-1)).toMatch(/loading="lazy"/);
+  });
+
+  it('renders the rankings page and links it from every page', () => {
+    expect(fs.existsSync(path.join(DIST, 'rankings', 'index.html'))).toBe(true);
+    for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
+      expect(fs.readFileSync(f, 'utf8'), f).toMatch(/<a href="\/rankings\/"/);
+    }
+  });
+
+  it('does not prerender the rankings page: the speculation rules still name only event pages', () => {
+    for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
+      const m = fs.readFileSync(f, 'utf8').match(/<script type="speculationrules">([^<]*)<\/script>/);
+      expect(m![1], f).not.toContain('rankings');
+    }
+  });
+
+  it('loads the P4P headshots lazily at a fixed size, and no other headshot on the page', () => {
+    const html = read('rankings/index.html');
+    const imgs = [...html.matchAll(/<img[^>]*>/g)].map((m) => m[0]);
+    expect(imgs).toHaveLength(3); // Alex Alpha, Max Mike, Dana Delta; the other P4P entries have no photo
+    for (const img of imgs) {
+      expect(img).toMatch(/loading="lazy"/);
+      expect(img).toMatch(/width="\d+"/);
+      expect(img).toMatch(/height="\d+"/);
+    }
+  });
+
+  it('puts the active list in one JSON block for the search, not in the markup', () => {
+    const html = read('rankings/index.html');
+    const m = html.match(/<script type="application\/json" id="rank-data">([^<]*)<\/script>/);
+    expect(m, 'rank-data script').not.toBeNull();
+    const rows = JSON.parse(m![1]!);
+    expect(rows).toHaveLength(8);
+    expect(rows[0]).toEqual(['Alex Alpha', 1612, 'Lightweight', '#1 P4P', 0]);
+    expect(html).not.toContain('Joaquín Juliét</'); // not rendered as markup until a search finds it
   });
 
   it('keeps home page HTML + CSS under 50 KB', () => {

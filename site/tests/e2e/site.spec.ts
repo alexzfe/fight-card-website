@@ -468,3 +468,128 @@ test('an event tile shows the full event name on hover', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByTestId('event-tile').nth(1)).toHaveAttribute('title', 'UFC 323: Alpha vs. Bravo');
 });
+
+test.describe('rankings page', () => {
+  test('a Rankings tab on every page leads to it, and a Fight cards tab leads back', async ({ page }) => {
+    await page.goto('/');
+    const tabs = page.getByRole('navigation', { name: 'Site' });
+    await expect(tabs.getByRole('link')).toHaveText(['Fight cards', 'Rankings']);
+    await expect(tabs.getByRole('link', { name: 'Fight cards' })).toHaveAttribute('aria-current', 'true');
+    await tabs.getByRole('link', { name: 'Rankings' }).click();
+    await expect(page).toHaveURL(/\/rankings\/$/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Elo: Pound-for-pound rankings');
+    await expect(tabs.getByRole('link', { name: 'Rankings' })).toHaveAttribute('aria-current', 'page');
+    await expect(tabs.getByRole('link', { name: 'Fight cards' })).not.toHaveAttribute('aria-current', /.+/);
+    await tabs.getByRole('link', { name: 'Fight cards' }).click();
+    await expect(page).toHaveURL(/\/$/);
+  });
+
+  test('ranks men and women apart, best first, with division and Elo', async ({ page }) => {
+    await page.goto('/rankings/');
+    const men = page.getByTestId('p4p-men').getByTestId('p4p-row');
+    await expect(men).toHaveCount(3);
+    await expect(men.nth(0).getByTestId('p4p-rank')).toHaveText('1');
+    await expect(men.nth(0).getByTestId('p4p-name')).toHaveText('Alex Alpha');
+    await expect(men.nth(0).getByTestId('p4p-division')).toHaveText('Lightweight');
+    await expect(men.nth(0).getByTestId('p4p-elo')).toContainText('1612');
+    await expect(men.nth(2).getByTestId('p4p-name')).toHaveText('Carla Charlie');
+    const women = page.getByTestId('p4p-women').getByTestId('p4p-row');
+    await expect(women.getByTestId('p4p-name')).toHaveText(['Dana Delta', 'Nia November']);
+    await expect(women.nth(0).getByTestId('p4p-division')).toHaveText('Women’s Flyweight');
+  });
+
+  test('shows headshots where there is one and initials where there is not', async ({ page }) => {
+    await page.goto('/rankings/');
+    const men = page.getByTestId('p4p-men').getByTestId('p4p-row');
+    await expect(men.nth(0).locator('img')).toHaveCount(1);
+    await expect(men.nth(1).locator('img')).toHaveCount(1);
+    await expect(men.nth(2).getByTestId('avatar-initials')).toHaveText('CC');
+    await expect(page.getByTestId('p4p-women').getByTestId('p4p-row').nth(1).getByTestId('avatar-initials')).toHaveText('NN');
+  });
+
+  test('marks provisional ratings as quiet words', async ({ page }) => {
+    await page.goto('/rankings/');
+    const women = page.getByTestId('p4p-women').getByTestId('p4p-row');
+    await expect(women.nth(1).getByTestId('elo-tag')).toHaveText('provisional');
+    await expect(women.nth(0).getByTestId('elo-tag')).toHaveCount(0);
+  });
+
+  test('says these are our Elo ratings, not the UFC\'s, and links how they work', async ({ page }) => {
+    await page.goto('/rankings/');
+    const note = page.getByTestId('rankings-note');
+    await expect(note).toContainText('not official UFC rankings');
+    await expect(note).toContainText('Oct 20, 2026');
+    await note.getByRole('link', { name: 'How Elo works' }).click();
+    await expect(page).toHaveURL(/\/how-it-works\/$/);
+  });
+
+  test('searches the active fighters ignoring case and accents', async ({ page }) => {
+    await page.goto('/rankings/');
+    const search = page.getByRole('searchbox', { name: 'Search active fighters' });
+    const results = page.getByTestId('result');
+    await expect(page.getByTestId('p4p-men')).toBeVisible();
+    await search.fill('JUILET');
+    await expect(results).toHaveCount(0); // a typo is no match
+    await search.fill('juliet');
+    await expect(results).toHaveCount(1);
+    await expect(results.first().getByTestId('result-name')).toHaveText('Joaquín Juliét');
+    await expect(results.first()).toContainText('Featherweight');
+    await expect(results.first()).toContainText('1520');
+    await expect(results.first().getByTestId('elo-tag')).toHaveText('provisional');
+    await search.fill('ALPHA');
+    await expect(results).toHaveCount(1);
+    await expect(results.first()).toContainText('#1 P4P');
+    await search.fill('dana');
+    await expect(results.first()).toContainText('#1 women’s P4P');
+  });
+
+  test('swaps the P4P lists for the results while a query is typed, and back', async ({ page }) => {
+    await page.goto('/rankings/');
+    const search = page.getByRole('searchbox', { name: 'Search active fighters' });
+    await search.fill('a');
+    await expect(page.getByTestId('p4p-men')).toBeHidden();
+    await search.fill('');
+    await expect(page.getByTestId('p4p-men')).toBeVisible();
+    await expect(page.getByTestId('result')).toHaveCount(0);
+  });
+
+  test('lists results best Elo first and says when nothing matches', async ({ page }) => {
+    await page.goto('/rankings/');
+    const search = page.getByRole('searchbox', { name: 'Search active fighters' });
+    await search.fill('e');
+    const elos = await page.getByTestId('result-elo').allTextContents();
+    expect(elos.length).toBeGreaterThan(2);
+    const nums = elos.map((t) => Number(t.match(/\d+/)![0]));
+    expect(nums).toEqual([...nums].sort((a, b) => b - a));
+    await search.fill('zzzz');
+    await expect(page.getByTestId('result')).toHaveCount(0);
+    await expect(page.getByRole('status')).toHaveText('No active fighter matches “zzzz”.');
+  });
+
+  test('announces how many fighters match', async ({ page }) => {
+    await page.goto('/rankings/');
+    await page.getByRole('searchbox', { name: 'Search active fighters' }).fill('juliet');
+    await expect(page.getByRole('status')).toHaveText('1 of 8 active fighters');
+  });
+
+  test('works without JavaScript: the lists show and the search stays hidden', async ({ browser }) => {
+    const page = await (await browser.newContext({ javaScriptEnabled: false })).newPage();
+    await page.goto('http://localhost:4329/rankings/');
+    await expect(page.getByTestId('p4p-men').getByTestId('p4p-row')).toHaveCount(3);
+    await expect(page.getByRole('searchbox')).toBeHidden();
+  });
+
+  test('fits a 360px phone, with comfortable touch targets', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.goto('/rankings/');
+    const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+    }));
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+    expect((await page.getByRole('searchbox').boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    for (const tab of await page.getByRole('navigation', { name: 'Site' }).getByRole('link').all()) {
+      expect((await tab.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+});
