@@ -579,6 +579,66 @@
     },
     "stance": "Orthodox"
   },
+  "17e97649403ba428": {
+    "best_win": {
+      "date": "2026-05-09",
+      "elo": 1708,
+      "opponent": "Tatsuro Taira",
+      "opponent_id": "4461d7e47375a895"
+    },
+    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "dob": "2001-10-10",
+    "elo": 1780,
+    "elo_inactive": false,
+    "elo_peak": 1784,
+    "elo_provisional": false,
+    "height_in": 65.0,
+    "id": "17e97649403ba428",
+    "image": "images/17e97649403ba428.webp",
+    "name": "Joshua Van",
+    "nickname": "The Fearless",
+    "p4p_rank": 2,
+    "reach_in": 65.0,
+    "recent_fights": [
+      {
+        "date": "2026-09-19",
+        "event": "UFC 331: Van vs. Pantoja 2",
+        "method": "U-DEC",
+        "opponent": "Alexandre Pantoja",
+        "opponent_id": "a0f0004aadf10b71",
+        "result": "win",
+        "round": 5,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-09",
+        "event": "UFC 328: Chimaev vs. Strickland",
+        "method": "KO/TKO",
+        "opponent": "Tatsuro Taira",
+        "opponent_id": "4461d7e47375a895",
+        "result": "win",
+        "round": 5,
+        "time": "1:32"
+      },
+      {
+        "date": "2025-12-06",
+        "event": "UFC 323: Dvalishvili vs. Yan 2",
+        "method": "KO/TKO",
+        "opponent": "Alexandre Pantoja",
+        "opponent_id": "a0f0004aadf10b71",
+        "result": "win",
+        "round": 1,
+        "time": "0:26"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 18
+    },
+    "stance": "Orthodox"
+  },
   "184f6ec4ee712e9f": {
     "best_win": null,
     "details_fetched_at": "2026-10-25T18:18:58Z",
@@ -666,7 +726,7 @@
   "1af1170ed937cba7": {
     "best_win": {
       "date": "2024-10-05",
-      "elo": 1563,
+      "elo": 1564,
       "opponent": "Ketlen Vieira",
       "opponent_id": "b9706f80d005036c"
     },
@@ -1194,7 +1254,7 @@
     "dob": null,
     "elo": 1565,
     "elo_inactive": true,
-    "elo_peak": 1582,
+    "elo_peak": 1583,
     "elo_provisional": false,
     "height_in": 66.0,
     "id": "3143bf892608139a",
@@ -2473,6 +2533,66 @@
     },
     "stance": "Orthodox"
   },
+  "5d1b7e3dd9e11074": {
+    "best_win": {
+      "date": "2025-03-01",
+      "elo": 1641,
+      "opponent": "Asu Almabayev",
+      "opponent_id": "8d3273573b85be09"
+    },
+    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "dob": "1993-11-14",
+    "elo": 1685,
+    "elo_inactive": false,
+    "elo_peak": 1694,
+    "elo_provisional": false,
+    "height_in": 65.0,
+    "id": "5d1b7e3dd9e11074",
+    "image": "images/5d1b7e3dd9e11074.webp",
+    "name": "Manel Kape",
+    "nickname": "StarBoy",
+    "p4p_rank": null,
+    "reach_in": 68.0,
+    "recent_fights": [
+      {
+        "date": "2026-06-20",
+        "event": "UFC Fight Night: Kape vs. Horiguchi",
+        "method": "KO/TKO",
+        "opponent": "Kyoji Horiguchi",
+        "opponent_id": "98aa60cf58071fd6",
+        "result": "win",
+        "round": 3,
+        "time": "2:42"
+      },
+      {
+        "date": "2025-12-13",
+        "event": "UFC Fight Night: Royval vs. Kape",
+        "method": "KO/TKO",
+        "opponent": "Brandon Royval",
+        "opponent_id": "6e15f63b6c2e2c15",
+        "result": "win",
+        "round": 1,
+        "time": "3:18"
+      },
+      {
+        "date": "2025-03-01",
+        "event": "UFC Fight Night: Kape vs. Almabayev",
+        "method": "KO/TKO",
+        "opponent": "Asu Almabayev",
+        "opponent_id": "8d3273573b85be09",
+        "result": "win",
+        "round": 3,
+        "time": "2:16"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 7,
+      "nc": 0,
+      "w": 23
+    },
+    "stance": "Southpaw"
+  },
   "5d495dec23d7c68e": {
     "best_win": {
       "date": "2026-04-25",
@@ -2981,7 +3101,7 @@
   "6d68c1afe954f121": {
     "best_win": {
       "date": "2021-11-06",
-      "elo": 1503,
+      "elo": 1504,
       "opponent": "CJ Vergara",
       "opponent_id": "077e3ace32b72be9"
     },
@@ -3526,7 +3646,7 @@
     "image": "images/7dda2cf308f24a02.webp",
     "name": "Virna Jandiroba",
     "nickname": "Carcara",
-    "p4p_rank": 10,
+    "p4p_rank": null,
     "reach_in": 64.0,
     "recent_fights": [
       {
@@ -3627,6 +3747,66 @@
       "w": 6
     },
     "stance": "Orthodox"
+  },
+  "7ee0fd831c0fe7c3": {
+    "best_win": {
+      "date": "2026-05-02",
+      "elo": 1665,
+      "opponent": "Jack Della Maddalena",
+      "opponent_id": "6b453bc35a823c3f"
+    },
+    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "dob": "1993-08-17",
+    "elo": 1727,
+    "elo_inactive": false,
+    "elo_peak": 1742,
+    "elo_provisional": false,
+    "height_in": 73.0,
+    "id": "7ee0fd831c0fe7c3",
+    "image": "images/7ee0fd831c0fe7c3.webp",
+    "name": "Carlos Prates",
+    "nickname": "The Nightmare",
+    "p4p_rank": 6,
+    "reach_in": 78.0,
+    "recent_fights": [
+      {
+        "date": "2026-05-02",
+        "event": "UFC Fight Night: Della Maddalena vs. Prates",
+        "method": "KO/TKO",
+        "opponent": "Jack Della Maddalena",
+        "opponent_id": "6b453bc35a823c3f",
+        "result": "win",
+        "round": 3,
+        "time": "3:17"
+      },
+      {
+        "date": "2025-11-15",
+        "event": "UFC 322: Della Maddalena vs. Makhachev",
+        "method": "KO/TKO",
+        "opponent": "Leon Edwards",
+        "opponent_id": "f1fac969a1d70b08",
+        "result": "win",
+        "round": 2,
+        "time": "1:28"
+      },
+      {
+        "date": "2025-08-16",
+        "event": "UFC 319: Du Plessis vs. Chimaev",
+        "method": "KO/TKO",
+        "opponent": "Geoff Neal",
+        "opponent_id": "b997be68943010fc",
+        "result": "win",
+        "round": 1,
+        "time": "4:59"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 7,
+      "nc": 0,
+      "w": 24
+    },
+    "stance": "Switch"
   },
   "7f6ed67d3ed3c036": {
     "best_win": {
@@ -3750,16 +3930,16 @@
   },
   "80fa8218c99f9c58": {
     "best_win": {
-      "date": "2018-12-29",
-      "elo": 1647,
-      "opponent": "Cristiane Justino",
-      "opponent_id": "634bb0de2eb043b4"
+      "date": "2016-12-30",
+      "elo": 1658,
+      "opponent": "Ronda Rousey",
+      "opponent_id": "8bdac25ce0bb874d"
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": "1988-05-30",
     "elo": 1614,
     "elo_inactive": true,
-    "elo_peak": 1741,
+    "elo_peak": 1743,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "80fa8218c99f9c58",
@@ -3977,7 +4157,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1657,
+    "elo": 1656,
     "elo_inactive": false,
     "elo_peak": 1664,
     "elo_provisional": false,
@@ -4397,7 +4577,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1430,
+    "elo": 1431,
     "elo_inactive": false,
     "elo_peak": 1561,
     "elo_provisional": false,
@@ -4672,7 +4852,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1444,
+    "elo": 1443,
     "elo_inactive": false,
     "elo_peak": 1502,
     "elo_provisional": false,
@@ -5738,6 +5918,66 @@
     },
     "stance": "Orthodox"
   },
+  "c32aeb1a59e6272d": {
+    "best_win": {
+      "date": "2025-11-15",
+      "elo": 1702,
+      "opponent": "Sean Brady",
+      "opponent_id": "45f7cb591c3ab00b"
+    },
+    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "dob": "1999-06-24",
+    "elo": 1727,
+    "elo_inactive": false,
+    "elo_peak": 1757,
+    "elo_provisional": false,
+    "height_in": 72.0,
+    "id": "c32aeb1a59e6272d",
+    "image": "images/c32aeb1a59e6272d.webp",
+    "name": "Michael Morales",
+    "nickname": null,
+    "p4p_rank": 7,
+    "reach_in": 79.0,
+    "recent_fights": [
+      {
+        "date": "2025-11-15",
+        "event": "UFC 322: Della Maddalena vs. Makhachev",
+        "method": "KO/TKO",
+        "opponent": "Sean Brady",
+        "opponent_id": "45f7cb591c3ab00b",
+        "result": "win",
+        "round": 1,
+        "time": "3:27"
+      },
+      {
+        "date": "2025-05-17",
+        "event": "UFC Fight Night: Burns vs. Morales",
+        "method": "KO/TKO",
+        "opponent": "Gilbert Burns",
+        "opponent_id": "23024fdfc966410a",
+        "result": "win",
+        "round": 1,
+        "time": "3:39"
+      },
+      {
+        "date": "2024-08-24",
+        "event": "UFC Fight Night: Cannonier vs. Borralho",
+        "method": "KO/TKO",
+        "opponent": "Neil Magny",
+        "opponent_id": "84b3e7d38f2d2ec5",
+        "result": "win",
+        "round": 1,
+        "time": "4:39"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 19
+    },
+    "stance": "Orthodox"
+  },
   "c6aee362c7a7d482": {
     "best_win": {
       "date": "2022-05-07",
@@ -6147,7 +6387,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1552,
+    "elo": 1551,
     "elo_inactive": false,
     "elo_peak": 1558,
     "elo_provisional": false,
@@ -6437,7 +6677,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1548,
+    "elo": 1547,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -6587,7 +6827,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1724,
+    "elo": 1723,
     "elo_inactive": false,
     "elo_peak": 1808,
     "elo_provisional": false,
