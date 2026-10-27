@@ -154,3 +154,17 @@ Sizes (gzip -9 of the built HTML, CSS inlined):
 | `/rankings/` budget test, 700 random-letter rows | 13,193 B (old pool) | 19,001 B (budget 24,576 B) |
 | `/` fixtures | 7,580 B | 7,555 B (the tab rules are shared now) |
 | `/` on the v1 fixture's events | 12,221 B | 12,313 B (measured against the real-data build; the v1 fixture's `rankings.json` is not on this page) |
+
+## Review 2 fixes
+
+The second review found 0 blocking, 0 should-fix and 2 nits. Both are fixed.
+
+| Finding | Test | Commits |
+|---|---|---|
+| **R1** a query typed before `#rank-data` was parsed got no results and no retry (and could hit a half-parsed JSON). The handler is now a named `update()` that returns while `document.readyState === 'loading'`, and a `DOMContentLoaded` listener re-runs it when the box has a value | e2e `answers a query typed before the page has finished arriving`: a route puts a held, parser-blocking `<script src>` just before `#rank-data`, the test types `alpha` while the page is still loading, releases the script, and expects 1 result, the P4P lists hidden and the status line | RED 94a66d9 (e2e: 1 failed, 56 passed), GREEN 4e3d816 (unit+build 168 passed, e2e 57 passed, astro check 0 errors) |
+| **R2** the contract version for `rankings.json` read "1.1" (PR body) and "1.x" (code and docs); the engine's rebase made it 1.2 (1.1 is the model pull, with no `rankings.json`) | none (comment and doc wording; `fetch_v1` still accepts any 1.x, so nothing in its behaviour changes) | docs commit, plus the PR #9 body ("engine contract 1.2") |
+
+The search script is 2,033 B of its 2,048 B cap (it was about 1,888 B before the fix), so the next change to it has to
+make room first.
+
+Final run: `npm test` 168 passed, `npm run test:e2e` 57 passed, `npm run check` 0 errors, scripts 193 passed (2 skipped).
