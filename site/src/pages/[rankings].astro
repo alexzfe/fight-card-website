@@ -18,10 +18,13 @@ const lists = [
   { key: 'men', title: 'Men', entries: rankings.p4p.men },
   { key: 'women', title: 'Women', entries: rankings.p4p.women },
 ].filter((list) => list.entries.length > 0);
-// The search script ships unminified under a size budget (tests/build), so its notes live here: it reads the rows
-// from #rank-data, lists the first 30 matches (best Elo first) of the folded query (case and accents ignored) in
-// #rank-results, and hides the P4P lists meanwhile. The form is hidden until it runs, so without JS there is no dead box.
-// el() makes each class its own data-testid, as the server-rendered rows have them.
+// The search script ships unminified under a size budget (tests/build), so its notes live here. It sits right after the
+// form so the box is there before the lists paint (nothing shifts); only without JS does the <noscript> rule hide it.
+// On the first keystroke it parses the rows from #rank-data (last in the page), then lists the first 30 matches (best
+// Elo first) in #rank-results and hides the P4P lists meanwhile. A match has every word of the query in the name, after
+// case, accents, apostrophes and dots are ignored and a hyphen counts as a space. el() makes each class its own
+// data-testid, as the server-rendered rows have them.
+// The <style> at the end is only on this page; the site-wide stylesheet stays as it was.
 ---
 
 <Base
@@ -41,12 +44,51 @@ const lists = [
       </p>
     </header>
 
-    <form class="rank-search" id="rank-search" role="search" hidden>
+    <form class="rank-search" id="rank-search" role="search">
       <label class="sr-only" for="rank-q">Search active fighters</label>
       <input id="rank-q" type="search" placeholder="Search active fighters" autocomplete="off" spellcheck="false" />
       <p class="fine" id="rank-status" role="status"></p>
       <ul class="result-list" id="rank-results"></ul>
     </form>
+    <noscript><style is:inline>#rank-search{display:none}</style></noscript>
+    <script is:inline>
+      (() => {
+        const $ = (id) => document.getElementById(id);
+        const [form, input, status, results] = ['rank-search', 'rank-q', 'rank-status', 'rank-results'].map($);
+        const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f'’.]/g, '').replace(/-/g, ' ').toLowerCase();
+        const el = (tag, cls, text = '') => {
+          const e = document.createElement(tag);
+          e.className = e.dataset.testid = cls;
+          e.textContent = text;
+          return e;
+        };
+        let rows, names;
+        input.addEventListener('input', () => {
+          const data = $('rank-data');
+          if (!data) return; // the page is still arriving
+          if (!rows) {
+            rows = JSON.parse(data.textContent);
+            names = rows.map((r) => fold(r[0]));
+          }
+          const words = fold(input.value).split(/\s+/).filter(Boolean);
+          const hits = words.length ? rows.filter((_, i) => words.every((w) => names[i].includes(w))) : [];
+          $('p4p').hidden = !!words.length;
+          results.replaceChildren(
+            ...hits.slice(0, 30).map((r) => {
+              const li = el('li', 'result');
+              const elo = el('span', 'result-elo', r[1]);
+              elo.prepend(el('span', 'sr-only', 'Elo '));
+              if (r[4]) elo.append(el('span', 'elo-tag', 'provisional'));
+              li.append(el('span', 'result-name', r[0]), el('span', 'result-meta', [r[2], r[3]].filter(Boolean).join(' · ')), elo);
+              return li;
+            }),
+          );
+          status.textContent = !words.length ? '' : !hits.length ? `No active fighter matches “${input.value.trim()}”.`
+            : hits.length > 30 ? `Showing the first 30 of ${hits.length} matches.` : `${hits.length} of ${rows.length} active fighters`;
+        });
+        form.addEventListener('submit', (e) => e.preventDefault());
+      })();
+    </script>
 
     <div id="p4p">
       {
@@ -65,6 +107,7 @@ const lists = [
                     )}
                   </span>
                   <span class="p4p-elo" data-testid="p4p-elo">
+                    <span class="sr-only">Elo </span>
                     {entry.elo}
                     {provisional.has(entry.id) && <span class="elo-tag" data-testid="elo-tag">provisional</span>}
                   </span>
@@ -78,42 +121,8 @@ const lists = [
     </div>
   </main>
   <script type="application/json" id="rank-data" is:inline set:html={scriptJson(searchRows(rankings))} />
-  <script is:inline>
-    (() => {
-      const $ = (id) => document.getElementById(id);
-      const [form, input, status, results, lists] = ['rank-search', 'rank-q', 'rank-status', 'rank-results', 'p4p'].map($);
-      const rows = JSON.parse($('rank-data').textContent);
-      const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      const names = rows.map((r) => fold(r[0]));
-      const el = (tag, cls, text = '') => {
-        const e = document.createElement(tag);
-        e.className = e.dataset.testid = cls;
-        e.textContent = text;
-        return e;
-      };
-      input.addEventListener('input', () => {
-        const q = fold(input.value).trim().replace(/\s+/g, ' ');
-        const hits = q ? rows.filter((_, i) => names[i].includes(q)) : [];
-        lists.hidden = !!q;
-        results.replaceChildren(
-          ...hits.slice(0, 30).map((r) => {
-            const li = el('li', 'result');
-            const elo = el('span', 'result-elo', r[1]);
-            if (r[4]) elo.append(el('span', 'elo-tag', 'provisional'));
-            li.append(el('span', 'result-name', r[0]), el('span', 'result-meta', [r[2], r[3]].filter(Boolean).join(' · ')), elo);
-            return li;
-          }),
-        );
-        status.textContent = !q ? '' : !hits.length ? `No active fighter matches “${input.value.trim()}”.`
-          : hits.length > 30 ? `Showing the first 30 of ${hits.length} matches` : `${hits.length} of ${rows.length} active fighters`;
-      });
-      form.addEventListener('submit', (e) => e.preventDefault());
-      form.hidden = false;
-    })();
-  </script>
 </Base>
 
-<!-- Only this page carries these rules; the site-wide stylesheet stays as it was. -->
 <style is:global>
   .rank-search input {
     display: block;
