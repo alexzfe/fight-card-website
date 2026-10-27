@@ -1,14 +1,24 @@
-# Builds ghcr.io/alexzfe/fight-card-website:<sha> from a commit. Called by release.yml (code pushed to main) and
-# refresh.yml (data commits, which never trigger release.yml because they are pushed with GITHUB_TOKEN).
+# Builds ghcr.io/alexzfe/fight-card-website from a commit. Called by release.yml (code pushed to main), refresh.yml
+# (data commits, which never trigger release.yml because they are pushed with GITHUB_TOKEN) and prod.yml (a v* tag:
+# the tag's code with main's latest data/).
 name: build
 
 on:
   workflow_call:
     inputs:
       ref:
-        description: Commit SHA to build; also the image tag
+        description: Commit SHA to build
         type: string
         required: true
+      data_ref:
+        description: Take data/ from this ref (fetched now) instead of from `ref`; empty keeps ref's own data/
+        type: string
+        required: false
+        default: ""
+    outputs:
+      tag:
+        description: The image tag, `<ref>` or `<ref>-data-<data commit SHA>`
+        value: ${{ jobs.build.outputs.tag }}
 
 env:
   IMAGE: ghcr.io/alexzfe/fight-card-website
@@ -19,10 +29,30 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      tag: ${{ steps.data.outputs.tag }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           ref: ${{ inputs.ref }}
+
+      # With data_ref, data/ is replaced wholesale (files main deleted go too) and the tag names both commits, so
+      # the image built for a commit with its own data/ is never overwritten.
+      - name: Pick data/ and the image tag
+        id: data
+        env:
+          REF: ${{ inputs.ref }}
+          DATA_REF: ${{ inputs.data_ref }}
+        run: |
+          if [ -z "$DATA_REF" ]; then
+            echo "tag=$REF" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch --quiet --depth=1 origin "$DATA_REF"
+          rm -rf data
+          git checkout FETCH_HEAD -- data
+          echo "tag=$REF-data-$(git rev-parse FETCH_HEAD)" >> "$GITHUB_OUTPUT"
+
       - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
@@ -32,4 +62,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE }}:${{ inputs.ref }}
+          tags: ${{ env.IMAGE }}:${{ steps.data.outputs.tag }}

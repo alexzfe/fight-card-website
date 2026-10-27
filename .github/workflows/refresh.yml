@@ -232,9 +232,13 @@ jobs:
     with:
       ref: ${{ needs.pipeline.outputs.sha || needs.v1.outputs.sha }}
 
+  # Shares release.yml's prod-deploy lock, so a tag deploy that read older data/ can't land after this one.
   prod:
     needs: [pipeline, v1, build]
     if: always() && needs.build.result == 'success'
+    concurrency:
+      group: prod-deploy
+      cancel-in-progress: false
     uses: alexzfe/infra/.github/workflows/deploy-app.yml@main
     with:
       app: ufc
