@@ -57,6 +57,11 @@ The first `/v1/` commit adds `schema.json` and `contract_version` to `data/`. Th
 copies both from the old `data/` into the new one on every swap. They stay in git as the pipeline last wrote them,
 and a rollback carries on from there.
 
+`data/rankings.json` (the Rankings tab) is not in the pipeline's output, so under `DATA_SOURCE=pipeline` it freezes at
+the last `/v1/` swap: the Rankings tab keeps serving that `as_of` indefinitely, and the build stays green. On a
+rollback either delete it (`git rm data/rankings.json`, commit and push: the tab and its link then disappear) or
+accept the frozen list. Its P4P headshots are `data/images/*.webp`, which the pipeline's image step leaves alone.
+
 **What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
 committed and the site keeps serving the last committed `data/`. The first two have their own handling;
 the rest fail the run (exit 1):
