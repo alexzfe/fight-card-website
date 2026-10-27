@@ -8,7 +8,7 @@
       "red": "e1248941344b3288",
       "result": {
         "method": "KO/TKO",
-        "outcome": null,
+        "outcome": "win",
         "round": 2,
         "time": "4:54",
         "winner": "e1248941344b3288"
@@ -25,7 +25,7 @@
       "red": "d661ce4da776fc20",
       "result": {
         "method": "U-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 5,
         "time": "5:00",
         "winner": "d661ce4da776fc20"
@@ -42,7 +42,7 @@
       "red": "bb2c3c3a466224af",
       "result": {
         "method": "KO/TKO",
-        "outcome": null,
+        "outcome": "win",
         "round": 1,
         "time": "4:28",
         "winner": "bb2c3c3a466224af"
@@ -59,7 +59,7 @@
       "red": "279566840aa55bf2",
       "result": {
         "method": "U-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 3,
         "time": "5:00",
         "winner": "279566840aa55bf2"
@@ -76,7 +76,7 @@
       "red": "5537efc6e496dd84",
       "result": {
         "method": "KO/TKO",
-        "outcome": null,
+        "outcome": "win",
         "round": 1,
         "time": "1:14",
         "winner": "5537efc6e496dd84"
@@ -93,7 +93,7 @@
       "red": "2e19380f34871c6a",
       "result": {
         "method": "KO/TKO",
-        "outcome": null,
+        "outcome": "win",
         "round": 1,
         "time": "2:40",
         "winner": "2e19380f34871c6a"
@@ -110,7 +110,7 @@
       "red": "95aff2fd8d09a5f0",
       "result": {
         "method": "KO/TKO",
-        "outcome": null,
+        "outcome": "win",
         "round": 1,
         "time": "2:38",
         "winner": "95aff2fd8d09a5f0"
@@ -127,7 +127,7 @@
       "red": "36b8f265bcd1b7a4",
       "result": {
         "method": "SUB",
-        "outcome": null,
+        "outcome": "win",
         "round": 1,
         "time": "1:44",
         "winner": "36b8f265bcd1b7a4"
@@ -144,7 +144,7 @@
       "red": "99bd51917728c25d",
       "result": {
         "method": "U-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 3,
         "time": "5:00",
         "winner": "99bd51917728c25d"
@@ -161,7 +161,7 @@
       "red": "ed7d329d7c29428d",
       "result": {
         "method": "S-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 3,
         "time": "5:00",
         "winner": "ed7d329d7c29428d"
@@ -178,7 +178,7 @@
       "red": "f7adc1fd115f8fdd",
       "result": {
         "method": "U-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 3,
         "time": "5:00",
         "winner": "f7adc1fd115f8fdd"
@@ -195,7 +195,7 @@
       "red": "b67d6bacc68d4c92",
       "result": {
         "method": "U-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 3,
         "time": "5:00",
         "winner": "b67d6bacc68d4c92"
@@ -212,7 +212,7 @@
       "red": "aebaa8cec15b083d",
       "result": {
         "method": "KO/TKO",
-        "outcome": null,
+        "outcome": "win",
         "round": 1,
         "time": "3:54",
         "winner": "aebaa8cec15b083d"
@@ -229,7 +229,7 @@
       "red": "abcf2cc6efc42031",
       "result": {
         "method": "U-DEC",
-        "outcome": null,
+        "outcome": "win",
         "round": 3,
         "time": "5:00",
         "winner": "abcf2cc6efc42031"

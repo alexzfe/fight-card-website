@@ -1,5 +1,57 @@
 {
   "$defs": {
+    "ActiveEntry": {
+      "properties": {
+        "division": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Division"
+        },
+        "elo": {
+          "title": "Elo",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "p4p_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "P4P Rank"
+        },
+        "provisional": {
+          "title": "Provisional",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "elo",
+        "division",
+        "p4p_rank",
+        "provisional"
+      ],
+      "title": "ActiveEntry",
+      "type": "object"
+    },
     "BestWin": {
       "description": "The beaten opponent rated highest going into the bout (docs/ELO.md).",
       "properties": {
@@ -486,6 +538,18 @@
           ],
           "default": null
         },
+        "stale_fighters": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stale Fighters"
+        },
         "tiers": {
           "anyOf": [
             {
@@ -565,6 +629,85 @@
         "constant_log_loss"
       ],
       "title": "OosEvidence",
+      "type": "object"
+    },
+    "P4P": {
+      "properties": {
+        "men": {
+          "items": {
+            "$ref": "#/$defs/P4PEntry"
+          },
+          "maxItems": 15,
+          "title": "Men",
+          "type": "array"
+        },
+        "women": {
+          "items": {
+            "$ref": "#/$defs/P4PEntry"
+          },
+          "maxItems": 10,
+          "title": "Women",
+          "type": "array"
+        }
+      },
+      "required": [
+        "men",
+        "women"
+      ],
+      "title": "P4P",
+      "type": "object"
+    },
+    "P4PEntry": {
+      "properties": {
+        "division": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Division"
+        },
+        "elo": {
+          "title": "Elo",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Image"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "rank": {
+          "minimum": 1,
+          "title": "Rank",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "rank",
+        "id",
+        "name",
+        "elo",
+        "division",
+        "image"
+      ],
+      "title": "P4PEntry",
       "type": "object"
     },
     "PastFight": {
@@ -655,6 +798,33 @@
         "event"
       ],
       "title": "PastFight",
+      "type": "object"
+    },
+    "Rankings": {
+      "description": "data/rankings.json, written by `score` and published as /v1/rankings.json (docs/CONTRACT.md).",
+      "properties": {
+        "active": {
+          "items": {
+            "$ref": "#/$defs/ActiveEntry"
+          },
+          "title": "Active",
+          "type": "array"
+        },
+        "as_of": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "As Of",
+          "type": "string"
+        },
+        "p4p": {
+          "$ref": "#/$defs/P4P"
+        }
+      },
+      "required": [
+        "as_of",
+        "p4p",
+        "active"
+      ],
+      "title": "Rankings",
       "type": "object"
     },
     "Record": {
@@ -780,6 +950,6 @@
   },
   "$id": "https://ufc-data.xlobax.com/v1/schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "index.json is #/$defs/Index, events/{id}.json is #/$defs/Event, fighters.json is #/$defs/Fighters.",
-  "title": "fightcard /v1 (contract 1)"
+  "description": "index.json is #/$defs/Index, events/{id}.json is #/$defs/Event, fighters.json is #/$defs/Fighters, rankings.json is #/$defs/Rankings.",
+  "title": "fightcard /v1 (contract 1.2)"
 }

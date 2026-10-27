@@ -91,7 +91,8 @@ def test_creates_data_when_absent(tmp_path, monkeypatch):
 def test_accepts_the_real_publish_fixture(data, monkeypatch):
     """The committed fixture is `fightcard publish` output over the site's data/ (see v1-source.tdd.md)."""
     contents = tree_files(V1_FIXTURE)
-    assert run(data, snapshot(contents), monkeypatch, "--max-age-hours", "100000") == 0
+    now = json.loads(contents["index.json"])["generated_at"]  # the fixture is newer than NOW
+    assert run(data, snapshot(contents), monkeypatch, "--now", now.replace("Z", "+00:00")) == 0
     assert tree_files(data) == contents | BOOKKEEPING
 
 
@@ -114,6 +115,31 @@ def test_rankings_json_that_is_not_json_is_refused(data, monkeypatch, capsys):
 
 def test_rankings_json_as_a_directory_is_refused(data, monkeypatch, capsys):
     contents = files() | {"rankings.json/x": b"{}"}
+    assert "unsafe" in refused(data, snapshot(contents), monkeypatch, capsys)
+
+
+# The engine may add files within /v1/ (docs/CONTRACT.md, Versioning: consumers ignore files they don't know), so a
+# safe member outside the layout is skipped, not written, and the rest of the snapshot is taken.
+UNKNOWN = {"future.json": b'{"new": true}\n', "extras/a.json": b"{}\n", "extras/deep/b.bin": b"xx", ".hidden": b"x"}
+
+
+def test_unknown_files_are_skipped_not_refused(data, monkeypatch, capsys):
+    contents = files(contract_version="1.3")
+    assert run(data, snapshot(contents | UNKNOWN), monkeypatch) == 0
+    assert tree_files(data) == contents | BOOKKEEPING
+    assert not (data / "extras").exists()
+    err = capsys.readouterr().err
+    assert "skipped" in err and "future.json" in err and "extras/a.json" in err
+
+
+def test_no_skip_note_without_unknown_files(data, monkeypatch, capsys):
+    assert run(data, snapshot(files()), monkeypatch) == 0
+    assert "skipped" not in capsys.readouterr().err
+
+
+def test_unknown_files_count_towards_the_size_cap(data, monkeypatch, capsys):
+    monkeypatch.setattr(fetch_v1, "MAX_EXTRACTED_BYTES", 1000)
+    contents = files() | {"future.bin": b"x" * 2000}
     assert "unsafe" in refused(data, snapshot(contents), monkeypatch, capsys)
 
 
@@ -222,9 +248,10 @@ UNSAFE = {
     "hard link": [member("events/hard.json", tarfile.LNKTYPE, "index.json")],
     "device": [member("events/dev", tarfile.CHRTYPE)],
     "fifo": [member("events/fifo", tarfile.FIFOTYPE)],
-    "unexpected top-level file": [member("evil.sh")],
-    "unexpected top-level dir": [member("model", tarfile.DIRTYPE)],
-    "dotfile at top": [member(".git", tarfile.DIRTYPE)],
+    "symlink outside the layout": [member("future", tarfile.SYMTYPE, "/etc/passwd")],
+    "hard link outside the layout": [member("future.json", tarfile.LNKTYPE, "index.json")],
+    "device outside the layout": [member("future/dev", tarfile.CHRTYPE)],
+    "traversal outside the layout": [member("future/../../evil.json")],
     "file where a dir belongs": [],  # built below
     "deep nesting": [member("events/a/b.json")],
     "backslash": [member("events\\..\\x.json")],

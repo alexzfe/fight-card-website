@@ -44,6 +44,35 @@ describe('validate-data', () => {
     expect(r.stderr).toContain('fighters.json');
   }, 60_000);
 
+  it("fails when the snapshot's schema.json breaks the contract the site relies on", () => {
+    const dir = copy();
+    const file = path.join(dir, 'schema.json');
+    const schema = JSON.parse(fs.readFileSync(file, 'utf8'));
+    schema.$defs.Fight.properties.segment.anyOf[0].enum.push('undercard');
+    fs.writeFileSync(file, JSON.stringify(schema));
+    const r = validate(dir);
+    expect(r.status).not.toBe(0);
+    expect(r.stderr).toMatch(/schema\.json.*segment.*undercard/s);
+  }, 60_000);
+
+  it("notes fields the snapshot's schema.json adds, and passes", () => {
+    const dir = copy();
+    const file = path.join(dir, 'schema.json');
+    const schema = JSON.parse(fs.readFileSync(file, 'utf8'));
+    schema.$defs.Fighter.properties.new_field = { type: 'string' };
+    fs.writeFileSync(file, JSON.stringify(schema));
+    const r = validate(dir);
+    expect(r.status, r.stderr).toBe(0);
+    expect(r.stdout).toMatch(/Fighter.*new_field/);
+  }, 60_000);
+
+  it('passes data without a schema.json (pipeline data/)', () => {
+    const dir = copy();
+    fs.rmSync(path.join(dir, 'schema.json'));
+    const r = validate(dir);
+    expect(r.status, r.stderr).toBe(0);
+  }, 60_000);
+
   it('fails on a missing data dir', () => {
     const r = validate(path.join(os.tmpdir(), 'no-such-data-dir'));
     expect(r.status).not.toBe(0);

@@ -40,12 +40,12 @@ describe('Result.outcome', () => {
 describe('the /v1/ snapshot fixture', () => {
   it('is real publish output: contract version, outcomes and schema.json', () => {
     const raw = JSON.parse(fs.readFileSync(path.join(V1, 'index.json'), 'utf8'));
-    expect(raw.contract_version).toBe('1');
+    expect(raw.contract_version).toBe('1.2');
     expect(fs.existsSync(path.join(V1, 'schema.json'))).toBe(true);
   });
   it('loads as site data', () => {
     const data = loadData(V1);
-    expect(data.index.contract_version).toBe('1');
+    expect(data.index.contract_version).toBe('1.2');
     expect(data.events.length).toBeGreaterThan(0);
     const results = data.events.flatMap((e) => e.fights.map((f) => f.result).filter((r) => r != null));
     expect(results.length).toBeGreaterThan(0);
