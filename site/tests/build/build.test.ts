@@ -120,8 +120,15 @@ describe('fixture build', () => {
     expect(m, 'rank-data script').not.toBeNull();
     const rows = JSON.parse(m![1]!);
     expect(rows).toHaveLength(9);
-    expect(rows[0]).toEqual(['Alex Alpha', 1612, 'Lightweight', '#1 P4P', 0]);
+    expect(rows[0]).toEqual(['Alex Alpha', 1612, 'Lightweight', '#1 P4P', 0, 'ufc-323-alpha-vs-bravo', 'Oct 31 vs Bravo']);
     expect(html).not.toContain('Joaquín Juliét</'); // not rendered as markup until a search finds it
+  });
+
+  it('gives each P4P row its fighter id, the anchor a card\'s P4P rank links to', () => {
+    const html = read('rankings/index.html');
+    const ids = [...html.matchAll(/<li[^>]*class="p4p-row"[^>]*>/g)].map((m) => m[0].match(/\sid="([^"]+)"/)?.[1]);
+    expect(ids).toEqual(['a1a1a1a1a1a1a1a1', 'a3a3a3a3a3a3a3a3', 'c3c3c3c3c3c3c3c3', 'd4d4d4d4d4d4d4d4', 'b4b4b4b4b4b4b4b4']);
+    expect(read('events/ufc-323-alpha-vs-bravo/index.html')).toContain('href="/rankings/#c3c3c3c3c3c3c3c3"');
   });
 
   it('shows the search box at once, before the lists, and hides it only without JavaScript', () => {

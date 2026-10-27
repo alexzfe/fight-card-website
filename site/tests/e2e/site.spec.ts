@@ -256,6 +256,32 @@ test('a ranked fighter shows the P4P rank after the Elo', async ({ page }) => {
   await expect(fights.nth(0).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1612');
 });
 
+test('a P4P rank on a card links to the fighter\'s row in the rankings, men\'s or women\'s, and keeps the Elo tip', async ({ page }) => {
+  await page.goto('/');
+  const fight = page.getByTestId('fight').nth(1);
+  const red = fight.locator('.corner-red').getByTestId('elo');
+  await expect(red.getByRole('link', { name: '#4 P4P' })).toHaveAttribute('href', '/rankings/#c3c3c3c3c3c3c3c3');
+  await expect(fight.locator('.corner-blue').getByTestId('elo').getByRole('link', { name: '#1 P4P' })).toHaveAttribute(
+    'href',
+    '/rankings/#d4d4d4d4d4d4d4d4',
+  );
+  await red.hover();
+  await expect.poll(() => red.evaluate((e) => getComputedStyle(e, '::after').visibility)).toBe('visible');
+  await expect(red).toHaveAttribute('data-tip', 'Peak 1793');
+
+  await red.getByRole('link').click();
+  await expect(page).toHaveURL(/\/rankings\/#c3c3c3c3c3c3c3c3$/);
+  const row = page.locator('#c3c3c3c3c3c3c3c3');
+  await expect(row.getByTestId('p4p-name')).toHaveText('Carla Charlie');
+  // It lands in view below the sticky rail, picked out from the rows around it.
+  const rail = (await page.getByRole('navigation', { name: 'Events' }).boundingBox())!;
+  const box = (await row.boundingBox())!;
+  expect(box.y).toBeGreaterThanOrEqual(rail.y + rail.height);
+  expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+  const bg = (el: Element) => getComputedStyle(el).backgroundColor;
+  expect(await row.evaluate(bg)).not.toBe(await page.getByTestId('p4p-row').first().evaluate(bg));
+});
+
 test('provisional and inactive are quiet unboxed words, and an unknown Elo shows no tag', async ({ page }) => {
   await page.goto('/');
   const fights = page.getByTestId('fight');
@@ -280,7 +306,7 @@ test('Stats lists each corner\'s Elo, peak and best win', async ({ page }) => {
   await expect(row(0, 'Peak')).toHaveText(['1655', '—']);
   await expect(row(0, 'Best win')).toHaveText(['Finn FoxtrotElo 1702 · Sep 2025', '—']);
   await fights.nth(1).locator('summary').click();
-  await expect(row(1, 'Elo')).toHaveText(['1690 · #4 P4P', '1488']);
+  await expect(row(1, 'Elo')).toHaveText(['1690 · #4 P4P', '1488 · #1 P4P']);
   await expect(row(1, 'Best win')).toHaveCount(0); // neither corner has one
   await expect(fights.nth(3).locator('.stats th', { hasText: /^Elo$/ })).toHaveCount(0); // no Elo on either side
 });
@@ -732,6 +758,31 @@ test.describe('rankings page', () => {
       await expect(page.getByTestId('p4p-men').getByTestId('p4p-row')).toHaveCount(3);
       await expect(page.getByRole('searchbox')).toBeHidden();
     });
+  });
+
+  test('a fighter booked on an upcoming card links to it, in the P4P lists and in the search results', async ({ page }) => {
+    await page.goto('/rankings/');
+    const carla = page.locator('#c3c3c3c3c3c3c3c3');
+    const next = carla.getByRole('link', { name: /^Oct 31 vs Delta/ });
+    await expect(next).toHaveAttribute('href', '/events/ufc-323-alpha-vs-bravo/');
+    await expect(next).toHaveText('Oct 31 vs Delta →');
+    const muted = await page.getByTestId('p4p-division').first().evaluate((el) => getComputedStyle(el).color);
+    expect(await next.evaluate((el) => getComputedStyle(el).color)).toBe(muted);
+
+    const search = page.getByRole('searchbox', { name: 'Search active fighters' });
+    await search.fill('echo');
+    const result = page.getByTestId('result').first();
+    await expect(result.getByRole('link', { name: /^Oct 31 vs Foxtrot/ })).toHaveAttribute('href', '/events/ufc-323-alpha-vs-bravo/');
+    await result.getByRole('link').click();
+    await expect(page).toHaveURL(/\/events\/ufc-323-alpha-vs-bravo\/$/);
+  });
+
+  test('the search box\'s clear button takes the page\'s muted colour, not the browser\'s blue', async ({ page }) => {
+    await page.goto('/rankings/');
+    const search = page.getByRole('searchbox', { name: 'Search active fighters' });
+    await search.fill('alpha');
+    const muted = await page.getByTestId('p4p-division').first().evaluate((el) => getComputedStyle(el).color);
+    expect(await search.evaluate((el) => getComputedStyle(el, '::-webkit-search-cancel-button').backgroundColor)).toBe(muted);
   });
 
   test('fits a 360px phone, with comfortable touch targets', async ({ page }) => {

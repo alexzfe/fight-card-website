@@ -72,6 +72,7 @@ describe('without rankings.json', () => {
     for (const f of walk(dist).filter((p) => p.endsWith('.html'))) {
       const html = fs.readFileSync(f, 'utf8');
       expect(html, f).not.toContain('href="/rankings/"');
+      expect(html, f).not.toContain('href="/rankings/#'); // a card's P4P rank stays plain text
     }
   });
 });
