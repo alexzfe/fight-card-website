@@ -656,11 +656,12 @@ img.avatar {
 }
 
 /* A bigger tap target than the 16px tile: it fills half the gap to each neighbour, so two never overlap, the 2px up
-   to the Elo line, and 6px of the Stats toggle's top padding. ::after is the tooltip, so this is ::before. */
+   to the Elo line, and nothing below, where the Stats toggle can sit flush on the tiles. ::after is the tooltip, so
+   this is ::before. */
 .form > span::before {
   content: '';
   position: absolute;
-  inset: -3px -2.5px -7px; /* from inside the 1px border */
+  inset: -3px -2.5px -1px; /* from inside the 1px border */
 }
 
 .form > .form-win {

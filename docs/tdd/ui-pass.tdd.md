@@ -157,10 +157,10 @@ Footer height at 390px: 134px on cards and rankings, 98px on how-it-works (220px
 - `html` gets `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale`.
 - `h1`, `h2` and `.headline` get `text-wrap: balance`; `.event-meta`, `.site-footer` and `.lede` get `text-wrap: pretty`.
 - `img.avatar` gets `outline: 1px solid rgb(0 0 0 / 0.1); outline-offset: -1px`, and white at the same alpha in dark mode. The initials avatar has none.
-- `.form > span::before` (`::after` is the tooltip) is an empty absolute box: `inset: -3px -2.5px -7px` from inside the 1px border. So:
+- `.form > span::before` (`::after` is the tooltip) is an empty absolute box: `inset: -3px -2.5px -1px` from inside the 1px border (the bottom was `-7px` until the review, see "Review fix" below). So:
   - it fills half the 3px gap on each side, meeting its neighbour's without overlap;
-  - it takes the 2px up to the Elo line and 6px of the Stats toggle's 44px row.
-  - Each tile is 19×24px to a tap instead of 16×16, and looks the same.
+  - it takes the 2px up to the Elo line, and nothing below.
+  - Each tile is 19×18px to a tap instead of 16×16, and looks the same.
 - `.event-head` → `.page-head` and `.explainer-section` → `.page-section` on every page. The rankings page's `<style is:global>` moved to `src/styles/rankings.css`, which only that page imports, not into `global.css`:
   - `global.css` is inlined into every page (`inlineStylesheets: 'always'`), so the rankings rules would have added 515 bytes gzipped to each card (8270 → 8785 B on the fixture home page).
   - They would also have broken the existing guard "keeps the rankings data, markup and search script off every other page".
@@ -177,3 +177,14 @@ During GREEN, the build test "keeps the rankings styles in global.css" became "�
 | 3 | A tap 4px below a tile, or in the gap on its side, focuses that tile (its tip shows); the other half of the gap belongs to its neighbour | e2e `polish › a form tile answers a tap just outside its edge…` | e2e | PASS |
 | 4 | Every page heads with `.page-head`; rankings and how-it-works use `.page-section` | build `shared page styles › heads every page…` | build | PASS |
 | 5 | The rankings styles live in `src/styles/rankings.css`, with no `<style>` in the page; other pages still carry none of them | build `shared page styles › keeps the rankings styles…`, `keeps the rankings data, markup and search script off every other page` | build | PASS |
+
+### Review fix (PR #16)
+
+**S1.** On phones the tiles sit flush on the Stats toggle (0px gap), and the 6px `::before` extension below the tile painted over the top of the toggle, so a tap there opened the tile's tooltip instead of Stats. The bottom extension is now 0 (`-1px` from inside the border); the sides and top are unchanged.
+
+RED (219e226): e2e 1 failed, 68 passed. GREEN: site 208 passed; astro check 0 errors; e2e 69 passed.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 6 | A tap just under a form tile, where the Stats toggle sits flush on it at 390px, lands on the toggle | e2e `polish › a form tile leaves the Stats toggle beneath it whole` | e2e | PASS |
+| 3 | (changed) the "below the tile" tap now checks 1.5px above the tile, toward the Elo line; the sides are as before | e2e `polish › a form tile answers a tap just outside its edge…` | e2e | PASS |
