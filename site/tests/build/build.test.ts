@@ -204,8 +204,22 @@ describe('search and sharing', () => {
       expect(attr(html, /<meta property="og:url" content="([^"]*)"/), rel).toBe(urlOf(rel));
       expect(attr(html, /<meta property="og:site_name" content="([^"]*)"/), rel).toBe('UFC fight cards');
       expect(attr(html, /<meta property="og:type" content="([^"]*)"/), rel).toMatch(/^(website|article)$/);
-      expect(attr(html, /<meta name="twitter:card" content="([^"]*)"/), rel).toBe('summary');
+      expect(attr(html, /<meta name="twitter:card" content="([^"]*)"/), rel).toBe('summary_large_image');
     }
+  });
+
+  it('gives every page a 1200x630 share image', () => {
+    for (const rel of PAGES) {
+      const html = read(rel);
+      expect(attr(html, /<meta property="og:image" content="([^"]*)"/), rel).toBe(`${ORIGIN}/og.png`);
+      expect(attr(html, /<meta property="og:image:width" content="([^"]*)"/), rel).toBe('1200');
+      expect(attr(html, /<meta property="og:image:height" content="([^"]*)"/), rel).toBe('630');
+      expect(attr(html, /<meta property="og:image:alt" content="([^"]*)"/), rel).toBeTruthy();
+    }
+    const b = fs.readFileSync(path.join(DIST, 'og.png'));
+    expect(b.subarray(1, 4).toString()).toBe('PNG');
+    expect([b.readUInt32BE(16), b.readUInt32BE(20)]).toEqual([1200, 630]);
+    expect(b[25] === 6 || b[25] === 4, 'opaque, so dark-mode apps do not show it on black').toBe(false);
   });
 
   it('marks each event page up as a SportsEvent naming its fighters', () => {
