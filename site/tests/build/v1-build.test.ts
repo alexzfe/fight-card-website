@@ -35,3 +35,18 @@ describe('v1 snapshot build', () => {
     expect(fs.existsSync(path.join(DIST, 'schema.json'))).toBe(false);
   });
 });
+
+describe('v1 snapshot rankings', () => {
+  const read = (rel: string) => fs.readFileSync(path.join(DIST, rel), 'utf8');
+
+  it('renders the rankings page with the real webp headshots, lazily', () => {
+    const rankings = JSON.parse(fs.readFileSync(path.join(V1, 'rankings.json'), 'utf8'));
+    const withPhoto = [...rankings.p4p.men, ...rankings.p4p.women].filter((e: { image: string | null }) => e.image);
+    const html = read('rankings/index.html');
+    const imgs = [...html.matchAll(/<img[^>]*>/g)].map((m) => m[0]);
+    expect(withPhoto.length).toBeGreaterThan(0);
+    expect(imgs).toHaveLength(withPhoto.length);
+    expect(imgs.every((img) => /loading="lazy"/.test(img))).toBe(true);
+    expect(html).toContain('type="image/avif"');
+  });
+});
