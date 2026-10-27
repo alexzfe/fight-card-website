@@ -10,6 +10,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const model = site.index.model;
+const onRankings = Astro.url.pathname === '/rankings/';
 // Chromium prerenders every event page up front (there are only a handful), so tile taps feel instant
 // on phones too, where there is no hover to warn it.
 const SPECULATION_RULES = JSON.stringify({
@@ -35,6 +36,14 @@ const SPECULATION_RULES = JSON.stringify({
     <script type="speculationrules" is:inline set:html={SPECULATION_RULES} />
   </head>
   <body>
+    {
+      site.rankings && (
+        <nav class="site-nav" aria-label="Site">
+          <a href="/" aria-current={onRankings ? undefined : 'true'}>Fight cards</a>
+          <a href="/rankings/" aria-current={onRankings ? 'page' : undefined}>Rankings</a>
+        </nav>
+      )
+    }
     <slot />
     <footer class="site-footer">
       <p>
