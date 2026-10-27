@@ -46,7 +46,7 @@
           elo.prepend(el('span', 'sr-only', 'Elo '));
           if (r[4]) elo.append(el('span', 'elo-tag', 'provisional'));
           li.append(el('span', 'result-name', r[0]), el('span', 'result-meta', [r[2], r[3]].filter(Boolean).join(' · ')), elo);
-          if (r[5]) li.append(Object.assign(el('a', 'result-next', `${r[6]} →`), { href: `/events/${r[5]}/` }));
+          if (r[5]) li.append(Object.assign(el('a', 'result-next', r[6]), { href: `/events/${r[5]}/` }));
           return li;
         }),
       );

@@ -766,8 +766,8 @@ test.describe('rankings page', () => {
     const carla = page.locator('#c3c3c3c3c3c3c3c3');
     const next = carla.getByRole('link', { name: /^Oct 31 vs Delta/ });
     await expect(next).toHaveAttribute('href', '/events/ufc-323-alpha-vs-bravo/');
-    await expect(next).toHaveText('Oct 31 vs Delta →');
     await expect(next).toHaveAccessibleName('Oct 31 vs Delta'); // the arrow is decoration, not read aloud
+    expect(await next.evaluate((el) => getComputedStyle(el, '::after').content)).toContain('→');
     const muted = await page.getByTestId('p4p-division').first().evaluate((el) => getComputedStyle(el).color);
     expect(await next.evaluate((el) => getComputedStyle(el).color)).toBe(muted);
 

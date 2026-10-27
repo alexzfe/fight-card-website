@@ -60,7 +60,7 @@ const lists = [
                     )}
                     {bouts.has(entry.id) && (
                       <a class="p4p-next" data-testid="p4p-next" href={`/events/${bouts.get(entry.id)!.slug}/`}>
-                        {bouts.get(entry.id)!.label} →
+                        {bouts.get(entry.id)!.label}
                       </a>
                     )}
                   </span>
@@ -191,14 +191,22 @@ const lists = [
     justify-self: start;
   }
 
-  /* A booked bout: quiet, like the division above it, until pointed at. */
+  /* A booked bout: quiet, like the division above it, until pointed at. The padding makes a 44px target; the equal
+     negative margin keeps it taking the room of a line of xs text. */
   .p4p-next,
   .result-next {
     display: inline-block;
-    padding-block: 2px;
+    padding-block: 14px;
+    margin-block: -12px;
     color: var(--color-muted);
     font-size: var(--font-size-xs);
     text-decoration: none;
+  }
+
+  /* The arrow is drawn, not typed, and its empty alt keeps it out of the link's name. */
+  .p4p-next::after,
+  .result-next::after {
+    content: ' →' / '';
   }
 
   .p4p-next:hover,
