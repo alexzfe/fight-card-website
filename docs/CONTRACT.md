@@ -53,10 +53,12 @@ committed `data/` from `/v1/` minus `images/misses.json` and `stale_fighters.jso
 
 The engine's `/v1/schema.json` (from its pydantic `models.py`) is the authoritative shape; `schema.ts` is the site's
 reading of it, and `site/src/lib/contract.ts` (`checkContract`) keeps the two honest. It turns the zod schemas into
-JSON Schema and walks them against `$defs` `Index`, `Event`, `Fighters` and `Rankings`. Errors: a field the site
-reads that the contract doesn't define, an enum value or a `null` the contract allows and the site rejects, a field
-the site requires that the contract makes optional, or a missing `$defs` entry. A contract field the site doesn't
-read is only a note. It runs in two places:
+JSON Schema and walks them against `$defs` `Index`, `Event`, `Fighters` and `Rankings` (`$ref`s, a one-schema
+`allOf`, `const` as a one-value enum). Errors: a field the site reads that the contract doesn't define, a type change
+(a type, enum value or `null` the contract allows and the site rejects; a site `number` takes an `integer`, not the
+other way round), a field the site requires that the contract makes optional, a `$ref` that doesn't resolve, or a
+missing `Index`, `Event` or `Fighters`. A contract field the site doesn't read is only a note, and so is a missing
+`Rankings` (a 1.0/1.1 contract, e.g. after an engine rollback: `rankings.json` is optional). It runs in two places:
 
 - `site/tests/unit/contract.test.ts`, against the fixture's pinned `schema.json` (which also validates every fixture
   file with ajv), so a `schema.ts` change that drifts from the contract fails CI.
