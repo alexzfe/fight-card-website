@@ -767,6 +767,7 @@ test.describe('rankings page', () => {
     const next = carla.getByRole('link', { name: /^Oct 31 vs Delta/ });
     await expect(next).toHaveAttribute('href', '/events/ufc-323-alpha-vs-bravo/');
     await expect(next).toHaveText('Oct 31 vs Delta →');
+    await expect(next).toHaveAccessibleName('Oct 31 vs Delta'); // the arrow is decoration, not read aloud
     const muted = await page.getByTestId('p4p-division').first().evaluate((el) => getComputedStyle(el).color);
     expect(await next.evaluate((el) => getComputedStyle(el).color)).toBe(muted);
 
@@ -774,6 +775,7 @@ test.describe('rankings page', () => {
     await search.fill('echo');
     const result = page.getByTestId('result').first();
     await expect(result.getByRole('link', { name: /^Oct 31 vs Foxtrot/ })).toHaveAttribute('href', '/events/ufc-323-alpha-vs-bravo/');
+    await expect(result.getByRole('link')).toHaveAccessibleName('Oct 31 vs Foxtrot');
     await result.getByRole('link').click();
     await expect(page).toHaveURL(/\/events\/ufc-323-alpha-vs-bravo\/$/);
   });
@@ -807,5 +809,8 @@ test.describe('rankings page', () => {
     expect((await page.getByRole('searchbox').boundingBox())!.height).toBeGreaterThanOrEqual(44);
     const pin = page.getByRole('navigation', { name: 'Events' }).getByRole('link', { name: 'Rankings' });
     expect((await pin.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await page.getByTestId('p4p-next').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await page.getByRole('searchbox').fill('echo');
+    expect((await page.getByTestId('result-next').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
   });
 });
