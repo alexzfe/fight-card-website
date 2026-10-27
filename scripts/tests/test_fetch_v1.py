@@ -95,6 +95,28 @@ def test_accepts_the_real_publish_fixture(data, monkeypatch):
     assert tree_files(data) == contents | BOOKKEEPING
 
 
+RANKINGS = dumps({"as_of": "2026-10-26", "p4p": {"men": [], "women": []}, "active": []})
+
+
+def test_rankings_json_is_optional_and_kept_when_present(data, monkeypatch):
+    """The engine serves /v1/rankings.json from contract 1.x on; a snapshot without it is still fine (the other
+    tests), and one with it lands in data/ for the Rankings page."""
+    contents = files(contract_version="1.1") | {"rankings.json": RANKINGS}
+    assert run(data, snapshot(contents), monkeypatch) == 0
+    assert (data / "rankings.json").read_bytes() == RANKINGS
+    assert tree_files(data) == contents | BOOKKEEPING
+
+
+def test_rankings_json_that_is_not_json_is_refused(data, monkeypatch, capsys):
+    contents = files() | {"rankings.json": b"{nope"}
+    assert "rankings.json is unreadable" in refused(data, snapshot(contents), monkeypatch, capsys)
+
+
+def test_rankings_json_as_a_directory_is_refused(data, monkeypatch, capsys):
+    contents = files() | {"rankings.json/x": b"{}"}
+    assert "unsafe" in refused(data, snapshot(contents), monkeypatch, capsys)
+
+
 def test_downloads_the_snapshot_url(data, monkeypatch):
     seen = []
     monkeypatch.setattr(fetch_v1, "download", lambda url, max_bytes: seen.append(url) or snapshot(files()))
