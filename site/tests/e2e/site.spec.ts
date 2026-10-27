@@ -609,6 +609,29 @@ test.describe('rankings page', () => {
     expect(await parses()).toBe(1);
   });
 
+  test('answers a query typed before the page has finished arriving', async ({ page }) => {
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    // a script that blocks the parser just before #rank-data holds the page at "loading", with the box already usable
+    await page.route('**/rankings/', async (route) => {
+      const html = (await (await route.fetch()).text()).replace('<script type="application/json" id="rank-data"', '<script src="/held.js"></script>$&');
+      await route.fulfill({ contentType: 'text/html', body: html });
+    });
+    await page.route('**/held.js', async (route) => {
+      await held;
+      await route.fulfill({ contentType: 'text/javascript', body: '' });
+    });
+    const arrived = page.waitForRequest('**/held.js');
+    await page.goto('/rankings/', { waitUntil: 'commit' });
+    await arrived;
+    await page.getByRole('searchbox', { name: 'Search active fighters' }).fill('alpha');
+    await expect(page.getByTestId('result')).toHaveCount(0);
+    release();
+    await expect(page.getByTestId('result')).toHaveCount(1);
+    await expect(page.getByTestId('p4p-men')).toBeHidden();
+    await expect(page.getByRole('status')).toHaveText('1 of 9 active fighters');
+  });
+
   test('puts the search box in the first paint, above the lists', async ({ page }) => {
     await page.goto('/rankings/');
     const form = page.locator('#rank-search');
