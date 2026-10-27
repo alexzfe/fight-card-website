@@ -4,9 +4,9 @@
 # - pipeline (default, or unset): scrape -> segments -> images -> score here, daily at 06:00 UTC and hourly around
 #   event days (scripts/should_run.py decides; other hourly runs exit early). A non-blocking shadow job then diffs
 #   data/ against the fightcard-engine's /v1/ API into the job summary.
-# - v1: download the engine's /v1/ snapshot (scripts/fetch_v1.py) every run, then validate data/ with the site's
-#   schema (npm run validate-data); an unusable one fails the run. A stale one keeps data/ and opens the single
-#   "Data API stale" issue; only the daily and manual runs also fail on it.
+# - v1: probe the engine's /v1/index.json every run and download its snapshot when newer (scripts/fetch_v1.py),
+#   then validate data/ with the site's schema (npm run validate-data); an unusable one fails the run. A stale one
+#   keeps data/ and opens the single "Data API stale" issue; only the daily and manual runs also fail on it.
 #
 # Any step exiting non-zero fails the job before anything is committed or deployed.
 #
@@ -148,8 +148,8 @@ jobs:
 
       # Refuses an unsafe or non-1.x snapshot (exit 1: the run fails) and a stale (> 26 h) one (exit 3). Stale fails
       # only the daily and manual runs; hourly runs go on with the committed data/ and leave the alert to the issue.
-      # A snapshot no newer than data/ is skipped (exit 0). data/ stays as committed in all of these. DAILY_CRON must
-      # match the daily cron above (a test checks it).
+      # A snapshot no newer than data/ is skipped (exit 0), usually told from the /v1/index.json probe alone. data/
+      # stays as committed in all of these. DAILY_CRON must match the daily cron above (a test checks it).
       - name: Fetch /v1/ snapshot
         id: fetch
         env:
