@@ -297,19 +297,17 @@ test('provisional and inactive are quiet unboxed words, and an unknown Elo shows
   expect(await tags(1, 'blue').evaluate((el) => getComputedStyle(el).borderStyle)).toBe('none');
 });
 
-test('Stats lists each corner\'s Elo, peak and best win', async ({ page }) => {
+test('Stats lists each corner\'s peak and best win under the tale of the tape; the corner already shows the Elo', async ({ page }) => {
   await page.goto('/');
   const fights = page.getByTestId('fight');
   const row = (fight: number, label: string) =>
     fights.nth(fight).locator('.stats tr', { has: page.locator('th', { hasText: new RegExp(`^${label}$`) }) }).locator('td');
   await fights.first().locator('summary').click();
-  await expect(row(0, 'Elo')).toHaveText(['1612', '—']);
+  await expect(fights.first().locator('.stats th')).toHaveText(['Height', 'Reach', 'Stance', 'Age', 'Peak', 'Best win']);
   await expect(row(0, 'Peak')).toHaveText(['1655', '—']);
   await expect(row(0, 'Best win')).toHaveText(['Finn FoxtrotElo 1702 · Sep 2025', '—']);
   await fights.nth(1).locator('summary').click();
-  await expect(row(1, 'Elo')).toHaveText(['1690 · #3 P4P', '1488 · #1 P4P']);
-  await expect(row(1, 'Best win')).toHaveCount(0); // neither corner has one
-  await expect(fights.nth(3).locator('.stats th', { hasText: /^Elo$/ })).toHaveCount(0); // no Elo on either side
+  await expect(fights.nth(1).locator('.stats th')).toHaveText(['Height', 'Reach', 'Stance', 'Age', 'Peak']);
 });
 
 test('hovering or tapping a form tile names the opponent', async ({ page }) => {
@@ -431,15 +429,44 @@ test('each finish tier has its own colour', async ({ page }) => {
   expect(none).toBe(muted);
 });
 
-test('the finish meter is labelled on upcoming and completed fights', async ({ page }) => {
-  for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {
+test('the finish meter is labelled once per card segment, and every badge is still named for screen readers', async ({ page }) => {
+  // Home: main card (2 fights), prelims, early prelims. Golf vs. Hotel: no segment data, so one group.
+  for (const [url, shown] of [
+    ['/', [true, false, true, true]],
+    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false]],
+  ] as const) {
     await page.goto(url);
     const fights = page.getByTestId('fight');
-    const labels = page.getByTestId('finish-label');
-    await expect(labels, url).toHaveCount(await fights.count());
-    await expect(labels.first(), url).toHaveText('Finish chance');
-    await expect(labels.first(), url).toBeVisible();
+    await expect(fights, url).toHaveCount(shown.length);
+    for (const [i, visible] of shown.entries()) {
+      const label = fights.nth(i).getByTestId('finish-label');
+      await expect(label, `${url} fight ${i}`).toHaveText('Finish chance');
+      const width = await label.evaluate((el) => el.getBoundingClientRect().width);
+      expect(width > 1, `${url} fight ${i}`).toBe(visible);
+    }
   }
+});
+
+test('the Elo underline shows on hover or focus, and its tip opens below the line in both corners', async ({ page }) => {
+  await page.goto('/');
+  const fights = page.getByTestId('fight');
+  const underline = (el: import('@playwright/test').Locator) => el.evaluate((e) => getComputedStyle(e).textDecorationLine);
+  const elo = fights.first().locator('.corner-red').getByTestId('elo');
+  expect(await underline(elo)).toBe('none');
+  await elo.hover();
+  await expect.poll(() => underline(elo)).toBe('underline');
+
+  // The tip hangs below its anchor, so it never covers the fighter's name above it.
+  const below = async (el: import('@playwright/test').Locator) => {
+    await el.focus();
+    await expect.poll(() => el.evaluate((e) => getComputedStyle(e, '::after').visibility)).toBe('visible');
+    return el.evaluate((e) => {
+      const tip = getComputedStyle(e, '::after');
+      return parseFloat(tip.top) >= e.getBoundingClientRect().height;
+    });
+  };
+  expect(await below(elo)).toBe(true);
+  expect(await below(fights.nth(1).locator('.corner-blue').getByTestId('elo-tag'))).toBe(true);
 });
 
 test('headshots are 64px on phones and 72px wider, the main event 88px and 96px', async ({ page }) => {
@@ -452,11 +479,32 @@ test('headshots are 64px on phones and 72px wider, the main event 88px and 96px'
   expect([await size(0), await size(1)]).toEqual([96, 72]);
 });
 
-test('the footer explains the Elo tags', async ({ page }) => {
-  await page.goto('/');
-  const footer = page.locator('footer');
-  await expect(footer).toContainText('provisional means fewer than 3 UFC fights');
-  await expect(footer).toContainText('inactive means no fight in the last 12 months');
+test('the footer explains what the page shows, in one line', async ({ page }) => {
+  const explainer = page.getByTestId('footer-explainer');
+  for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {
+    await page.goto(url);
+    await expect(explainer, url).toHaveText(
+      "High / Medium / Low is the model's chance the fight ends inside the distance; — means too little data.",
+    );
+  }
+  await page.goto('/rankings/');
+  await expect(explainer).toHaveText(
+    'Elo rates fighters from their results, weighted by opponent strength; 1500 is the average active fighter.',
+  );
+  // Every page keeps the model date, the attribution and the way to the method.
+  for (const url of ['/', '/rankings/', '/no-such-page/']) {
+    await page.goto(url);
+    const footer = page.locator('footer');
+    await expect(footer, url).toContainText('Finish model as of Oct 1, 2026');
+    await expect(footer, url).toContainText('ufcstats.com');
+    await expect(footer.getByRole('link', { name: 'How finish chance and Elo work' }), url).toHaveAttribute(
+      'href',
+      '/how-it-works/',
+    );
+  }
+  await page.goto('/how-it-works/');
+  await expect(page.locator('footer')).toContainText('Finish model as of Oct 1, 2026');
+  await expect(page.locator('footer')).toContainText('ufcstats.com');
 });
 
 test.describe('how it works page', () => {
