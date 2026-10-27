@@ -20,7 +20,8 @@ const lists = [
 ].filter((list) => list.entries.length > 0);
 // The search script ships unminified under a size budget (tests/build), so its notes live here. It sits right after the
 // form so the box is there before the lists paint (nothing shifts); only without JS does the <noscript> rule hide it.
-// On the first keystroke it parses the rows from #rank-data (last in the page), then lists the first 30 matches (best
+// On the first keystroke it parses the rows from #rank-data (last in the page); a query typed while the page is still
+// loading waits for DOMContentLoaded, when the rows are whole. Then it lists the first 30 matches (best
 // Elo first) in #rank-results and hides the P4P lists meanwhile. A match has every word of the query in the name, after
 // case, accents, apostrophes and dots are ignored and a hyphen counts as a space. el() makes each class its own
 // data-testid, as the server-rendered rows have them.
@@ -63,11 +64,10 @@ const lists = [
           return e;
         };
         let rows, names;
-        input.addEventListener('input', () => {
-          const data = $('rank-data');
-          if (!data) return; // the page is still arriving
+        const update = () => {
+          if (document.readyState === 'loading') return; // #rank-data may be half parsed; DOMContentLoaded retries
           if (!rows) {
-            rows = JSON.parse(data.textContent);
+            rows = JSON.parse($('rank-data').textContent);
             names = rows.map((r) => fold(r[0]));
           }
           const words = fold(input.value).split(/\s+/).filter(Boolean);
@@ -85,7 +85,9 @@ const lists = [
           );
           status.textContent = !words.length ? '' : !hits.length ? `No active fighter matches “${input.value.trim()}”.`
             : hits.length > 30 ? `Showing the first 30 of ${hits.length} matches.` : `${hits.length} of ${rows.length} active fighters`;
-        });
+        };
+        input.addEventListener('input', update);
+        document.addEventListener('DOMContentLoaded', () => input.value && update());
         form.addEventListener('submit', (e) => e.preventDefault());
       })();
     </script>
