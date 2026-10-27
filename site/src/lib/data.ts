@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { z } from 'astro/zod';
 import { orderEvents } from './events';
-import { Event, Fighters, Index } from './schema';
+import { Event, Fighters, Index, Rankings } from './schema';
 import type { Fighter } from './schema';
 
 export class DataError extends Error {
@@ -13,6 +13,7 @@ export interface SiteData {
   index: Index;
   events: Event[];
   fighters: { [id: string]: Fighter };
+  rankings: Rankings | null; // null when data/ has no rankings.json
 }
 
 function readJson<T>(dir: string, rel: string, schema: z.ZodType<T>): T {
@@ -31,6 +32,23 @@ function readJson<T>(dir: string, rel: string, schema: z.ZodType<T>): T {
   return parsed.data;
 }
 
+function checkRankings(dir: string, rankings: Rankings): string[] {
+  const problems: string[] = [];
+  for (const sex of ['men', 'women'] as const) {
+    rankings.p4p[sex].forEach((e, i) => {
+      if (e.rank !== i + 1) {
+        problems.push(`rankings.json: p4p.${sex} position ${i + 1} has rank ${e.rank}, expected ${i + 1}`);
+      }
+      if (e.image && !fs.existsSync(path.join(dir, e.image))) {
+        problems.push(`rankings.json: p4p.${sex} ${e.id} image ${e.image} not found`);
+      }
+    });
+  }
+  const unordered = rankings.active.findIndex((e, i) => i > 0 && e.elo > rankings.active[i - 1]!.elo);
+  if (unordered > 0) problems.push(`rankings.json: active is not in best-Elo-first order at row ${unordered}`);
+  return problems;
+}
+
 /** Load and cross-check data/ (see docs/CONTRACT.md). Throws DataError on any violation. */
 export function loadData(dir: string): SiteData {
   if (!fs.existsSync(dir)) throw new DataError(`data dir not found: ${dir} (set DATA_DIR)`);
@@ -45,6 +63,9 @@ export function loadData(dir: string): SiteData {
       problems.push(`fighters.json: ${key} image ${f.image} not found`);
     }
   }
+
+  const rankings = fs.existsSync(path.join(dir, 'rankings.json')) ? readJson(dir, 'rankings.json', Rankings) : null;
+  if (rankings) problems.push(...checkRankings(dir, rankings));
 
   const listed = [
     ...index.upcoming.map((id) => ({ id, status: 'upcoming' as const })),
@@ -75,5 +96,5 @@ export function loadData(dir: string): SiteData {
   }
 
   if (problems.length) throw new DataError(`data contract violations in ${dir}:\n  ${problems.join('\n  ')}`);
-  return { index, events: orderEvents(events), fighters };
+  return { index, events: orderEvents(events), fighters, rankings };
 }

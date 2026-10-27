@@ -111,6 +111,31 @@ export const Index = z.object({
 
 export const Fighters = z.record(z.string(), Fighter);
 
+// data/rankings.json (the engine's /v1/rankings.json, contract 1.x); optional, so older data still validates.
+const P4pEntry = z.object({
+  rank: z.number().int().positive(), // 1..n within its list
+  id: z.string().min(1),
+  name: z.string().min(1),
+  elo: z.number().int(),
+  division: z.string().nullable(), // weight class of the latest bout; null = none
+  image: z.string().nullable(), // path relative to data/; only P4P entries carry one
+});
+
+const ActiveEntry = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  elo: z.number().int(),
+  division: z.string().nullable(),
+  p4p_rank: z.number().int().positive().nullable(), // rank within the men's or women's list; null = unranked
+  provisional: z.boolean().default(false), // fewer than 3 UFC bouts
+});
+
+export const Rankings = z.object({
+  as_of: isoDate, // the day the ratings are decayed to
+  p4p: z.object({ men: z.array(P4pEntry), women: z.array(P4pEntry) }), // top 15 / top 10, by rank
+  active: z.array(ActiveEntry), // a UFC bout in the last 365 days, best Elo first
+});
+
 export type FinishTier = z.infer<typeof FinishTier>;
 export type CardSegment = z.infer<typeof CardSegment>;
 export type PastResult = z.infer<typeof PastResult>;
@@ -124,3 +149,6 @@ export type Fight = z.infer<typeof Fight>;
 export type Event = z.infer<typeof Event>;
 export type Index = z.infer<typeof Index>;
 export type ModelInfo = z.infer<typeof ModelInfo>;
+export type P4pEntry = z.infer<typeof P4pEntry>;
+export type ActiveEntry = z.infer<typeof ActiveEntry>;
+export type Rankings = z.infer<typeof Rankings>;
