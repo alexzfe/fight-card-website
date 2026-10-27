@@ -49,7 +49,7 @@ The review found that lining the rail up with the 44rem card column cut events o
 column, leaving room for about 2½ event tiles with ~450px of empty bar on each side. The rail now spans the window, which is
 the other layout the brief allowed.
 
-RED (38562ba): e2e 1 failed, 60 passed. GREEN: site 199 passed; astro check 0 errors; e2e 61 passed.
+RED (38562ba): e2e 1 failed, 60 passed. GREEN (95b3587): site 199 passed; astro check 0 errors; e2e 61 passed.
 
 | # | What is guaranteed | Test | Type | Result |
 |---|---|---|---|---|
