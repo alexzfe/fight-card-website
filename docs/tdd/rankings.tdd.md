@@ -122,3 +122,35 @@ Sizes (gzip -9 of the built HTML, CSS inlined; fixture data unless noted):
 | `/rankings/` (fixtures, 8 active) | n/a | 7,945 B |
 | `/rankings/` (v1 fixture, 121 active) | n/a | 9,892 B |
 | `/rankings/` (700 active, the budget test) | n/a | 13,193 B |
+
+## Review fixes
+
+The code review of this branch (site side) found 0 blocking, 4 should-fix and 8 nits. Fixed here, in the same RED then
+GREEN order. Skipped: N3 (`formatElo` still says "#N P4P" for a woman on fight cards; a follow-up) and anything about
+the nav design.
+
+| Finding | Test | Commits |
+|---|---|---|
+| **N2** the loader checks that every ranked active row is at that rank in exactly one P4P list, and every P4P id is in `active` with the same rank (mirrors the engine's publish validator) | `data.test.ts`: ranked row in no list, P4P id missing from active, rank mismatch, id in both lists | RED 64c6dc7 (4 failed, 160 passed), GREEN ddee1cf (164 passed) |
+| **S1** search folds `'`, `’` and `.` away and turns `-` into a space; a row matches when every word of the query is in the name | e2e `finds names over apostrophes, dots, hyphens and word order` (fixture gains "Jean-Luc O'Hara": `o'hara`, `o’hara`, `ohara`, `jean luc`, `hara jean`, `O.Hara`, and `echo eli`) | RED 26bc0a9, GREEN d9ce75b |
+| **S2** the search box is visible from the first paint, above the lists; the script sits right after the form; `#rank-data` is last in the page and parsed on the first keystroke; `<noscript>` hides the box without JS | build `shows the search box at once…` (no `hidden`, noscript rule, script between form and lists, JSON after the lists); e2e `reads the fighter data on the first keystroke, not at load` (0 `JSON.parse` calls at load, 1 after typing) and `puts the search box in the first paint…` | RED 26bc0a9, GREEN d9ce75b |
+| **N1** the page's CSS comment is a frontmatter comment, not HTML after `</html>` | build `leaves nothing after </html>` | RED 26bc0a9, GREEN d9ce75b |
+| **N4** "Elo " in an `sr-only` span before every Elo (P4P rows and results) | e2e `says each Elo as "Elo" to a screen reader` | RED 26bc0a9, GREEN d9ce75b |
+| **N5** the 30-result cap and its message (now ends with a period); the "No rankings yet." state | e2e `lists at most 30 matches…` (the test swaps the JSON before the first keystroke, which S2 makes possible); build `empty rankings lists` | cap: RED 26bc0a9, GREEN d9ce75b; empty state: 7df1f1a (green on arrival) |
+| **N6** the no-JS test uses `test.describe` + `test.use({ javaScriptEnabled: false })`, so `baseURL` and cleanup come from the config | e2e `without JavaScript` | 26bc0a9 |
+| **S3** the budget test pads with random-letter names and random Elos (no pattern for gzip to learn), the comment is true, and the budget is 24 KB gzipped (was 60 KB) | `rankings-build.test.ts › the rankings page budget`: 700 rows measure 19,001 B | 7df1f1a (guard, green on arrival: it fails only when the page grows) |
+| **S4** no HTML file except `rankings/index.html` contains `rank-data`, `p4p-row`, `rank-search` or `rank-results`; the no-JS test strips `application/json` blocks on the rankings page only | build `keeps the rankings data, markup and search script off every other page` | 26bc0a9 (green on arrival). Mutation check: with a `rank-data` script added to `Base.astro`, 4 build tests fail, this one among them |
+| **N7** `.site-nav a` and `.toc a` share their rules; the redundant `.result-list` reset is gone | no test (CSS refactor; the 360 px e2e and the build tests still pass) | refactor commit |
+| **N8** `docs/DEPLOY.md` says `data/rankings.json` freezes under `DATA_SOURCE=pipeline` and gives the two choices (delete it, or accept it) | docs only | refactor commit |
+
+Final run: `npm test` 168 passed, `npm run test:e2e` 56 passed, `npm run check` 0 errors, scripts 193 passed (2 skipped).
+
+Sizes (gzip -9 of the built HTML, CSS inlined):
+
+| Page | Before the fixes | After |
+|---|---|---|
+| `/rankings/` real engine data (25 P4P + 644 active, no photos) | 16,426 B | 16,496 B |
+| `/rankings/` fixtures (9 active) | 7,945 B (8 active) | 7,925 B |
+| `/rankings/` budget test, 700 random-letter rows | 13,193 B (old pool) | 19,001 B (budget 24,576 B) |
+| `/` fixtures | 7,580 B | 7,555 B (the tab rules are shared now) |
+| `/` on the v1 fixture's events | 12,221 B | 12,313 B (measured against the real-data build; the v1 fixture's `rankings.json` is not on this page) |
