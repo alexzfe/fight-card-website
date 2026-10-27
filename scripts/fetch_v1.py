@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import gzip
+import http.client
 import io
 import json
 import os
@@ -114,7 +115,8 @@ def download(url: str, max_bytes: int) -> bytes:
     try:
         with opener.open(request, timeout=TIMEOUT) as response:
             body = response.read(max_bytes + 1)
-    except OSError as e:  # URLError, HTTPError and timeouts are all OSErrors
+    # OSError: URLError, HTTPError and timeouts; HTTPException: a malformed response (BadStatusLine, IncompleteRead)
+    except (OSError, http.client.HTTPException) as e:
         raise FetchError(f"cannot download {url}: {e}") from e
     if len(body) > max_bytes:
         raise FetchError(f"{url} is larger than {max_bytes} bytes")
@@ -405,14 +407,16 @@ def main(argv: list[str] | None = None) -> int:
 
     url = snapshot_url(args.base)
     now = parse_now(args.now)
+    checked = index_url(args.base)  # the URL a StaleError is about: the probe's, then the snapshot's
     try:
         skip = None if args.no_probe else probe(args.base, args.data, now, args.max_age_hours)
+        checked = url
         index, kept = skip or fetch(download(url, MAX_DOWNLOAD_BYTES), args.data, now, args.max_age_hours)
     except StaleError as e:
         print(f"fetch_v1: {e}", file=sys.stderr)
         emit(stale=True, generated_at=e.index["generated_at"], age_hours=f"{e.hours:.1f}")
         if args.stale_issue:
-            args.stale_issue.write_text(stale_issue_body(e, url))
+            args.stale_issue.write_text(stale_issue_body(e, checked))
         return EXIT_STALE
     except (FetchError, OSError) as e:
         print(f"fetch_v1: {e}", file=sys.stderr)
