@@ -5,7 +5,8 @@
 - **Branch:** `feat/seo` (from `main` at `da0d7b5`).
 - **Not in this branch:** http → https. The audit found `http://ufc.xlobax.com/` answering 200; the user turned on
   Cloudflare's zone-wide "Always Use HTTPS" on 2026-10-27, and `http://ufc.xlobax.com/` and `http://ufc-data.xlobax.com/`
-  now 301 to https. No `http://…xlobax.com` callers in this repo; `fightcard-engine` and the VPS were not checked.
+  now 301 to https. No plain-`http://…xlobax.com` callers anywhere: this repo, `fightcard-engine` (`origin/main` and every
+  remote branch), `infra`, and the live VPS (config, app and home directories, plus each running container's env).
 
 ## User journeys
 
