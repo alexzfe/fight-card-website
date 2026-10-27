@@ -23,8 +23,9 @@ export function homeTitle(event: Event | undefined): string {
 }
 
 export function homeDescription(event: Event | undefined): string {
-  const lead = "Every upcoming UFC card with each bout's chance of a finish and both fighters' Elo ratings.";
-  return event ? `${lead} Next: ${event.name}, ${formatLongDate(event.date)}.` : lead;
+  const completed = event?.status === 'completed';
+  const lead = `Every ${completed ? '' : 'upcoming '}UFC card with each bout's chance of a finish and both fighters' Elo ratings.`;
+  return event ? `${lead} ${completed ? 'Latest' : 'Next'}: ${event.name}, ${formatLongDate(event.date)}.` : lead;
 }
 
 /**
