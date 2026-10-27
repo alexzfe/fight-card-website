@@ -127,8 +127,7 @@ test('tabbing through the rail brings each tile fully into view', async ({ page 
   await page.goto('/');
   const rail = page.locator('nav .rail');
   const tiles = page.getByTestId('event-tile');
-  // The site tabs come before the rail in tab order; start from the last of them.
-  await page.getByRole('navigation', { name: 'Site' }).getByRole('link').last().focus();
+  // The rail is the first thing on the page, so the first Tab lands on its first tile.
   for (let i = 0; i < (await tiles.count()); i++) {
     await page.keyboard.press('Tab');
     await expect(tiles.nth(i)).toBeFocused();
@@ -152,6 +151,38 @@ test('the event rail stays at the top while scrolling', async ({ page }) => {
   const box = (await page.locator('nav .rail').boundingBox())!;
   expect(box.y).toBeGreaterThanOrEqual(-1);
   expect(box.y).toBeLessThanOrEqual(1);
+});
+
+test('the event rail is the topmost thing on every page, and only an event or Rankings is ever current', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [url, current] of [
+    ['/', 'UFC 323'],
+    ['/events/ufc-fight-night-kilo-vs-lima/', 'Kilo vs. Lima'],
+    ['/rankings/', 'Rankings'],
+    ['/how-it-works/', null],
+    ['/no-such-page/', null],
+  ] as const) {
+    await page.goto(url);
+    const nav = page.locator('.rail-nav');
+    expect((await nav.boundingBox())!.y, url).toBe(0);
+    const above = await nav.evaluate((el) => [...document.body.children].indexOf(el));
+    expect(above, url).toBe(0);
+    const marked = page.locator('[aria-current]');
+    if (current) {
+      await expect(marked, url).toHaveCount(1);
+      await expect(marked, url).toContainText(current);
+    } else {
+      await expect(marked, url).toHaveCount(0);
+    }
+  }
+});
+
+test('the 404 page leads back to the fight cards', async ({ page }) => {
+  await page.goto('/no-such-page/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');
+  await page.getByRole('main').getByRole('link', { name: 'the next fight card' }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByTestId('fight').first()).toBeVisible();
 });
 
 test('switching events prerenders eagerly and animates the selection', async ({ page }) => {
@@ -472,18 +503,54 @@ test('an event tile shows the full event name on hover', async ({ page }) => {
 });
 
 test.describe('rankings page', () => {
-  test('a Rankings tab on every page leads to it, and a Fight cards tab leads back', async ({ page }) => {
+  test('a Rankings tile pinned to the rail leads to it, is the current tile there, and event tiles lead back', async ({
+    page,
+  }) => {
     await page.goto('/');
-    const tabs = page.getByRole('navigation', { name: 'Site' });
-    await expect(tabs.getByRole('link')).toHaveText(['Fight cards', 'Rankings']);
-    await expect(tabs.getByRole('link', { name: 'Fight cards' })).toHaveAttribute('aria-current', 'true');
-    await tabs.getByRole('link', { name: 'Rankings' }).click();
+    const rail = page.getByRole('navigation', { name: 'Events' });
+    const pin = rail.getByRole('link', { name: 'Rankings' });
+    await expect(pin).toHaveText('Rankings');
+    await expect(pin).not.toHaveAttribute('aria-current', /.+/);
+    await pin.click();
     await expect(page).toHaveURL(/\/rankings\/$/);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Elo: Pound-for-pound rankings');
-    await expect(tabs.getByRole('link', { name: 'Rankings' })).toHaveAttribute('aria-current', 'page');
-    await expect(tabs.getByRole('link', { name: 'Fight cards' })).not.toHaveAttribute('aria-current', /.+/);
-    await tabs.getByRole('link', { name: 'Fight cards' }).click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(rail.locator('[aria-current]')).toHaveCount(1);
+    await expect(pin).toHaveAttribute('aria-current', 'page');
+    // It is styled as the selected tile, and the selection slides to it from the event tile.
+    const style = (el: Element) => [getComputedStyle(el).backgroundColor, getComputedStyle(el).viewTransitionName];
+    const selected = await page.goto('/').then(() => page.locator('nav [aria-current="page"]').evaluate(style));
+    await page.goto('/rankings/');
+    expect(await pin.evaluate(style)).toEqual(selected);
+    await page.getByTestId('event-tile').nth(1).click();
+    await expect(page).toHaveURL(/\/events\/ufc-323-alpha-vs-bravo\/$/);
+  });
+
+  test('the Rankings tile holds still at the right end of the rail while the events scroll beside it', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.goto('/');
+    const pin = page.getByRole('navigation', { name: 'Events' }).getByRole('link', { name: 'Rankings' });
+    const tile = (await page.getByTestId('event-tile').first().boundingBox())!;
+    const before = (await pin.boundingBox())!;
+    expect(before.x + before.width).toBeLessThanOrEqual(360);
+    expect(before.height).toBeGreaterThanOrEqual(44);
+    expect(Math.abs(before.y - tile.y)).toBeLessThanOrEqual(1);
+    expect(Math.abs(before.height - tile.height)).toBeLessThanOrEqual(1);
+    await page.locator('nav .rail').evaluate((el) => (el.scrollLeft = el.scrollWidth));
+    await expect.poll(async () => (await page.getByTestId('event-tile').last().boundingBox())!.x).toBeLessThan(before.x);
+    expect(await pin.boundingBox()).toEqual(before);
+    // The last event tile scrolls clear of it rather than under it.
+    const last = (await page.getByTestId('event-tile').last().boundingBox())!;
+    expect(last.x + last.width).toBeLessThanOrEqual(before.x);
+  });
+
+  test('on a wide screen the rail lines up with the card column, the Rankings tile at its right edge', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+    const column = (await page.getByRole('heading', { level: 1 }).boundingBox())!;
+    const pin = (await page.getByRole('navigation', { name: 'Events' }).getByRole('link', { name: 'Rankings' }).boundingBox())!;
+    expect(Math.abs(pin.x + pin.width - (column.x + column.width))).toBeLessThanOrEqual(1);
+    const first = (await page.getByTestId('event-tile').first().boundingBox())!;
+    expect(first.x).toBeGreaterThanOrEqual(column.x - 1);
   });
 
   test('ranks men and women apart, best first, with division and Elo', async ({ page }) => {
@@ -672,8 +739,7 @@ test.describe('rankings page', () => {
     }));
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
     expect((await page.getByRole('searchbox').boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    for (const tab of await page.getByRole('navigation', { name: 'Site' }).getByRole('link').all()) {
-      expect((await tab.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    }
+    const pin = page.getByRole('navigation', { name: 'Events' }).getByRole('link', { name: 'Rankings' });
+    expect((await pin.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   });
 });

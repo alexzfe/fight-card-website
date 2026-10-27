@@ -93,10 +93,13 @@ describe('fixture build', () => {
     }
   });
 
-  it('does not prerender the rankings page: the speculation rules still name only event pages', () => {
+  it('prerenders the home and rankings pages on intent, beside the eager event pages', () => {
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
-      const m = fs.readFileSync(f, 'utf8').match(/<script type="speculationrules">([^<]*)<\/script>/);
-      expect(m![1], f).not.toContain('rankings');
+      const rules = JSON.parse(fs.readFileSync(f, 'utf8').match(/<script type="speculationrules">([^<]*)<\/script>/)![1]!);
+      expect(rules.prerender, f).toEqual([
+        { where: { href_matches: '/events/*' }, eagerness: 'eager' },
+        { where: { href_matches: ['/', '/rankings/'] }, eagerness: 'moderate' },
+      ]);
     }
   });
 
