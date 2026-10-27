@@ -101,7 +101,7 @@ RANKINGS = dumps({"as_of": "2026-10-26", "p4p": {"men": [], "women": []}, "activ
 def test_rankings_json_is_optional_and_kept_when_present(data, monkeypatch):
     """The engine serves /v1/rankings.json from contract 1.x on; a snapshot without it is still fine (the other
     tests), and one with it lands in data/ for the Rankings page."""
-    contents = files(contract_version="1.1") | {"rankings.json": RANKINGS}
+    contents = files(contract_version="1.2") | {"rankings.json": RANKINGS}
     assert run(data, snapshot(contents), monkeypatch) == 0
     assert (data / "rankings.json").read_bytes() == RANKINGS
     assert tree_files(data) == contents | BOOKKEEPING
