@@ -54,3 +54,41 @@ RED (38562ba): e2e 1 failed, 60 passed. GREEN (95b3587): site 199 passed; astro 
 | # | What is guaranteed | Test | Type | Result |
 |---|---|---|---|---|
 | 4 (replaced) | At 1280px the pin sits within 32px of the window's right edge, every event tile is in view left of it, and the rail has nothing left to scroll | e2e `on a wide screen every event is in view…` | e2e | PASS |
+
+## Phase 2: rankings ↔ card links (`ui/2-links`)
+
+### User journeys
+
+1. As a visitor on a card, I want to tap a fighter's "#3 P4P" and land on their row in the rankings.
+2. As a visitor on the rankings, I want to see which ranked fighters are booked next, and jump to that card.
+3. As a visitor searching the rankings, I want the same "next bout" link on each result, and a clear button that fits the page.
+
+### Design
+
+- `Corner.astro` splits the P4P rank out of `formatElo` and wraps it in `a.elo-rank` (href from `rankingsHref` in
+  `lib/rankings.ts`) only when `site.rankings` exists and the fighter has a P4P row there. The link sits inside the
+  `.elo` span, so hovering or focusing it still shows the Elo tip.
+- `/rankings/`: each P4P row is `id="<fighter-id>"`. Fighter ids are 16 hex characters, so no prefix is needed. Rows have
+  `scroll-margin-top` (clear of the sticky rail) and a soft `--color-surface` band on `:target`.
+- `nextBouts(events, fighters)` maps each fighter booked on an upcoming card to their soonest bout,
+  `{ slug, label: "Oct 31 vs Bravo" }` (the opponent goes by surname, as event names do). It is computed at build time.
+- `searchRows(rankings, bouts)` appends `[slug, label]` only for booked fighters. The search script renders it as
+  `a.result-next`. The script moved to `components/RankSearch.astro` so it sits at the top level, like the rail's.
+- The search box's `::-webkit-search-cancel-button` is a masked cross in `--color-muted` (`--color-text` on hover).
+
+RED (851a518): the unit file failed to load (`nextBouts`/`rankingsHref` missing); build 2 failed, 193 passed; e2e 3
+failed, 61 passed. GREEN: site 206 passed; astro check 0 errors; e2e 64 passed; build ok.
+
+During GREEN, the clear-button e2e test was changed to read the pixels at the box's right end. Chrome returns no
+computed style for `::-webkit-search-cancel-button`, so the RED version could never pass.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 1 | A card's "#4 P4P" (men's) and "#1 P4P" (women's) link to `/rankings/#<id>`; the Elo tip still shows; following the link lands the row in view below the rail with a different background from the other rows | e2e `a P4P rank on a card links to the fighter's row…` | e2e | PASS |
+| 2 | Each P4P row carries its fighter id, and the event page links to it | build `gives each P4P row its fighter id…` | build | PASS |
+| 3 | No `/rankings/#` link on any page without `rankings.json` | rankings-build `shows no Rankings link on any page` | build | PASS |
+| 4 | `nextBouts` picks the soonest upcoming bout whatever the event order and skips completed cards; `rankingsHref` is null without a row or a page | unit `nextBouts`, `rankingsHref` | unit | PASS |
+| 5 | Search rows carry `[slug, label]` only for booked fighters | unit `searchRows`, build `rank-data` | unit/build | PASS |
+| 6 | P4P rows and search results show "Oct 31 vs X →" linking to the event, in the muted colour | e2e `a fighter booked on an upcoming card links to it…` | e2e | PASS |
+| 7 | The clear button is drawn in the muted grey | e2e `the search box's clear button…` | e2e | PASS |
+| 8 | Rankings page stays under 24 KB gz with 700 fighters (fixture page: 8.7 KB gz) | rankings-build budget | build | PASS |

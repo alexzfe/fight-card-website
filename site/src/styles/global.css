@@ -334,6 +334,18 @@ ul {
   white-space: nowrap;
 }
 
+/* The P4P rank links to the fighter's row in the rankings: a plain underline marks it as a link. */
+.elo-rank {
+  text-decoration: underline;
+  text-decoration-color: var(--color-muted);
+  text-underline-offset: 2px;
+}
+
+.elo-rank:hover {
+  color: var(--color-accent);
+  text-decoration-color: currentColor;
+}
+
 .elo-tag {
   margin-left: 0.4em;
   color: var(--color-muted);

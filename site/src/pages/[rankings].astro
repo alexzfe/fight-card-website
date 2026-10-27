@@ -3,9 +3,10 @@
 import type { GetStaticPaths } from 'astro';
 import Avatar from '../components/Avatar.astro';
 import EventRail from '../components/EventRail.astro';
+import RankSearch from '../components/RankSearch.astro';
 import Base from '../layouts/Base.astro';
 import { formatDate } from '../lib/format';
-import { provisionalIds, scriptJson, searchRows } from '../lib/rankings';
+import { nextBouts, provisionalIds, scriptJson, searchRows } from '../lib/rankings';
 import type { Rankings } from '../lib/schema';
 import { site } from '../lib/site-data';
 
@@ -14,17 +15,11 @@ export const getStaticPaths = (() =>
 
 const { rankings } = Astro.props as { rankings: Rankings };
 const provisional = provisionalIds(rankings);
+const bouts = nextBouts(site.events, site.fighters); // each fighter's soonest upcoming card, linked from their row
 const lists = [
   { key: 'men', title: 'Men', entries: rankings.p4p.men },
   { key: 'women', title: 'Women', entries: rankings.p4p.women },
 ].filter((list) => list.entries.length > 0);
-// The search script ships unminified under a size budget (tests/build), so its notes live here. It sits right after the
-// form so the box is there before the lists paint (nothing shifts); only without JS does the <noscript> rule hide it.
-// On the first keystroke it parses the rows from #rank-data (last in the page); a query typed while the page is still
-// loading waits for DOMContentLoaded, when the rows are whole. Then it lists the first 30 matches (best
-// Elo first) in #rank-results and hides the P4P lists meanwhile. A match has every word of the query in the name, after
-// case, accents, apostrophes and dots are ignored and a hyphen counts as a space. el() makes each class its own
-// data-testid, as the server-rendered rows have them.
 // The <style> at the end is only on this page; the site-wide stylesheet stays as it was.
 ---
 
@@ -45,52 +40,7 @@ const lists = [
       </p>
     </header>
 
-    <form class="rank-search" id="rank-search" role="search">
-      <label class="sr-only" for="rank-q">Search active fighters</label>
-      <input id="rank-q" type="search" placeholder="Search active fighters" autocomplete="off" spellcheck="false" />
-      <p class="fine" id="rank-status" role="status"></p>
-      <ul class="result-list" id="rank-results"></ul>
-    </form>
-    <noscript><style is:inline>#rank-search{display:none}</style></noscript>
-    <script is:inline>
-      (() => {
-        const $ = (id) => document.getElementById(id);
-        const [form, input, status, results] = ['rank-search', 'rank-q', 'rank-status', 'rank-results'].map($);
-        const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f'’.]/g, '').replace(/-/g, ' ').toLowerCase();
-        const el = (tag, cls, text = '') => {
-          const e = document.createElement(tag);
-          e.className = e.dataset.testid = cls;
-          e.textContent = text;
-          return e;
-        };
-        let rows, names;
-        const update = () => {
-          if (document.readyState === 'loading') return; // #rank-data may be half parsed; DOMContentLoaded retries
-          if (!rows) {
-            rows = JSON.parse($('rank-data').textContent);
-            names = rows.map((r) => fold(r[0]));
-          }
-          const words = fold(input.value).split(/\s+/).filter(Boolean);
-          const hits = words.length ? rows.filter((_, i) => words.every((w) => names[i].includes(w))) : [];
-          $('p4p').hidden = !!words.length;
-          results.replaceChildren(
-            ...hits.slice(0, 30).map((r) => {
-              const li = el('li', 'result');
-              const elo = el('span', 'result-elo', r[1]);
-              elo.prepend(el('span', 'sr-only', 'Elo '));
-              if (r[4]) elo.append(el('span', 'elo-tag', 'provisional'));
-              li.append(el('span', 'result-name', r[0]), el('span', 'result-meta', [r[2], r[3]].filter(Boolean).join(' · ')), elo);
-              return li;
-            }),
-          );
-          status.textContent = !words.length ? '' : !hits.length ? `No active fighter matches “${input.value.trim()}”.`
-            : hits.length > 30 ? `Showing the first 30 of ${hits.length} matches.` : `${hits.length} of ${rows.length} active fighters`;
-        };
-        input.addEventListener('input', update);
-        document.addEventListener('DOMContentLoaded', () => input.value && update());
-        form.addEventListener('submit', (e) => e.preventDefault());
-      })();
-    </script>
+    <RankSearch />
 
     <div id="p4p">
       {
@@ -99,13 +49,19 @@ const lists = [
             <h2>{list.title}</h2>
             <ol class="p4p-list">
               {list.entries.map((entry) => (
-                <li class="p4p-row" data-testid="p4p-row">
+                // The id is the anchor a card's P4P rank links to (lib/rankings.ts rankingsHref).
+                <li class="p4p-row" data-testid="p4p-row" id={entry.id}>
                   <span class="p4p-rank" data-testid="p4p-rank">{entry.rank}</span>
                   <Avatar fighter={entry} size={48} />
                   <span class="p4p-who">
                     <span class="p4p-name" data-testid="p4p-name">{entry.name}</span>
                     {entry.division && (
                       <span class="p4p-division" data-testid="p4p-division">{entry.division}</span>
+                    )}
+                    {bouts.has(entry.id) && (
+                      <a class="p4p-next" data-testid="p4p-next" href={`/events/${bouts.get(entry.id)!.slug}/`}>
+                        {bouts.get(entry.id)!.label} →
+                      </a>
                     )}
                   </span>
                   <span class="p4p-elo" data-testid="p4p-elo">
@@ -122,7 +78,7 @@ const lists = [
       {lists.length === 0 && <p class="empty">No rankings yet.</p>}
     </div>
   </main>
-  <script type="application/json" id="rank-data" is:inline set:html={scriptJson(searchRows(rankings))} />
+  <script type="application/json" id="rank-data" is:inline set:html={scriptJson(searchRows(rankings, bouts))} />
 </Base>
 
 <style is:global>
@@ -136,6 +92,22 @@ const lists = [
     background: var(--color-surface);
     color: inherit;
     font: inherit;
+  }
+
+  /* Chrome and Safari draw the clear button in their own blue; this one is a muted cross in the page's colours. */
+  .rank-search input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--color-muted);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    cursor: pointer;
+  }
+
+  .rank-search input::-webkit-search-cancel-button:hover {
+    background-color: var(--color-text);
   }
 
   .rank-search input:focus-visible {
@@ -165,11 +137,20 @@ const lists = [
 
   .p4p-row {
     grid-template-columns: 1.5rem auto minmax(0, 1fr) auto;
+    scroll-margin-top: 5rem; /* clear of the sticky rail when a card's P4P rank links here */
+  }
+
+  /* The row a card linked to: a soft band, widened past the text so it doesn't sit flush against it. */
+  .p4p-row:target {
+    background: var(--color-surface);
+    box-shadow:
+      calc(-1 * var(--space-2)) 0 var(--color-surface),
+      var(--space-2) 0 var(--color-surface);
   }
 
   .result {
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'name elo' 'meta elo';
+    grid-template-areas: 'name elo' 'meta elo' 'next elo';
   }
 
   .p4p-rank {
@@ -203,6 +184,27 @@ const lists = [
 
   .result-elo {
     grid-area: elo;
+  }
+
+  .result-next {
+    grid-area: next;
+    justify-self: start;
+  }
+
+  /* A booked bout: quiet, like the division above it, until pointed at. */
+  .p4p-next,
+  .result-next {
+    display: inline-block;
+    padding-block: 2px;
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+    text-decoration: none;
+  }
+
+  .p4p-next:hover,
+  .result-next:hover {
+    color: var(--color-text);
+    text-decoration: underline;
   }
 
   .p4p-elo,

@@ -1,0 +1,60 @@
+---
+// The search over every active fighter on /rankings/. It sits right after the page head, before the P4P lists (#p4p),
+// and reads its rows from #rank-data, last in the page. Its own component so the script sits at the top level, as the
+// rail's does: it ships unminified under a size budget (tests/build), indentation and all, so its notes live here.
+// The script sits right after the form so the box is there before the lists paint (nothing shifts); only without JS
+// does the <noscript> rule hide it. On the first keystroke it parses the rows from #rank-data; a query typed while the
+// page is still loading waits for DOMContentLoaded, when the rows are whole. Then it lists the first 30 matches (best
+// Elo first) in #rank-results and hides the P4P lists meanwhile. A match has every word of the query in the name,
+// after case, accents, apostrophes and dots are ignored and a hyphen counts as a space. el() makes each class its own
+// data-testid, as the server-rendered rows have them. A row with a booked bout (r[5] the event slug, r[6] its label)
+// links to that card.
+---
+
+<form class="rank-search" id="rank-search" role="search">
+  <label class="sr-only" for="rank-q">Search active fighters</label>
+  <input id="rank-q" type="search" placeholder="Search active fighters" autocomplete="off" spellcheck="false" />
+  <p class="fine" id="rank-status" role="status"></p>
+  <ul class="result-list" id="rank-results"></ul>
+</form>
+<noscript><style is:inline>#rank-search{display:none}</style></noscript>
+<script is:inline>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    const [form, input, status, results] = ['rank-search', 'rank-q', 'rank-status', 'rank-results'].map($);
+    const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f'’.]/g, '').replace(/-/g, ' ').toLowerCase();
+    const el = (tag, cls, text = '') => {
+      const e = document.createElement(tag);
+      e.className = e.dataset.testid = cls;
+      e.textContent = text;
+      return e;
+    };
+    let rows, names;
+    const update = () => {
+      if (document.readyState === 'loading') return; // #rank-data may be half parsed; DOMContentLoaded retries
+      if (!rows) {
+        rows = JSON.parse($('rank-data').textContent);
+        names = rows.map((r) => fold(r[0]));
+      }
+      const words = fold(input.value).split(/\s+/).filter(Boolean);
+      const hits = words.length ? rows.filter((_, i) => words.every((w) => names[i].includes(w))) : [];
+      $('p4p').hidden = !!words.length;
+      results.replaceChildren(
+        ...hits.slice(0, 30).map((r) => {
+          const li = el('li', 'result');
+          const elo = el('span', 'result-elo', r[1]);
+          elo.prepend(el('span', 'sr-only', 'Elo '));
+          if (r[4]) elo.append(el('span', 'elo-tag', 'provisional'));
+          li.append(el('span', 'result-name', r[0]), el('span', 'result-meta', [r[2], r[3]].filter(Boolean).join(' · ')), elo);
+          if (r[5]) li.append(Object.assign(el('a', 'result-next', `${r[6]} →`), { href: `/events/${r[5]}/` }));
+          return li;
+        }),
+      );
+      status.textContent = !words.length ? '' : !hits.length ? `No active fighter matches “${input.value.trim()}”.`
+        : hits.length > 30 ? `Showing the first 30 of ${hits.length} matches.` : `${hits.length} of ${rows.length} active fighters`;
+    };
+    input.addEventListener('input', update);
+    document.addEventListener('DOMContentLoaded', () => input.value && update());
+    form.addEventListener('submit', (e) => e.preventDefault());
+  })();
+</script>

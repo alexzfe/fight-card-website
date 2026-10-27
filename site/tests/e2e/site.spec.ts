@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import sharp from 'sharp';
 
 test.describe('home page', () => {
   test('shows the next event and its fights', async ({ page }) => {
@@ -782,7 +783,17 @@ test.describe('rankings page', () => {
     const search = page.getByRole('searchbox', { name: 'Search active fighters' });
     await search.fill('alpha');
     const muted = await page.getByTestId('p4p-division').first().evaluate((el) => getComputedStyle(el).color);
-    expect(await search.evaluate((el) => getComputedStyle(el, '::-webkit-search-cancel-button').backgroundColor)).toBe(muted);
+    // Chrome won't report the button's computed style, so read its pixels: the strongest mark at the box's right end.
+    const box = (await search.boundingBox())!;
+    const shot = await page.screenshot({ clip: { x: box.x + box.width - 40, y: box.y + 4, width: 36, height: box.height - 8 } });
+    const { data, info } = await sharp(shot).raw().toBuffer({ resolveWithObject: true });
+    const px = (i: number) => [data[i]!, data[i + 1]!, data[i + 2]!];
+    const bg = px(0);
+    const dist = (a: number[], b: number[]) => a.reduce((n, v, i) => n + Math.abs(v - b[i]!), 0);
+    let mark = bg;
+    for (let i = 0; i < data.length; i += info.channels) if (dist(px(i), bg) > dist(mark, bg)) mark = px(i);
+    expect(dist(mark, bg)).toBeGreaterThan(60); // a cross is drawn
+    expect(dist(mark, muted.match(/\d+/g)!.map(Number))).toBeLessThanOrEqual(24); // in the muted grey
   });
 
   test('fits a 360px phone, with comfortable touch targets', async ({ page }) => {
