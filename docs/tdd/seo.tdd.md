@@ -30,6 +30,8 @@
 | `424196a` | Backfill | Two `homeDescription` unit tests, which passed on first run (code already existed), so they are coverage, not RED evidence. 158/158, 99.45% lines. |
 | `62d46eb` | RED (share image) | `npx vitest run tests/build/build.test.ts`: 2 failed / 23 passed (`twitter:card` was `summary`; no `og:image`). The existing OG test's expected card type changed from `summary` to `summary_large_image`. |
 | `1da8ec6` | GREEN (share image) | Same command 25/25. `npm run test:coverage` 159/159 (99.45% lines), `npm run check` 0 errors, `npm run test:e2e` 40/40. `npm run icons` left the existing icons byte-identical and added `public/og.png`. |
+| `eaae7ad` | RED (Event fields) | Google Rich Results Test (Code tab, built event page): 1 valid Event item, 5 non-critical issues (missing `endDate`, `image`, `offers`, `organizer`, `performer`). `npx vitest run tests/unit/seo.test.ts`: 2 failed / 18 passed. |
+| `568153b` | GREEN (Event fields) | Same command 20/20. `npm run test:coverage` 161/161, `npm run check` 0 errors, `npm run test:e2e` 40/40. `offers` is deliberately absent (no tickets sold), so 1 non-critical issue should remain. |
 
 One existing test changed in RED: "ships no JavaScript…" now strips `application/ld+json` blocks before counting
 scripts, as it already did for speculation rules; both are JSON the browser reads, not script.
@@ -45,7 +47,7 @@ scripts, as it already did for speculation rules; both are JSON the browser read
 | 5 | Home description names the site and the next card, 120-160 chars | `seo.test.ts › homeDescription` | unit |
 | 6 | Every page has og:title/description/url/type/site_name matching its title, description and canonical, plus `twitter:card` `summary_large_image` | `build.test.ts › describes every page for link previews…` | build |
 | 6b | Every page names `https://ufc.xlobax.com/og.png` as og:image with width 1200, height 630 and alt text; the PNG is 1200x630 and opaque | `build.test.ts › gives every page a 1200x630 share image` | build |
-| 7 | Event pages carry a `SportsEvent` (name, startDate, url, location when known, each fighter once; unknown fighter ids skipped) | `seo.test.ts › eventJsonLd`; `build.test.ts › marks each event page up as a SportsEvent…` | unit, build |
+| 7 | Event pages carry a `SportsEvent` (name, start and end date, url, image, UFC as organizer, location when known, each fighter once as competitor and performer; unknown fighter ids skipped) | `seo.test.ts › eventJsonLd`; `build.test.ts › marks each event page up as a SportsEvent…` | unit, build |
 | 8 | Home has `WebSite` JSON-LD; how-it-works has `Article` and `og:type` article | `build.test.ts › marks the home page up as a WebSite and the explainer as an Article` | build |
 | 9 | JSON-LD can't be closed early by `</script>` in data | `seo.test.ts › jsonLdScript` | unit |
 | 10 | `sitemap.xml` lists exactly home, how-it-works and every event page (no 404); URLs deduped and XML-escaped | `build.test.ts › lists every indexable page in sitemap.xml`; `seo.test.ts › sitemapXml` | build, unit |
@@ -62,4 +64,4 @@ scripts, as it already did for speculation rules; both are JSON the browser read
   `fetchpriority`) and DOM size 1,272 elements on card pages (warning starts at 1,500). No real network or Cloudflare.
 - Cloudflare's managed robots.txt may be served in place of ours; check `https://ufc.xlobax.com/robots.txt` after
   deploy and turn off the managed one if it lacks the `Sitemap:` line.
-- Rich-result eligibility (Google's Rich Results Test) was not run; it needs the deployed URL.
+- Rich Results Test run by the user on pasted HTML before the Event-fields fix: valid. Not re-run after it.
