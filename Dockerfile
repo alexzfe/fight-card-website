@@ -19,6 +19,9 @@ server {
     root /usr/share/nginx/html;
     index index.html;
     error_page 404 /404.html;
+    # Behind Cloudflare nginx sees http on :8080; a relative Location keeps /how-it-works -> /how-it-works/ on the
+    # public https origin instead of redirecting to http://host:8080/.
+    absolute_redirect off;
 
     # HTML: Cloudflare caches it at the edge until the next deploy purges it; browsers revalidate each visit.
     location / {
