@@ -6,7 +6,7 @@ the [infra](https://github.com/alexzfe/infra) repo's `deploy-app` on the Hetzner
 | Env | URL | Deployed by |
 |---|---|---|
 | staging | https://ufc-staging.xlobax.com | every push to `main` (`release.yml`) |
-| prod | https://ufc.xlobax.com | a `v*` tag (`release.yml`), and every data refresh that changed `data/` (`refresh.yml`) |
+| prod | https://ufc.xlobax.com | a `v*` tag (`release.yml` → `prod.yml`), and every data refresh that changed `data/` (`refresh.yml`) |
 
 ## The pieces
 
@@ -14,8 +14,9 @@ the [infra](https://github.com/alexzfe/infra) repo's `deploy-app` on the Hetzner
 |---|---|
 | `Dockerfile` | From `infra/templates/static-site.Dockerfile`. Node 22 runs `npm ci && npm run build` in `site/` with `DATA_DIR=/src/data`, then `nginx-unprivileged` serves `dist/` on `:8080`. Serves Astro's `404.html` for unknown paths, and marks `/_astro/*` immutable. Health path: `/healthz` (a static file from `site/public/`). |
 | `.dockerignore` | Only `site/` and `data/` go into the build context. |
-| `.github/workflows/build.yml` | Reusable: builds and pushes the image for one commit, tagged with its SHA. |
-| `.github/workflows/release.yml` | From `infra/templates/app-release.yml`. PR → tests. Push to main → tests, build, deploy staging. `v*` tag → deploy that commit's image to prod and cut a GitHub Release. |
+| `.github/workflows/build.yml` | Reusable: builds and pushes the image for one commit, tagged with its SHA. With `data_ref`, it swaps in that ref's `data/` first and tags the image `<sha>-data-<data sha>`. |
+| `.github/workflows/release.yml` | From `infra/templates/app-release.yml`. PR → tests. Push to main → tests, build, deploy staging. `v*` tag → `prod.yml` under the `prod-deploy` lock, then cut a GitHub Release. |
+| `.github/workflows/prod.yml` | Reusable, for a tag: builds the tagged code with main's latest `data/` and deploys that image to prod. See [Tag deploys and data](#tag-deploys-and-data). |
 | `.github/workflows/refresh.yml` | Cron. Gets `data/` from the pipeline or the engine's `/v1/` API (`DATA_SOURCE`, below), commits it, then builds and deploys prod. In pipeline mode it also maintains the stale-model issue and shadows `/v1/`. |
 | `scripts/should_run.py` | Decides whether a pipeline-mode refresh run does any work (see below). |
 | `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or refuses it when it is unsafe, broken, from the future or not contract 1.x (exit 1), stale (exit 3, plus the "Data API stale" issue body) or no newer than `data/` (exit 0, nothing changes). Keeps the pipeline's bookkeeping files. |
@@ -139,8 +140,7 @@ trigger other workflows, so a tag pushed by `refresh.yml` would never start `rel
    (test → staging → tag → prod) with the data flow, and needs fake tag/ref inputs.
 3. **Chosen:** refresh calls the same two building blocks that `release.yml` uses: the local reusable `build.yml`
    and infra's `deploy-app.yml`, with `env: prod`. It needs no extra secret. The image is still tagged with the
-   commit SHA, so a later `v*` tag on a data commit deploys an image that already exists, and rollback works the
-   same way.
+   commit SHA, and `deploy-app ufc prod <sha>` on the box rolls back to any of them.
 
 Data commits don't trigger `release.yml` either, so they don't rebuild staging. Staging keeps running the last code
 push.
@@ -148,7 +148,42 @@ push.
 **Trade-off to know about:** a refresh deploys main's HEAD to prod. A code change merged to main reaches staging
 immediately, and then reaches prod at the next refresh that changes data, usually within a day, without a tag. So
 treat a merge to main as "will ship". Check staging after merging, and keep unfinished work on branches. If that
-becomes a problem, a later option is for refresh to build prod from the latest `v*` tag's code plus the new `data/`.
+becomes a problem, a later option is for refresh to build prod from the latest `v*` tag's code plus the new `data/`,
+the way a tag deploy already does (below).
+
+## Tag deploys and data
+
+A `v*` tag deploys **the tag's code with main's latest `data/`**, never the image main built for the tagged commit.
+
+**Why.** Data reaches main from `refresh.yml`, pushed with `GITHUB_TOKEN`, so it never triggers a build of its own:
+the image built for a code commit keeps that commit's `data/` forever. On 2026-10-27 refresh deployed `data/` with
+`rankings.json` at 19:06:14, and 22 s later tag `v0.4.0`, on a commit built at 18:53, deployed its prebuilt image:
+`/rankings/` went 404 and its nav link vanished until refresh was dispatched again.
+
+**How.** `release.yml`'s `prod` job calls `prod.yml`, which runs `build.yml` with `ref: <tagged sha>` and
+`data_ref: main` (it checks out the tag, fetches main, replaces `data/` wholesale with main's) and then infra's
+`deploy-app.yml` with that image, tagged `<tagged sha>-data-<main sha>`. The code is still exactly what staging ran;
+only `data/` differs, and data commits go to prod without staging anyway. So the old rule "prod never rebuilds"
+becomes "prod never runs code staging hasn't run".
+
+**The `prod-deploy` lock.** Rebuilding alone still leaves a race: the tag build reads main's `data/`, a refresh
+commits and deploys newer `data/` while the tag image builds, then the tag deploys the older `data/` after it.
+So release's `prod` job (around the whole of `prod.yml`) and refresh's `prod` job both hold the concurrency group
+`prod-deploy` with `cancel-in-progress: false`. The tag reads main's `data/` inside the lock, so either it reads
+`data/` from before a refresh commit and deploys before that refresh deploys, or it waits and reads the refresh's
+`data/` too. Refresh runs are already serialized by their own `refresh` group, and only refresh writes `data/`.
+
+Trade-offs:
+- **Every tag rebuilds** (a few minutes), even when the tagged commit already has main's `data/`. Simpler than
+  comparing trees, and the image tag says which data it carries.
+- **Older code with newer data.** A tag on an older commit gets main's current `data/`. If main changed the data
+  contract since, the site build in the image fails and nothing is deployed: prod keeps what it ran.
+- **Pending deploys are replaced, not queued.** GitHub keeps one pending run per concurrency group. Two tags pushed
+  while a deploy runs, or a tag and a refresh both waiting, can replace each other; whatever runs next still carries
+  main's latest `data/`. A replaced tag deploy also skips its GitHub Release: re-run it.
+- **A refresh still ships main's HEAD code** (above); this change doesn't alter that.
+
+Tests and evidence: `docs/tdd/tag-deploy.tdd.md`.
 
 ## Go-live checklist
 
@@ -229,7 +264,8 @@ the pull, because a new GHCR package starts private.
 git tag v0.1.0 && git push origin v0.1.0
 ```
 
-This deploys the image staging already ran and cuts a GitHub Release. Check https://ufc.xlobax.com.
+This deploys the code staging already ran, with main's latest `data/`, and cuts a GitHub Release. Check
+https://ufc.xlobax.com.
 
 ### 7. Start the data refresh
 
@@ -241,8 +277,10 @@ This deploys the image staging already ran and cuts a GitHub Release. Check http
 
 ## Operating
 
-- **Roll back prod:** re-run the prod deploy of an earlier tag (Actions → release → that tag's run → Re-run).
-  On the box: `sudo deploy-app ufc prod <old-sha>`.
+- **Roll back prod:** re-run the prod deploy of an earlier tag (Actions → release → that tag's run → Re-run). That
+  ships the earlier tag's code with main's **current** `data/`. To roll data back too, on the box:
+  `sudo deploy-app ufc prod <old image tag>` (a SHA, or `<sha>-data-<sha>` from an earlier tag deploy); the next
+  refresh deploy moves prod forward again.
 - **Redeploy without new data:** `gh workflow run refresh.yml` (a manual run always rebuilds and deploys). In `v1`
   mode it fails like any other refusal when `/v1/` is stale.
 - **Refresh failed:** nothing was committed or deployed, and the site keeps serving the previous data. Read the
