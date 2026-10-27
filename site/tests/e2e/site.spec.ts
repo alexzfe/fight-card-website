@@ -543,14 +543,18 @@ test.describe('rankings page', () => {
     expect(last.x + last.width).toBeLessThanOrEqual(before.x);
   });
 
-  test('on a wide screen the rail lines up with the card column, the Rankings tile at its right edge', async ({ page }) => {
+  test('on a wide screen every event is in view beside the Rankings tile, which sits at the window\'s right end', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/');
-    const column = (await page.getByRole('heading', { level: 1 }).boundingBox())!;
     const pin = (await page.getByRole('navigation', { name: 'Events' }).getByRole('link', { name: 'Rankings' }).boundingBox())!;
-    expect(Math.abs(pin.x + pin.width - (column.x + column.width))).toBeLessThanOrEqual(1);
-    const first = (await page.getByTestId('event-tile').first().boundingBox())!;
-    expect(first.x).toBeGreaterThanOrEqual(column.x - 1);
+    expect(1280 - (pin.x + pin.width)).toBeLessThanOrEqual(32);
+    const tiles = page.getByTestId('event-tile');
+    const first = (await tiles.first().boundingBox())!;
+    const last = (await tiles.last().boundingBox())!;
+    expect(first.x).toBeGreaterThanOrEqual(0);
+    expect(last.x + last.width).toBeLessThanOrEqual(pin.x);
+    // Nothing is left to scroll to: the rail fits the window.
+    expect(await page.locator('nav .rail').evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
   });
 
   test('ranks men and women apart, best first, with division and Elo', async ({ page }) => {
