@@ -86,17 +86,21 @@ the rest fail the run (exit 1):
 - **Broken content:** a JSON file that doesn't parse, `fighters.json` that isn't an object, an event in
   `index.json`'s `upcoming` or `recent` without its `events/<id>.json`, an event file whose `id` isn't its file
   name, or a fight whose `red` or `blue` isn't in `fighters.json`.
-- **Unsafe archive:** absolute paths, `..`, links, devices or anything but regular files and directories, names
-  outside the `/v1/` layout (`index.json`, `fighters.json`, `schema.json`, `events/*`, `images/*`), duplicate
-  entries, over 100 MB downloaded, 200 MB of member contents, or 250 MB decompressed (headers included, so an
+- **Unsafe archive:** absolute paths, `..`, links, devices or anything but regular files and directories, a
+  `/v1/` layout name of the wrong shape (`index.json` as a directory, `events/a/b.json`, …), duplicate entries, over 100 MB downloaded, 200 MB of member contents, or 250 MB decompressed (headers included, so an
   oversized PAX header can't get round the caps).
+- Not a refusal: a safe file outside the `/v1/` layout (`index.json`, `fighters.json`, `schema.json`,
+  `rankings.json`, `events/*`, `images/*`) is skipped and named on stderr ("skipped files outside the /v1/ layout").
+  `/v1/` may add files (consumers ignore those they don't know), so a new engine file doesn't need a site release
+  first; it lands in `data/` once `fetch_v1.py` lists it. Skipped files still count towards the size caps.
 - **Unreachable or broken:** a download error, or a file that isn't a `.tar.gz` with `index.json` and `fighters.json`.
   The base URL must be `https://` (plain `http://` only to `127.0.0.1` or `localhost`, for tests), and a redirect to
   another scheme, host or port is refused.
 
 After `fetch_v1.py`, the job runs `npm run validate-data` in `site/` on the new `data/`: the site's own loader and
-zod schema (`site/src/lib/data.ts`, `schema.ts`), the same checks a build runs. If it fails, the job fails before
-the commit step, so nothing reaches `main`. Run it locally with `cd site && npm run validate-data -- ../data`.
+zod schema (`site/src/lib/data.ts`, `schema.ts`), the same checks a build runs, then the site's schema against the
+snapshot's `schema.json` (`site/src/lib/contract.ts`; docs/CONTRACT.md, "Checking the contract"). If either fails,
+the job fails before the commit step, so nothing reaches `main`. Run it locally with `cd site && npm run validate-data -- ../data`.
 
 The swap extracts into a temp dir beside `data/` and renames it into place; if the second rename fails, the old
 `data/` is put back.
