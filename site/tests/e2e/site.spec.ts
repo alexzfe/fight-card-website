@@ -253,7 +253,7 @@ test('a corner shows the Elo on its own line under the record, in full-strength 
 test('a ranked fighter shows the P4P rank after the Elo', async ({ page }) => {
   await page.goto('/');
   const fights = page.getByTestId('fight');
-  await expect(fights.nth(1).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1690 · #4 P4P');
+  await expect(fights.nth(1).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1690 · #3 P4P');
   await expect(fights.nth(0).locator('.corner-red').getByTestId('elo')).toHaveText('Elo 1612');
 });
 
@@ -261,7 +261,7 @@ test('a P4P rank on a card links to the fighter\'s row in the rankings, men\'s o
   await page.goto('/');
   const fight = page.getByTestId('fight').nth(1);
   const red = fight.locator('.corner-red').getByTestId('elo');
-  await expect(red.getByRole('link', { name: '#4 P4P' })).toHaveAttribute('href', '/rankings/#c3c3c3c3c3c3c3c3');
+  await expect(red.getByRole('link', { name: '#3 P4P' })).toHaveAttribute('href', '/rankings/#c3c3c3c3c3c3c3c3');
   await expect(fight.locator('.corner-blue').getByTestId('elo').getByRole('link', { name: '#1 P4P' })).toHaveAttribute(
     'href',
     '/rankings/#d4d4d4d4d4d4d4d4',
@@ -307,7 +307,7 @@ test('Stats lists each corner\'s Elo, peak and best win', async ({ page }) => {
   await expect(row(0, 'Peak')).toHaveText(['1655', '—']);
   await expect(row(0, 'Best win')).toHaveText(['Finn FoxtrotElo 1702 · Sep 2025', '—']);
   await fights.nth(1).locator('summary').click();
-  await expect(row(1, 'Elo')).toHaveText(['1690 · #4 P4P', '1488 · #1 P4P']);
+  await expect(row(1, 'Elo')).toHaveText(['1690 · #3 P4P', '1488 · #1 P4P']);
   await expect(row(1, 'Best win')).toHaveCount(0); // neither corner has one
   await expect(fights.nth(3).locator('.stats th', { hasText: /^Elo$/ })).toHaveCount(0); // no Elo on either side
 });
