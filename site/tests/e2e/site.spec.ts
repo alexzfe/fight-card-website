@@ -545,6 +545,20 @@ test.describe('rankings page', () => {
     await expect(results.first()).toContainText('#1 women’s P4P');
   });
 
+  test('finds names over apostrophes, dots, hyphens and word order', async ({ page }) => {
+    await page.goto('/rankings/');
+    const search = page.getByRole('searchbox', { name: 'Search active fighters' });
+    const names = page.getByTestId('result-name');
+    for (const q of ["o'hara", 'o’hara', 'ohara', 'jean luc', 'jean-luc', 'hara jean', 'O.Hara', '  Luc   OHARA ']) {
+      await search.fill(q);
+      await expect(names, q).toHaveText(["Jean-Luc O'Hara"]);
+    }
+    await search.fill('echo eli');
+    await expect(names).toHaveText(['Eli Echo']);
+    await search.fill('eli zzzz');
+    await expect(page.getByTestId('result')).toHaveCount(0); // every word has to match
+  });
+
   test('swaps the P4P lists for the results while a query is typed, and back', async ({ page }) => {
     await page.goto('/rankings/');
     const search = page.getByRole('searchbox', { name: 'Search active fighters' });
@@ -568,17 +582,62 @@ test.describe('rankings page', () => {
     await expect(page.getByRole('status')).toHaveText('No active fighter matches “zzzz”.');
   });
 
+  test('lists at most 30 matches and says how many there are', async ({ page }) => {
+    await page.goto('/rankings/');
+    await page.evaluate(() => {
+      const rows = Array.from({ length: 40 }, (_, i) => [`Fighter ${i}`, 1500 - i, 'Lightweight', '', 0]);
+      document.getElementById('rank-data')!.textContent = JSON.stringify(rows); // read on the first keystroke
+    });
+    await page.getByRole('searchbox', { name: 'Search active fighters' }).fill('fighter');
+    await expect(page.getByTestId('result')).toHaveCount(30);
+    await expect(page.getByRole('status')).toHaveText('Showing the first 30 of 40 matches.');
+  });
+
+  test('reads the fighter data on the first keystroke, not at load', async ({ page }) => {
+    await page.addInitScript(() => {
+      const w = window as unknown as { parses: number };
+      w.parses = 0;
+      const parse = JSON.parse;
+      JSON.parse = (...args: Parameters<typeof JSON.parse>) => (w.parses++, parse(...args));
+    });
+    await page.goto('/rankings/');
+    const parses = () => page.evaluate(() => (window as unknown as { parses: number }).parses);
+    await expect(page.getByRole('searchbox')).toBeVisible();
+    expect(await parses()).toBe(0);
+    await page.getByRole('searchbox').fill('eli');
+    await page.getByRole('searchbox').fill('eli e');
+    expect(await parses()).toBe(1);
+  });
+
+  test('puts the search box in the first paint, above the lists', async ({ page }) => {
+    await page.goto('/rankings/');
+    const form = page.locator('#rank-search');
+    await expect(form).not.toHaveAttribute('hidden', /.*/);
+    const [box, lists] = await Promise.all([form.boundingBox(), page.locator('#p4p').boundingBox()]);
+    expect(box!.y + box!.height).toBeLessThanOrEqual(lists!.y);
+  });
+
+  test('says each Elo as "Elo" to a screen reader', async ({ page }) => {
+    await page.goto('/rankings/');
+    await expect(page.getByTestId('p4p-men').getByTestId('p4p-elo').first()).toContainText('Elo 1612');
+    await page.getByRole('searchbox', { name: 'Search active fighters' }).fill('alpha');
+    await expect(page.getByTestId('result-elo').first()).toContainText('Elo 1612');
+  });
+
   test('announces how many fighters match', async ({ page }) => {
     await page.goto('/rankings/');
     await page.getByRole('searchbox', { name: 'Search active fighters' }).fill('juliet');
-    await expect(page.getByRole('status')).toHaveText('1 of 8 active fighters');
+    await expect(page.getByRole('status')).toHaveText('1 of 9 active fighters');
   });
 
-  test('works without JavaScript: the lists show and the search stays hidden', async ({ browser }) => {
-    const page = await (await browser.newContext({ javaScriptEnabled: false })).newPage();
-    await page.goto('http://localhost:4329/rankings/');
-    await expect(page.getByTestId('p4p-men').getByTestId('p4p-row')).toHaveCount(3);
-    await expect(page.getByRole('searchbox')).toBeHidden();
+  test.describe('without JavaScript', () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('the lists show and the search stays hidden', async ({ page }) => {
+      await page.goto('/rankings/');
+      await expect(page.getByTestId('p4p-men').getByTestId('p4p-row')).toHaveCount(3);
+      await expect(page.getByRole('searchbox')).toBeHidden();
+    });
   });
 
   test('fits a 360px phone, with comfortable touch targets', async ({ page }) => {
