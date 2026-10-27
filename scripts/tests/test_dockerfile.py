@@ -3,6 +3,7 @@ image answers the health path the way infra's compose healthcheck probes it (wge
 
 Slow (pulls node and nginx images): run with `pytest scripts/tests -m docker`."""
 
+import http.client
 import json
 import shutil
 import subprocess
@@ -99,6 +100,17 @@ def test_build_saw_data_dir(container):
 
 def test_directory_urls_serve_index(container):
     assert get(container, "/events/x/") == (200, "<p>event</p>")
+
+
+def test_slashless_directory_redirect_stays_relative(container):
+    # Behind Cloudflare the container sees plain http on :8080; an absolute redirect leaks that origin
+    # (http://host:8080/events/x/), which visitors and crawlers can't reach. A relative Location keeps them on https.
+    host_port = docker("port", container, "8080/tcp").stdout.split()[0]
+    conn = http.client.HTTPConnection(host_port, timeout=5)
+    conn.request("GET", "/events/x", headers={"Host": "ufc.example"})
+    resp = conn.getresponse()
+    assert resp.status == 301
+    assert resp.getheader("Location") == "/events/x/"
 
 
 def test_html_tells_browsers_to_revalidate(container):
