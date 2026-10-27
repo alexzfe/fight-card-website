@@ -34,8 +34,14 @@ def data(tmp_path):
     return d
 
 
-def run(data, blob, monkeypatch, *args):
-    monkeypatch.setattr(fetch_v1, "download", lambda url, max_bytes: blob)
+# A valid probe newer than every data/ below (or level with one within clock skew), so run() takes the real path:
+# probe, then the snapshot. A failed probe is test_a_failed_probe_falls_back_to_the_snapshot's.
+PROBE = files(generated_at="2026-10-26T12:00:00Z")["index.json"]
+
+
+def run(data, blob, monkeypatch, *args, probe=PROBE):
+    """main() with probe as /v1/index.json and blob as the snapshot."""
+    monkeypatch.setattr(fetch_v1, "download", lambda url, max_bytes: probe if url.endswith("/index.json") else blob)
     return fetch_v1.main(["--base", "https://v1.invalid", "--data", str(data), "--now", NOW.isoformat(), *args])
 
 
@@ -92,7 +98,8 @@ def test_accepts_the_real_publish_fixture(data, monkeypatch):
     """The committed fixture is `fightcard publish` output over the site's data/ (see v1-source.tdd.md)."""
     contents = tree_files(V1_FIXTURE)
     now = json.loads(contents["index.json"])["generated_at"]  # the fixture is newer than NOW
-    assert run(data, snapshot(contents), monkeypatch, "--now", now.replace("Z", "+00:00")) == 0
+    code = run(data, snapshot(contents), monkeypatch, "--now", now.replace("Z", "+00:00"), probe=contents["index.json"])
+    assert code == 0
     assert tree_files(data) == contents | BOOKKEEPING
 
 
@@ -326,12 +333,16 @@ def test_failed_swap_restores_the_old_data(data, monkeypatch, capsys):
 @pytest.fixture
 def server():
     """A local HTTP server: /v1/snapshot.tar.gz answers with `body`, /v1/index.json with `index` when set, anything
-    else 404s. `requests` lists the paths asked for."""
-    state = {"body": b"", "index": None, "redirects": {}, "requests": []}
+    else 404s. `raw` maps a path to bytes written as the whole response. `requests` lists the paths asked for."""
+    state = {"body": b"", "index": None, "redirects": {}, "raw": {}, "requests": []}
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):  # noqa: N802
             state["requests"].append(self.path)
+            if self.path in state["raw"]:
+                self.wfile.write(state["raw"][self.path])
+                self.close_connection = True
+                return
             if self.path in state["redirects"]:
                 self.send_response(302)
                 self.send_header("Location", state["redirects"][self.path])
@@ -378,6 +389,18 @@ def test_download_http_error_is_a_fetch_error(server):
 def test_download_unreachable_is_a_fetch_error():
     with pytest.raises(fetch_v1.FetchError, match="cannot download"):
         fetch_v1.download("http://127.0.0.1:9/v1/snapshot.tar.gz", 1000)
+
+
+# http.client raises these, and they are not OSErrors: BadStatusLine, IncompleteRead.
+MALFORMED = {"bad status line": b"GARBAGE\r\n\r\n",
+             "broken chunks": b"HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\nzz\r\n"}
+
+
+@pytest.mark.parametrize("raw", MALFORMED.values(), ids=MALFORMED.keys())
+def test_download_malformed_response_is_a_fetch_error(server, raw):
+    server["raw"]["/v1/snapshot.tar.gz"] = raw
+    with pytest.raises(fetch_v1.FetchError, match="cannot download"):
+        fetch_v1.download(server["base"] + "/v1/snapshot.tar.gz", 1000)
 
 
 def test_end_to_end_over_http(server, data):
@@ -718,6 +741,7 @@ def test_stale_probe_exits_3_without_the_snapshot(data, monkeypatch, capsys, tmp
     assert outputs(out) == {"stale": "true", "generated_at": STALE_AT, "age_hours": "27.0"}
     text = body.read_text()
     assert text.startswith(fetch_v1.STALE_MARKER) and STALE_AT in text and "27.0 h" in text
+    assert INDEX_URL in text and SNAPSHOT_URL not in text  # the URL that was found stale
     assert "stale" in capsys.readouterr().err
 
 
@@ -759,6 +783,28 @@ def test_snapshot_checks_stay_authoritative_after_a_newer_probe(data, monkeypatc
     code, _ = routed(monkeypatch, routes, "--data", str(data))
     assert code == 1 and unchanged(data)
     assert "not 1.x" in capsys.readouterr().err
+
+
+def test_stale_snapshot_after_a_fresh_probe_exits_3(data, monkeypatch, tmp_path):
+    """The CDN may still hold an older snapshot than index.json; the snapshot's own age decides."""
+    out, body = tmp_path / "gh_output", tmp_path / "issue.md"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    routes = {INDEX_URL: probe_index(), SNAPSHOT_URL: snapshot(files(generated_at=STALE_AT))}
+    code, seen = routed(monkeypatch, routes, "--data", str(data), "--stale-issue", str(body))
+    assert code == fetch_v1.EXIT_STALE and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert unchanged(data)
+    assert outputs(out) == {"stale": "true", "generated_at": STALE_AT, "age_hours": "27.0"}
+    text = body.read_text()
+    assert SNAPSHOT_URL in text and INDEX_URL not in text
+
+
+def test_snapshot_download_error_after_a_fresh_probe(data, monkeypatch, capsys, tmp_path):
+    out, body = tmp_path / "gh_output", tmp_path / "issue.md"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    code, seen = routed(monkeypatch, {INDEX_URL: probe_index()}, "--data", str(data), "--stale-issue", str(body))
+    assert code == 1 and urls(seen) == [INDEX_URL, SNAPSHOT_URL]
+    assert unchanged(data) and outputs(out) == {} and not body.exists()
+    assert "404" in capsys.readouterr().err
 
 
 def _future_index() -> bytes:
@@ -812,3 +858,23 @@ def test_probe_end_to_end_over_http(server, data):
     assert fetch_v1.main(["--base", server["base"], "--data", str(data), "--now", NOW.isoformat()]) == 0
     assert server["requests"] == ["/v1/index.json", "/v1/index.json", "/v1/snapshot.tar.gz"]
     assert tree_files(data) == files(generated_at="2026-10-26T07:00:00Z") | BOOKKEEPING
+
+
+@pytest.mark.parametrize("raw", MALFORMED.values(), ids=MALFORMED.keys())
+def test_a_malformed_probe_response_falls_back_to_the_snapshot(server, data, capsys, raw):
+    commit_index(data, "2026-10-26T05:00:00Z")
+    server["raw"]["/v1/index.json"], server["body"] = raw, snapshot(files())
+    assert fetch_v1.main(["--base", server["base"], "--data", str(data), "--now", NOW.isoformat()]) == 0
+    assert server["requests"] == ["/v1/index.json", "/v1/snapshot.tar.gz"]
+    assert tree_files(data) == files() | BOOKKEEPING
+    assert len([line for line in capsys.readouterr().err.splitlines() if "probe" in line]) == 1
+
+
+@pytest.mark.parametrize("raw", MALFORMED.values(), ids=MALFORMED.keys())
+def test_a_malformed_snapshot_response_is_refused(server, data, monkeypatch, capsys, tmp_path, raw):
+    out = tmp_path / "gh_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    server["index"], server["raw"]["/v1/snapshot.tar.gz"] = probe_index(), raw
+    assert fetch_v1.main(["--base", server["base"], "--data", str(data), "--now", NOW.isoformat()]) == 1
+    assert unchanged(data) and outputs(out) == {}
+    assert "cannot download" in capsys.readouterr().err
