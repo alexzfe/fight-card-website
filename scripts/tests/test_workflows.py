@@ -100,14 +100,18 @@ def test_release_targets_ufc_hosts():
     text = read("release.yml")
     assert "app: ufc" in text
     assert "url: https://ufc-staging.xlobax.com" in text
-    assert "url: https://ufc.xlobax.com" in text
     assert DEPLOY_APP in text
     assert 'tags: ["v*"]' in text
+    # The tag's prod deploy goes through prod.yml (tag's code + main's latest data/).
+    prod = read("prod.yml")
+    assert "app: ufc" in prod
+    assert "url: https://ufc.xlobax.com" in prod
+    assert DEPLOY_APP in prod
 
 
 def test_every_deploy_purges_the_edge_cache():
     # infra caches ufc's HTML at Cloudflare's edge (sites.yml edge_cache), so each deploy must purge it.
-    for name in ("release.yml", "refresh.yml"):
+    for name in ("release.yml", "refresh.yml", "prod.yml"):
         jobs = read(name).split(f"uses: {DEPLOY_APP}")[1:]
         assert jobs, name
         for job in jobs:
@@ -118,6 +122,7 @@ def test_every_deploy_purges_the_edge_cache():
 def test_both_flows_build_through_the_shared_build_workflow():
     assert "./.github/workflows/build.yml" in read("release.yml")
     assert "./.github/workflows/build.yml" in read("refresh.yml")
+    assert "./.github/workflows/build.yml" in read("prod.yml")
     assert IMAGE in read("build.yml")
     assert "workflow_call" in read("build.yml")
 
@@ -244,9 +249,10 @@ def test_refresh_v1_outputs_changed_and_sha():
     assert "sha: ${{ steps.commit.outputs.sha }}" in v1
 
 
-def test_refresh_interpolates_no_expressions_into_run_scripts():
+@pytest.mark.parametrize("name", sorted(p.name for p in WORKFLOWS.glob("*.yml")))
+def test_workflows_interpolate_no_expressions_into_run_scripts(name):
     """Values reach shell through env:, never ${{ }} inside run: (script injection)."""
-    lines = read("refresh.yml").splitlines()
+    lines = read(name).splitlines()
     in_run, indent = False, 0
     for line in lines:
         stripped = line.strip()
@@ -259,24 +265,25 @@ def test_refresh_interpolates_no_expressions_into_run_scripts():
         indent = len(line) - len(line.lstrip())
         # A step's run: ("- run:", or "run:" under a "- name:"); a job output named `run` sits at 6 spaces.
         if stripped.startswith("- run:") or (stripped.startswith("run:") and indent >= 8):
-            in_run = True
+            # Only a block scalar (`run: |`) goes on past this line; a one-line run may be followed by its env:.
+            in_run = stripped.endswith(("|", ">"))
             assert "${{" not in stripped, line
 
 
 # --- v1: stale /v1/ alerts through one issue; only the daily and manual runs fail -------------------------------
 
 
-def step(job: str, name: str) -> str:
-    """The text of the step `- name: <name>` in refresh.yml's job, up to the next step."""
-    body = jobs("refresh.yml")[job]
+def step(job: str, name: str, workflow: str = "refresh.yml") -> str:
+    """The text of the step `- name: <name>` in the workflow's job, up to the next step."""
+    body = jobs(workflow)[job]
     start = body.index(f"      - name: {name}\n")
     end = body.find("\n      - ", start + 1)
     return body[start:] if end < 0 else body[start:end + 1]
 
 
-def step_script(job: str, name: str) -> str:
+def step_script(job: str, name: str, workflow: str = "refresh.yml") -> str:
     """The `run: |` block of that step, dedented."""
-    lines = step(job, name).splitlines()
+    lines = step(job, name, workflow).splitlines()
     start = next(i for i, line in enumerate(lines) if line.strip() == "run: |") + 1
     indent = len(lines[start]) - len(lines[start].lstrip())
     body = []
@@ -287,7 +294,8 @@ def step_script(job: str, name: str) -> str:
     return "\n".join(body) + "\n"
 
 
-def run_step(tmp_path, script: str, fakes: dict[str, str], env: dict[str, str]) -> subprocess.CompletedProcess:
+def run_step(tmp_path, script: str, fakes: dict[str, str], env: dict[str, str],
+             cwd=None) -> subprocess.CompletedProcess:
     """Run a step script as Actions does (bash -eo pipefail) with fake commands first on PATH."""
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir(exist_ok=True)
@@ -299,7 +307,7 @@ def run_step(tmp_path, script: str, fakes: dict[str, str], env: dict[str, str]) 
     full_env = os.environ | {"PATH": f"{bin_dir}:{os.environ['PATH']}", "RUNNER_TEMP": str(tmp_path),
                              "GITHUB_REPOSITORY": "alexzfe/fight-card-website"} | env
     return subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", str(path)], env=full_env,
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, cwd=cwd)
 
 
 FETCH = "Fetch /v1/ snapshot"
@@ -421,3 +429,142 @@ def test_refresh_v1_validate_step_runs_in_site():
     validate = v1[v1.rindex("      - ", 0, v1.index("npm run validate-data")):]
     validate = validate[:validate.find("\n      - ", 1) + 1 or None]
     assert "working-directory: site" in validate
+
+
+# --- tag deploys: the tag's code with main's latest data/, never an older data/ -------------------------------
+#
+# 2026-10-27: refresh deployed data/ with rankings.json; 22 s later tag v0.4.0 deployed the image built for its
+# (older) commit, and /rankings/ went 404. A tag now rebuilds its code with main's data/, under a lock that every
+# prod deploy holds, so no deploy can land older data/ after newer.
+
+PROD_LOCK = "prod-deploy"
+DATA_STEP = "Pick data/ and the image tag"
+
+
+def job_concurrency(body: str) -> tuple[str, str] | None:
+    """A job's (group, cancel-in-progress), or None."""
+    m = re.search(r"^    concurrency:\n      group: (\S+)\n      cancel-in-progress: (\S+)$", body, re.M)
+    return (m.group(1), m.group(2)) if m else None
+
+
+def job_permissions(body: str) -> list[str]:
+    m = re.search(r"^    permissions:(?: \{\})?\n((?:      .+\n)*)", body, re.M)
+    assert m, body
+    return m.group(1).split()
+
+
+def test_release_tag_no_longer_deploys_the_prebuilt_image():
+    prod = jobs("release.yml")["prod"]
+    assert job_if(prod) == "github.ref_type == 'tag'"
+    assert DEPLOY_APP not in prod  # deploy-app with `tag: github.sha` shipped that commit's data/
+    assert "uses: ./.github/workflows/prod.yml" in prod
+    assert "ref: ${{ github.sha }}" in prod
+    assert "secrets: inherit" in prod
+    assert "needs: prod" in jobs("release.yml")["release"]  # the GitHub Release still waits for the deploy
+
+
+def test_release_prod_job_permissions_are_minimal():
+    assert job_permissions(jobs("release.yml")["prod"]) == ["contents:", "read", "packages:", "write"]
+
+
+def test_prod_workflow_builds_the_code_with_mains_data_then_deploys_that_image():
+    text = read("prod.yml")
+    assert "workflow_call" in text
+    assert re.search(r"^permissions: \{\}$", text, re.M)
+    prod = jobs("prod.yml")
+    build, deploy = prod["build"], prod["deploy"]
+    assert "uses: ./.github/workflows/build.yml" in build
+    assert "ref: ${{ inputs.ref }}" in build
+    assert "data_ref: main" in build
+    assert job_permissions(build) == ["contents:", "read", "packages:", "write"]
+    assert "needs: build" in deploy
+    assert f"uses: {DEPLOY_APP}" in deploy
+    assert "env: prod" in deploy
+    assert "tag: ${{ needs.build.outputs.tag }}" in deploy
+    assert "secrets: inherit" in deploy
+
+
+def test_every_prod_deploy_holds_the_same_lock():
+    """The tag path reads main's data/ inside the lock, and refresh deploys inside it, so a tag deploy that read
+    older data/ always lands before a refresh deploy of newer data/, never after. cancel-in-progress would kill a
+    deploy halfway."""
+    assert job_concurrency(jobs("release.yml")["prod"]) == (PROD_LOCK, "false")
+    assert job_concurrency(jobs("refresh.yml")["prod"]) == (PROD_LOCK, "false")
+    for name in ("release.yml", "refresh.yml", "prod.yml"):
+        for job, body in jobs(name).items():
+            if "env: prod" in body:
+                assert name == "prod.yml" or job_concurrency(body) == (PROD_LOCK, "false"), f"{name}: {job}"
+
+
+def test_build_takes_an_optional_data_ref_and_outputs_the_image_tag():
+    text = read("build.yml")
+    data_ref = text[text.index("      data_ref:\n"):]
+    data_ref = data_ref[:data_ref.index("\n    outputs:") if "\n    outputs:" in data_ref else None]
+    assert "required: false" in data_ref and 'default: ""' in data_ref
+    assert re.search(r"^    outputs:\n      tag:\n.*\n        value: \$\{\{ jobs\.build\.outputs\.tag \}\}$", text, re.M)
+    build = jobs("build.yml")["build"]
+    assert "tag: ${{ steps.data.outputs.tag }}" in build
+    assert "tags: ${{ env.IMAGE }}:${{ steps.data.outputs.tag }}" in build
+    assert build.index(DATA_STEP) < build.index("docker/build-push-action")
+    env = env_block(step("build", DATA_STEP, "build.yml"))
+    assert env == {"REF": "${{ inputs.ref }}", "DATA_REF": "${{ inputs.data_ref }}"}
+
+
+def git(cwd, *args) -> str:
+    env = os.environ | {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t",
+                        "GIT_COMMITTER_EMAIL": "t@t"}
+    return subprocess.run(["git", *args], cwd=cwd, env=env, check=True, capture_output=True,
+                          text=True).stdout.strip()
+
+
+@pytest.fixture
+def tag_checkout(tmp_path):
+    """origin/main has newer data/ than the tagged commit; the work tree is the tag, as actions/checkout leaves it."""
+    origin = tmp_path / "origin"
+    (origin / "data").mkdir(parents=True)
+    git(origin, "init", "-q", "-b", "main")
+    (origin / "data" / "index.json").write_text("old")
+    (origin / "data" / "gone.json").write_text("gone")
+    (origin / "site.txt").write_text("tag code")
+    git(origin, "add", ".")
+    git(origin, "commit", "-q", "-m", "tag")
+    tag = git(origin, "rev-parse", "HEAD")
+    (origin / "data" / "index.json").write_text("new")
+    (origin / "data" / "gone.json").unlink()
+    (origin / "data" / "rankings.json").write_text("ranks")
+    (origin / "site.txt").write_text("unreleased code")
+    git(origin, "add", "-A")
+    git(origin, "commit", "-q", "-m", "data: refresh")
+    work = tmp_path / "work"
+    git(tmp_path, "clone", "-q", str(origin), str(work))
+    git(work, "checkout", "-q", "--detach", tag)
+    (work / "data" / "stray.json").write_text("untracked")
+    return work, tag, git(origin, "rev-parse", "main")
+
+
+def run_data_step(tmp_path, work, env):
+    out = tmp_path / "github_output"
+    out.touch()
+    result = run_step(tmp_path, step_script("build", DATA_STEP, "build.yml"), {}, env | {"GITHUB_OUTPUT": str(out)},
+                      cwd=work)
+    assert result.returncode == 0, result.stderr
+    return dict(line.split("=", 1) for line in out.read_text().splitlines())
+
+
+def test_build_without_data_ref_keeps_the_commits_data_and_tags_the_sha(tmp_path, tag_checkout):
+    work, tag, _ = tag_checkout
+    outputs = run_data_step(tmp_path, work, {"REF": tag, "DATA_REF": ""})
+    assert outputs == {"tag": tag}
+    assert (work / "data" / "index.json").read_text() == "old"
+    assert (work / "data" / "gone.json").exists()
+
+
+def test_build_with_data_ref_swaps_in_mains_data_and_only_data(tmp_path, tag_checkout):
+    work, tag, main = tag_checkout
+    outputs = run_data_step(tmp_path, work, {"REF": tag, "DATA_REF": "main"})
+    assert outputs == {"tag": f"{tag}-data-{main}"}
+    assert sorted(p.name for p in (work / "data").iterdir()) == ["index.json", "rankings.json"]
+    assert (work / "data" / "index.json").read_text() == "new"
+    assert (work / "site.txt").read_text() == "tag code"  # the tag's code, not main's
+    assert git(work, "rev-parse", "HEAD") == tag
+    assert re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", outputs["tag"])  # infra's deploy-app and Docker accept it
