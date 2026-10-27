@@ -1,5 +1,10 @@
 """Replace data/ with the fightcard-engine's /v1/ snapshot (refresh.yml with DATA_SOURCE=v1).
 
+First probes <base>/v1/index.json (~1.5 KB): when its generated_at is stale, or no newer than the committed
+data/index.json, the run ends as below without downloading the snapshot. A probe that fails (can't be fetched, isn't
+a contract 1.x index, is from the future) only logs why; the snapshot is then downloaded as if there were no probe,
+and its own checks decide. --no-probe always downloads it.
+
 Downloads <base>/v1/snapshot.tar.gz (one generation, see the engine's docs/CONTRACT.md) and refuses it, leaving
 data/ untouched and exiting 1, when it is unsafe to extract (absolute paths, `..`, links or other non-regular
 files, a known name of the wrong shape, too big) or from another contract major. Files outside the /v1/ layout are
@@ -43,6 +48,7 @@ from gh_output import emit
 MAX_AGE_HOURS = 26.0  # the daily run plus slack; the engine refreshes more often than that
 CLOCK_SKEW = timedelta(minutes=10)  # a generated_at further ahead than this is wrong, not early
 MAX_DOWNLOAD_BYTES = 100 * 2**20  # the snapshot is ~1.5 MB today
+MAX_PROBE_BYTES = 2**20  # index.json is ~1.5 KB
 MAX_EXTRACTED_BYTES = 200 * 2**20  # the members' sizes
 MAX_STREAM_BYTES = 250 * 2**20  # the decompressed tar stream, headers included (PAX headers have no member size)
 CHUNK = 2**20
@@ -75,6 +81,10 @@ class StaleError(FetchError):
 
 def snapshot_url(base: str) -> str:
     return base.rstrip("/") + "/v1/snapshot.tar.gz"
+
+
+def index_url(base: str) -> str:
+    return base.rstrip("/") + "/v1/index.json"
 
 
 LOCAL_HOSTS = {"127.0.0.1", "localhost"}  # plain http is allowed to these only, for tests
@@ -195,14 +205,18 @@ def read_index(root: Path) -> dict:
         index = json.loads((root / "index.json").read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         raise FetchError(f"snapshot index.json is unreadable: {e}") from e
+    return check_index(index, "snapshot")
+
+
+def check_index(index, what: str) -> dict:
     if not isinstance(index, dict):
-        raise FetchError("snapshot index.json is not an object")
+        raise FetchError(f"{what} index.json is not an object")
     version = index.get("contract_version")
     if not (isinstance(version, str) and _VERSION.fullmatch(version) and version.split(".")[0] == "1"):
-        raise FetchError(f"snapshot contract_version {version!r} is not 1.x; this site reads /v1/ only")
+        raise FetchError(f"{what} contract_version {version!r} is not 1.x; this site reads /v1/ only")
     generated_at = index.get("generated_at")
     if not (isinstance(generated_at, str) and _UTC_Z.fullmatch(generated_at)):
-        raise FetchError(f"snapshot generated_at {generated_at!r} is not ISO 8601 UTC with Z")
+        raise FetchError(f"{what} generated_at {generated_at!r} is not ISO 8601 UTC with Z")
     return index
 
 
@@ -251,10 +265,10 @@ def age_hours(index: dict, now: datetime) -> float:
     return (now - datetime.fromisoformat(index["generated_at"])) / timedelta(hours=1)
 
 
-def check_not_future(index: dict, now: datetime) -> None:
+def check_not_future(index: dict, now: datetime, what: str = "snapshot") -> None:
     """A future generated_at would make every later real snapshot look older than data/ and freeze the site."""
     if datetime.fromisoformat(index["generated_at"]) > now + CLOCK_SKEW:
-        raise FetchError(f"snapshot generated_at {index['generated_at']} is in the future "
+        raise FetchError(f"{what} generated_at {index['generated_at']} is in the future "
                          f"(now {now:%Y-%m-%dT%H:%M:%SZ}, allowing {CLOCK_SKEW} of clock skew)")
 
 
@@ -275,6 +289,26 @@ def committed_at(data: Path, now: datetime) -> str | None:
     if not (isinstance(generated_at, str) and _UTC_Z.fullmatch(generated_at)):
         return None
     return None if datetime.fromisoformat(generated_at) > now + CLOCK_SKEW else generated_at
+
+
+def no_newer(index: dict, ours: str | None) -> bool:
+    return bool(ours) and datetime.fromisoformat(index["generated_at"]) <= datetime.fromisoformat(ours)
+
+
+def probe(base: str, data: Path, now: datetime, max_age_hours: float) -> tuple[dict, str] | None:
+    """Check <base>/v1/index.json against data/ before downloading the snapshot. Raises StaleError when it is stale;
+    returns (its index, the committed generated_at) when it is no newer than data/; None when the snapshot is to be
+    downloaded: it is newer, data/'s age is unknown, or the probe failed (logged)."""
+    url = index_url(base)
+    try:
+        index = check_index(json.loads(download(url, MAX_PROBE_BYTES)), "probe")
+        check_not_future(index, now, "probe")
+    except (FetchError, ValueError, RecursionError) as e:  # ValueError covers bad JSON and bad UTF-8
+        print(f"fetch_v1: probe of {url} failed, downloading the snapshot: {e}", file=sys.stderr)
+        return None
+    check_fresh(index, now, max_age_hours)
+    ours = committed_at(data, now)
+    return (index, ours) if no_newer(index, ours) else None
 
 
 def stale_issue_body(error: StaleError, url: str) -> str:
@@ -341,7 +375,7 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple
         check_content(new, index)
         check_fresh(index, now, max_age_hours)
         ours = committed_at(data, now)
-        if ours and datetime.fromisoformat(index["generated_at"]) <= datetime.fromisoformat(ours):
+        if no_newer(index, ours):
             return index, ours
         carry_over(data, new)
         swap(new, data)
@@ -365,12 +399,15 @@ def main(argv: list[str] | None = None) -> int:
                         help=f"refuse a snapshot generated longer ago than this (default {MAX_AGE_HOURS:g})")
     parser.add_argument("--now", help="ISO 8601 time to judge staleness against (default: the clock)")
     parser.add_argument("--stale-issue", type=Path, help="when stale, write the issue body here")
+    parser.add_argument("--no-probe", action="store_true",
+                        help="download the snapshot without checking /v1/index.json first")
     args = parser.parse_args(argv)
 
     url = snapshot_url(args.base)
     now = parse_now(args.now)
     try:
-        index, kept = fetch(download(url, MAX_DOWNLOAD_BYTES), args.data, now, args.max_age_hours)
+        skip = None if args.no_probe else probe(args.base, args.data, now, args.max_age_hours)
+        index, kept = skip or fetch(download(url, MAX_DOWNLOAD_BYTES), args.data, now, args.max_age_hours)
     except StaleError as e:
         print(f"fetch_v1: {e}", file=sys.stderr)
         emit(stale=True, generated_at=e.index["generated_at"], age_hours=f"{e.hours:.1f}")
