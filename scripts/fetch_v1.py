@@ -335,7 +335,7 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple
     try:
         new = staging / data.name
         if skipped := extract(blob, new):
-            print(f"fetch_v1: skipped files outside the /v1/ layout: {', '.join(skipped)}", file=sys.stderr)
+            print(f"fetch_v1: skipped files outside the /v1/ layout: {', '.join(map(repr, skipped))}", file=sys.stderr)
         index = read_index(new)
         check_not_future(index, now)
         check_content(new, index)
