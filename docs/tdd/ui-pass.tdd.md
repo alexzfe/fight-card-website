@@ -92,3 +92,20 @@ computed style for `::-webkit-search-cancel-button`, so the RED version could ne
 | 6 | P4P rows and search results show "Oct 31 vs X →" linking to the event, in the muted colour | e2e `a fighter booked on an upcoming card links to it…` | e2e | PASS |
 | 7 | The clear button is drawn in the muted grey | e2e `the search box's clear button…` | e2e | PASS |
 | 8 | Rankings page stays under 24 KB gz with 700 fighters (fixture page: 8.7 KB gz) | rankings-build budget | build | PASS |
+
+### Round 1 (review of PR #14)
+
+The review found the "next bout" links were ~20px tall tap targets (should-fix) and offered three nits worth doing: the
+arrow was read aloud, and the fixture's rank on the card (#4) did not match the row it links to (#3).
+
+RED (e2a444b): e2e 2 failed, 62 passed. GREEN (c2ee831): site 206 passed; astro check 0 errors; e2e 64 passed. Fixture fix (019913e):
+same counts.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 9 | At 360px the P4P row's and the search result's next-bout links are ≥44px tall | e2e `fits a 360px phone, with comfortable touch targets` (extended) | e2e | PASS |
+| 10 | The next-bout links' accessible name is "Oct 31 vs Delta", with the arrow drawn by `::after` | e2e `a fighter booked on an upcoming card links to it…` (extended) | e2e | PASS |
+
+The arrow is CSS (`content: ' →' / ''`) rather than an `aria-hidden` span: the search script had no room left under its
+2048-byte budget for the span, and the CSS arrow adds none. The fixture's Carla Charlie is now #3 on both her card and the
+rankings; the three e2e expectations that said "#4 P4P" say "#3 P4P".
