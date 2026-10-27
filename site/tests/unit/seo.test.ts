@@ -110,6 +110,19 @@ describe('eventJsonLd', () => {
     });
   });
 
+  it("fills Google's recommended Event fields: same-day end, share image, UFC as organizer", () => {
+    const ld = eventJsonLd(event(), fighters, url);
+    expect(ld.endDate).toBe('2026-10-31');
+    expect(ld.image).toBe('https://ufc.xlobax.com/og.png');
+    expect(ld.organizer).toEqual({ '@type': 'Organization', name: 'UFC', url: 'https://www.ufc.com' });
+  });
+
+  it('names the fighters as performers too', () => {
+    const ld = eventJsonLd(event(), fighters, url);
+    expect(ld.performer).toEqual(ld.competitor);
+    expect(ld.performer).toHaveLength(4);
+  });
+
   it('lists every fighter on the card once, as people', () => {
     const ld = eventJsonLd(event({ fights: [fight('f1', 'a', 'b'), fight('f2', 'a', 'c')] }), fighters, url);
     expect(ld.competitor).toEqual([
