@@ -40,7 +40,12 @@ const SPECULATION_RULES = JSON.stringify({
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE_NAME} />
     {canonical && <meta property="og:url" content={canonical} />}
-    <meta name="twitter:card" content="summary" />
+    <!-- Drawn by scripts/build-icons.mjs -->
+    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE_NAME}: finish chances and Elo ratings for every bout`} />
+    <meta name="twitter:card" content="summary_large_image" />
     {jsonLd.map((data) => <script type="application/ld+json" is:inline set:html={jsonLdScript(data)} />)}
     <!-- Drawn by scripts/build-icons.mjs from the accent token -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
