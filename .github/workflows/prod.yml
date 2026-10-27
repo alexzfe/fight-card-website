@@ -1,0 +1,38 @@
+# A v* tag's prod deploy, called by release.yml: builds the tag's code with main's latest data/, then deploys that
+# image. Deploying the image main built for the tagged commit would ship that commit's data/, which is older than
+# prod's whenever refresh.yml has committed data since (it happened 2026-10-27: /rankings/ went 404).
+#
+# The caller holds the `prod-deploy` lock around this whole workflow, and refresh.yml's prod job holds it too, so
+# main's data/ is read and deployed before or after a refresh deploy, never across one. See docs/DEPLOY.md.
+name: prod
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit SHA whose code to deploy (the tagged commit)
+        type: string
+        required: true
+
+permissions: {}
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: ${{ inputs.ref }}
+      data_ref: main
+
+  deploy:
+    needs: build
+    uses: alexzfe/infra/.github/workflows/deploy-app.yml@main
+    with:
+      app: ufc
+      env: prod
+      tag: ${{ needs.build.outputs.tag }}
+      url: https://ufc.xlobax.com
+      purge_cache: true
+    secrets: inherit

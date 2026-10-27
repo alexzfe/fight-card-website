@@ -2,10 +2,12 @@
 #
 #   PR            -> test
 #   push to main  -> test, build ghcr.io/alexzfe/fight-card-website:<sha>, deploy to staging
-#   push tag v*   -> deploy the image already built for that commit to prod, then cut a GitHub Release
+#   push tag v*   -> build that commit's code with main's latest data/ and deploy it to prod (prod.yml), then cut a
+#                    GitHub Release
 #
-# Prod never rebuilds: the tag points at a commit main already built and staging already ran. Data refreshes
-# deploy to prod on their own (refresh.yml); see docs/DEPLOY.md.
+# Prod never runs untested code: the tag points at a commit main already built and staging already ran. Its image
+# is rebuilt only to swap in main's data/, so a tag never rolls prod's data back. Data refreshes deploy to prod on
+# their own (refresh.yml); see docs/DEPLOY.md.
 name: release
 
 on:
@@ -70,15 +72,18 @@ jobs:
       purge_cache: true
     secrets: inherit
 
+  # Same lock as refresh.yml's prod deploy: main's data/ is read and deployed with no refresh deploy in between.
   prod:
     if: github.ref_type == 'tag'
-    uses: alexzfe/infra/.github/workflows/deploy-app.yml@main
+    concurrency:
+      group: prod-deploy
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/prod.yml
     with:
-      app: ufc
-      env: prod
-      tag: ${{ github.sha }}
-      url: https://ufc.xlobax.com
-      purge_cache: true
+      ref: ${{ github.sha }}
     secrets: inherit
 
   release:
