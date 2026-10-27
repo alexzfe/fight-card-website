@@ -2,7 +2,8 @@
 
 Downloads <base>/v1/snapshot.tar.gz (one generation, see the engine's docs/CONTRACT.md) and refuses it, leaving
 data/ untouched and exiting 1, when it is unsafe to extract (absolute paths, `..`, links or other non-regular
-files, names outside the /v1/ layout, too big) or from another contract major. A stale one (`generated_at` older
+files, a known name of the wrong shape, too big) or from another contract major. Files outside the /v1/ layout are
+skipped, not written: /v1/ may add files, and consumers ignore those they don't know. A stale one (`generated_at` older
 than --max-age-hours, 26 by default) exits 3 instead, so refresh.yml can tell it apart: hourly runs then keep
 data/ quietly and keep the "Data API stale" issue (body from --stale-issue) open, the daily and manual runs fail.
 
@@ -114,18 +115,21 @@ def _unsafe(info: tarfile.TarInfo, why: str) -> FetchError:
     return FetchError(f"unsafe snapshot member {info.name!r}: {why}")
 
 
-def _check_member(info: tarfile.TarInfo) -> None:
+def _check_member(info: tarfile.TarInfo) -> bool:
+    """True for a member of the /v1/ layout, False for a safe one outside it (to skip); raises for an unsafe one."""
     parts = info.name.split("/")
     if info.name.startswith("/") or "\\" in info.name or any(p in ("", ".", "..") for p in parts):
         raise _unsafe(info, "not a plain relative path")
     if not (info.isfile() or info.isdir()):
         raise _unsafe(info, "not a regular file or directory")
     top = parts[0]
+    if top not in TOP_FILES | TOP_DIRS:
+        return False
     if len(parts) == 1:
         if (top in TOP_FILES and info.isfile()) or (top in TOP_DIRS and info.isdir()):
-            return
+            return True
     elif top in TOP_DIRS and len(parts) == 2 and info.isfile():
-        return
+        return True
     raise _unsafe(info, "not part of the /v1/ layout")
 
 
@@ -147,25 +151,29 @@ class _Capped(io.RawIOBase):
         return len(chunk)
 
 
-def extract(blob: bytes, dest: Path) -> None:
-    """Check each member of the .tar.gz `blob` and write it under dest (created if missing). Streams, so the
-    decompressed size is bounded before tarfile parses any header; a refusal leaves a partial dest, which the caller
-    throws away."""
+def extract(blob: bytes, dest: Path) -> list[str]:
+    """Check each member of the .tar.gz `blob` and write it under dest (created if missing); return the files skipped
+    as outside the /v1/ layout. Streams, so the decompressed size is bounded before tarfile parses any header; a
+    refusal leaves a partial dest, which the caller throws away. Skipped members count towards every cap."""
     try:
         stream = _Capped(gzip.GzipFile(fileobj=io.BytesIO(blob)), MAX_STREAM_BYTES)
         with tarfile.open(fileobj=stream, mode="r|") as tar:
-            seen, total = set(), 0
+            seen, total, skipped = set(), 0, []
             dest.mkdir(parents=True, exist_ok=True)
             for info in tar:
                 if len(seen) >= MAX_MEMBERS:
                     raise _unsafe(info, f"more than {MAX_MEMBERS} members")
-                _check_member(info)
+                known = _check_member(info)
                 if info.name in seen:
                     raise _unsafe(info, "listed twice")
                 seen.add(info.name)
                 total += info.size
                 if total > MAX_EXTRACTED_BYTES:
                     raise _unsafe(info, f"contents larger than {MAX_EXTRACTED_BYTES} bytes")
+                if not known:
+                    if info.isfile():
+                        skipped.append(info.name)
+                    continue
                 target = dest / info.name
                 if info.isdir():
                     target.mkdir(exist_ok=True)
@@ -173,6 +181,7 @@ def extract(blob: bytes, dest: Path) -> None:
                 target.parent.mkdir(exist_ok=True)  # one level deep at most (_check_member)
                 with tar.extractfile(info) as src, open(target, "wb") as out:
                     shutil.copyfileobj(src, out, CHUNK)
+            return skipped
     except (tarfile.TarError, EOFError, zlib.error, gzip.BadGzipFile) as e:
         raise FetchError(f"snapshot is not a readable .tar.gz: {e}") from e
 
@@ -325,7 +334,8 @@ def fetch(blob: bytes, data: Path, now: datetime, max_age_hours: float) -> tuple
     staging = Path(tempfile.mkdtemp(dir=data.parent, prefix=f".{data.name}.v1-"))
     try:
         new = staging / data.name
-        extract(blob, new)
+        if skipped := extract(blob, new):
+            print(f"fetch_v1: skipped files outside the /v1/ layout: {', '.join(skipped)}", file=sys.stderr)
         index = read_index(new)
         check_not_future(index, now)
         check_content(new, index)
