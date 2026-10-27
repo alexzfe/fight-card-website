@@ -19,7 +19,7 @@ the [infra](https://github.com/alexzfe/infra) repo's `deploy-app` on the Hetzner
 | `.github/workflows/prod.yml` | Reusable, for a tag: builds the tagged code with main's latest `data/` and deploys that image to prod. See [Tag deploys and data](#tag-deploys-and-data). |
 | `.github/workflows/refresh.yml` | Cron. Gets `data/` from the pipeline or the engine's `/v1/` API (`DATA_SOURCE`, below), commits it, then builds and deploys prod. In pipeline mode it also maintains the stale-model issue and shadows `/v1/`. |
 | `scripts/should_run.py` | Decides whether a pipeline-mode refresh run does any work (see below). |
-| `scripts/fetch_v1.py` | `v1` mode: replaces `data/` with `/v1/snapshot.tar.gz`, or refuses it when it is unsafe, broken, from the future or not contract 1.x (exit 1), stale (exit 3, plus the "Data API stale" issue body) or no newer than `data/` (exit 0, nothing changes). Keeps the pipeline's bookkeeping files. |
+| `scripts/fetch_v1.py` | `v1` mode: probes `/v1/index.json`, then replaces `data/` with `/v1/snapshot.tar.gz`, or refuses it when it is unsafe, broken, from the future or not contract 1.x (exit 1), stale (exit 3, plus the "Data API stale" issue body) or no newer than `data/` (exit 0, nothing changes). Keeps the pipeline's bookkeeping files. |
 | `site/scripts/validate-data.mjs` | `npm run validate-data [-- <dir>]`: loads a data dir through the site's `loadData` and zod schema without building. `v1` mode runs it before committing. |
 | `scripts/v1_shadow.py` | `pipeline` mode: writes how `/v1/` differs from the pipeline's `data/` to the job summary. Never fails. |
 | `scripts/stale_issue.py` | Builds the "Re-export finish model" issue body from `data/stale_fighters.json`. |
@@ -37,7 +37,7 @@ committed `data/`, never from the browser, and `data/` stays in git (audit trail
 | `DATA_SOURCE` | Jobs | What happens |
 |---|---|---|
 | `pipeline` (default; also when unset) | gate → pipeline → build → prod, plus `shadow` | Today's refresh (below). The `shadow` job then downloads the [fightcard-engine](https://github.com/alexzfe/fightcard-engine)'s `https://ufc-data.xlobax.com/v1/snapshot.tar.gz` and writes a diff summary to its job summary: how many events, fights, finish tiers and fighter Elos differ, with examples and the largest Elo gap. `generated_at` and what only `/v1/` has (`contract_version`, `Result.outcome`, `schema.json`) don't count. It never fails or holds up the refresh: nothing waits for it, it has `continue-on-error`, and when the API is down it notes "v1 not reachable" and succeeds. |
-| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, `npm run validate-data` checks it with the site's schema, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick (the download is ~1.5 MB) and maintains the "Data API stale" issue (below). |
+| `v1` | v1 → build → prod | No gate, no pipeline, no cookie cache, no stale-model issue. `scripts/fetch_v1.py` downloads the snapshot and swaps it in for `data/`, `npm run validate-data` checks it with the site's schema, then `data/` is committed, built and deployed exactly as in pipeline mode. It runs on every cron tick and maintains the "Data API stale" issue (below), but downloads the snapshot (~1.5 MB) only when it has something new (the probe, below). |
 
 **Switch to `/v1/`** once the shadow summaries have shown no unexplained differences for a while:
 
@@ -63,11 +63,25 @@ the last `/v1/` swap: the Rankings tab keeps serving that `as_of` indefinitely, 
 rollback either delete it (`git rm data/rankings.json`, commit and push: the tab and its link then disappear) or
 accept the frozen list. Its P4P headshots are `data/images/*.webp`, which the pipeline's image step leaves alone.
 
+**The probe.** The engine publishes a new generation about daily (hourly on event days), so most ticks would
+download a snapshot `data/` already holds. `fetch_v1.py` first gets `/v1/index.json` (~1.5 KB, capped at 1 MB) and
+checks it like the snapshot's own `index.json` (an object, `contract_version` 1.x, `generated_at` UTC with `Z`, not
+from the future). If its `generated_at` is stale, the run takes the stale path below (exit 3, the issue body) from the
+probe alone; if it is no newer than the committed `data/index.json`, the run ends with exit 0 ("already holds" or
+"not going backwards"). Neither downloads the snapshot. Otherwise the snapshot is downloaded and every check below
+applies to it as before: the snapshot can be newer than the probe, or, behind the CDN's 60 s cache, not newer than
+`data/` after all (then it is a no-op). A probe that fails (a download error, not JSON, another contract, from the
+future, a field missing) prints one line, `probe of <url> failed, downloading the snapshot: <why>`, and the run
+carries on as if there were no probe, so a broken probe never skips a refresh nor lets anything through the snapshot
+checks would refuse. `--no-probe` always downloads the snapshot (for manual runs and debugging); the probe keeps no
+state between runs.
+
 **What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
 committed and the site keeps serving the last committed `data/`. The first two have their own handling;
 the rest fail the run (exit 1):
 
-- **Stale:** `generated_at` older than 26 hours (`--max-age-hours` to change it). Exit 3, so the workflow can tell it
+- **Stale:** `generated_at` older than 26 hours (`--max-age-hours` to change it), told from the probe when it
+  works, else from the snapshot. Exit 3, so the workflow can tell it
   apart. The alert is a single issue titled **"Data API stale"**, opened on the first stale run and updated on each
   one after (body: `generated_at`, its age, the API URL, what to check: the engine's container logs and
   `fightcard-service health --staleness`). Hourly runs then succeed with the committed `data/` (a warning in the
