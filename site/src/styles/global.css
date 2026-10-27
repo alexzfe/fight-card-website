@@ -352,7 +352,9 @@ ul {
   white-space: nowrap;
 }
 
-.elo-line > [data-tip] {
+/* A dotted underline marks a tip, but only under the pointer or focus, so the resting card stays quiet. */
+.elo-line > [data-tip]:hover,
+.elo-line > [data-tip]:focus {
   text-decoration: underline dotted;
   text-decoration-color: var(--color-muted);
   text-underline-offset: 2px;
@@ -637,7 +639,8 @@ ul {
 }
 
 /* Tooltips (form tile: opponent; Elo: peak and best win; tag: what it means): hover with a mouse, or tap (focus)
-   on touch. Red corner tips grow rightwards from their anchor, blue corner tips leftwards. */
+   on touch. Red corner tips grow rightwards from their anchor, blue corner tips leftwards. Elo and tag tips hang
+   below the line so they never cover the fighter's name; form tile tips sit above, over the Elo. */
 .form > [data-tip],
 .elo-line > [data-tip] {
   position: relative;
@@ -662,6 +665,11 @@ ul {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+.elo-line > [data-tip]::after {
+  top: calc(100% + 6px);
+  bottom: auto;
 }
 
 .corner-blue .form > [data-tip]::after,

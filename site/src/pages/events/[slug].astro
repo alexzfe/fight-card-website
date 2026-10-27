@@ -14,6 +14,7 @@ const { event } = Astro.props as { event: Event };
 ---
 
 <Base
+  page="card"
   title={`${event.name} · UFC fight card`}
   description={eventDescription(event)}
   jsonLd={[eventJsonLd(event, site.fighters, new URL(Astro.url.pathname, Astro.site).href)]}

@@ -109,3 +109,37 @@ same counts.
 The arrow is CSS (`content: ' →' / ''`) rather than an `aria-hidden` span: the search script had no room left under its
 2048-byte budget for the span, and the CSS arrow adds none. The fixture's Carla Charlie is now #3 on both her card and the
 rankings; the three e2e expectations that said "#4 P4P" say "#3 P4P".
+
+## Phase 3: glanceability trims (`ui/3-trims`)
+
+### User journeys
+
+1. As a visitor scanning a card, I want each row to carry only what changes from row to row, not the same label and underlines again.
+2. As a visitor checking a fighter's Elo, I want its tip to open without covering the name I am reading.
+3. As a visitor at the bottom of any page, I want a short footer that explains what this page shows.
+
+### Design
+
+- `EventCard.astro` passes `finishLabel` to the first fight of each segment group. `FightRow.astro` keeps the "Finish
+  chance" span on every row, so every badge is named for screen readers, but adds `.sr-only` below the first row.
+- `.elo-line > [data-tip]` draws its dotted underline only on `:hover`/`:focus`. The P4P link keeps its own solid underline.
+- Elo and tag tips use `top: calc(100% + 6px)`, so they hang below the line. Red tips still grow rightwards and blue tips
+  leftwards. Form tile tips stay above, over the Elo line.
+- Stats drops the "Elo" row, which repeated the corner's Elo. "Peak" and "Best win" stay.
+- `Base.astro` takes `page: 'card' | 'rankings' | 'method'`:
+  - card pages get the tiers + "—" line, and rankings gets the Elo line;
+  - the method page gets neither line and no link to itself;
+  - 404 keeps the date line and the link.
+- The model date and the method link share one line. The lowercase "provisional…" sentence is gone: the tag tips say it,
+  and so does the rankings header note.
+
+RED (5120f15): e2e 4 failed, 61 passed. GREEN: site 206 passed; astro check 0 errors; e2e 65 passed; build ok.
+
+| # | What is guaranteed | Test | Type | Result |
+|---|---|---|---|---|
+| 1 | "Finish chance" shows on the first fight of each segment (home: main, prelims, early prelims; a card without segments: once), and every row carries the text | e2e `the finish meter is labelled once per card segment…` | e2e | PASS |
+| 2 | The Elo has no underline at rest, a dotted one on hover; Elo (red) and tag (blue) tips start below their anchor | e2e `the Elo underline shows on hover or focus…` | e2e | PASS |
+| 3 | Stats rows are Height, Reach, Stance, Age, Peak, Best win (when present) | e2e `Stats lists each corner's peak and best win…` | e2e | PASS |
+| 4 | Card pages and rankings each have their own footer line; every page keeps the model date and attribution; the method link is on all but how-it-works | e2e `the footer explains what the page shows, in one line` | e2e | PASS |
+
+Footer height at 390px: 134px on cards and rankings, 98px on how-it-works (220px before).

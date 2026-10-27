@@ -12,11 +12,18 @@ interface Props {
   jsonLd?: object[];
   /** Error pages: keep out of search and give them no canonical URL. */
   noindex?: boolean;
+  /** Picks the footer's one line of explanation; the method page explains itself and needs no link to itself. */
+  page?: 'card' | 'rankings' | 'method';
 }
 
-const { title, description, ogType = 'website', jsonLd = [], noindex = false } = Astro.props;
+const { title, description, ogType = 'website', jsonLd = [], noindex = false, page } = Astro.props;
 const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
 const model = site.index.model;
+const EXPLAINER = {
+  card: "High / Medium / Low is the model's chance the fight ends inside the distance; — means too little data.",
+  rankings: 'Elo rates fighters from their results, weighted by opponent strength; 1500 is the average active fighter.',
+};
+const explainer = page === 'card' || page === 'rankings' ? EXPLAINER[page] : null;
 // Chromium prerenders every event page up front (there are only a handful), so tile taps feel instant
 // on phones too, where there is no hover to warn it. Home and rankings wait for a hover or touch start.
 const SPECULATION_RULES = JSON.stringify({
@@ -61,16 +68,11 @@ const SPECULATION_RULES = JSON.stringify({
   <body>
     <slot />
     <footer class="site-footer">
+      {explainer && <p data-testid="footer-explainer">{explainer}</p>}
       <p>
-        {model ? `Finish model as of ${formatDate(model.as_of)}` : 'Finish model not yet available'}.
-        High / Medium / Low is the model's chance the fight ends inside the distance; — means too little data.
+        {model ? `Finish model as of ${formatDate(model.as_of)}` : 'Finish model not yet available'}
+        {page !== 'method' && <> · <a href="/how-it-works/">How finish chance and Elo work</a></>}
       </p>
-      <p>
-        Elo rates fighters from their results, weighted by opponent strength; 1500 is the average active fighter.
-        provisional means fewer than 3 UFC fights; inactive means no fight in the last 12 months. Peak and best win are under
-        Stats.
-      </p>
-      <p><a href="/how-it-works/">How finish chance and Elo work</a></p>
       <p>Data: <a href="http://ufcstats.com">ufcstats.com</a>. Headshots: ESPN, Wikipedia. Not affiliated with the UFC.</p>
     </footer>
   </body>

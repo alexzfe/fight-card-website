@@ -42,10 +42,17 @@ const indexOf = new Map(event.fights.map((f, i) => [f.id, i]));
           </h2>
         )}
         <ul class="fights">
-          {group.fights.map((fight) => {
+          {group.fights.map((fight, j) => {
             const i = indexOf.get(fight.id)!;
             return (
-              <FightRow fight={fight} event={event} fighters={fighters} eager={i < EAGER_ROWS} mainEvent={i === 0} />
+              <FightRow
+                fight={fight}
+                event={event}
+                fighters={fighters}
+                eager={i < EAGER_ROWS}
+                mainEvent={i === 0}
+                finishLabel={j === 0}
+              />
             );
           })}
         </ul>

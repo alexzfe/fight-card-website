@@ -19,9 +19,11 @@ interface Props {
   eager?: boolean;
   /** First fight on the card: bigger headshots and a "Main event" marker. */
   mainEvent?: boolean;
+  /** First fight of its segment: the "Finish chance" label shows; on the rows below it only screen readers get it. */
+  finishLabel?: boolean;
 }
 
-const { fight, event, fighters, eager, mainEvent = false } = Astro.props;
+const { fight, event, fighters, eager, mainEvent = false, finishLabel = false } = Astro.props;
 const red = fighters[fight.red]!;
 const blue = fighters[fight.blue]!;
 const result = formatResult(fight.result);
@@ -33,13 +35,8 @@ const stats = [
   ['Stance', red.stance ?? '—', blue.stance ?? '—'],
   ['Age', age(red), age(blue)],
 ] as const;
-// Elo detail lives in Stats; the corner shows only the current rating. A row shows when either side has a value.
-const rating = (f: Fighter) =>
-  f.elo == null ? null : [f.elo, f.p4p_rank != null ? `#${f.p4p_rank} P4P` : null].filter(Boolean).join(' · ');
-const eloRows = [
-  ['Elo', rating(red), rating(blue)],
-  ['Peak', red.elo_peak, blue.elo_peak],
-].filter(([, r, b]) => r != null || b != null);
+// The corner shows the current Elo; Stats adds the peak, when either side has one.
+const eloRows = [['Peak', red.elo_peak, blue.elo_peak]].filter(([, r, b]) => r != null || b != null);
 const bestWins = [formatBestWin(red.best_win), formatBestWin(blue.best_win)] as const;
 const history = [red, blue].map((f) => f.recent_fights ?? []);
 ---
@@ -51,7 +48,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
       {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
       {fight.weight_class && <span>{fight.weight_class}</span>}
       {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
-      <span class="finish-label" data-testid="finish-label">Finish chance</span>
+      <span class:list={['finish-label', { 'sr-only': !finishLabel }]} data-testid="finish-label">Finish chance</span>
       {
         result ? (
           <span class="outcome" data-testid="outcome">

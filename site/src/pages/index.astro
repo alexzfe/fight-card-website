@@ -11,7 +11,7 @@ const jsonLd: object[] = [{ '@context': 'https://schema.org', '@type': 'WebSite'
 if (event) jsonLd.push(eventJsonLd(event, site.fighters, new URL(`/events/${event.slug}/`, Astro.site).href));
 ---
 
-<Base title={homeTitle(event)} description={homeDescription(event)} jsonLd={jsonLd}>
+<Base title={homeTitle(event)} description={homeDescription(event)} jsonLd={jsonLd} page="card">
   <EventRail events={site.events} current={event} />
   <main>
     {event ? <EventCard event={event} fighters={site.fighters} /> : <p class="empty">No events scheduled.</p>}
