@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Locator, test } from '@playwright/test';
 import sharp from 'sharp';
 
 test.describe('home page', () => {
@@ -345,24 +345,45 @@ test('completed event shows results next to the frozen badge', async ({ page }) 
   await expect(fights.nth(2).getByTestId('winner')).toHaveCount(0);
 });
 
+// What a corner shows, without the screen-reader-only words.
+const shown = (l: Locator) =>
+  l.evaluate((e) => {
+    const c = e.cloneNode(true) as HTMLElement;
+    c.querySelectorAll('.sr-only').forEach((s) => s.remove());
+    return c.textContent;
+  });
+
 test('a completed fight shows each corner\'s Elo at the time: going in, the change, and the P4P rank then, unlinked', async ({ page }) => {
   await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
   const fights = page.getByTestId('fight');
   const elo = (fight: number, side: 'red' | 'blue') => fights.nth(fight).locator(`.corner-${side}`).getByTestId('elo');
-  await expect(elo(0, 'red')).toHaveText('Elo 1548 (+26) · #4 P4P');
-  await expect(elo(0, 'blue')).toHaveText('Elo 1580 (\u221226)');
+  await expect(elo(0, 'red')).toBeVisible();
+  expect(await shown(elo(0, 'red'))).toBe('Elo 1548 (+26) · #4 P4P');
+  expect(await shown(elo(0, 'blue'))).toBe('Elo 1580 (\u221226) · #12 P4P');
   // Ivan India is 1640 today; the card shows the 1612 he took into the fight.
-  await expect(elo(1, 'red')).toHaveText('Elo 1612 (\u221214) · #7 P4P');
-  await expect(elo(1, 'blue')).toHaveText('Elo 1497 (+14)');
-  // A past rank, so no link to today's rankings.
-  await expect(elo(0, 'red').getByRole('link')).toHaveCount(0);
-  await expect(elo(1, 'red').getByRole('link')).toHaveCount(0);
+  expect(await shown(elo(1, 'red'))).toBe('Elo 1612 (\u221214) · #7 P4P');
+  expect(await shown(elo(1, 'blue'))).toBe('Elo 1497 (+14)');
+  // A no contest changes nothing.
+  expect(await shown(elo(3, 'red'))).toBe('Elo 1502 (±0)');
+  // Past ranks, red or blue, so no link to today's rankings.
+  for (const [fight, side] of [[0, 'red'], [0, 'blue'], [1, 'red']] as const) {
+    await expect(elo(fight, side).getByRole('link')).toHaveCount(0);
+  }
   // One short tip says what the numbers are.
   await expect(elo(0, 'red')).toHaveAttribute('data-tip', 'Elo going into this fight, and the change from it');
   await elo(0, 'red').hover();
   await expect.poll(() => elo(0, 'red').evaluate((e) => getComputedStyle(e, '::after').visibility)).toBe('visible');
   // Tags still describe today.
   await expect(fights.nth(0).locator('.corner-blue').getByTestId('elo-tag')).toHaveText(['provisional']);
+});
+
+test('screen readers hear the at-time change in words, not a minus sign they may drop', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  const elo = (fight: number, side: 'red' | 'blue') =>
+    page.getByTestId('fight').nth(fight).locator(`.corner-${side}`).getByTestId('elo');
+  await expect(elo(0, 'red')).toMatchAriaSnapshot('- text: Elo 1548 (up 26) · #4 P4P');
+  await expect(elo(0, 'blue')).toMatchAriaSnapshot('- text: Elo 1580 (down 26) · #12 P4P');
+  await expect(elo(3, 'blue')).toMatchAriaSnapshot('- text: Elo 1471 (no change)');
 });
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -407,6 +428,20 @@ test('no horizontal overflow at 360px', async ({ page }) => {
     }));
     expect(scrollWidth, url).toBeLessThanOrEqual(clientWidth);
   }
+  // The longest at-time line sits in a main event's large corner, and still fits its row without overflowing.
+  const row = page.locator('.main-event');
+  const who = row.locator('.corner-blue .who');
+  const elo = who.getByTestId('elo');
+  const lengths = await page.getByTestId('elo').evaluateAll((els) =>
+    els.filter((e) => e.querySelector('.elo-delta')).map((e) => e.textContent!.length),
+  );
+  expect((await elo.textContent())!.length).toBe(Math.max(...lengths));
+  const fits = (await row.boundingBox())!;
+  for (const box of (await elo.evaluate((e) => [...e.getClientRects()].map((r) => r.toJSON())))) {
+    expect(box.left).toBeGreaterThanOrEqual(fits.x);
+    expect(box.right).toBeLessThanOrEqual(fits.x + fits.width);
+  }
+  expect(await who.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(true);
 });
 
 test('healthz returns ok', async ({ request }) => {
@@ -485,7 +520,7 @@ test('the finish meter is labelled once per card segment, and every badge is sti
   // Home: main card (2 fights), prelims, early prelims. Golf vs. Hotel: no segment data, so one group.
   for (const [url, shown] of [
     ['/', [true, false, true, true]],
-    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false]],
+    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false, false]],
   ] as const) {
     await page.goto(url);
     const fights = page.getByTestId('fight');

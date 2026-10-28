@@ -13,26 +13,10 @@ const read = (rel: string) => JSON.parse(fs.readFileSync(path.join(V1, rel), 'ut
 const SCHEMA = read('schema.json');
 const contract = () => structuredClone(SCHEMA);
 
-// Fight.elo as the engine's models.py publishes it from contract 1.3 (fightcard-engine#11); the pinned fixture is 1.2.
-const RANK = { anyOf: [{ minimum: 1, type: 'integer' }, { type: 'null' }] };
-const contract13 = () => {
-  const c = contract();
-  c.$defs.FightElo = {
-    type: 'object',
-    title: 'FightElo',
-    properties: {
-      red_pre: { type: 'integer' },
-      red_delta: { type: 'integer' },
-      blue_pre: { type: 'integer' },
-      blue_delta: { type: 'integer' },
-      red_p4p_rank: RANK,
-      blue_p4p_rank: RANK,
-    },
-    required: ['red_pre', 'red_delta', 'blue_pre', 'blue_delta', 'red_p4p_rank', 'blue_p4p_rank'],
-  };
-  c.$defs.Fight.properties.elo = { anyOf: [{ $ref: '#/$defs/FightElo' }, { type: 'null' }], default: null };
-  return c;
-};
+// The engine's real contract 1.3 schema, with Fight.elo (fightcard-engine#11 at 580d8d8, from
+// `fightcard.publish.build.schema()`); the pinned /v1/ fixture stays 1.2.
+const SCHEMA13 = JSON.parse(fs.readFileSync(path.resolve(import.meta.dirname, '../fixtures/schema-1.3.json'), 'utf8'));
+const contract13 = () => structuredClone(SCHEMA13);
 
 describe('checkContract', () => {
   it('finds no errors against the pinned /v1/ schema', () => {
@@ -78,16 +62,42 @@ describe('checkContract', () => {
   });
 
   it('only notes a contract without Fight.elo (before 1.3), so the site can deploy ahead of the engine', () => {
+    expect(SCHEMA.title).toBe('fightcard /v1 (contract 1.2)');
     const r = checkContract(SCHEMA);
     expect(r.errors).toEqual([]);
     expect(r.notes.join('\n')).toMatch(/Fight\.elo/);
   });
 
-  it('checks Fight.elo against a 1.3 contract', () => {
-    expect(checkContract(contract13()).errors).toEqual([]);
+  it('checks Fight.elo field by field against the 1.3 contract', () => {
+    expect(SCHEMA13.title).toBe('fightcard /v1 (contract 1.3)');
+    expect(checkContract(SCHEMA13).errors).toEqual([]);
     const c = contract13();
     c.$defs.FightElo.properties.red_pre = { type: 'string' };
     expect(checkContract(c).errors.join('\n')).toMatch(/FightElo\.red_pre/);
+  });
+
+  it.each([
+    ['1.3', 'fightcard /v1 (contract 1.3)'],
+    ['a later contract', 'fightcard /v1 (contract 1.10)'],
+    ['2.0', 'fightcard /v1 (contract 2.0)'],
+  ])('flags Fight.elo missing from %s: the relaxation expires with the contract that adds it', (_, title) => {
+    const c = contract13();
+    c.title = title;
+    delete c.$defs.Fight.properties.elo;
+    const r = checkContract(c);
+    expect(r.errors).toContain("Fight.elo: the site reads a field the contract doesn't define");
+    expect(r.notes.join('\n')).not.toMatch(/Fight\.elo/);
+  });
+
+  it.each([
+    ['no title', undefined],
+    ['a title without a version', 'fightcard /v1'],
+    ['an unreadable version', 'fightcard /v1 (contract next)'],
+  ])('flags Fight.elo missing from a contract with %s (fails closed)', (_, title) => {
+    const c = contract();
+    if (title === undefined) delete c.title;
+    else c.title = title;
+    expect(checkContract(c).errors).toContain("Fight.elo: the site reads a field the contract doesn't define");
   });
 
   it.each([

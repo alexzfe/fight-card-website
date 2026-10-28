@@ -12,6 +12,7 @@ import {
   tagTip,
   formatElo,
   formatDelta,
+  spokenDelta,
   eloAtFight,
   AT_FIGHT_TIP,
   formatBestWin,
@@ -67,13 +68,21 @@ describe('formatDelta', () => {
   });
 });
 
+describe('spokenDelta', () => {
+  it('says the change in words, since screen readers may drop the minus sign', () => {
+    expect(spokenDelta(26)).toBe('up 26');
+    expect(spokenDelta(-14)).toBe('down 14');
+    expect(spokenDelta(0)).toBe('no change');
+  });
+});
+
 describe('eloAtFight', () => {
   const elo = { red_pre: 1548, red_delta: 26, blue_pre: 1580, blue_delta: -26, red_p4p_rank: 4, blue_p4p_rank: null };
   it("gives a corner's Elo going in, the bout's change and the P4P rank then", () => {
-    expect(eloAtFight({ elo }, 'red')).toEqual({ elo: 'Elo 1548', delta: '+26', rank: '#4 P4P' });
+    expect(eloAtFight({ elo }, 'red')).toEqual({ elo: 'Elo 1548', delta: '+26', spoken: 'up 26', rank: '#4 P4P' });
   });
   it('has no rank when the fighter was unranked going in', () => {
-    expect(eloAtFight({ elo }, 'blue')).toEqual({ elo: 'Elo 1580', delta: '\u221226', rank: null });
+    expect(eloAtFight({ elo }, 'blue')).toEqual({ elo: 'Elo 1580', delta: '\u221226', spoken: 'down 26', rank: null });
     const { blue_p4p_rank, ...noRank } = elo;
     expect(eloAtFight({ elo: noRank }, 'blue')!.rank).toBeNull();
   });

@@ -5,7 +5,7 @@
       "blue": "b8b8b8b8b8b8b8b8",
       "elo": {
         "blue_delta": -26,
-        "blue_p4p_rank": null,
+        "blue_p4p_rank": 12,
         "blue_pre": 1580,
         "red_delta": 26,
         "red_p4p_rank": 4,
@@ -61,6 +61,29 @@
       "tier_frozen_at": "2026-10-18T22:00:00Z",
       "title_fight": false,
       "weight_class": "Flyweight"
+    },
+    {
+      "blue": "f6f6f6f6f6f6f6f6",
+      "elo": {
+        "blue_delta": 0,
+        "blue_p4p_rank": null,
+        "blue_pre": 1471,
+        "red_delta": 0,
+        "red_p4p_rank": null,
+        "red_pre": 1502
+      },
+      "finish_tier": "medium",
+      "id": "f0000000000000d4",
+      "red": "a3a3a3a3a3a3a3a3",
+      "result": {
+        "method": "Overturned",
+        "round": 2,
+        "time": "3:10",
+        "winner": null
+      },
+      "tier_frozen_at": "2026-10-18T22:00:00Z",
+      "title_fight": false,
+      "weight_class": "Welterweight"
     }
   ],
   "id": "0000dddd0000dddd",
