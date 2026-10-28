@@ -427,9 +427,30 @@ test('the winner gets a WIN chip and the loser\'s corner steps back; a draw mark
   expect(await fights.nth(2).locator('.avatar').first().evaluate((e) => getComputedStyle(e).filter)).toBe('none');
 });
 
-test('a completed fight shows no form tiles: today\'s form would count fights after it', async ({ page }) => {
+test('a completed fight shows each corner\'s form going into it, not today\'s', async ({ page }) => {
   await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
-  await expect(page.getByTestId('fight').first().getByTestId('form')).toHaveCount(0);
+  const fight = page.getByTestId('fight').first();
+  // Gus Golf won this fight (today's form says so); going in, he had lost to Max Mike and beaten Eli Echo.
+  const red = fight.locator('.corner-red').getByTestId('form');
+  await expect(red).toHaveText('L W');
+  await expect(red).toHaveAttribute('aria-label', 'Last 2: loss, win');
+  await expect(red.locator('span').first()).toHaveAttribute('data-tip', 'Max Mike · SUB R2 · Jul 2026');
+  // A debut going in: no tiles.
+  await expect(fight.locator('.corner-blue').getByTestId('form')).toHaveCount(0);
+  // Stats lists the same fights going in.
+  await fight.locator('summary').click();
+  const last = fight.getByTestId('last-fights');
+  await expect(last).toHaveCount(1);
+  await expect(last.locator('li')).toHaveCount(2);
+  await expect(last.locator('li').first()).toContainText('Max Mike');
+});
+
+test('a completed fight without its form going in shows none, never today\'s', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  // The winner-only bout: Gus Golf (blue) has today's form, and the fight has no Fight.form.
+  const fight = page.getByTestId('fight').nth(4);
+  await expect(fight.getByTestId('form')).toHaveCount(0);
+  await expect(fight.getByTestId('last-fights')).toHaveCount(0);
 });
 
 test('a completed fight known only by its winner is still a completed fight', async ({ page }) => {

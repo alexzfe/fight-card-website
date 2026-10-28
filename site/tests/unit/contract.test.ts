@@ -17,6 +17,9 @@ const contract = () => structuredClone(SCHEMA);
 // `fightcard.publish.build.schema()`); the pinned /v1/ fixture stays 1.2.
 const SCHEMA13 = JSON.parse(fs.readFileSync(path.resolve(import.meta.dirname, '../fixtures/schema-1.3.json'), 'utf8'));
 const contract13 = () => structuredClone(SCHEMA13);
+// The engine's real contract 1.4 schema, with Fight.form (fightcard-engine#12 at 62eecd6, the same way).
+const SCHEMA14 = JSON.parse(fs.readFileSync(path.resolve(import.meta.dirname, '../fixtures/schema-1.4.json'), 'utf8'));
+const contract14 = () => structuredClone(SCHEMA14);
 
 describe('checkContract', () => {
   it('finds no errors against the pinned /v1/ schema', () => {
@@ -74,6 +77,33 @@ describe('checkContract', () => {
     const c = contract13();
     c.$defs.FightElo.properties.red_pre = { type: 'string' };
     expect(checkContract(c).errors.join('\n')).toMatch(/FightElo\.red_pre/);
+  });
+
+  it('only notes a contract without Fight.form (before 1.4), so the site can deploy ahead of the engine', () => {
+    for (const schema of [SCHEMA, SCHEMA13]) {
+      const r = checkContract(schema);
+      expect(r.errors, schema.title).toEqual([]);
+      expect(r.notes.join('\n'), schema.title).toMatch(/Fight\.form/);
+    }
+  });
+
+  it('checks Fight.form field by field against the 1.4 contract', () => {
+    expect(SCHEMA14.title).toBe('fightcard /v1 (contract 1.4)');
+    expect(checkContract(SCHEMA14).errors).toEqual([]);
+    expect(checkContract(SCHEMA14).notes.join('\n')).not.toMatch(/Fight\.(form|elo)/);
+    const c = contract14();
+    c.$defs.FightForm.properties.red = { type: 'string' };
+    expect(checkContract(c).errors.join('\n')).toMatch(/FightForm\.red/);
+  });
+
+  it.each([
+    ['1.4', 'fightcard /v1 (contract 1.4)'],
+    ['a later contract', 'fightcard /v1 (contract 1.10)'],
+  ])('flags Fight.form missing from %s: the relaxation expires with the contract that adds it', (_, title) => {
+    const c = contract14();
+    c.title = title;
+    delete c.$defs.Fight.properties.form;
+    expect(checkContract(c).errors).toContain("Fight.form: the site reads a field the contract doesn't define");
   });
 
   it.each([

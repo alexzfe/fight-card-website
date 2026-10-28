@@ -132,3 +132,19 @@ describe('the /v1/ snapshot fixture rankings', () => {
     expect(r.active.length).toBeGreaterThan(100);
   });
 });
+
+describe('Fight.form', () => {
+  const past = { result: 'loss', opponent: 'Dan Delta', event: 'UFC 318', date: '2026-06-13' };
+  const fight = { id: 'f', red: 'a', blue: 'b' };
+  it('parses each corner\'s form going in (contract 1.4); optional and nullable', () => {
+    expect(Fight.parse({ ...fight, form: { red: [past], blue: [] } }).form).toEqual({
+      red: [expect.objectContaining({ result: 'loss', opponent: 'Dan Delta' })],
+      blue: [],
+    });
+    expect(Fight.parse(fight).form).toBeUndefined();
+    expect(Fight.parse({ ...fight, form: null }).form).toBeNull();
+  });
+  it('needs both corners', () => {
+    expect(() => Fight.parse({ ...fight, form: { red: [past] } })).toThrow();
+  });
+});

@@ -22,7 +22,32 @@
       },
       "tier_frozen_at": "2026-10-18T22:00:00Z",
       "title_fight": false,
-      "weight_class": "Heavyweight"
+      "weight_class": "Heavyweight",
+      "form": {
+        "red": [
+          {
+            "date": "2026-07-11",
+            "event": "UFC 319: Kilo vs. Mike",
+            "method": "SUB",
+            "opponent": "Max Mike",
+            "opponent_id": "a3a3a3a3a3a3a3a3",
+            "result": "loss",
+            "round": 2,
+            "time": "3:01"
+          },
+          {
+            "date": "2026-03-07",
+            "event": "UFC 314: Golf vs. Echo",
+            "method": "KO/TKO",
+            "opponent": "Eli Echo",
+            "opponent_id": null,
+            "result": "win",
+            "round": 1,
+            "time": "0:45"
+          }
+        ],
+        "blue": []
+      }
     },
     {
       "blue": "b4b4b4b4b4b4b4b4",
