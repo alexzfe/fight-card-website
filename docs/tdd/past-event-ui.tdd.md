@@ -33,7 +33,7 @@
 | `941fd5f` | GREEN | `npm test` 254/254, `npm run test:e2e` 81/81, `astro check` 0 errors. Tests changed after RED, each a fault in the test, not a weaker check: `clearOfFades` passed the rail's handle unawaited; the result test looked for `Lightweight` on a Heavyweight bout; the per-segment label test now expects no label on the fight with no frozen badge (journey 1); `eventTile` calls drop the unused `status`. |
 | `e8d5f32` | RED (review) | Playwright: 3 failed / 80 passed (a winner-only result showed the finish label and form tiles; `(winner)` came after the Elo and the loser had no word; the per-segment label test's new fifth bout). |
 | `aaf6ecf` | GREEN (review) | `npm test` 254/254, `npm run test:e2e` 83/83, `astro check` 0 errors. No test changed after RED. The off-season rail (today marker after the last event, opening at the right end) has no fixture to test it: the fixtures always have upcoming events. |
-| `CI fix` | test | CI (`build.yml` on PR #23) failed the two fade tests: its Linux fonts made the first upcoming tile wider than the gap between the fades at 360px. The helper now also accepts a centred tile when it can't clear both; checked locally by widening tiles. |
+| `CI fix` | GREEN (CI) | CI failed the two fade tests while they passed locally and in Playwright's Ubuntu image. With the positions logged, CI's rail was 219px: the selected tile was centred, but the lopsided fades (1rem left, 2.5rem right) left its right edge 8px under the right one. Fix: equal 1.5rem fades with matching padding, the script's thresholds to match, and the test accepts a centred tile only when it is wider than the gap between the fades. Checked at 320 / 344 / 360 / 390px: clear from 344px, centred (too wide to clear) at 320px. |
 
 ## Test specification
 
@@ -49,7 +49,7 @@
 | 8 | Gain chip filled, loss chip outlined, rounded, in light and dark | `site.spec.ts › the at-time change is a small chip… (light)`, `(dark)` | e2e |
 | 9 | Past tiles: transparent border, smaller and differently coloured headline | `site.spec.ts › past tiles are quieter and smaller than upcoming ones` | e2e |
 | 10 | With no event selected the rail opens with the first upcoming tile clear of the fades, and at 900px the latest past tile too | `site.spec.ts › with no event selected, the rail opens on what is next…` | e2e |
-| 11 | The selected tile is clear of both fades on `/`, a past event and the last event, at 360px | `site.spec.ts › the selected tile is never left under an edge fade` | e2e |
+| 11 | The selected tile is clear of both fades (or centred, when wider than the gap between them) on `/`, a past event and the last event, at 360px | `site.spec.ts › the selected tile is never left under an edge fade` | e2e |
 | 12 | A completed fight known only by its winner: WIN chip, no form tiles, no outcome block, no badge or label | `site.spec.ts › a completed fight known only by its winner…` | e2e |
 | 13 | Screen readers hear `Gus Golf (winner)`, `Hugo Hotel (lost)`, and just the name on a draw | `site.spec.ts › screen readers hear who won or lost right after the name` | e2e |
 | 14 | The inline rail script stays under 1500 characters | `tests/build/build.test.ts › ships no JavaScript beyond…` | build |
