@@ -45,7 +45,12 @@ const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filte
   {/* Sized for the widest layout; CSS shrinks it on phones. */}
   <Avatar fighter={fighter} eager={eager} size={large ? 96 : 72} />
   <div class="who">
-    <span class="name">{fighter.name}</span>
+    {/* Screen readers hear the outcome with the name; the WIN chip and the dimming are visual only. */}
+    <span class="name">
+      {fighter.name}
+      {winner && <span class="sr-only"> (winner)</span>}
+      {lost && <span class="sr-only"> (lost)</span>}
+    </span>
     <span class="record">
       {winner && <span class="win-chip" data-testid="win-chip" aria-hidden="true">Win</span>}
       {formatRecord(fighter.record)}
@@ -92,6 +97,5 @@ const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filte
         </span>
       )
     }
-    {winner && <span class="sr-only">(winner)</span>}
   </div>
 </div>

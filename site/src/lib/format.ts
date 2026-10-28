@@ -97,7 +97,6 @@ export function ageAt(dob: string | null | undefined, date: string): number | nu
   return y - by - (hadBirthday ? 0 : 1);
 }
 
-/** e.g. "KO/TKO R1 4:12"; null when there is nothing to show. */
 /** A result as its method over when it ended, e.g. "KO/TKO" over "R1 · 4:12"; null when nothing is known. */
 export function resultParts(result: Result | null | undefined): { method: string | null; when: string | null } | null {
   if (!result) return null;
