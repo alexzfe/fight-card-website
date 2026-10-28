@@ -54,11 +54,43 @@ shellcheck 0.11.0 on `PATH`: `test_actionlint_passes` PASSED, and a direct run r
 | 7 | With no such issue it only lists, and touches nothing | `test_release_leaves_issues_alone_when_none_is_open` | behaviour | PASS |
 | 8 | No `${{ }}` in the new `run:` scripts | `test_workflows_interpolate_no_expressions_into_run_scripts[release.yml]` (existing) | static | PASS |
 
+## Review fixes
+
+From the branch review (no blocking defects; one medium, three low). RED (702be75): `scripts/tests` 4 failed,
+249 passed. GREEN (2cef323): 253 passed. actionlint 1.7.12 with shellcheck 0.11.0 on `PATH`: clean.
+
+1. **The text claimed the deploy never started (medium).** A cancel by hand mid-deploy, or a deploy hitting
+   `timeout-minutes`, also leaves `needs.prod.result == 'cancelled'`, so "cancelled before it started" and "Prod
+   doesn't run this tag's code" could be false. The issue body, the `::error::`, the job comment and DEPLOY.md now
+   say the deploy was cancelled (usually replaced while pending; maybe by hand or timed out mid-deploy), no Release
+   was cut, and prod *may not* run the tag's code.
+2. **`release` wasn't re-runnable (low).** If the close step failed, "Re-run failed jobs" hit "release already
+   exists" and never reached it. The step is now `Cut the GitHub Release`: `gh release view … || gh release create …`.
+3. **The fake `gh` ignored `--jq` (low).** `FAKE_GH_ISSUES` now answers `issue list` with JSON (`OPEN_ISSUES`, plus
+   `OPEN_ISSUE` titled exactly `$TITLE`) and applies the step's own `--jq` with `jq`, as a fuzzy search would return
+   a similar title. Mutation check: dropping `select(.title == env.TITLE)` from release.yml fails both
+   similar-title tests. They pass at RED because the filter was already correct. refresh.yml's issue tests use the
+   same fake and still pass.
+4. **Hard line breaks mid-sentence (low).** GitHub renders each newline in an issue as a line break; the body is
+   now `printf '%s\n\n%s\n'` of two one-line paragraphs.
+
+| # | What is guaranteed | Test (`scripts/tests/test_workflows.py`) | Type | RED | GREEN |
+|---|---|---|---|---|---|
+| 9 | Body and `::error::` don't say "before it started", "doesn't run", "its pending" or "was not deployed"; they say prod "may not run this tag's code", and the body names a cancel by hand and a timeout | `test_not_deployed_says_only_what_is_true_for_every_cancel` | behaviour | FAIL | PASS |
+| 10 | Issue and comment bodies have exactly two paragraphs and no single newlines | `test_not_deployed_body_breaks_lines_only_between_paragraphs` | behaviour | FAIL | PASS |
+| 11 | With only "Tag v0.6.0 not deployed" open, tag v0.6 creates its own issue, not a comment | `test_not_deployed_opens_a_new_issue_when_only_a_similar_title_is_open` | behaviour (fake applies `--jq`) | PASS | PASS |
+| 12 | `release` closes nothing when only a similar title is open | `test_release_leaves_a_similarly_titled_issue_open` | behaviour | PASS | PASS |
+| 13 | With no Release, the step creates it with `--generate-notes` | `test_release_cuts_the_release_when_it_does_not_exist` | behaviour | FAIL | PASS |
+| 14 | With the Release already there, the step succeeds without creating it, so the close step runs | `test_release_rerun_skips_an_existing_release_and_reaches_the_close_step` | behaviour | FAIL | PASS |
+
+At GREEN, test 9's "pending prod deploy" check was narrowed to "its pending". The new text keeps the review's
+"a newer pending prod deploy", which is true; only the old "its pending prod deploy was cancelled" overclaimed.
+
 ## Known gaps
 
 - Only a real replaced tag run shows that `needs.prod.result` is `cancelled` for a cancelled reusable-workflow caller
-  job and that `not-deployed` then runs. It also runs when a tag deploy is cancelled by hand (the issue's text
-  covers both causes).
+  job and that `not-deployed` then runs. It also runs when a tag deploy is cancelled by hand or times out (the
+  issue's text covers every cause).
 - If the run counts as cancelled overall, its final status may stay "cancelled" despite the failing job; the issue
   is the signal that doesn't depend on that.
 - `concurrency.queue: max` on both `prod-deploy` jobs would remove the replacement itself. Untried: it needs
