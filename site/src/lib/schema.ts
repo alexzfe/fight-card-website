@@ -74,6 +74,13 @@ export const FightElo = z.object({
   blue_p4p_rank: z.number().int().positive().nullish(),
 });
 
+// A completed fight's form at the time (contract 1.4): each corner's last results before it, newest first, at most 3;
+// empty for a debut.
+export const FightForm = z.object({
+  red: z.array(PastFight),
+  blue: z.array(PastFight),
+});
+
 export const Fight = z.object({
   id: z.string().min(1),
   weight_class: z.string().nullish(),
@@ -85,6 +92,7 @@ export const Fight = z.object({
   tier_frozen_at: isoTimestamp.nullish(),
   result: Result.nullish(),
   elo: FightElo.nullish(), // contract 1.3; null/absent on upcoming and unrated fights
+  form: FightForm.nullish(), // contract 1.4; null/absent on upcoming fights
 });
 
 export const Event = z.object({
@@ -158,6 +166,7 @@ export type Record = z.infer<typeof Record>;
 export type Fighter = z.infer<typeof Fighter>;
 export type Result = z.infer<typeof Result>;
 export type FightElo = z.infer<typeof FightElo>;
+export type FightForm = z.infer<typeof FightForm>;
 export type Fight = z.infer<typeof Fight>;
 export type Event = z.infer<typeof Event>;
 export type Index = z.infer<typeof Index>;
