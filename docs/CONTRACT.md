@@ -58,10 +58,15 @@ JSON Schema and walks them against `$defs` `Index`, `Event`, `Fighters` and `Ran
 (a type, enum value or `null` the contract allows and the site rejects; a site `number` takes an `integer`, not the
 other way round), a field the site requires that the contract makes optional, a `$ref` that doesn't resolve, or a
 missing `Index`, `Event` or `Fighters`. A contract field the site doesn't read is only a note, and so is a missing
-`Rankings` (a 1.0/1.1 contract, e.g. after an engine rollback: `rankings.json` is optional). It runs in two places:
+`Rankings` (a 1.0/1.1 contract, e.g. after an engine rollback: `rankings.json` is optional), and so is a field the
+site reads ahead of the engine (`NEWER_FIELDS`, keyed by the version that adds it: `Fight.elo` at 1.3) while
+`schema.json`'s title, `fightcard /v1 (contract X.Y)`, names an older version. From that version on, or when the title
+has no readable version, the field missing is an error. It runs in two places:
 
 - `site/tests/unit/contract.test.ts`, against the fixture's pinned `schema.json` (which also validates every fixture
   file with ajv), so a `schema.ts` change that drifts from the contract fails CI.
+  It also checks the engine's 1.3 schema, `site/tests/fixtures/schema-1.3.json` (`fightcard.publish.build.schema()`
+  at fightcard-engine 580d8d8, PR #11), until a 1.3 snapshot replaces the pinned 1.2 one.
 - `npm run validate-data` whenever the data dir has a `schema.json`, so a snapshot whose contract breaks the site
   fails the refresh before anything is committed, even if no current data uses the new value yet.
 

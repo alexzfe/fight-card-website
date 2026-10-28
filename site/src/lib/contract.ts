@@ -3,7 +3,8 @@
 // an error is a field the site reads that the contract doesn't define, a type, an enum value or a null the contract
 // allows and the site rejects, or a field the site requires that the contract makes optional. A field the contract
 // has and the site doesn't read is additive and only a note, as is a missing Rankings (rankings.json is optional)
-// or an optional field the site reads ahead of the contract that adds it (NEWER_FIELDS).
+// or an optional field the site reads ahead of the contract version that adds it (NEWER_FIELDS) while schema.json's
+// title names an older version.
 import { z } from 'astro/zod';
 import { Event, Fighters, Index, Rankings } from './schema';
 
@@ -18,8 +19,24 @@ const FILES: [string, z.ZodType][] = [
   ['Rankings', Rankings],
 ];
 const OPTIONAL = new Set(['Rankings']);
-// Optional fields the site reads that a contract older than the one adding them lacks, so the site can deploy first.
-const NEWER_FIELDS = new Set(['Fight.elo']); // contract 1.3
+// Optional fields the site reads, by the contract version that adds them: a contract older than that only lacks them,
+// so the site can deploy first. From that version on, or when the version can't be read, a missing one is an error.
+const NEWER_FIELDS: { [field: string]: string } = { 'Fight.elo': '1.3' };
+
+// The contract version from schema.json's title, "fightcard /v1 (contract 1.2)": the same file and build as the
+// $defs it describes (index.json's contract_version is a separate file the check isn't given). null when unreadable.
+function contractVersion(schema: Json): number[] | null {
+  const v = typeof schema.title === 'string' ? schema.title.match(/\(contract (\d+(?:\.\d+)*)\)/)?.[1] : undefined;
+  return v ? v.split('.').map(Number) : null;
+}
+
+// a < b, part by part ("1.2" < "1.10").
+function older(a: number[], b: number[]): boolean {
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    if ((a[i] ?? 0) !== (b[i] ?? 0)) return (a[i] ?? 0) < (b[i] ?? 0);
+  }
+  return false;
+}
 
 function lookup(root: Json, ref: string): Json | undefined {
   const name = ref.match(/^#\/\$defs\/(.+)$/)?.[1];
@@ -53,10 +70,19 @@ const typesOf = (s: Json): string[] | undefined =>
 class Walker {
   errors = new Set<string>();
   notes = new Set<string>();
+  private version: number[] | null;
   constructor(
     private site: Json,
     private contract: Json,
-  ) {}
+  ) {
+    this.version = contractVersion(contract);
+  }
+
+  // A field the site reads ahead of the contract that adds it, and this contract is older than that one.
+  private ahead(field: string): boolean {
+    const since = NEWER_FIELDS[field];
+    return since !== undefined && this.version !== null && older(this.version, since.split('.').map(Number));
+  }
 
   // The non-null alternatives of a schema, $refs and one-schema allOfs resolved, const read as a one-value enum,
   // each with the $defs name it came from (if any).
@@ -150,7 +176,7 @@ class Walker {
       const named = c.properties?.[key];
       const field = named ?? (rest && (!restNames || restNames.includes(key)) ? rest : undefined);
       if (!field) {
-        if (NEWER_FIELDS.has(`${at}.${key}`) && !(s.required ?? []).includes(key)) {
+        if (this.ahead(`${at}.${key}`) && !(s.required ?? []).includes(key)) {
           this.notes.add(`${at}.${key}: read by the site, not in this contract yet (older than the one adding it)`);
           continue;
         }
