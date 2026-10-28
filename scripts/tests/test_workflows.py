@@ -496,6 +496,83 @@ def test_every_prod_deploy_holds_the_same_lock():
                 assert name == "prod.yml" or job_concurrency(body) == (PROD_LOCK, "false"), f"{name}: {job}"
 
 
+# --- a tag deploy replaced while pending says so ---------------------------------------------------------------
+# GitHub keeps one pending run per concurrency group: a newer prod deploy (tag or refresh) cancels a pending one.
+# The tag's run then just shows "cancelled" and cuts no Release, so a job opens an issue naming the tag and fails.
+
+NOT_DEPLOYED = 'Open or update the "Tag not deployed" issue'
+CLOSE_NOT_DEPLOYED = 'Close the "Tag not deployed" issue'
+TAG = "v0.6.0"
+RUN_URL = "https://github.com/alexzfe/fight-card-website/actions/runs/42"
+
+
+def run_tag_step(tmp_path, job: str, name: str, open_issue: str = "") -> tuple[subprocess.CompletedProcess, list[str]]:
+    log = tmp_path / "gh.log"
+    log.touch()
+    env = {k: v for k, v in env_block(step(job, name, "release.yml")).items() if "${{" not in v}
+    result = run_step(tmp_path, step_script(job, name, "release.yml"), {"gh": FAKE_GH_ISSUES},
+                      env | {"GH_LOG": str(log), "OPEN_ISSUE": open_issue, "GH_TOKEN": "x",
+                             "TITLE": f"Tag {TAG} not deployed", "GITHUB_REF_NAME": TAG,
+                             "GITHUB_SERVER_URL": "https://github.com", "GITHUB_RUN_ID": "42"})
+    return result, log.read_text().splitlines()
+
+
+def test_release_is_cut_only_for_a_tag_that_deployed():
+    release = jobs("release.yml")["release"]
+    assert "needs: prod" in release
+    assert job_if(release) == ""  # the default success(): a cancelled or failed prod cuts no Release
+
+
+def test_a_cancelled_tag_deploy_runs_the_not_deployed_job():
+    job = jobs("release.yml")["not-deployed"]
+    assert "needs: prod" in job
+    cond = job_if(job)
+    # always(): the replacement may leave the run cancelled, and a cancelled run skips plain jobs.
+    assert "always()" in cond and "needs.prod.result == 'cancelled'" in cond
+    assert job_permissions(job) == ["issues:", "write"]
+    text = step("not-deployed", NOT_DEPLOYED, "release.yml")
+    assert "TITLE: Tag ${{ github.ref_name }} not deployed\n" in text
+    assert "GH_TOKEN: ${{ github.token }}" in text
+
+
+def test_not_deployed_opens_an_issue_naming_the_tag_and_the_rerun_and_fails(tmp_path):
+    result, calls = run_tag_step(tmp_path, "not-deployed", NOT_DEPLOYED)
+    assert result.returncode != 0  # the run shows a failure, not only "cancelled"
+    assert "::error::" in result.stdout and TAG in result.stdout and "Re-run all jobs" in result.stdout
+    created = [c for c in calls if c.startswith("issue create")]
+    assert len(created) == 1
+    assert f"Tag {TAG} not deployed" in created[0]
+    assert RUN_URL in created[0] and "Re-run all jobs" in created[0]
+    assert "newer tag" in created[0]  # re-running an older tag after a newer one deployed would roll code back
+
+
+def test_not_deployed_comments_on_the_open_issue_instead_of_opening_another(tmp_path):
+    result, calls = run_tag_step(tmp_path, "not-deployed", NOT_DEPLOYED, open_issue="9")
+    assert result.returncode != 0
+    assert any(c.startswith("issue comment 9") and RUN_URL in c for c in calls)
+    assert not any(c.startswith("issue create") for c in calls)
+
+
+def test_release_closes_the_tags_not_deployed_issue_after_cutting_the_release():
+    release = jobs("release.yml")["release"]
+    assert job_permissions(release) == ["contents:", "write", "issues:", "write"]
+    assert release.index("gh release create") < release.index(CLOSE_NOT_DEPLOYED)
+    assert "TITLE: Tag ${{ github.ref_name }} not deployed\n" in step("release", CLOSE_NOT_DEPLOYED, "release.yml")
+
+
+def test_release_closes_an_open_not_deployed_issue(tmp_path):
+    result, calls = run_tag_step(tmp_path, "release", CLOSE_NOT_DEPLOYED, open_issue="9")
+    assert result.returncode == 0, result.stderr
+    closed = [c for c in calls if c.startswith("issue close 9")]
+    assert len(closed) == 1 and RUN_URL in closed[0]
+
+
+def test_release_leaves_issues_alone_when_none_is_open(tmp_path):
+    result, calls = run_tag_step(tmp_path, "release", CLOSE_NOT_DEPLOYED)
+    assert result.returncode == 0, result.stderr
+    assert [c for c in calls if not c.startswith("issue list")] == []
+
+
 def test_build_takes_an_optional_data_ref_and_outputs_the_image_tag():
     text = read("build.yml")
     data_ref = text[text.index("      data_ref:\n"):]
