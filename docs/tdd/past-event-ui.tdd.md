@@ -31,6 +31,8 @@
 |---|---|---|
 | `145cfc8` | RED | vitest: 8 failed / 246 passed (`resultParts` missing ×4; `eloAtFight` has no `change` and keeps `±0` ×3; `eventTile` still says `Results`). Playwright: 10 failed / 71 passed (`Results` on the past tile; past tiles look like upcoming ones; the rail opens on the oldest event; the selected tile sits under a fade; `High → KO/TKO R1 4:12`; no WIN chip or dimmed loser; form tiles on a completed fight; `(+26)` / `(±0)` and the tip; the delta is muted text, not a chip ×2). |
 | `941fd5f` | GREEN | `npm test` 254/254, `npm run test:e2e` 81/81, `astro check` 0 errors. Tests changed after RED, each a fault in the test, not a weaker check: `clearOfFades` passed the rail's handle unawaited; the result test looked for `Lightweight` on a Heavyweight bout; the per-segment label test now expects no label on the fight with no frozen badge (journey 1); `eventTile` calls drop the unused `status`. |
+| `e8d5f32` | RED (review) | Playwright: 3 failed / 80 passed (a winner-only result showed the finish label and form tiles; `(winner)` came after the Elo and the loser had no word; the per-segment label test's new fifth bout). |
+| `aaf6ecf` | GREEN (review) | `npm test` 254/254, `npm run test:e2e` 83/83, `astro check` 0 errors. No test changed after RED. The off-season rail (today marker after the last event, opening at the right end) has no fixture to test it: the fixtures always have upcoming events. |
 
 ## Test specification
 
@@ -47,10 +49,13 @@
 | 9 | Past tiles: transparent border, smaller and differently coloured headline | `site.spec.ts › past tiles are quieter and smaller than upcoming ones` | e2e |
 | 10 | With no event selected the rail opens with the first upcoming tile clear of the fades, and at 900px the latest past tile too | `site.spec.ts › with no event selected, the rail opens on what is next…` | e2e |
 | 11 | The selected tile is clear of both fades on `/`, a past event and the last event, at 360px | `site.spec.ts › the selected tile is never left under an edge fade` | e2e |
-| 12 | The inline rail script stays under 1500 characters | `tests/build/build.test.ts › ships no JavaScript beyond…` | build |
+| 12 | A completed fight known only by its winner: WIN chip, no form tiles, no outcome block, no badge or label | `site.spec.ts › a completed fight known only by its winner…` | e2e |
+| 13 | Screen readers hear `Gus Golf (winner)`, `Hugo Hotel (lost)`, and just the name on a draw | `site.spec.ts › screen readers hear who won or lost right after the name` | e2e |
+| 14 | The inline rail script stays under 1500 characters | `tests/build/build.test.ts › ships no JavaScript beyond…` | build |
 
 ## Fixture changes
 
 - `events/0000dddd0000dddd.json`: the no contest has no frozen tier (`finish_tier` and `tier_frozen_at` null), as
   every past fight on prod has today.
 - `fighters.json`: Gus Golf has one recent fight, so the completed card has form to hide.
+- `events/0000dddd0000dddd.json` (review): a fifth bout, Hugo Hotel over Gus Golf with no method, round or time.
