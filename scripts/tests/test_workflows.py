@@ -361,11 +361,23 @@ def test_refresh_v1_stale_fails_only_daily_and_manual_runs(tmp_path, status, eve
     assert "scripts/fetch_v1.py" in (tmp_path / "py.log").read_text()
 
 
+# `issue list` answers like a fuzzy title search: every issue in OPEN_ISSUES (JSON), plus OPEN_ISSUE (a number)
+# titled exactly $TITLE, filtered through the step's own --jq. Each --body is also kept whole in $GH_LOG.body.
 FAKE_GH_ISSUES = """#!/usr/bin/env bash
 args="$*"
 echo "${args//$'\\n'/ }" >> "$GH_LOG"
+prev=
+for arg; do
+  [ "$prev" = --body ] && printf '%s\\0' "$arg" >> "$GH_LOG.body"
+  prev=$arg
+done
 case "$1 $2" in
-  "issue list") [ -n "$OPEN_ISSUE" ] && echo "$OPEN_ISSUE" ;;
+  "issue list")
+    issues=${OPEN_ISSUES:-[]}
+    [ -n "$OPEN_ISSUE" ] && issues=$(jq -c --arg t "$TITLE" --argjson n "$OPEN_ISSUE" '. + [{number: $n, title: $t}]' <<<"$issues")
+    filter=.
+    while [ $# -gt 0 ]; do [ "$1" = --jq ] && filter=$2; shift; done
+    jq -r "$filter" <<<"$issues" ;;
 esac
 exit 0
 """
@@ -506,15 +518,25 @@ TAG = "v0.6.0"
 RUN_URL = "https://github.com/alexzfe/fight-card-website/actions/runs/42"
 
 
-def run_tag_step(tmp_path, job: str, name: str, open_issue: str = "") -> tuple[subprocess.CompletedProcess, list[str]]:
+def run_tag_step(tmp_path, job: str, name: str, open_issue: str = "", open_issues: str = "[]",
+                 tag: str = TAG) -> tuple[subprocess.CompletedProcess, list[str]]:
     log = tmp_path / "gh.log"
     log.touch()
     env = {k: v for k, v in env_block(step(job, name, "release.yml")).items() if "${{" not in v}
     result = run_step(tmp_path, step_script(job, name, "release.yml"), {"gh": FAKE_GH_ISSUES},
-                      env | {"GH_LOG": str(log), "OPEN_ISSUE": open_issue, "GH_TOKEN": "x",
-                             "TITLE": f"Tag {TAG} not deployed", "GITHUB_REF_NAME": TAG,
+                      env | {"GH_LOG": str(log), "OPEN_ISSUE": open_issue, "OPEN_ISSUES": open_issues,
+                             "GH_TOKEN": "x", "TITLE": f"Tag {tag} not deployed", "GITHUB_REF_NAME": tag,
                              "GITHUB_SERVER_URL": "https://github.com", "GITHUB_RUN_ID": "42"})
     return result, log.read_text().splitlines()
+
+
+def issue_bodies(tmp_path) -> list[str]:
+    path = tmp_path / "gh.log.body"
+    return path.read_text().split("\0")[:-1] if path.exists() else []
+
+
+# The search is fuzzy: "Tag v0.6 not deployed" also finds v0.6.0's issue. Only the exact title counts.
+SIMILAR_ISSUE = '[{"number": 5, "title": "Tag v0.6.0 not deployed"}]'
 
 
 def test_release_is_cut_only_for_a_tag_that_deployed():
@@ -551,6 +573,82 @@ def test_not_deployed_comments_on_the_open_issue_instead_of_opening_another(tmp_
     assert result.returncode != 0
     assert any(c.startswith("issue comment 9") and RUN_URL in c for c in calls)
     assert not any(c.startswith("issue create") for c in calls)
+
+
+def test_not_deployed_says_only_what_is_true_for_every_cancel(tmp_path):
+    # Cancelled while pending, by hand mid-deploy, or at timeout-minutes: all read `cancelled`, so prod's state is
+    # unknown and the text must not claim the deploy never started.
+    result, _ = run_tag_step(tmp_path, "not-deployed", NOT_DEPLOYED)
+    (body,) = issue_bodies(tmp_path)
+    error = next(line for line in result.stdout.splitlines() if line.startswith("::error::"))
+    for text in (body, error):
+        assert "before it started" not in text and "doesn't run" not in text and "pending prod deploy" not in text
+        assert "was not deployed" not in text
+    assert "may not run this tag's code" in body
+    assert "by hand" in body and "timed out" in body
+    assert "may not run this tag's code" in error
+
+
+def test_not_deployed_body_breaks_lines_only_between_paragraphs(tmp_path):
+    # GitHub renders every single newline in an issue or comment as a line break.
+    run_tag_step(tmp_path, "not-deployed", NOT_DEPLOYED)
+    run_tag_step(tmp_path, "not-deployed", NOT_DEPLOYED, open_issue="9")
+    bodies = issue_bodies(tmp_path)
+    assert len(bodies) == 2
+    for body in bodies:
+        assert re.search(r"[^\n]\n[^\n]", body.strip()) is None, body
+        assert len(body.strip().split("\n\n")) == 2
+
+
+def test_not_deployed_opens_a_new_issue_when_only_a_similar_title_is_open(tmp_path):
+    result, calls = run_tag_step(tmp_path, "not-deployed", NOT_DEPLOYED, open_issues=SIMILAR_ISSUE, tag="v0.6")
+    assert result.returncode != 0
+    assert not any(c.startswith("issue comment") for c in calls)
+    created = [c for c in calls if c.startswith("issue create")]
+    assert len(created) == 1 and "Tag v0.6 not deployed" in created[0]
+
+
+def test_release_leaves_a_similarly_titled_issue_open(tmp_path):
+    result, calls = run_tag_step(tmp_path, "release", CLOSE_NOT_DEPLOYED, open_issues=SIMILAR_ISSUE, tag="v0.6")
+    assert result.returncode == 0, result.stderr
+    assert [c for c in calls if not c.startswith("issue list")] == []
+
+
+CUT_RELEASE = "Cut the GitHub Release"
+
+FAKE_GH_RELEASE = """#!/usr/bin/env bash
+echo "$*" >> "$GH_LOG"
+case "$1 $2" in
+  "release view") [ "$RELEASE_EXISTS" = true ] || { echo "release not found" >&2; exit 1; } ;;
+esac
+exit 0
+"""
+
+
+def run_cut_release(tmp_path, exists: bool) -> tuple[subprocess.CompletedProcess, list[str]]:
+    log = tmp_path / "gh.log"
+    log.touch()
+    env = {k: v for k, v in env_block(step("release", CUT_RELEASE, "release.yml")).items() if "${{" not in v}
+    result = run_step(tmp_path, step_script("release", CUT_RELEASE, "release.yml"), {"gh": FAKE_GH_RELEASE},
+                      env | {"GH_LOG": str(log), "RELEASE_EXISTS": str(exists).lower(), "GH_TOKEN": "x",
+                             "GITHUB_REF_NAME": TAG})
+    return result, log.read_text().splitlines()
+
+
+def test_release_cuts_the_release_when_it_does_not_exist(tmp_path):
+    result, calls = run_cut_release(tmp_path, exists=False)
+    assert result.returncode == 0, result.stderr
+    created = [c for c in calls if c.startswith("release create")]
+    assert len(created) == 1 and TAG in created[0] and "--generate-notes" in created[0]
+
+
+def test_release_rerun_skips_an_existing_release_and_reaches_the_close_step(tmp_path):
+    # "Re-run failed jobs" after the close step failed: the Release is already there, so creating it again must
+    # not fail the job before the issue is closed.
+    result, calls = run_cut_release(tmp_path, exists=True)
+    assert result.returncode == 0, result.stderr
+    assert not any(c.startswith("release create") for c in calls)
+    assert "GH_TOKEN: ${{ github.token }}" in step("release", CUT_RELEASE, "release.yml")
 
 
 def test_release_closes_the_tags_not_deployed_issue_after_cutting_the_release():
