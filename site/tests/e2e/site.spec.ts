@@ -44,7 +44,7 @@ test('event tiles run in date order, name the headliners, and navigate', async (
   await page.goto('/');
   const tiles = page.getByTestId('event-tile');
   await expect(tiles).toHaveCount(4);
-  await expect(tiles.nth(0)).toContainText('Oct 18 · Results');
+  await expect(tiles.nth(0)).toHaveText(/^\s*Oct 18\s*Golf vs. Hotel\s*$/);
   await expect(tiles.nth(0)).toContainText('Golf vs. Hotel');
   await expect(tiles.nth(1)).toContainText('Oct 31 · UFC 323');
   await expect(tiles.nth(1)).toContainText('Alpha vs. Bravo');
@@ -95,6 +95,53 @@ test('the rail keeps its scroll position when switching events', async ({ page }
   await target.click();
   await expect(page).toHaveURL(/india-vs-juliet/);
   expect(await page.locator('nav .rail').evaluate((el) => el.scrollLeft)).toBe(before);
+});
+
+test('past tiles are quieter and smaller than upcoming ones', async ({ page }) => {
+  await page.goto('/rankings/');
+  const tiles = page.getByTestId('event-tile');
+  const style = (i: number) =>
+    tiles.nth(i).evaluate((el) => {
+      const s = getComputedStyle(el);
+      const h = getComputedStyle(el.querySelector('.tile-headline')!);
+      return { border: s.borderTopColor, bg: s.backgroundColor, size: parseFloat(h.fontSize), color: h.color };
+    });
+  const past = await style(0);
+  const next = await style(1);
+  expect(past.border).toBe('rgba(0, 0, 0, 0)');
+  expect(next.border).not.toBe('rgba(0, 0, 0, 0)');
+  expect(past.size).toBeLessThan(next.size);
+  expect(past.color).not.toBe(next.color);
+});
+
+// Where the rail's edge fades end: a tile under a fade only half shows.
+const clearOfFades = (rail: Locator, tile: Locator) =>
+  tile.evaluate((t, r) => {
+    const a = r!.getBoundingClientRect();
+    const b = t.getBoundingClientRect();
+    return b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
+  }, rail.elementHandle());
+
+test('with no event selected, the rail opens on what is next, the latest past event beside it', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/rankings/');
+  const rail = page.locator('nav .rail');
+  const tiles = page.getByTestId('event-tile');
+  await expect.poll(() => clearOfFades(rail, tiles.nth(1))).toBe(true);
+  // Wide enough for more: the past tile shows too, so the way back is in view.
+  await page.setViewportSize({ width: 900, height: 740 });
+  await page.goto('/rankings/');
+  await expect.poll(() => clearOfFades(rail, tiles.nth(0))).toBe(true);
+  await expect.poll(() => clearOfFades(rail, tiles.nth(1))).toBe(true);
+});
+
+test('the selected tile is never left under an edge fade', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/', '/events/ufc-fight-night-kilo-vs-lima/']) {
+    await page.goto(url);
+    const rail = page.locator('nav .rail');
+    await expect.poll(() => clearOfFades(rail, page.locator('nav .rail [aria-current="page"]')), url).toBe(true);
+  }
 });
 
 test('a swipe on the rail comes to rest with a whole tile centred', async ({ page }) => {
@@ -335,14 +382,45 @@ test('fighters without history show no form and no last-fights list', async ({ p
   await expect(second.getByTestId('last-fights')).toHaveCount(0);
 });
 
-test('completed event shows results next to the frozen badge', async ({ page }) => {
+test('a completed fight leads with the result: the method, then the round and time', async ({ page }) => {
   await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
   const fights = page.getByTestId('fight');
-  await expect(fights.first().getByTestId('outcome')).toHaveText('High → KO/TKO R1 4:12');
+  await expect(fights.first().getByTestId('outcome')).toHaveText('KO/TKO R1 · 4:12');
+  await expect(fights.nth(2).getByTestId('outcome')).toHaveText('Draw R3 · 5:00');
+  const size = (l: Locator) => l.evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
+  const mid = fights.first().locator('.mid');
+  expect(await size(mid.locator('.method'))).toBeGreaterThan(await size(mid.locator('.when')));
+  expect(await size(mid.locator('.method'))).toBeGreaterThan(await size(mid.getByText('Lightweight')));
+  await expect(page.getByRole('main')).not.toContainText('→');
+  // The frozen pre-fight badge stays under the result when there was one; without one, no dash and no label.
+  await expect(fights.first().getByTestId('badge')).toHaveText('High');
+  await expect(fights.nth(3).getByTestId('badge')).toHaveCount(0);
+  await expect(fights.nth(3).getByTestId('finish-label')).toHaveCount(0);
+});
+
+test('the winner gets a WIN chip and the loser\'s corner steps back; a draw marks neither', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  const fights = page.getByTestId('fight');
   await expect(fights.first().getByTestId('winner')).toContainText('Gus Golf');
   await expect(fights.nth(1).getByTestId('winner')).toContainText('Nia November');
-  await expect(fights.nth(2).getByTestId('outcome')).toHaveText('Medium → Draw R3 5:00');
+  await expect(fights.first().getByTestId('winner').getByTestId('win-chip')).toHaveText('Win');
+  await expect(fights.first().getByTestId('win-chip')).toHaveCount(1);
+  // No letter glued to the name any more.
+  const after = (l: Locator) => l.evaluate((e) => getComputedStyle(e, '::after').content);
+  expect(await after(fights.first().locator('.corner-red .name'))).toBe('none');
+  // The loser's photo greys out and their name goes quiet.
+  const loser = fights.first().locator('.corner-blue');
+  expect(await loser.locator('.avatar').evaluate((e) => getComputedStyle(e).filter)).toContain('grayscale');
+  const muted = await page.locator('.event-meta').evaluate((el) => getComputedStyle(el).color);
+  expect(await loser.locator('.name').evaluate((e) => getComputedStyle(e).color)).toBe(muted);
   await expect(fights.nth(2).getByTestId('winner')).toHaveCount(0);
+  await expect(fights.nth(2).getByTestId('win-chip')).toHaveCount(0);
+  expect(await fights.nth(2).locator('.avatar').first().evaluate((e) => getComputedStyle(e).filter)).toBe('none');
+});
+
+test('a completed fight shows no form tiles: today\'s form would count fights after it', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  await expect(page.getByTestId('fight').first().getByTestId('form')).toHaveCount(0);
 });
 
 // What a corner shows, without the screen-reader-only words.
@@ -358,21 +436,19 @@ test('a completed fight shows each corner\'s Elo at the time: going in, the chan
   const fights = page.getByTestId('fight');
   const elo = (fight: number, side: 'red' | 'blue') => fights.nth(fight).locator(`.corner-${side}`).getByTestId('elo');
   await expect(elo(0, 'red')).toBeVisible();
-  expect(await shown(elo(0, 'red'))).toBe('Elo 1548 (+26) · #4 P4P');
-  expect(await shown(elo(0, 'blue'))).toBe('Elo 1580 (\u221226) · #12 P4P');
+  expect(await shown(elo(0, 'red'))).toBe('Elo 1548 +26 · #4 P4P');
+  expect(await shown(elo(0, 'blue'))).toBe('Elo 1580 \u221226 · #12 P4P');
   // Ivan India is 1640 today; the card shows the 1612 he took into the fight.
-  expect(await shown(elo(1, 'red'))).toBe('Elo 1612 (\u221214) · #7 P4P');
-  expect(await shown(elo(1, 'blue'))).toBe('Elo 1497 (+14)');
-  // A no contest changes nothing.
-  expect(await shown(elo(3, 'red'))).toBe('Elo 1502 (±0)');
+  expect(await shown(elo(1, 'red'))).toBe('Elo 1612 \u221214 · #7 P4P');
+  expect(await shown(elo(1, 'blue'))).toBe('Elo 1497 +14');
+  // A no contest changes nothing, so nothing shows.
+  expect(await shown(elo(3, 'red'))).toBe('Elo 1502');
   // Past ranks, red or blue, so no link to today's rankings.
   for (const [fight, side] of [[0, 'red'], [0, 'blue'], [1, 'red']] as const) {
     await expect(elo(fight, side).getByRole('link')).toHaveCount(0);
   }
-  // One short tip says what the numbers are.
-  await expect(elo(0, 'red')).toHaveAttribute('data-tip', 'Elo going into this fight, and the change from it');
-  await elo(0, 'red').hover();
-  await expect.poll(() => elo(0, 'red').evaluate((e) => getComputedStyle(e, '::after').visibility)).toBe('visible');
+  // No tip: the line already says it all.
+  await expect(elo(0, 'red')).not.toHaveAttribute('data-tip');
   // Tags still describe today.
   await expect(fights.nth(0).locator('.corner-blue').getByTestId('elo-tag')).toHaveText(['provisional']);
 });
@@ -387,17 +463,25 @@ test('screen readers hear the at-time change in words, not a minus sign they may
 });
 
 for (const scheme of ['light', 'dark'] as const) {
-  test(`the at-time change is quiet muted text (${scheme})`, async ({ page }) => {
+  test(`the at-time change is a small chip: a gain filled, a loss outlined (${scheme})`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
-    const delta = page.getByTestId('fight').first().locator('.corner-red').getByTestId('elo-delta');
-    await expect(delta).toHaveText('(+26)');
-    const muted = await page.locator('.event-meta').evaluate((el) => getComputedStyle(el).color);
-    expect(await delta.evaluate((el) => getComputedStyle(el).color)).toBe(muted);
-    const elo = page.getByTestId('fight').first().locator('.corner-red').getByTestId('elo');
-    expect(await delta.evaluate((el) => getComputedStyle(el).fontWeight)).not.toBe(
-      await elo.evaluate((el) => getComputedStyle(el).fontWeight),
-    );
+    const fight = page.getByTestId('fight').first();
+    const gain = fight.locator('.corner-red').getByTestId('elo-delta');
+    const loss = fight.locator('.corner-blue').getByTestId('elo-delta');
+    await expect(gain).toHaveText('+26');
+    await expect(loss).toHaveText('\u221226');
+    const look = (l: Locator) =>
+      l.evaluate((e) => {
+        const s = getComputedStyle(e);
+        return { bg: s.backgroundColor, border: s.borderTopStyle, radius: parseFloat(s.borderTopLeftRadius) };
+      });
+    const g = await look(gain);
+    const l = await look(loss);
+    expect(g.bg).not.toBe('rgba(0, 0, 0, 0)');
+    expect(l.bg).toBe('rgba(0, 0, 0, 0)');
+    expect(l.border).toBe('solid');
+    expect(g.radius).toBeGreaterThan(0);
   });
 }
 
