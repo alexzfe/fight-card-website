@@ -132,11 +132,12 @@ ul {
   overflow-x: auto;
   /* A swipe always lands with a whole tile centred, never half-hidden at an edge. */
   scroll-snap-type: x mandatory;
-  /* The right padding matches the right fade, so the last tile can scroll clear of it. */
-  padding: var(--space-2) 2.5rem var(--space-2) var(--space-4);
+  /* The padding matches the fades, so the first and last tiles can scroll clear of them. */
+  padding: var(--space-2) 1.5rem;
   scrollbar-width: none;
-  /* Fade both edges so a cut-off tile reads as "scroll for more". */
-  mask-image: linear-gradient(to right, transparent, #000 var(--space-4), #000 calc(100% - 2.5rem), transparent);
+  /* Fade both edges so a cut-off tile reads as "scroll for more". Equal fades, so a centred tile that fits between
+     them is clear of both. */
+  mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
 }
 
 .tile {

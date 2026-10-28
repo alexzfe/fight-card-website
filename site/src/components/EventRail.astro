@@ -24,7 +24,7 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
 // - With no saved position it opens on what's next: it centres the furthest upcoming tile that still leaves the latest
 //   past tile clear of the left fade (on a phone, just the first upcoming one); off-season, on the latest events at the
 //   right end. The list keeps growing leftwards.
-// - The selected tile is centred whenever it sits under an edge fade (1rem left, 2.5rem right, as .rail's mask).
+// - The selected tile is centred whenever it sits under an edge fade (1.5rem each side, as .rail's mask).
 // - Tabbing to a tile centres it: the scroll that focus does by itself gets pulled back by the mandatory snap,
 //   leaving the focused tile under the edge fade. Keyboard focus only, so a tap doesn't scroll mid-navigation.
 ---
@@ -80,13 +80,13 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
       const now = rail.querySelector('.rail-today');
       if (at != null) rail.scrollLeft = at;
       else if (now) {
-        const past = box(now.previousElementSibling).left - 16 - box(rail).left;
+        const past = box(now.previousElementSibling).left - 24 - box(rail).left;
         for (let li = now.nextElementSibling; li && (to == null || shift(li) <= past); li = li.nextElementSibling)
           to = shift(li);
         rail.scrollLeft += to ?? 1e6;
       }
       const t = rail.querySelector('[aria-current="page"]'), b = t && box(t);
-      if (b && (b.left < box(rail).left + 16 || b.right > box(rail).right - 40)) rail.scrollLeft += shift(t);
+      if (b && (b.left < box(rail).left + 24 || b.right > box(rail).right - 24)) rail.scrollLeft += shift(t);
     };
     rail.addEventListener('focusin', ({ target: t }) => {
       const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';

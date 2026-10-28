@@ -114,17 +114,17 @@ test('past tiles are quieter and smaller than upcoming ones', async ({ page }) =
   expect(past.color).not.toBe(next.color);
 });
 
-// Where the rail's edge fades end: a tile under a fade only half shows. A tile wider than the space between the fades
-// (wider fonts on a narrow phone, as on CI's Linux) can't clear both, so centred is the best it can do.
+// Where the rail's edge fades end (1.5rem each side): a tile under a fade only half shows. A tile wider than the space
+// between the fades (a long headline on a narrow phone) can't clear both, so centred is the best it can do.
 const clearOfFades = async (rail: Locator, tile: Locator) =>
   tile.evaluate(
     (t, r) => {
       const a = r.getBoundingClientRect();
       const b = t.getBoundingClientRect();
-      const clear = b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
+      const clear = b.left >= a.left + 24 - 1 && b.right <= a.right - 24 + 1;
       const centred = Math.abs(b.left + b.width / 2 - (a.left + a.width / 2)) <= 1;
       // On failure, say where things are rather than just false.
-      return clear || (b.width > a.width - 16 - 40 && centred)
+      return clear || (b.width > a.width - 48 && centred)
         ? true
         : `tile ${b.left.toFixed(1)}..${b.right.toFixed(1)} in rail ${a.left.toFixed(1)}..${a.right.toFixed(1)}, scrollLeft ${(r as HTMLElement).scrollLeft} of ${(r as HTMLElement).scrollWidth - (r as HTMLElement).clientWidth}`;
     },
