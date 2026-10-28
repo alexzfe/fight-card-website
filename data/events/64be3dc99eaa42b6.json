@@ -3,6 +3,7 @@
   "fights": [
     {
       "blue": "5d1b7e3dd9e11074",
+      "elo": null,
       "finish_tier": "low",
       "id": "15fb6ee606a2d8ec",
       "red": "17e97649403ba428",
@@ -14,6 +15,7 @@
     },
     {
       "blue": "c32aeb1a59e6272d",
+      "elo": null,
       "finish_tier": "high",
       "id": "f5d8a5f5d51d9723",
       "red": "7ee0fd831c0fe7c3",

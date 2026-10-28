@@ -3,6 +3,7 @@
   "fights": [
     {
       "blue": "45f7cb591c3ab00b",
+      "elo": null,
       "finish_tier": "medium",
       "id": "8f7e5ebb20694f22",
       "red": "01641ba5df0c69b0",
@@ -14,6 +15,7 @@
     },
     {
       "blue": "7dda2cf308f24a02",
+      "elo": null,
       "finish_tier": "low",
       "id": "588347615984ec29",
       "red": "b08012bbe542592a",
@@ -25,6 +27,7 @@
     },
     {
       "blue": "7478b7f959ba61f5",
+      "elo": null,
       "finish_tier": "high",
       "id": "1f9c3310eeb1fb93",
       "red": "113df4fde64735c6",
@@ -36,6 +39,7 @@
     },
     {
       "blue": "4dcfb28c011c11b2",
+      "elo": null,
       "finish_tier": "medium",
       "id": "cd446b8759b30093",
       "red": "4a07b1988477502c",
@@ -47,6 +51,7 @@
     },
     {
       "blue": "3df223aeaacecf3f",
+      "elo": null,
       "finish_tier": "high",
       "id": "1955773d3e42a616",
       "red": "07a74004d964c7f4",
@@ -58,6 +63,7 @@
     },
     {
       "blue": "5f61780fe5e9b6d0",
+      "elo": null,
       "finish_tier": "high",
       "id": "869c3394cadfb23c",
       "red": "3cc506f115cbb9d5",
@@ -69,6 +75,7 @@
     },
     {
       "blue": "ab2a4b5e04dc5fe9",
+      "elo": null,
       "finish_tier": null,
       "id": "bf08333b500a81ad",
       "red": "e3fc6c1fab298561",
@@ -80,6 +87,7 @@
     },
     {
       "blue": "a6eb54ae17a551be",
+      "elo": null,
       "finish_tier": "medium",
       "id": "1452e906a169875d",
       "red": "9d62c2d8ee151f08",
@@ -91,6 +99,7 @@
     },
     {
       "blue": "0575068a0f83f963",
+      "elo": null,
       "finish_tier": null,
       "id": "beda278798850354",
       "red": "0be6776db31d98ec",
@@ -102,6 +111,7 @@
     },
     {
       "blue": "d436f5d55156a521",
+      "elo": null,
       "finish_tier": "medium",
       "id": "9f33576489a0370c",
       "red": "d7c4956d61ae76a9",
@@ -113,6 +123,7 @@
     },
     {
       "blue": "b701f095e6ccb149",
+      "elo": null,
       "finish_tier": "medium",
       "id": "85d62e821823ba69",
       "red": "3618e0632ecdba9c",
@@ -124,6 +135,7 @@
     },
     {
       "blue": "33a8708747b7f943",
+      "elo": null,
       "finish_tier": "medium",
       "id": "25d0085571e737ed",
       "red": "d3f89fa685bd8420",
@@ -135,6 +147,7 @@
     },
     {
       "blue": "eabece0edc2d62ca",
+      "elo": null,
       "finish_tier": "medium",
       "id": "d5bb4cadca484a31",
       "red": "b1e5bcaad32a3cac",
@@ -146,6 +159,7 @@
     },
     {
       "blue": "20a0e4cc5227c117",
+      "elo": null,
       "finish_tier": "high",
       "id": "e2cd8521c8ba55b2",
       "red": "2975297f505e9447",

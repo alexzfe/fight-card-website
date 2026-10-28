@@ -3,6 +3,7 @@
   "fights": [
     {
       "blue": "f166e93d04a8c274",
+      "elo": null,
       "finish_tier": "high",
       "id": "fc11508eb5ae83b0",
       "red": "07225ba28ae309b6",
@@ -14,6 +15,7 @@
     },
     {
       "blue": "e5549c82bfb5582d",
+      "elo": null,
       "finish_tier": "high",
       "id": "5a4802117b3f5fc3",
       "red": "f14cf73e51b29254",
@@ -25,6 +27,7 @@
     },
     {
       "blue": "35673bf5204524ee",
+      "elo": null,
       "finish_tier": "high",
       "id": "18e7758b06ce465c",
       "red": "c1085e1701b13eca",
@@ -36,6 +39,7 @@
     },
     {
       "blue": "814e5233e2acf2ee",
+      "elo": null,
       "finish_tier": "low",
       "id": "01751a4065e30e97",
       "red": "792be9a24df82ed6",
@@ -47,6 +51,7 @@
     },
     {
       "blue": "f1ab6f37492c630a",
+      "elo": null,
       "finish_tier": "low",
       "id": "c1e90dd65e631ebf",
       "red": "6a740daf1b279661",
@@ -58,6 +63,7 @@
     },
     {
       "blue": "c15fa95b9a12fde4",
+      "elo": null,
       "finish_tier": null,
       "id": "2b9718094cda9645",
       "red": "15b1f83a90302adf",

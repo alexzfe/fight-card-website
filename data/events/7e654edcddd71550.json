@@ -3,6 +3,14 @@
   "fights": [
     {
       "blue": "b9f28e7045fdfce7",
+      "elo": {
+        "blue_delta": -42,
+        "blue_p4p_rank": null,
+        "blue_pre": 1618,
+        "red_delta": 50,
+        "red_p4p_rank": null,
+        "red_pre": 1615
+      },
       "finish_tier": null,
       "id": "0e55d8a3d7a73912",
       "red": "fe2babf95de24fb1",
@@ -20,6 +28,14 @@
     },
     {
       "blue": "d3f5d33d61cd00c9",
+      "elo": {
+        "blue_delta": -39,
+        "blue_p4p_rank": null,
+        "blue_pre": 1583,
+        "red_delta": 45,
+        "red_p4p_rank": null,
+        "red_pre": 1624
+      },
       "finish_tier": null,
       "id": "5e5d01e437bced71",
       "red": "06e4245d16fc5315",
@@ -37,6 +53,14 @@
     },
     {
       "blue": "4e6738062d469256",
+      "elo": {
+        "blue_delta": -26,
+        "blue_p4p_rank": null,
+        "blue_pre": 1345,
+        "red_delta": 37,
+        "red_p4p_rank": null,
+        "red_pre": 1512
+      },
       "finish_tier": null,
       "id": "7c954175878dd610",
       "red": "5dad1e8a516e6477",
@@ -54,6 +78,14 @@
     },
     {
       "blue": "2bbdbc925f4323ac",
+      "elo": {
+        "blue_delta": -72,
+        "blue_p4p_rank": null,
+        "blue_pre": 1440,
+        "red_delta": 72,
+        "red_p4p_rank": null,
+        "red_pre": 1440
+      },
       "finish_tier": null,
       "id": "3a70ed81e5611d24",
       "red": "130b65b53f30f33c",
@@ -71,6 +103,14 @@
     },
     {
       "blue": "71758ab9f337716c",
+      "elo": {
+        "blue_delta": -81,
+        "blue_p4p_rank": null,
+        "blue_pre": 1440,
+        "red_delta": 75,
+        "red_p4p_rank": null,
+        "red_pre": 1398
+      },
       "finish_tier": null,
       "id": "7bff1b7a45666e98",
       "red": "a1a91dbf41a029c4",
@@ -88,6 +128,14 @@
     },
     {
       "blue": "d8c811df0386d5e8",
+      "elo": {
+        "blue_delta": -53,
+        "blue_p4p_rank": null,
+        "blue_pre": 1570,
+        "red_delta": 60,
+        "red_p4p_rank": null,
+        "red_pre": 1554
+      },
       "finish_tier": null,
       "id": "29423f522e76f12e",
       "red": "7af33fc4435017f1",
@@ -105,6 +153,14 @@
     },
     {
       "blue": "f96856f9d69fd7e4",
+      "elo": {
+        "blue_delta": -57,
+        "blue_p4p_rank": null,
+        "blue_pre": 1421,
+        "red_delta": 44,
+        "red_p4p_rank": null,
+        "red_pre": 1435
+      },
       "finish_tier": null,
       "id": "5a5395d939bb3ff3",
       "red": "260e9e0d4954aea6",
@@ -122,6 +178,14 @@
     },
     {
       "blue": "69898645d600abdb",
+      "elo": {
+        "blue_delta": -61,
+        "blue_p4p_rank": null,
+        "blue_pre": 1510,
+        "red_delta": 80,
+        "red_p4p_rank": null,
+        "red_pre": 1441
+      },
       "finish_tier": null,
       "id": "30b73c201daa089c",
       "red": "f5d82eccdea4e2dd",
@@ -139,6 +203,14 @@
     },
     {
       "blue": "e5864a42c80294f6",
+      "elo": {
+        "blue_delta": -63,
+        "blue_p4p_rank": null,
+        "blue_pre": 1401,
+        "red_delta": 49,
+        "red_p4p_rank": null,
+        "red_pre": 1424
+      },
       "finish_tier": null,
       "id": "15d95453729f4c2c",
       "red": "48a9a128784d53d1",
@@ -156,6 +228,14 @@
     },
     {
       "blue": "5987b2458f4b5290",
+      "elo": {
+        "blue_delta": -29,
+        "blue_p4p_rank": null,
+        "blue_pre": 1516,
+        "red_delta": 31,
+        "red_p4p_rank": null,
+        "red_pre": 1613
+      },
       "finish_tier": null,
       "id": "9037b26e92e25357",
       "red": "cc1a8b4b38b92c6d",
@@ -173,6 +253,14 @@
     },
     {
       "blue": "5fa2974cbd18e05c",
+      "elo": {
+        "blue_delta": -11,
+        "blue_p4p_rank": null,
+        "blue_pre": 1479,
+        "red_delta": 11,
+        "red_p4p_rank": null,
+        "red_pre": 1469
+      },
       "finish_tier": null,
       "id": "577011f3bbcf7f91",
       "red": "1897b7b913736a7c",
@@ -190,6 +278,14 @@
     },
     {
       "blue": "2c483cf443f38ece",
+      "elo": {
+        "blue_delta": -33,
+        "blue_p4p_rank": null,
+        "blue_pre": 1354,
+        "red_delta": 40,
+        "red_p4p_rank": null,
+        "red_pre": 1450
+      },
       "finish_tier": null,
       "id": "f34e58d365bb37b1",
       "red": "40cb680ae1cd331f",

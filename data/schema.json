@@ -144,6 +144,17 @@
           "title": "Blue",
           "type": "string"
         },
+        "elo": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FightElo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "finish_tier": {
           "anyOf": [
             {
@@ -233,6 +244,61 @@
         "blue"
       ],
       "title": "Fight",
+      "type": "object"
+    },
+    "FightElo": {
+      "description": "A completed bout's Elo at the time (docs/ELO.md), set by `score` from the history timeline. pre/delta are on\nthe displayed scale of the run that wrote them (today's shift, as Fighter.elo), so they can move a point between\npublishes.",
+      "properties": {
+        "blue_delta": {
+          "title": "Blue Delta",
+          "type": "integer"
+        },
+        "blue_p4p_rank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Blue P4P Rank"
+        },
+        "blue_pre": {
+          "title": "Blue Pre",
+          "type": "integer"
+        },
+        "red_delta": {
+          "title": "Red Delta",
+          "type": "integer"
+        },
+        "red_p4p_rank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Red P4P Rank"
+        },
+        "red_pre": {
+          "title": "Red Pre",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "red_pre",
+        "red_delta",
+        "blue_pre",
+        "blue_delta",
+        "red_p4p_rank",
+        "blue_p4p_rank"
+      ],
+      "title": "FightElo",
       "type": "object"
     },
     "Fighter": {
@@ -951,5 +1017,5 @@
   "$id": "https://ufc-data.xlobax.com/v1/schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "index.json is #/$defs/Index, events/{id}.json is #/$defs/Event, fighters.json is #/$defs/Fighters, rankings.json is #/$defs/Rankings.",
-  "title": "fightcard /v1 (contract 1.2)"
+  "title": "fightcard /v1 (contract 1.3)"
 }
