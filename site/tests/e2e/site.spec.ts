@@ -345,6 +345,58 @@ test('completed event shows results next to the frozen badge', async ({ page }) 
   await expect(fights.nth(2).getByTestId('winner')).toHaveCount(0);
 });
 
+test('a completed fight shows each corner\'s Elo at the time: going in, the change, and the P4P rank then, unlinked', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  const fights = page.getByTestId('fight');
+  const elo = (fight: number, side: 'red' | 'blue') => fights.nth(fight).locator(`.corner-${side}`).getByTestId('elo');
+  await expect(elo(0, 'red')).toHaveText('Elo 1548 (+26) · #4 P4P');
+  await expect(elo(0, 'blue')).toHaveText('Elo 1580 (\u221226)');
+  // Ivan India is 1640 today; the card shows the 1612 he took into the fight.
+  await expect(elo(1, 'red')).toHaveText('Elo 1612 (\u221214) · #7 P4P');
+  await expect(elo(1, 'blue')).toHaveText('Elo 1497 (+14)');
+  // A past rank, so no link to today's rankings.
+  await expect(elo(0, 'red').getByRole('link')).toHaveCount(0);
+  await expect(elo(1, 'red').getByRole('link')).toHaveCount(0);
+  // One short tip says what the numbers are.
+  await expect(elo(0, 'red')).toHaveAttribute('data-tip', 'Elo going into this fight, and the change from it');
+  await elo(0, 'red').hover();
+  await expect.poll(() => elo(0, 'red').evaluate((e) => getComputedStyle(e, '::after').visibility)).toBe('visible');
+  // Tags still describe today.
+  await expect(fights.nth(0).locator('.corner-blue').getByTestId('elo-tag')).toHaveText(['provisional']);
+});
+
+for (const scheme of ['light', 'dark'] as const) {
+  test(`the at-time change is quiet muted text (${scheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+    const delta = page.getByTestId('fight').first().locator('.corner-red').getByTestId('elo-delta');
+    await expect(delta).toHaveText('(+26)');
+    const muted = await page.locator('.event-meta').evaluate((el) => getComputedStyle(el).color);
+    expect(await delta.evaluate((el) => getComputedStyle(el).color)).toBe(muted);
+    const elo = page.getByTestId('fight').first().locator('.corner-red').getByTestId('elo');
+    expect(await delta.evaluate((el) => getComputedStyle(el).fontWeight)).not.toBe(
+      await elo.evaluate((el) => getComputedStyle(el).fontWeight),
+    );
+  });
+}
+
+test('a completed fight without Elo at the time shows today\'s, as before', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  const red = page.getByTestId('fight').nth(2).locator('.corner-red');
+  await expect(red.getByTestId('elo')).toHaveText('Elo 1531');
+  await expect(red.getByTestId('elo')).toHaveAttribute('data-tip', 'Peak 1604');
+  await expect(red.getByTestId('elo-delta')).toHaveCount(0);
+  await expect(red.getByTestId('elo-tag')).toHaveText(['inactive']);
+});
+
+test('upcoming fights still show today\'s Elo and linked rank, with no change', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByTestId('elo-delta')).toHaveCount(0);
+  const red = page.getByTestId('fight').nth(1).locator('.corner-red').getByTestId('elo');
+  await expect(red).toHaveText('Elo 1690 · #3 P4P');
+  await expect(red.getByRole('link', { name: '#3 P4P' })).toHaveAttribute('href', '/rankings/#c3c3c3c3c3c3c3c3');
+});
+
 test('no horizontal overflow at 360px', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 });
   for (const url of ['/', '/events/ufc-fight-night-golf-vs-hotel/']) {

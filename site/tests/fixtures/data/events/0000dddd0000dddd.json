@@ -3,6 +3,14 @@
   "fights": [
     {
       "blue": "b8b8b8b8b8b8b8b8",
+      "elo": {
+        "blue_delta": -26,
+        "blue_p4p_rank": null,
+        "blue_pre": 1580,
+        "red_delta": 26,
+        "red_p4p_rank": 4,
+        "red_pre": 1548
+      },
       "finish_tier": "high",
       "id": "f0000000000000d1",
       "red": "a7a7a7a7a7a7a7a7",
@@ -18,6 +26,14 @@
     },
     {
       "blue": "b4b4b4b4b4b4b4b4",
+      "elo": {
+        "blue_delta": 14,
+        "blue_p4p_rank": null,
+        "blue_pre": 1497,
+        "red_delta": -14,
+        "red_p4p_rank": 7,
+        "red_pre": 1612
+      },
       "finish_tier": "low",
       "id": "f0000000000000d2",
       "red": "c9c9c9c9c9c9c9c9",
