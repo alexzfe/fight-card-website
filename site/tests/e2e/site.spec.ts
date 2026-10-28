@@ -123,7 +123,10 @@ const clearOfFades = async (rail: Locator, tile: Locator) =>
       const b = t.getBoundingClientRect();
       const clear = b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
       const centred = Math.abs(b.left + b.width / 2 - (a.left + a.width / 2)) <= 1;
-      return clear || (b.width > a.width - 16 - 40 && centred);
+      // On failure, say where things are rather than just false.
+      return clear || (b.width > a.width - 16 - 40 && centred)
+        ? true
+        : `tile ${b.left.toFixed(1)}..${b.right.toFixed(1)} in rail ${a.left.toFixed(1)}..${a.right.toFixed(1)}, scrollLeft ${(r as HTMLElement).scrollLeft} of ${(r as HTMLElement).scrollWidth - (r as HTMLElement).clientWidth}`;
     },
     await rail.elementHandle(),
   );
