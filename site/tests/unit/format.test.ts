@@ -258,30 +258,30 @@ describe('dates', () => {
 
 describe('eventTile', () => {
   it('shows the date and number of a numbered event over its headliners', () => {
-    expect(eventTile({ name: 'UFC 323: Alpha vs. Bravo', date: '2026-10-31', status: 'upcoming' })).toEqual({
+    expect(eventTile({ name: 'UFC 323: Alpha vs. Bravo', date: '2026-10-31' })).toEqual({
       meta: 'Oct 31 · UFC 323',
       headline: 'Alpha vs. Bravo',
     });
   });
   it('drops the "UFC Fight Night" prefix, which says nothing', () => {
-    expect(eventTile({ name: 'UFC Fight Night: Kilo vs. Lima', date: '2026-11-14', status: 'upcoming' })).toEqual({
+    expect(eventTile({ name: 'UFC Fight Night: Kilo vs. Lima', date: '2026-11-14' })).toEqual({
       meta: 'Nov 14',
       headline: 'Kilo vs. Lima',
     });
   });
   it('keeps other prefixes', () => {
-    expect(eventTile({ name: 'Noche UFC: Lopes vs. Silva', date: '2026-09-12', status: 'upcoming' }).meta).toBe(
+    expect(eventTile({ name: 'Noche UFC: Lopes vs. Silva', date: '2026-09-12' }).meta).toBe(
       'Sep 12 · Noche UFC',
     );
   });
   it('does not mark a completed event as results: it sits left of the today marker, muted', () => {
-    expect(eventTile({ name: 'UFC Fight Night: Golf vs. Hotel', date: '2026-10-18', status: 'completed' })).toEqual({
+    expect(eventTile({ name: 'UFC Fight Night: Golf vs. Hotel', date: '2026-10-18' })).toEqual({
       meta: 'Oct 18',
       headline: 'Golf vs. Hotel',
     });
   });
   it('uses the whole name as the headline when there is no colon', () => {
-    expect(eventTile({ name: 'UFC Apex Special', date: '2026-11-01', status: 'upcoming' })).toEqual({
+    expect(eventTile({ name: 'UFC Apex Special', date: '2026-11-01' })).toEqual({
       meta: 'Nov 1',
       headline: 'UFC Apex Special',
     });

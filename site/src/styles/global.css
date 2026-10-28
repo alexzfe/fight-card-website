@@ -132,7 +132,8 @@ ul {
   overflow-x: auto;
   /* A swipe always lands with a whole tile centred, never half-hidden at an edge. */
   scroll-snap-type: x mandatory;
-  padding: var(--space-2) var(--space-4);
+  /* The right padding matches the right fade, so the last tile can scroll clear of it. */
+  padding: var(--space-2) 2.5rem var(--space-2) var(--space-4);
   scrollbar-width: none;
   /* Fade both edges so a cut-off tile reads as "scroll for more". */
   mask-image: linear-gradient(to right, transparent, #000 var(--space-4), #000 calc(100% - 2.5rem), transparent);
@@ -165,7 +166,14 @@ ul {
   font-weight: 600;
 }
 
+/* Past events step back so the rail reads forwards: no border, smaller, muted. */
+.tile-past {
+  border-color: transparent;
+  padding-inline: var(--space-2);
+}
+
 .tile-past .tile-headline {
+  font-size: var(--font-size-xs);
   color: var(--color-muted);
 }
 
@@ -228,6 +236,8 @@ ul {
 
 .rail li:not(.rail-today) {
   flex: none;
+  /* Tiles fill their item, so a smaller past tile still lines up with the rest. */
+  display: flex;
   scroll-snap-align: center;
 }
 
@@ -349,10 +359,25 @@ ul {
   white-space: nowrap;
 }
 
-/* A completed fight's change from the Elo going in: quiet next to the number. */
+/* A completed fight's change from the Elo going in: a small chip, filled for a gain and outlined for a loss, so the
+   direction reads without colour. */
 .elo-delta {
+  display: inline-block;
+  padding: 0 0.35em;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  vertical-align: 0.05em;
+}
+
+.elo-gain {
+  border-color: transparent;
+  background: color-mix(in oklab, var(--color-text) 10%, transparent);
+}
+
+.elo-loss {
   color: var(--color-muted);
-  font-weight: 400;
 }
 
 /* The P4P rank links to the fighter's row in the rankings: a plain underline marks it as a link. */
@@ -381,13 +406,30 @@ ul {
   text-underline-offset: 2px;
 }
 
-.winner .name::after {
-  content: ' W';
-  font-size: var(--font-size-xs);
+/* The winner's chip leads the record line: solid ember, a different shape from the pill-shaped finish badges. */
+.win-chip {
+  display: inline-block;
+  margin-right: 0.45em;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-size: 0.625rem;
   font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  vertical-align: 0.1em;
 }
 
-.fight.done .corner:not(.winner) .name {
+/* The loser's corner steps back: a grey photo and quiet text. */
+.lost .avatar {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.lost .name,
+.lost .elo {
   font-weight: 400;
   color: var(--color-muted);
 }
@@ -544,11 +586,23 @@ img.avatar {
   color: var(--color-muted);
 }
 
+/* A completed fight's result leads the middle column: the method, then the round and time. */
 .outcome {
-  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-1);
+  font-variant-numeric: tabular-nums;
 }
 
-.result {
+.method {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.when {
   white-space: nowrap;
 }
 

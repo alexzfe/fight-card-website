@@ -8,8 +8,8 @@ import {
   formatHeight,
   formatPastFight,
   formatReach,
-  formatResult,
   resultLetter,
+  resultParts,
 } from '../lib/format';
 import type { Event, Fight, Fighter } from '../lib/schema';
 
@@ -27,7 +27,7 @@ interface Props {
 const { fight, event, fighters, eager, mainEvent = false, finishLabel = false } = Astro.props;
 const red = fighters[fight.red]!;
 const blue = fighters[fight.blue]!;
-const result = formatResult(fight.result);
+const result = resultParts(fight.result);
 const winner = fight.result?.winner;
 const age = (f: Fighter) => ageAt(f.dob, event.date) ?? '—';
 const stats = [
@@ -44,24 +44,31 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
 
 <li class:list={['fight', { done: result, 'main-event': mainEvent }]} data-testid="fight">
   <div class="bout">
-    <Corner side="red" fighter={red} winner={winner === red.id} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
+    <Corner side="red" fighter={red} winner={winner === red.id} lost={!!winner && winner !== red.id} done={!!result} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
     <div class="mid">
       {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
+      {/* A completed fight leads with how it ended; the pre-fight badge, frozen at the start, stays below when there was one. */}
+      {
+        result && (
+          <span class="outcome" data-testid="outcome">
+            {result.method && <span class="method">{result.method}</span>}
+            {result.method && result.when && ' '}
+            {result.when && <span class="when">{result.when}</span>}
+          </span>
+        )
+      }
       {fight.weight_class && <span>{fight.weight_class}</span>}
       {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
-      <span class:list={['finish-label', { 'sr-only': !finishLabel }]} data-testid="finish-label">Finish chance</span>
       {
-        result ? (
-          <span class="outcome" data-testid="outcome">
-            <TierBadge tier={fight.finish_tier} />{' '}
-            <span class="result">→ {result}</span>
-          </span>
-        ) : (
-          <TierBadge tier={fight.finish_tier} />
+        (!result || fight.finish_tier) && (
+          <>
+            <span class:list={['finish-label', { 'sr-only': !finishLabel }]} data-testid="finish-label">Finish chance</span>
+            <TierBadge tier={fight.finish_tier} />
+          </>
         )
       }
     </div>
-    <Corner side="blue" fighter={blue} winner={winner === blue.id} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
+    <Corner side="blue" fighter={blue} winner={winner === blue.id} lost={!!winner && winner !== blue.id} done={!!result} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
   </div>
   <details class="stats">
     <summary>Stats</summary>

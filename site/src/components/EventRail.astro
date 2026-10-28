@@ -17,9 +17,14 @@ const onRankings = Astro.url.pathname === '/rankings/';
 const rail = byDateAscending(events);
 // The today marker goes before the first upcoming event, when there are past events to its left.
 const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
-// The inline script below ships unminified under a size budget (tests/build), so its longer notes live here.
-// Tabbing to a tile centres it: the scroll that focus does by itself gets pulled back by the mandatory snap,
-// leaving the focused tile under the edge fade. Keyboard focus only, so a tap doesn't scroll mid-navigation.
+// The inline script below ships unminified under a size budget (tests/build), so its notes live here.
+// - The rail stays where the visitor left it across event pages (sessionStorage), applied at pagereveal so prerendered
+//   pages pick up the latest position.
+// - With no saved position it opens on what's next: it centres the furthest upcoming tile that still leaves the latest
+//   past tile clear of the left fade (on a phone, just the first upcoming one). The list keeps growing leftwards.
+// - The selected tile is centred whenever it sits under an edge fade (1rem left, 2.5rem right, as .rail's mask).
+// - Tabbing to a tile centres it: the scroll that focus does by itself gets pulled back by the mandatory snap,
+//   leaving the focused tile under the edge fade. Keyboard focus only, so a tap doesn't scroll mid-navigation.
 ---
 
 <nav class="rail-nav" aria-label={site.rankings ? 'Events and rankings' : 'Events'}>
@@ -59,32 +64,30 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
   }
 </nav>
 <script is:inline>
-  // Keep the rail where the visitor left it across event pages; scroll the selected tile into view only
-  // when it would be hidden. Runs at pagereveal so prerendered pages pick up the latest position.
   (() => {
     const rail = document.querySelector('.rail');
-    if (!rail) return;
-    const KEY = 'event-rail-scroll';
     const save = () => {
-      try {
-        sessionStorage.setItem(KEY, String(rail.scrollLeft));
-      } catch {}
+      try { sessionStorage.setItem('event-rail-scroll', rail.scrollLeft); } catch {}
     };
+    const box = (e) => e.getBoundingClientRect();
+    const shift = (e, r = box(rail)) => box(e).left + box(e).width / 2 - r.left - r.width / 2;
     const place = () => {
-      try {
-        const saved = sessionStorage.getItem(KEY);
-        if (saved !== null) rail.scrollLeft = Number(saved);
-      } catch {}
-      const tile = rail.querySelector('[aria-current="page"]');
-      if (!tile) return;
-      const r = rail.getBoundingClientRect();
-      const t = tile.getBoundingClientRect();
-      if (t.left < r.left || t.right > r.right) rail.scrollLeft += t.left - r.left - (r.width - t.width) / 2;
+      let at, to;
+      try { at = sessionStorage.getItem('event-rail-scroll'); } catch {}
+      const today = rail.querySelector('.rail-today');
+      if (at != null) rail.scrollLeft = at;
+      else if (today) {
+        const past = box(today.previousElementSibling).left - 16 - box(rail).left;
+        for (let li = today.nextElementSibling; li && (to == null || shift(li) <= past); li = li.nextElementSibling)
+          to = shift(li);
+        rail.scrollLeft += to;
+      }
+      const t = rail.querySelector('[aria-current="page"]'), b = t && box(t);
+      if (b && (b.left < box(rail).left + 16 || b.right > box(rail).right - 40)) rail.scrollLeft += shift(t);
     };
-    rail.addEventListener('focusin', (e) => {
-      if (!e.target.matches(':focus-visible')) return;
-      const smooth = matchMedia('(prefers-reduced-motion: no-preference)').matches;
-      e.target.scrollIntoView({ inline: 'center', block: 'nearest', behavior: smooth ? 'smooth' : 'instant' });
+    rail.addEventListener('focusin', ({ target: t }) => {
+      const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+      if (t.matches(':focus-visible')) t.scrollIntoView({ inline: 'center', block: 'nearest', behavior });
     });
     rail.addEventListener('click', save);
     addEventListener('pagehide', save);

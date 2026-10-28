@@ -115,12 +115,15 @@ test('past tiles are quieter and smaller than upcoming ones', async ({ page }) =
 });
 
 // Where the rail's edge fades end: a tile under a fade only half shows.
-const clearOfFades = (rail: Locator, tile: Locator) =>
-  tile.evaluate((t, r) => {
-    const a = r!.getBoundingClientRect();
-    const b = t.getBoundingClientRect();
-    return b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
-  }, rail.elementHandle());
+const clearOfFades = async (rail: Locator, tile: Locator) =>
+  tile.evaluate(
+    (t, r) => {
+      const a = r.getBoundingClientRect();
+      const b = t.getBoundingClientRect();
+      return b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
+    },
+    await rail.elementHandle(),
+  );
 
 test('with no event selected, the rail opens on what is next, the latest past event beside it', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 });
@@ -390,7 +393,7 @@ test('a completed fight leads with the result: the method, then the round and ti
   const size = (l: Locator) => l.evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
   const mid = fights.first().locator('.mid');
   expect(await size(mid.locator('.method'))).toBeGreaterThan(await size(mid.locator('.when')));
-  expect(await size(mid.locator('.method'))).toBeGreaterThan(await size(mid.getByText('Lightweight')));
+  expect(await size(mid.locator('.method'))).toBeGreaterThan(await size(mid.getByText('Heavyweight')));
   await expect(page.getByRole('main')).not.toContainText('→');
   // The frozen pre-fight badge stays under the result when there was one; without one, no dash and no label.
   await expect(fights.first().getByTestId('badge')).toHaveText('High');
@@ -601,16 +604,21 @@ test('each finish tier has its own colour', async ({ page }) => {
 });
 
 test('the finish meter is labelled once per card segment, and every badge is still named for screen readers', async ({ page }) => {
-  // Home: main card (2 fights), prelims, early prelims. Golf vs. Hotel: no segment data, so one group.
+  // Home: main card (2 fights), prelims, early prelims. Golf vs. Hotel: no segment data, so one group; its no contest
+  // had no badge frozen, so it has neither badge nor label (null).
   for (const [url, shown] of [
     ['/', [true, false, true, true]],
-    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false, false]],
+    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false, null]],
   ] as const) {
     await page.goto(url);
     const fights = page.getByTestId('fight');
     await expect(fights, url).toHaveCount(shown.length);
     for (const [i, visible] of shown.entries()) {
       const label = fights.nth(i).getByTestId('finish-label');
+      if (visible === null) {
+        await expect(label, `${url} fight ${i}`).toHaveCount(0);
+        continue;
+      }
       await expect(label, `${url} fight ${i}`).toHaveText('Finish chance');
       const width = await label.evaluate((el) => el.getBoundingClientRect().width);
       expect(width > 1, `${url} fight ${i}`).toBe(visible);
