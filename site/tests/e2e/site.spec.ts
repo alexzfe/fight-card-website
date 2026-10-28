@@ -114,13 +114,16 @@ test('past tiles are quieter and smaller than upcoming ones', async ({ page }) =
   expect(past.color).not.toBe(next.color);
 });
 
-// Where the rail's edge fades end: a tile under a fade only half shows.
+// Where the rail's edge fades end: a tile under a fade only half shows. A tile wider than the space between the fades
+// (wider fonts on a narrow phone, as on CI's Linux) can't clear both, so centred is the best it can do.
 const clearOfFades = async (rail: Locator, tile: Locator) =>
   tile.evaluate(
     (t, r) => {
       const a = r.getBoundingClientRect();
       const b = t.getBoundingClientRect();
-      return b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
+      const clear = b.left >= a.left + 16 - 1 && b.right <= a.right - 40 + 1;
+      const centred = Math.abs(b.left + b.width / 2 - (a.left + a.width / 2)) <= 1;
+      return clear || (b.width > a.width - 16 - 40 && centred);
     },
     await rail.elementHandle(),
   );
