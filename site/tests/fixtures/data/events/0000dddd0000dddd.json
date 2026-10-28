@@ -84,6 +84,21 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"
+    },
+    {
+      "blue": "a7a7a7a7a7a7a7a7",
+      "finish_tier": null,
+      "id": "f0000000000000d5",
+      "red": "b8b8b8b8b8b8b8b8",
+      "result": {
+        "method": null,
+        "round": null,
+        "time": null,
+        "winner": "b8b8b8b8b8b8b8b8"
+      },
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Heavyweight"
     }
   ],
   "id": "0000dddd0000dddd",

@@ -426,6 +426,24 @@ test('a completed fight shows no form tiles: today\'s form would count fights af
   await expect(page.getByTestId('fight').first().getByTestId('form')).toHaveCount(0);
 });
 
+test('a completed fight known only by its winner is still a completed fight', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  const fight = page.getByTestId('fight').nth(4);
+  await expect(fight.getByTestId('win-chip')).toHaveCount(1);
+  await expect(fight.getByTestId('form')).toHaveCount(0);
+  await expect(fight.getByTestId('outcome')).toHaveCount(0);
+  await expect(fight.getByTestId('badge')).toHaveCount(0);
+  await expect(fight.getByTestId('finish-label')).toHaveCount(0);
+});
+
+test('screen readers hear who won or lost right after the name', async ({ page }) => {
+  await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
+  const fight = page.getByTestId('fight').first();
+  await expect(fight.locator('.corner-red .name')).toMatchAriaSnapshot('- text: Gus Golf (winner)');
+  await expect(fight.locator('.corner-blue .name')).toMatchAriaSnapshot('- text: Hugo Hotel (lost)');
+  await expect(page.getByTestId('fight').nth(2).locator('.name').first()).toMatchAriaSnapshot('- text: Eli Echo');
+});
+
 // What a corner shows, without the screen-reader-only words.
 const shown = (l: Locator) =>
   l.evaluate((e) => {
@@ -608,7 +626,7 @@ test('the finish meter is labelled once per card segment, and every badge is sti
   // had no badge frozen, so it has neither badge nor label (null).
   for (const [url, shown] of [
     ['/', [true, false, true, true]],
-    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false, null]],
+    ['/events/ufc-fight-night-golf-vs-hotel/', [true, false, false, null, null]],
   ] as const) {
     await page.goto(url);
     const fights = page.getByTestId('fight');
