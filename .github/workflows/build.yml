@@ -48,6 +48,9 @@ jobs:
             echo "tag=$REF" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          case "$DATA_REF" in
+            -*) echo "data_ref '$DATA_REF' starts with '-', which git would read as an option" >&2; exit 1 ;;
+          esac
           git fetch --quiet --depth=1 origin "$DATA_REF"
           rm -rf data
           git checkout FETCH_HEAD -- data
