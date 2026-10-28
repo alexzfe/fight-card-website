@@ -77,7 +77,10 @@ line, `probe of <url> failed, downloading the snapshot: <why>`, and the run carr
 broken probe never skips a refresh nor lets anything through the snapshot checks would refuse. The stale issue's
 `API:` line names the URL found stale: `/v1/index.json` from the probe, else `/v1/snapshot.tar.gz`. `--no-probe`
 always downloads the snapshot; it is for running `fetch_v1.py` by hand and debugging. `refresh.yml` has no input for
-it, so manual workflow runs probe too (they still build and deploy). The probe keeps no state between runs.
+it, so manual workflow runs probe too (they still build and deploy). The probe keeps no state between runs. It sends
+no conditional GET on purpose: a 304 would save at most the ~1.5 KB probe body per tick (still one request), the
+snapshot is only fetched once the probe has found it newer, and a validator would have to be committed next to `data/`
+(runners keep no HTTP cache), since nginx's `Last-Modified` is the file's mtime, not `generated_at`.
 
 **What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
 committed and the site keeps serving the last committed `data/`. The first two have their own handling;
