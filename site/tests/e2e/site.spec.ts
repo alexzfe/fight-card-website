@@ -600,6 +600,13 @@ test.describe('rankings page', () => {
     await expect(page).toHaveURL(/\/events\/ufc-323-alpha-vs-bravo\/$/);
   });
 
+  test('the rail is named for both the events and the rankings it leads to', async ({ page }) => {
+    for (const path of ['/', '/rankings/']) {
+      await page.goto(path);
+      await expect(page.getByRole('navigation', { name: 'Events and rankings', exact: true })).toBeVisible();
+    }
+  });
+
   test('the Rankings tile holds still at the right end of the rail while the events scroll beside it', async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 740 });
     await page.goto('/');

@@ -568,3 +568,32 @@ def test_build_with_data_ref_swaps_in_mains_data_and_only_data(tmp_path, tag_che
     assert (work / "site.txt").read_text() == "tag code"  # the tag's code, not main's
     assert git(work, "rev-parse", "HEAD") == tag
     assert re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", outputs["tag"])  # infra's deploy-app and Docker accept it
+
+
+def test_build_refuses_a_data_ref_that_git_would_read_as_an_option(tmp_path, tag_checkout):
+    work, tag, _ = tag_checkout
+    out = tmp_path / "github_output"
+    out.touch()
+    result = run_step(tmp_path, step_script("build", DATA_STEP, "build.yml"), {},
+                      {"REF": tag, "DATA_REF": f"--upload-pack=touch {tmp_path}/ran", "GITHUB_OUTPUT": str(out)},
+                      cwd=work)
+    assert result.returncode != 0
+    assert "data_ref" in result.stderr
+    assert not (tmp_path / "ran").exists()
+    assert out.read_text() == ""
+    assert (work / "data" / "index.json").read_text() == "old"
+
+
+RANKINGS_CHECK = "Check /rankings/ is served"
+
+
+@pytest.mark.parametrize(("workflow", "deploy_job"), [("prod.yml", "deploy"), ("refresh.yml", "prod")])
+def test_every_prod_deploy_is_followed_by_a_rankings_check(workflow, deploy_job):
+    """infra's deploy-app curls / only; /rankings/ is the page a deploy with older data/ lost (2026-10-27)."""
+    smoke = jobs(workflow)["smoke"]
+    assert f"needs: {deploy_job}" in smoke
+    assert job_permissions(smoke) == []
+    assert env_block(step("smoke", RANKINGS_CHECK, workflow)) == {"URL": "https://ufc.xlobax.com/rankings/"}
+    script = step_script("smoke", RANKINGS_CHECK, workflow)
+    assert script.strip() == ('curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 '
+                              '-o /dev/null "$URL"')
