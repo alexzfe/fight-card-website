@@ -11,6 +11,9 @@ import {
   eloTip,
   tagTip,
   formatElo,
+  formatDelta,
+  eloAtFight,
+  AT_FIGHT_TIP,
   formatBestWin,
   formatRecord,
   formatPastFight,
@@ -49,6 +52,37 @@ describe('formatElo', () => {
   });
   it('is null when unknown, even with a rank', () => {
     expect(formatElo(null, 4)).toBeNull();
+  });
+});
+
+describe('formatDelta', () => {
+  it('signs a gain with a plus', () => {
+    expect(formatDelta(26)).toBe('+26');
+  });
+  it('signs a loss with a real minus sign, as the site writes numbers', () => {
+    expect(formatDelta(-14)).toBe('\u221214');
+  });
+  it('writes no change (a no contest) as ±0', () => {
+    expect(formatDelta(0)).toBe('±0');
+  });
+});
+
+describe('eloAtFight', () => {
+  const elo = { red_pre: 1548, red_delta: 26, blue_pre: 1580, blue_delta: -26, red_p4p_rank: 4, blue_p4p_rank: null };
+  it("gives a corner's Elo going in, the bout's change and the P4P rank then", () => {
+    expect(eloAtFight({ elo }, 'red')).toEqual({ elo: 'Elo 1548', delta: '+26', rank: '#4 P4P' });
+  });
+  it('has no rank when the fighter was unranked going in', () => {
+    expect(eloAtFight({ elo }, 'blue')).toEqual({ elo: 'Elo 1580', delta: '\u221226', rank: null });
+    const { blue_p4p_rank, ...noRank } = elo;
+    expect(eloAtFight({ elo: noRank }, 'blue')!.rank).toBeNull();
+  });
+  it('is null without Elo at the time (upcoming, unrated, or data before contract 1.3)', () => {
+    expect(eloAtFight({ elo: null }, 'red')).toBeNull();
+    expect(eloAtFight({}, 'blue')).toBeNull();
+  });
+  it('explains itself in one short tip', () => {
+    expect(AT_FIGHT_TIP).toBe('Elo going into this fight, and the change from it');
   });
 });
 

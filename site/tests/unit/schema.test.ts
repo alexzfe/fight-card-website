@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadData } from '../../src/lib/data';
-import { Index, Rankings, Result } from '../../src/lib/schema';
+import { Fight, Index, Rankings, Result } from '../../src/lib/schema';
 
 const V1 = path.resolve(import.meta.dirname, '../fixtures/v1');
 const INDEX = { generated_at: '2026-10-26T06:00:00Z', upcoming: [], recent: [] };
@@ -34,6 +34,42 @@ describe('Result.outcome', () => {
   });
   it('rejects anything else', () => {
     expect(Result.safeParse({ winner: 'a', outcome: 'loss' }).success).toBe(false);
+  });
+});
+
+describe('Fight.elo', () => {
+  const FIGHT = { id: 'f1', red: 'a', blue: 'b' };
+  const ELO = { red_pre: 1612, red_delta: 26, blue_pre: 1580, blue_delta: -26, red_p4p_rank: 4, blue_p4p_rank: null };
+  const parses = (elo: unknown) => Fight.safeParse({ ...FIGHT, elo }).success;
+
+  it('parses the contract shape (1.3): pre, signed delta and the rank going in', () => {
+    expect(Fight.parse({ ...FIGHT, elo: ELO }).elo).toEqual(ELO);
+  });
+  it('is optional and nullable: upcoming fights, unrated fights and data before 1.3', () => {
+    expect(Fight.parse(FIGHT).elo).toBeUndefined();
+    expect(Fight.parse({ ...FIGHT, elo: null }).elo).toBeNull();
+  });
+  it('allows a missing or null rank (unranked going in)', () => {
+    const { red_p4p_rank, blue_p4p_rank, ...noRanks } = ELO;
+    expect(parses(noRanks)).toBe(true);
+    expect(parses({ ...ELO, red_p4p_rank: null })).toBe(true);
+  });
+  it('needs integer values and positive integer ranks', () => {
+    for (const bad of [
+      { red_pre: '1612' },
+      { red_pre: 1612.5 },
+      { blue_delta: -2.5 },
+      { red_p4p_rank: 0 },
+      { blue_p4p_rank: 1.5 },
+    ]) {
+      expect(parses({ ...ELO, ...bad }), JSON.stringify(bad)).toBe(false);
+    }
+  });
+  it('needs each pre and delta', () => {
+    for (const key of ['red_pre', 'red_delta', 'blue_pre', 'blue_delta']) {
+      const { [key]: _, ...rest } = ELO as { [k: string]: unknown };
+      expect(parses(rest), key).toBe(false);
+    }
   });
 });
 

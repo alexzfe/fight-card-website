@@ -13,6 +13,27 @@ const read = (rel: string) => JSON.parse(fs.readFileSync(path.join(V1, rel), 'ut
 const SCHEMA = read('schema.json');
 const contract = () => structuredClone(SCHEMA);
 
+// Fight.elo as the engine's models.py publishes it from contract 1.3 (fightcard-engine#11); the pinned fixture is 1.2.
+const RANK = { anyOf: [{ minimum: 1, type: 'integer' }, { type: 'null' }] };
+const contract13 = () => {
+  const c = contract();
+  c.$defs.FightElo = {
+    type: 'object',
+    title: 'FightElo',
+    properties: {
+      red_pre: { type: 'integer' },
+      red_delta: { type: 'integer' },
+      blue_pre: { type: 'integer' },
+      blue_delta: { type: 'integer' },
+      red_p4p_rank: RANK,
+      blue_p4p_rank: RANK,
+    },
+    required: ['red_pre', 'red_delta', 'blue_pre', 'blue_delta', 'red_p4p_rank', 'blue_p4p_rank'],
+  };
+  c.$defs.Fight.properties.elo = { anyOf: [{ $ref: '#/$defs/FightElo' }, { type: 'null' }], default: null };
+  return c;
+};
+
 describe('checkContract', () => {
   it('finds no errors against the pinned /v1/ schema', () => {
     expect(checkContract(SCHEMA).errors).toEqual([]);
@@ -54,6 +75,19 @@ describe('checkContract', () => {
     const r = checkContract(c);
     expect(r.errors).toEqual([]);
     expect(r.notes.join('\n')).toMatch(/Rankings/);
+  });
+
+  it('only notes a contract without Fight.elo (before 1.3), so the site can deploy ahead of the engine', () => {
+    const r = checkContract(SCHEMA);
+    expect(r.errors).toEqual([]);
+    expect(r.notes.join('\n')).toMatch(/Fight\.elo/);
+  });
+
+  it('checks Fight.elo against a 1.3 contract', () => {
+    expect(checkContract(contract13()).errors).toEqual([]);
+    const c = contract13();
+    c.$defs.FightElo.properties.red_pre = { type: 'string' };
+    expect(checkContract(c).errors.join('\n')).toMatch(/FightElo\.red_pre/);
   });
 
   it.each([

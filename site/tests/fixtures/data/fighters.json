@@ -141,6 +141,8 @@
   "b8b8b8b8b8b8b8b8": {
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1994-03-15",
+    "elo": 1555,
+    "elo_provisional": true,
     "height_in": 71,
     "id": "b8b8b8b8b8b8b8b8",
     "image": null,
@@ -179,6 +181,7 @@
   "c9c9c9c9c9c9c9c9": {
     "details_fetched_at": "2026-10-20T06:00:00Z",
     "dob": "1994-03-15",
+    "elo": 1640,
     "height_in": 71,
     "id": "c9c9c9c9c9c9c9c9",
     "image": null,
