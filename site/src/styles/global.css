@@ -349,6 +349,12 @@ ul {
   white-space: nowrap;
 }
 
+/* A completed fight's change from the Elo going in: quiet next to the number. */
+.elo-delta {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
 /* The P4P rank links to the fighter's row in the rankings: a plain underline marks it as a link. */
 .elo-rank {
   text-decoration: underline;
@@ -675,7 +681,7 @@ img.avatar {
   border-style: dashed;
 }
 
-/* Tooltips (form tile: opponent; Elo: peak and best win; tag: what it means): hover with a mouse, or tap (focus)
+/* Tooltips (form tile: opponent; Elo: peak and best win, or on a completed card what the at-time Elo is; tag: what it means): hover with a mouse, or tap (focus)
    on touch. Red corner tips grow rightwards from their anchor, blue corner tips leftwards. Elo and tag tips hang
    below the line so they never cover the fighter's name; form tile tips sit above, over the Elo. */
 .form > [data-tip],
