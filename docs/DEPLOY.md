@@ -79,7 +79,7 @@ broken probe never skips a refresh nor lets anything through the snapshot checks
 always downloads the snapshot; it is for running `fetch_v1.py` by hand and debugging. `refresh.yml` has no input for
 it, so manual workflow runs probe too (they still build and deploy). The probe keeps no state between runs. It sends
 no conditional GET on purpose: a 304 would save at most the ~1.5 KB probe body per tick (still one request), the
-snapshot is only fetched once the probe has found it newer, and a validator would have to be committed next to `data/`
+snapshot is only fetched when the probe can't rule it out, and a validator would have to be committed next to `data/`
 (runners keep no HTTP cache), since nginx's `Last-Modified` is the file's mtime, not `generated_at`.
 
 **What `fetch_v1.py` refuses.** Each refusal prints one line saying why and leaves `data/` alone, so nothing is
