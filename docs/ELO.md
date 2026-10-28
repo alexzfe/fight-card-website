@@ -35,22 +35,20 @@ they were expected to win clearly.
 - **P4P rank:** top 15 men and top 10 women, among fighters with ≥5 UFC bouts and a bout in the last 12 months.
 - **Tags:** `provisional` for fewer than 3 UFC bouts; `inactive` for no bout in the last 12 months.
 - **Peak:** the highest rating reached after ≥5 UFC bouts. Shown under Stats with the best win, and in the Elo's tooltip
-  on upcoming and unrated fights; on a completed fight with Elo at the time, that tooltip explains the at-time number
-  instead (below).
+  on upcoming and unrated fights; a completed fight with Elo at the time has no tooltip (below).
 - `null` / hidden when the rating is unknown, as today.
 
 ### At fight time (site)
 
 A completed fight's corners show the Elo **going into that fight** from `Fight.elo` (engine contract 1.3,
-fightcard-engine `docs/ELO.md` "At fight time"), not today's: `Elo 1612 (+26) · #4 P4P` (2026-10-28,
-`docs/tdd/elo-at-fight.tdd.md`).
+fightcard-engine `docs/ELO.md` "At fight time"), not today's: `Elo 1612` `+26` `· #4 P4P` (2026-10-28,
+`docs/tdd/elo-at-fight.tdd.md`; restyled in `docs/tdd/past-event-ui.tdd.md`).
 
-- **Pre** is formatted like today's Elo; the **change** follows in muted text as `+26`, `−14` (a real minus) or `±0`
-  (a no contest). Screen readers hear it in words instead ("up 26", "down 14", "no change"), since some drop the
-  minus sign.
+- **Pre** is formatted like today's Elo; the **change** follows as a small chip, filled for a gain (`+26`) and outlined
+  for a loss (`−14`, a real minus), so the direction reads without colour. No change (a no contest) shows nothing.
+  Screen readers hear it in words instead ("up 26", "down 14", "no change"), since some drop the minus sign.
 - The **rank** is the P4P rank going in, so it isn't linked to `/rankings/` (that page is today's list).
-- The Elo's one tooltip reads "Elo going into this fight, and the change from it" (in place of the peak / best win
-  tip, which describe today; Stats still lists both).
+- No tooltip: the line says it all, and the peak / best win tip describes today (Stats still lists both).
 - The `provisional` / `inactive` tags and Stats' Peak row are unchanged: they describe today.
 - A completed fight without `fight.elo` (older data, or a fight the engine couldn't rate) shows today's Elo and rank,
   as before. Upcoming fights always do. `src/lib/contract.ts` only notes `Fight.elo` missing from a `schema.json` whose

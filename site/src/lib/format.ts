@@ -23,9 +23,14 @@ export function spokenDelta(delta: number): string {
   return delta > 0 ? `up ${delta}` : delta < 0 ? `down ${-delta}` : 'no change';
 }
 
-export const AT_FIGHT_TIP = 'Elo going into this fight, and the change from it';
-
-export type EloAtFight = { elo: string; delta: string; spoken: string; rank: string | null };
+export type EloAtFight = {
+  elo: string;
+  /** null when nothing changed (a no contest): nothing shows, and screen readers still hear "no change". */
+  delta: string | null;
+  change: 'gain' | 'loss' | null;
+  spoken: string;
+  rank: string | null;
+};
 
 /** A completed fight's Elo for one corner at the time, e.g. "Elo 1612", "+26" ("up 26"), "#4 P4P"; null without fight.elo. */
 export function eloAtFight(fight: Pick<Fight, 'elo'>, side: 'red' | 'blue'): EloAtFight | null {
@@ -34,7 +39,8 @@ export function eloAtFight(fight: Pick<Fight, 'elo'>, side: 'red' | 'blue'): Elo
   const delta = fight.elo[`${side}_delta`];
   return {
     elo: formatElo(fight.elo[`${side}_pre`]) ?? DASH,
-    delta: formatDelta(delta),
+    delta: delta ? formatDelta(delta) : null,
+    change: delta > 0 ? 'gain' : delta < 0 ? 'loss' : null,
     spoken: spokenDelta(delta),
     rank: rank != null ? `#${rank} P4P` : null,
   };
@@ -92,10 +98,11 @@ export function ageAt(dob: string | null | undefined, date: string): number | nu
 }
 
 /** e.g. "KO/TKO R1 4:12"; null when there is nothing to show. */
-export function formatResult(result: Result | null | undefined): string | null {
+/** A result as its method over when it ended, e.g. "KO/TKO" over "R1 · 4:12"; null when nothing is known. */
+export function resultParts(result: Result | null | undefined): { method: string | null; when: string | null } | null {
   if (!result) return null;
-  const parts = [result.method, result.round != null ? `R${result.round}` : null, result.time].filter(Boolean);
-  return parts.length ? parts.join(' ') : null;
+  const when = [result.round != null ? `R${result.round}` : null, result.time].filter(Boolean).join(' · ') || null;
+  return result.method || when ? { method: result.method ?? null, when } : null;
 }
 
 const RESULT_LETTERS: { [K in PastResult]: string } = { win: 'W', loss: 'L', draw: 'D', nc: 'NC' };
@@ -157,12 +164,8 @@ export function splitEventName(name: string): { kicker: string | null; headline:
 }
 
 /** Event rail tile: "Oct 31 · UFC 323" over "Alpha vs. Bravo". "UFC Fight Night" is every other week, so it's dropped. */
-export function eventTile(event: Pick<Event, 'name' | 'date' | 'status'>): { meta: string; headline: string } {
+export function eventTile(event: Pick<Event, 'name' | 'date'>): { meta: string; headline: string } {
   const { kicker, headline } = splitEventName(event.name);
-  const meta = [
-    chipDate(event.date),
-    kicker === 'UFC Fight Night' ? null : kicker,
-    event.status === 'completed' ? 'Results' : null,
-  ];
+  const meta = [chipDate(event.date), kicker === 'UFC Fight Night' ? null : kicker];
   return { meta: meta.filter(Boolean).join(' · '), headline };
 }

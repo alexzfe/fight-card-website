@@ -1,7 +1,6 @@
 ---
 import Avatar from './Avatar.astro';
 import {
-  AT_FIGHT_TIP,
   type EloAtFight,
   eloTags,
   eloTip,
@@ -19,30 +18,38 @@ interface Props {
   side: 'red' | 'blue';
   fighter: Fighter;
   winner: boolean;
+  /** Lost a completed fight: the corner steps back. A draw or no contest has no winner and no loser. */
+  lost?: boolean;
+  /** A completed fight: no form tiles, since today's form would count the fights after it. */
+  done?: boolean;
   eager?: boolean;
   large?: boolean;
   /** A completed fight's Elo at the time (eloAtFight); null shows today's. */
   atFight?: EloAtFight | null;
 }
 
-const { side, fighter, winner, eager, large, atFight } = Astro.props;
-const form = fighter.recent_fights ?? [];
+const { side, fighter, winner, lost, done, eager, large, atFight } = Astro.props;
+const form = done ? [] : (fighter.recent_fights ?? []);
 // A completed fight shows the Elo and rank going into it (a past rank, so unlinked); otherwise today's.
 const elo = atFight ? atFight.elo : formatElo(fighter.elo);
 const p4p = atFight ? atFight.rank : fighter.p4p_rank != null ? `#${fighter.p4p_rank} P4P` : null;
 const p4pHref = !atFight && p4p && rankingsHref(site.rankings, fighter.id);
 // The tags describe today, at-time or not.
 const tags = eloTags(fighter);
-const eloHint = atFight ? AT_FIGHT_TIP : eloTip(fighter);
+// The at-time line says it all, so it has no tip; today's Elo keeps its peak and best win.
+const eloHint = atFight ? null : eloTip(fighter);
 const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filter(Boolean).join(' · ');
 ---
 
-<div class:list={['corner', `corner-${side}`, { winner }]} data-testid={winner ? 'winner' : undefined}>
+<div class:list={['corner', `corner-${side}`, { winner, lost }]} data-testid={winner ? 'winner' : undefined}>
   {/* Sized for the widest layout; CSS shrinks it on phones. */}
   <Avatar fighter={fighter} eager={eager} size={large ? 96 : 72} />
   <div class="who">
     <span class="name">{fighter.name}</span>
-    <span class="record">{formatRecord(fighter.record)}</span>
+    <span class="record">
+      {winner && <span class="win-chip" data-testid="win-chip" aria-hidden="true">Win</span>}
+      {formatRecord(fighter.record)}
+    </span>
     {
       elo && (
         <span class="elo-line">
@@ -50,7 +57,15 @@ const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filte
           <span class="elo" data-testid="elo" data-tip={eloHint} tabindex={eloHint ? '-1' : undefined}>
             {elo}
             {/* Screen readers hear the change in words: some drop the minus sign. */}
-            {atFight && <> <span class="elo-delta" data-testid="elo-delta" aria-hidden="true">({atFight.delta})</span><span class="sr-only">({atFight.spoken})</span></>}
+            {atFight?.delta && (
+              <>
+                {' '}
+                <span class:list={['elo-delta', `elo-${atFight.change}`]} data-testid="elo-delta" aria-hidden="true">
+                  {atFight.delta}
+                </span>
+              </>
+            )}
+            {atFight && <span class="sr-only"> ({atFight.spoken})</span>}
             {/* The rank links to the fighter's row in the rankings; it sits inside the Elo, so hovering it still shows the tip. */}
             {p4p && <> · {p4pHref ? <a class="elo-rank" href={p4pHref}>{p4p}</a> : p4p}</>}
           </span>
