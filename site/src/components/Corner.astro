@@ -1,6 +1,16 @@
 ---
 import Avatar from './Avatar.astro';
-import { eloTags, eloTip, formatElo, formatPastFight, formatRecord, resultLetter, tagTip } from '../lib/format';
+import {
+  AT_FIGHT_TIP,
+  type EloAtFight,
+  eloTags,
+  eloTip,
+  formatElo,
+  formatPastFight,
+  formatRecord,
+  resultLetter,
+  tagTip,
+} from '../lib/format';
 import { rankingsHref } from '../lib/rankings';
 import type { Fighter } from '../lib/schema';
 import { site } from '../lib/site-data';
@@ -11,15 +21,19 @@ interface Props {
   winner: boolean;
   eager?: boolean;
   large?: boolean;
+  /** A completed fight's Elo at the time (eloAtFight); null shows today's. */
+  atFight?: EloAtFight | null;
 }
 
-const { side, fighter, winner, eager, large } = Astro.props;
+const { side, fighter, winner, eager, large, atFight } = Astro.props;
 const form = fighter.recent_fights ?? [];
-const elo = formatElo(fighter.elo);
-const p4p = fighter.p4p_rank != null ? `#${fighter.p4p_rank} P4P` : null;
-const p4pHref = p4p && rankingsHref(site.rankings, fighter.id);
+// A completed fight shows the Elo and rank going into it (a past rank, so unlinked); otherwise today's.
+const elo = atFight ? atFight.elo : formatElo(fighter.elo);
+const p4p = atFight ? atFight.rank : fighter.p4p_rank != null ? `#${fighter.p4p_rank} P4P` : null;
+const p4pHref = !atFight && p4p && rankingsHref(site.rankings, fighter.id);
+// The tags describe today, at-time or not.
 const tags = eloTags(fighter);
-const eloHint = eloTip(fighter);
+const eloHint = atFight ? AT_FIGHT_TIP : eloTip(fighter);
 const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filter(Boolean).join(' · ');
 ---
 
@@ -35,6 +49,7 @@ const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filte
           {/* Tips show on hover or tap (tabindex -1 lets a tap focus them); Stats lists the same peak and best win. */}
           <span class="elo" data-testid="elo" data-tip={eloHint} tabindex={eloHint ? '-1' : undefined}>
             {elo}
+            {atFight && <> <span class="elo-delta" data-testid="elo-delta">({atFight.delta})</span></>}
             {/* The rank links to the fighter's row in the rankings; it sits inside the Elo, so hovering it still shows the tip. */}
             {p4p && <> · {p4pHref ? <a class="elo-rank" href={p4pHref}>{p4p}</a> : p4p}</>}
           </span>

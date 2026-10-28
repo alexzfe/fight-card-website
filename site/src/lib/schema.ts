@@ -64,6 +64,16 @@ export const Result = z.object({
   outcome: Outcome.nullish(), // /v1/ only: tells a draw from a no contest (winner is null for both)
 });
 
+// A completed fight's Elo at the time (contract 1.3), on the same displayed scale as Fighter.elo.
+export const FightElo = z.object({
+  red_pre: z.number().int(), // Elo going into the fight
+  red_delta: z.number().int(), // that fight's own signed change; 0 for a no contest
+  blue_pre: z.number().int(),
+  blue_delta: z.number().int(),
+  red_p4p_rank: z.number().int().positive().nullish(), // P4P rank going in; null = unranked
+  blue_p4p_rank: z.number().int().positive().nullish(),
+});
+
 export const Fight = z.object({
   id: z.string().min(1),
   weight_class: z.string().nullish(),
@@ -74,6 +84,7 @@ export const Fight = z.object({
   segment: CardSegment.nullish(), // null = unknown; the site shows no heading
   tier_frozen_at: isoTimestamp.nullish(),
   result: Result.nullish(),
+  elo: FightElo.nullish(), // contract 1.3; null/absent on upcoming and unrated fights
 });
 
 export const Event = z.object({
@@ -146,6 +157,7 @@ export type BestWin = z.infer<typeof BestWin>;
 export type Record = z.infer<typeof Record>;
 export type Fighter = z.infer<typeof Fighter>;
 export type Result = z.infer<typeof Result>;
+export type FightElo = z.infer<typeof FightElo>;
 export type Fight = z.infer<typeof Fight>;
 export type Event = z.infer<typeof Event>;
 export type Index = z.infer<typeof Index>;

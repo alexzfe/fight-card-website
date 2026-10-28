@@ -1,4 +1,4 @@
-import type { BestWin, Event, Fighter, FinishTier, PastFight, PastResult, Record, Result } from './schema';
+import type { BestWin, Event, Fight, Fighter, FinishTier, PastFight, PastResult, Record, Result } from './schema';
 
 const DASH = '—';
 
@@ -11,6 +11,26 @@ export function formatRecord({ w, l, d, nc }: Record): string {
 export function formatElo(elo: number | null | undefined, p4pRank?: number | null): string | null {
   if (elo == null) return null;
   return p4pRank != null ? `Elo ${elo} · #${p4pRank} P4P` : `Elo ${elo}`;
+}
+
+/** A rating change: "+26", "−14" (a real minus sign), "±0". */
+export function formatDelta(delta: number): string {
+  return delta > 0 ? `+${delta}` : delta < 0 ? `−${-delta}` : '±0';
+}
+
+export const AT_FIGHT_TIP = 'Elo going into this fight, and the change from it';
+
+export type EloAtFight = { elo: string; delta: string; rank: string | null };
+
+/** A completed fight's Elo for one corner at the time, e.g. "Elo 1612", "+26", "#4 P4P"; null without fight.elo. */
+export function eloAtFight(fight: Pick<Fight, 'elo'>, side: 'red' | 'blue'): EloAtFight | null {
+  if (!fight.elo) return null;
+  const rank = fight.elo[`${side}_p4p_rank`];
+  return {
+    elo: formatElo(fight.elo[`${side}_pre`])!,
+    delta: formatDelta(fight.elo[`${side}_delta`]),
+    rank: rank != null ? `#${rank} P4P` : null,
+  };
 }
 
 /** e.g. opponent "Glover Teixeira" over meta "Elo 1684 · Jun 2022"; null without a win. */

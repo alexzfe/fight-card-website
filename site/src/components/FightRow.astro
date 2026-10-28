@@ -3,6 +3,7 @@ import Corner from './Corner.astro';
 import TierBadge from './TierBadge.astro';
 import {
   ageAt,
+  eloAtFight,
   formatBestWin,
   formatHeight,
   formatPastFight,
@@ -35,7 +36,7 @@ const stats = [
   ['Stance', red.stance ?? '—', blue.stance ?? '—'],
   ['Age', age(red), age(blue)],
 ] as const;
-// The corner shows the current Elo; Stats adds the peak, when either side has one.
+// The corner shows the Elo (going in, on a completed fight with fight.elo); Stats adds today's peak, when either side has one.
 const eloRows = [['Peak', red.elo_peak, blue.elo_peak]].filter(([, r, b]) => r != null || b != null);
 const bestWins = [formatBestWin(red.best_win), formatBestWin(blue.best_win)] as const;
 const history = [red, blue].map((f) => f.recent_fights ?? []);
@@ -43,7 +44,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
 
 <li class:list={['fight', { done: result, 'main-event': mainEvent }]} data-testid="fight">
   <div class="bout">
-    <Corner side="red" fighter={red} winner={winner === red.id} eager={eager} large={mainEvent} />
+    <Corner side="red" fighter={red} winner={winner === red.id} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
     <div class="mid">
       {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
       {fight.weight_class && <span>{fight.weight_class}</span>}
@@ -60,7 +61,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
         )
       }
     </div>
-    <Corner side="blue" fighter={blue} winner={winner === blue.id} eager={eager} large={mainEvent} />
+    <Corner side="blue" fighter={blue} winner={winner === blue.id} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
   </div>
   <details class="stats">
     <summary>Stats</summary>
