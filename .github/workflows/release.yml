@@ -3,7 +3,7 @@
 #   PR            -> test
 #   push to main  -> test, build ghcr.io/alexzfe/fight-card-website:<sha>, deploy to staging
 #   push tag v*   -> build that commit's code with main's latest data/ and deploy it to prod (prod.yml), then cut a
-#                    GitHub Release
+#                    GitHub Release; a deploy cancelled while pending opens a "Tag <tag> not deployed" issue instead
 #
 # Prod never runs untested code: the tag points at a commit main already built and staging already ran. Its image
 # is rebuilt only to swap in main's data/, so a tag never rolls prod's data back. Data refreshes deploy to prod on
@@ -86,12 +86,58 @@ jobs:
       ref: ${{ github.sha }}
     secrets: inherit
 
+  # Only for a tag that deployed. Its re-run after a "Tag not deployed" issue closes that issue.
   release:
     needs: prod
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
     steps:
       - run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
+      - name: Close the "Tag not deployed" issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: Tag ${{ github.ref_name }} not deployed
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$TITLE\" in:title" \
+            --json number,title --jq ".[] | select(.title == env.TITLE) | .number" | head -n1)
+          if [ -n "$number" ]; then
+            gh issue close "$number" --repo "$GITHUB_REPOSITORY" \
+              --comment "Deployed and released by $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+          fi
+
+  # GitHub keeps one pending run per concurrency group, so a newer prod deploy (tag or refresh) cancels this one
+  # while it waits. The run then only shows "cancelled", prod keeps the code it had and no Release is cut: say so in
+  # an issue, and fail. always(): the run may count as cancelled, which skips jobs without it.
+  not-deployed:
+    needs: prod
+    if: always() && needs.prod.result == 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update the "Tag not deployed" issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: Tag ${{ github.ref_name }} not deployed
+        run: |
+          run="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          body="The prod deploy of \`$GITHUB_REF_NAME\` was cancelled before it started ($run): a newer pending prod
+          deploy (another tag or a data refresh) replaced it in the \`prod-deploy\` group, or someone cancelled it.
+          Prod doesn't run this tag's code and no GitHub Release was cut.
+
+          If no newer tag has deployed since, open the run and choose **Re-run all jobs**: it rebuilds the tag with
+          main's latest \`data/\`, deploys it, cuts the Release and closes this issue. If a newer tag has deployed,
+          re-running would put older code back on prod: close this issue instead (see docs/DEPLOY.md)."
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$TITLE\" in:title" \
+            --json number,title --jq ".[] | select(.title == env.TITLE) | .number" | head -n1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$body"
+          fi
+          echo "::error::$GITHUB_REF_NAME was not deployed: its pending prod deploy was cancelled. Re-run all jobs unless a newer tag has deployed since (issue \"$TITLE\")."
+          exit 1
