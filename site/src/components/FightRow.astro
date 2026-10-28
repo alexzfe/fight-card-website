@@ -27,6 +27,8 @@ interface Props {
 const { fight, event, fighters, eager, mainEvent = false, finishLabel = false } = Astro.props;
 const red = fighters[fight.red]!;
 const blue = fighters[fight.blue]!;
+// Completed once there is a result, even one known only by its winner (resultParts is then null: no outcome block).
+const done = fight.result != null;
 const result = resultParts(fight.result);
 const winner = fight.result?.winner;
 const age = (f: Fighter) => ageAt(f.dob, event.date) ?? '—';
@@ -42,9 +44,9 @@ const bestWins = [formatBestWin(red.best_win), formatBestWin(blue.best_win)] as 
 const history = [red, blue].map((f) => f.recent_fights ?? []);
 ---
 
-<li class:list={['fight', { done: result, 'main-event': mainEvent }]} data-testid="fight">
+<li class:list={['fight', { done, 'main-event': mainEvent }]} data-testid="fight">
   <div class="bout">
-    <Corner side="red" fighter={red} winner={winner === red.id} lost={!!winner && winner !== red.id} done={!!result} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
+    <Corner side="red" fighter={red} winner={winner === red.id} lost={!!winner && winner !== red.id} done={done} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
     <div class="mid">
       {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
       {/* A completed fight leads with how it ended; the pre-fight badge, frozen at the start, stays below when there was one. */}
@@ -60,7 +62,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
       {fight.weight_class && <span>{fight.weight_class}</span>}
       {fight.title_fight && <span class="title-marker" data-testid="title">Title</span>}
       {
-        (!result || fight.finish_tier) && (
+        (!done || fight.finish_tier) && (
           <>
             <span class:list={['finish-label', { 'sr-only': !finishLabel }]} data-testid="finish-label">Finish chance</span>
             <TierBadge tier={fight.finish_tier} />
@@ -68,7 +70,7 @@ const history = [red, blue].map((f) => f.recent_fights ?? []);
         )
       }
     </div>
-    <Corner side="blue" fighter={blue} winner={winner === blue.id} lost={!!winner && winner !== blue.id} done={!!result} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
+    <Corner side="blue" fighter={blue} winner={winner === blue.id} lost={!!winner && winner !== blue.id} done={done} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
   </div>
   <details class="stats">
     <summary>Stats</summary>
