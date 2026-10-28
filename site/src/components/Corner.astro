@@ -49,7 +49,8 @@ const tip = (f: (typeof form)[number]) => [f.opponent, formatPastFight(f)].filte
           {/* Tips show on hover or tap (tabindex -1 lets a tap focus them); Stats lists the same peak and best win. */}
           <span class="elo" data-testid="elo" data-tip={eloHint} tabindex={eloHint ? '-1' : undefined}>
             {elo}
-            {atFight && <> <span class="elo-delta" data-testid="elo-delta">({atFight.delta})</span></>}
+            {/* Screen readers hear the change in words: some drop the minus sign. */}
+            {atFight && <> <span class="elo-delta" data-testid="elo-delta" aria-hidden="true">({atFight.delta})</span><span class="sr-only">({atFight.spoken})</span></>}
             {/* The rank links to the fighter's row in the rankings; it sits inside the Elo, so hovering it still shows the tip. */}
             {p4p && <> · {p4pHref ? <a class="elo-rank" href={p4pHref}>{p4p}</a> : p4p}</>}
           </span>

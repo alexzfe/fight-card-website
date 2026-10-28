@@ -18,17 +18,24 @@ export function formatDelta(delta: number): string {
   return delta > 0 ? `+${delta}` : delta < 0 ? `−${-delta}` : '±0';
 }
 
+/** The same change in words, for screen readers (which may drop the minus sign): "up 26", "down 14", "no change". */
+export function spokenDelta(delta: number): string {
+  return delta > 0 ? `up ${delta}` : delta < 0 ? `down ${-delta}` : 'no change';
+}
+
 export const AT_FIGHT_TIP = 'Elo going into this fight, and the change from it';
 
-export type EloAtFight = { elo: string; delta: string; rank: string | null };
+export type EloAtFight = { elo: string; delta: string; spoken: string; rank: string | null };
 
-/** A completed fight's Elo for one corner at the time, e.g. "Elo 1612", "+26", "#4 P4P"; null without fight.elo. */
+/** A completed fight's Elo for one corner at the time, e.g. "Elo 1612", "+26" ("up 26"), "#4 P4P"; null without fight.elo. */
 export function eloAtFight(fight: Pick<Fight, 'elo'>, side: 'red' | 'blue'): EloAtFight | null {
   if (!fight.elo) return null;
   const rank = fight.elo[`${side}_p4p_rank`];
+  const delta = fight.elo[`${side}_delta`];
   return {
-    elo: formatElo(fight.elo[`${side}_pre`])!,
-    delta: formatDelta(fight.elo[`${side}_delta`]),
+    elo: formatElo(fight.elo[`${side}_pre`]) ?? DASH,
+    delta: formatDelta(delta),
+    spoken: spokenDelta(delta),
     rank: rank != null ? `#${rank} P4P` : null,
   };
 }

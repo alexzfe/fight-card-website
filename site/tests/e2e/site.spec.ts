@@ -381,9 +381,9 @@ test('screen readers hear the at-time change in words, not a minus sign they may
   await page.goto('/events/ufc-fight-night-golf-vs-hotel/');
   const elo = (fight: number, side: 'red' | 'blue') =>
     page.getByTestId('fight').nth(fight).locator(`.corner-${side}`).getByTestId('elo');
-  await expect(elo(0, 'red')).toMatchAriaSnapshot('- text: Elo 1548 (up 26) · #4 P4P');
-  await expect(elo(0, 'blue')).toMatchAriaSnapshot('- text: Elo 1580 (down 26) · #12 P4P');
-  await expect(elo(3, 'blue')).toMatchAriaSnapshot('- text: Elo 1471 (no change)');
+  await expect(elo(0, 'red')).toMatchAriaSnapshot('- text: "Elo 1548 (up 26) · #4 P4P"');
+  await expect(elo(0, 'blue')).toMatchAriaSnapshot('- text: "Elo 1580 (down 26) · #12 P4P"');
+  await expect(elo(3, 'blue')).toMatchAriaSnapshot('- text: "Elo 1471 (no change)"');
 });
 
 for (const scheme of ['light', 'dark'] as const) {
