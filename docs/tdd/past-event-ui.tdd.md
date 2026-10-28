@@ -33,6 +33,7 @@
 | `941fd5f` | GREEN | `npm test` 254/254, `npm run test:e2e` 81/81, `astro check` 0 errors. Tests changed after RED, each a fault in the test, not a weaker check: `clearOfFades` passed the rail's handle unawaited; the result test looked for `Lightweight` on a Heavyweight bout; the per-segment label test now expects no label on the fight with no frozen badge (journey 1); `eventTile` calls drop the unused `status`. |
 | `e8d5f32` | RED (review) | Playwright: 3 failed / 80 passed (a winner-only result showed the finish label and form tiles; `(winner)` came after the Elo and the loser had no word; the per-segment label test's new fifth bout). |
 | `aaf6ecf` | GREEN (review) | `npm test` 254/254, `npm run test:e2e` 83/83, `astro check` 0 errors. No test changed after RED. The off-season rail (today marker after the last event, opening at the right end) has no fixture to test it: the fixtures always have upcoming events. |
+| `CI fix` | test | CI (`build.yml` on PR #23) failed the two fade tests: its Linux fonts made the first upcoming tile wider than the gap between the fades at 360px. The helper now also accepts a centred tile when it can't clear both; checked locally by widening tiles. |
 
 ## Test specification
 
