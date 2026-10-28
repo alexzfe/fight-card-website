@@ -22,7 +22,7 @@ const firstUpcoming = rail.findIndex((e) => e.status === 'upcoming');
 // leaving the focused tile under the edge fade. Keyboard focus only, so a tap doesn't scroll mid-navigation.
 ---
 
-<nav class="rail-nav" aria-label="Events">
+<nav class="rail-nav" aria-label={site.rankings ? 'Events and rankings' : 'Events'}>
   <ul class="rail">
     {
       rail.map((e, i) => {

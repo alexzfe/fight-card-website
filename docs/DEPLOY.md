@@ -207,7 +207,13 @@ Trade-offs:
 - **A refresh still ships main's HEAD code** (above); this change doesn't alter that, so a tag on an older commit
   is not a lasting rollback (next section).
 
-Tests and evidence: `docs/tdd/tag-deploy.tdd.md`.
+**After every prod deploy.** infra's `deploy-app.yml` curls `/` only, and `/` still loaded on 2026-10-27 while
+`/rankings/` 404'd. So `prod.yml` and `refresh.yml` each end with a `smoke` job that curls
+https://ufc.xlobax.com/rankings/ (same retries as deploy-app). A red `smoke` means prod is already deployed: roll
+back or fix forward (next section). `build.yml` also refuses a `data_ref` starting with `-`, which `git fetch` would
+read as an option.
+
+Tests and evidence: `docs/tdd/tag-deploy.tdd.md`, `docs/tdd/review-quick-wins.tdd.md`.
 
 ## Rolling back
 

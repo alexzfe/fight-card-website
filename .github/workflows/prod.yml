@@ -36,3 +36,15 @@ jobs:
       url: https://ufc.xlobax.com
       purge_cache: true
     secrets: inherit
+
+  # deploy-app curls / only. /rankings/ is the page a deploy with older data/ lost (2026-10-27).
+  smoke:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Check /rankings/ is served
+        env:
+          URL: https://ufc.xlobax.com/rankings/
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 -o /dev/null "$URL"
