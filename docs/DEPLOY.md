@@ -162,7 +162,8 @@ trigger other workflows, so a tag pushed by `refresh.yml` would never start `rel
    (test → staging → tag → prod) with the data flow, and needs fake tag/ref inputs.
 3. **Chosen:** refresh calls the same two building blocks that `release.yml` uses: the local reusable `build.yml`
    and infra's `deploy-app.yml`, with `env: prod`. It needs no extra secret. The image is still tagged with the
-   commit SHA, and `deploy-app ufc prod <sha>` on the box rolls back to any of them.
+   commit SHA, and `deploy-app ufc prod <sha>` on the box rolls back to any of them, until the next refresh (see
+   [Rolling back](#rolling-back)).
 
 Data commits don't trigger `release.yml` either, so they don't rebuild staging. Staging keeps running the last code
 push.
@@ -203,9 +204,25 @@ Trade-offs:
 - **Pending deploys are replaced, not queued.** GitHub keeps one pending run per concurrency group. Two tags pushed
   while a deploy runs, or a tag and a refresh both waiting, can replace each other; whatever runs next still carries
   main's latest `data/`. A replaced tag deploy also skips its GitHub Release: re-run it.
-- **A refresh still ships main's HEAD code** (above); this change doesn't alter that.
+- **A refresh still ships main's HEAD code** (above); this change doesn't alter that, so a tag on an older commit
+  is not a lasting rollback (next section).
 
 Tests and evidence: `docs/tdd/tag-deploy.tdd.md`.
+
+## Rolling back
+
+**A rollback doesn't stick on its own.** A `v*` tag deploys the tagged code, but the next refresh that changes
+`data/` (daily 06:00 UTC; hourly on event days) deploys main's HEAD code again, the broken code. `deploy-app ufc prod
+<sha>` on the box is undone the same way, and until then it also puts prod back on that commit's `data/`.
+
+- **Preferred: fix main.** `git revert` the bad commit on a branch, PR, merge, then tag. Every later refresh ships
+  the good code.
+- **Quick: roll back and pause refresh.** Tag the old commit (or `deploy-app ufc prod <sha>` on the box), then
+  `gh workflow disable refresh.yml --repo alexzfe/fight-card-website`. While it's paused the site's data is frozen.
+  Once main is fixed, `gh workflow enable refresh.yml --repo alexzfe/fight-card-website`.
+
+Longer term, refresh could build the latest `v*` tag's code with the new `data/` via `build.yml`'s `data_ref`
+(the option in [Why refresh calls deploy-app directly](#why-refresh-calls-deploy-app-directly-instead-of-tagging)).
 
 ## Go-live checklist
 
