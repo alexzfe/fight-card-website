@@ -72,7 +72,7 @@
         "red_p4p_rank": null,
         "red_pre": 1502
       },
-      "finish_tier": "medium",
+      "finish_tier": null,
       "id": "f0000000000000d4",
       "red": "a3a3a3a3a3a3a3a3",
       "result": {
@@ -81,7 +81,7 @@
         "time": "3:10",
         "winner": null
       },
-      "tier_frozen_at": "2026-10-18T22:00:00Z",
+      "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"
     }

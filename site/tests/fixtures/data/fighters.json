@@ -88,7 +88,19 @@
       "nc": 0,
       "w": 20
     },
-    "stance": "Orthodox"
+    "stance": "Orthodox",
+    "recent_fights": [
+      {
+        "date": "2026-10-18",
+        "event": "UFC Fight Night: Golf vs. Hotel",
+        "method": "KO/TKO",
+        "opponent": "Hugo Hotel",
+        "opponent_id": null,
+        "result": "win",
+        "round": 1,
+        "time": "4:12"
+      }
+    ]
   },
   "b2b2b2b2b2b2b2b2": {
     "details_fetched_at": "2026-10-20T06:00:00Z",

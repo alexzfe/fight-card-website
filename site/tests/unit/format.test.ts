@@ -14,11 +14,10 @@ import {
   formatDelta,
   spokenDelta,
   eloAtFight,
-  AT_FIGHT_TIP,
   formatBestWin,
   formatRecord,
   formatPastFight,
-  formatResult,
+  resultParts,
   initials,
   resultLetter,
   tierLabel,
@@ -79,10 +78,22 @@ describe('spokenDelta', () => {
 describe('eloAtFight', () => {
   const elo = { red_pre: 1548, red_delta: 26, blue_pre: 1580, blue_delta: -26, red_p4p_rank: 4, blue_p4p_rank: null };
   it("gives a corner's Elo going in, the bout's change and the P4P rank then", () => {
-    expect(eloAtFight({ elo }, 'red')).toEqual({ elo: 'Elo 1548', delta: '+26', spoken: 'up 26', rank: '#4 P4P' });
+    expect(eloAtFight({ elo }, 'red')).toEqual({
+      elo: 'Elo 1548',
+      delta: '+26',
+      change: 'gain',
+      spoken: 'up 26',
+      rank: '#4 P4P',
+    });
   });
   it('has no rank when the fighter was unranked going in', () => {
-    expect(eloAtFight({ elo }, 'blue')).toEqual({ elo: 'Elo 1580', delta: '\u221226', spoken: 'down 26', rank: null });
+    expect(eloAtFight({ elo }, 'blue')).toEqual({
+      elo: 'Elo 1580',
+      delta: '\u221226',
+      change: 'loss',
+      spoken: 'down 26',
+      rank: null,
+    });
     const { blue_p4p_rank, ...noRank } = elo;
     expect(eloAtFight({ elo: noRank }, 'blue')!.rank).toBeNull();
   });
@@ -90,8 +101,9 @@ describe('eloAtFight', () => {
     expect(eloAtFight({ elo: null }, 'red')).toBeNull();
     expect(eloAtFight({}, 'blue')).toBeNull();
   });
-  it('explains itself in one short tip', () => {
-    expect(AT_FIGHT_TIP).toBe('Elo going into this fight, and the change from it');
+  it('shows no change at all when nothing changed (a no contest), but still says so in words', () => {
+    const nc = { ...elo, red_delta: 0 };
+    expect(eloAtFight({ elo: nc }, 'red')).toMatchObject({ delta: null, change: null, spoken: 'no change' });
   });
 });
 
@@ -184,19 +196,23 @@ describe('ageAt', () => {
   });
 });
 
-describe('formatResult', () => {
-  it('formats method, round and time', () => {
-    expect(formatResult({ winner: 'x', method: 'KO/TKO', round: 1, time: '4:12' })).toBe('KO/TKO R1 4:12');
+describe('resultParts', () => {
+  it('splits a result into its method and when it ended', () => {
+    expect(resultParts({ winner: 'x', method: 'KO/TKO', round: 1, time: '4:12' })).toEqual({
+      method: 'KO/TKO',
+      when: 'R1 · 4:12',
+    });
   });
   it('skips missing parts', () => {
-    expect(formatResult({ winner: null, method: 'Draw', round: null, time: null })).toBe('Draw');
+    expect(resultParts({ winner: null, method: 'Draw', round: null, time: null })).toEqual({ method: 'Draw', when: null });
+    expect(resultParts({ winner: 'x', method: null, round: 3, time: null })).toEqual({ method: null, when: 'R3' });
   });
   it('returns null when there is no result', () => {
-    expect(formatResult(null)).toBeNull();
-    expect(formatResult(undefined)).toBeNull();
+    expect(resultParts(null)).toBeNull();
+    expect(resultParts(undefined)).toBeNull();
   });
   it('returns null for an empty result', () => {
-    expect(formatResult({ winner: null, method: null, round: null, time: null })).toBeNull();
+    expect(resultParts({ winner: null, method: null, round: null, time: null })).toBeNull();
   });
 });
 
@@ -258,9 +274,9 @@ describe('eventTile', () => {
       'Sep 12 · Noche UFC',
     );
   });
-  it('marks a completed event as results', () => {
+  it('does not mark a completed event as results: it sits left of the today marker, muted', () => {
     expect(eventTile({ name: 'UFC Fight Night: Golf vs. Hotel', date: '2026-10-18', status: 'completed' })).toEqual({
-      meta: 'Oct 18 · Results',
+      meta: 'Oct 18',
       headline: 'Golf vs. Hotel',
     });
   });
