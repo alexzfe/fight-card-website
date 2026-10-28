@@ -209,9 +209,10 @@ Trade-offs:
   main's latest `data/`. A replaced tag's run shows its `prod` job cancelled and cuts no GitHub Release; its
   `not-deployed` job then opens a **"Tag `<tag>` not deployed"** issue (or comments on the open one) and fails the
   run with an error naming the tag. To deploy it, open the run and choose **Re-run all jobs**: it rebuilds the tag
-  with main's latest `data/`, deploys, cuts the Release and closes the issue. Don't re-run it if a newer tag has
-  deployed since, which would put older code back on prod; close the issue instead. A deploy cancelled by hand
-  opens the same issue.
+  with main's latest `data/`, deploys, cuts the Release (skipped if it exists) and closes the issue. Don't re-run it
+  if a newer tag has deployed since, which would put older code back on prod; close the issue instead. A deploy
+  cancelled by hand or timed out also opens the issue; it may have stopped mid-deploy, so the issue says only that
+  prod may not run the tag's code.
 - **A refresh still ships main's HEAD code** (above); this change doesn't alter that, so a tag on an older commit
   is not a lasting rollback (next section).
 
