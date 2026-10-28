@@ -11,7 +11,7 @@ import {
   tagTip,
 } from '../lib/format';
 import { rankingsHref } from '../lib/rankings';
-import type { Fighter } from '../lib/schema';
+import type { Fighter, PastFight } from '../lib/schema';
 import { site } from '../lib/site-data';
 
 interface Props {
@@ -20,16 +20,15 @@ interface Props {
   winner: boolean;
   /** Lost a completed fight: the corner steps back. A draw or no contest has no winner and no loser. */
   lost?: boolean;
-  /** A completed fight: no form tiles, since today's form would count the fights after it. */
-  done?: boolean;
+  /** The last fights shown as tiles: today's on an upcoming fight, the ones going in on a completed one (formAt). */
+  form: PastFight[];
   eager?: boolean;
   large?: boolean;
   /** A completed fight's Elo at the time (eloAtFight); null shows today's. */
   atFight?: EloAtFight | null;
 }
 
-const { side, fighter, winner, lost, done, eager, large, atFight } = Astro.props;
-const form = done ? [] : (fighter.recent_fights ?? []);
+const { side, fighter, winner, lost, form, eager, large, atFight } = Astro.props;
 // A completed fight shows the Elo and rank going into it (a past rank, so unlinked); otherwise today's.
 const elo = atFight ? atFight.elo : formatElo(fighter.elo);
 const p4p = atFight ? atFight.rank : fighter.p4p_rank != null ? `#${fighter.p4p_rank} P4P` : null;

@@ -59,14 +59,15 @@ JSON Schema and walks them against `$defs` `Index`, `Event`, `Fighters` and `Ran
 other way round), a field the site requires that the contract makes optional, a `$ref` that doesn't resolve, or a
 missing `Index`, `Event` or `Fighters`. A contract field the site doesn't read is only a note, and so is a missing
 `Rankings` (a 1.0/1.1 contract, e.g. after an engine rollback: `rankings.json` is optional), and so is a field the
-site reads ahead of the engine (`NEWER_FIELDS`, keyed by the version that adds it: `Fight.elo` at 1.3) while
+site reads ahead of the engine (`NEWER_FIELDS`, keyed by the version that adds it: `Fight.elo` at 1.3, `Fight.form` at 1.4) while
 `schema.json`'s title, `fightcard /v1 (contract X.Y)`, names an older version. From that version on, or when the title
 has no readable version, the field missing is an error. It runs in two places:
 
 - `site/tests/unit/contract.test.ts`, against the fixture's pinned `schema.json` (which also validates every fixture
   file with ajv), so a `schema.ts` change that drifts from the contract fails CI.
   It also checks the engine's 1.3 schema, `site/tests/fixtures/schema-1.3.json` (`fightcard.publish.build.schema()`
-  at fightcard-engine 580d8d8, PR #11), until a 1.3 snapshot replaces the pinned 1.2 one.
+  at fightcard-engine 580d8d8, PR #11) and 1.4 schema, `site/tests/fixtures/schema-1.4.json` (at 62eecd6, PR #12),
+  until a newer snapshot replaces the pinned 1.2 one.
 - `npm run validate-data` whenever the data dir has a `schema.json`, so a snapshot whose contract breaks the site
   fails the refresh before anything is committed, even if no current data uses the new value yet.
 
@@ -118,3 +119,9 @@ Each owner edits only their paths. Contract changes (`models.py`, this doc, `pyp
 | ops | `Dockerfile`, `.dockerignore`, `.github/`, `scripts/`, `~/Projects/infra` (branch `add-ufc-site`, no push) |
 
 `store.py` (reading/writing data/ with the formatting rules above) is owned by scraper. Other stages may import it once it lands. Until then, read and write via `models.py` with the same formatting rules.
+
+### Form on completed cards (contract 1.4)
+
+A completed fight's tiles and its Stats "last fights" come from `Fight.form` (each corner's last results going into
+that fight), never from `Fighter.recent_fights`, which is today's and would count the fights after the card. Without
+`Fight.form` (data before 1.4) a completed fight shows none. Upcoming fights keep `recent_fights`.

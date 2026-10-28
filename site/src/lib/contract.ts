@@ -21,7 +21,7 @@ const FILES: [string, z.ZodType][] = [
 const OPTIONAL = new Set(['Rankings']);
 // Optional fields the site reads, by the contract version that adds them: a contract older than that only lacks them,
 // so the site can deploy first. From that version on, or when the version can't be read, a missing one is an error.
-const NEWER_FIELDS: { [field: string]: string } = { 'Fight.elo': '1.3' };
+const NEWER_FIELDS: { [field: string]: string } = { 'Fight.elo': '1.3', 'Fight.form': '1.4' };
 
 // The contract version from schema.json's title, "fightcard /v1 (contract 1.2)": the same file and build as the
 // $defs it describes (index.json's contract_version is a separate file the check isn't given). null when unreadable.
