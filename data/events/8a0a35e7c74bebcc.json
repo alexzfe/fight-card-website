@@ -1,0 +1,214 @@
+{
+  "date": "2026-09-19",
+  "fights": [
+    {
+      "blue": "a0f0004aadf10b71",
+      "finish_tier": null,
+      "id": "568ec6af4008355a",
+      "red": "17e97649403ba428",
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 5,
+        "time": "5:00",
+        "winner": "17e97649403ba428"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": true,
+      "weight_class": "Flyweight"
+    },
+    {
+      "blue": "9c393e836a852f30",
+      "finish_tier": null,
+      "id": "fe612d20eec7ef35",
+      "red": "eae48ff31db420c2",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "4:56",
+        "winner": "eae48ff31db420c2"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "e93b04e308913c2e",
+      "finish_tier": null,
+      "id": "f7810c98786c3dd8",
+      "red": "98a58c26c5b1ed17",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "3:28",
+        "winner": "98a58c26c5b1ed17"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "f7e856a73c96048e",
+      "finish_tier": null,
+      "id": "023ce4fa7b7b76f9",
+      "red": "0f3a990526c5e706",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "0:12",
+        "winner": "0f3a990526c5e706"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "1c23ec2f1b71be40",
+      "finish_tier": null,
+      "id": "196c64693a2ce308",
+      "red": "a495f599e787614f",
+      "result": {
+        "method": "S-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "a495f599e787614f"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "f1d64ae34e088832",
+      "finish_tier": null,
+      "id": "d0361fe28d05a0b5",
+      "red": "7c7332319c14094c",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 3,
+        "time": "2:02",
+        "winner": "7c7332319c14094c"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "c62fbc117d57b943",
+      "finish_tier": null,
+      "id": "3f2d637ffb324a51",
+      "red": "140567899d98978a",
+      "result": {
+        "method": "S-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "140567899d98978a"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "a44020ea2e8cd026",
+      "finish_tier": null,
+      "id": "d89cc2cb92cd8407",
+      "red": "01c9e4013afce141",
+      "result": {
+        "method": "S-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "01c9e4013afce141"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "6967153c7edb4d87",
+      "finish_tier": null,
+      "id": "51789f77811b1817",
+      "red": "e463ce0a2ca474f4",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "2:04",
+        "winner": "e463ce0a2ca474f4"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "1e719d4b676dc19a",
+      "finish_tier": null,
+      "id": "9be47241c960d082",
+      "red": "4144798612ef96e5",
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "4144798612ef96e5"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "de594b35c45c2e9a",
+      "finish_tier": null,
+      "id": "73304588cef4f88b",
+      "red": "04835018f90b118c",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 1,
+        "time": "3:22",
+        "winner": "04835018f90b118c"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    },
+    {
+      "blue": "9560ff14eb3129f7",
+      "finish_tier": null,
+      "id": "2e35163040eb3189",
+      "red": "791c8437b341fba5",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "1:57",
+        "winner": "791c8437b341fba5"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    }
+  ],
+  "id": "8a0a35e7c74bebcc",
+  "location": "Los Angeles, California, USA",
+  "name": "UFC 331: Van vs. Pantoja 2",
+  "slug": "ufc-331-van-vs-pantoja-2",
+  "status": "completed"
+}

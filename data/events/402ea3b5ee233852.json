@@ -90,12 +90,12 @@
       "weight_class": "Lightweight"
     },
     {
-      "blue": "d1feea7a4bdcd503",
+      "blue": "64d47ef881a437a4",
       "finish_tier": "high",
-      "id": "84a55182d520b9de",
+      "id": "2a4b33c38e7b16b0",
       "red": "ad5cb64af10fc946",
       "result": null,
-      "segment": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Middleweight"
@@ -127,6 +127,28 @@
       "finish_tier": "high",
       "id": "349a6570cc687e83",
       "red": "ff62013d2fce6d13",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "20bccc9bb4ceb23e",
+      "finish_tier": "high",
+      "id": "9dbb5ad42f7801f9",
+      "red": "7026eca45f65377b",
+      "result": null,
+      "segment": "early_prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "438d497617ecb16e",
+      "finish_tier": null,
+      "id": "aad8a97d1a0852a0",
+      "red": "d9a56ecb6e94f02e",
       "result": null,
       "segment": "early_prelims",
       "tier_frozen_at": null,

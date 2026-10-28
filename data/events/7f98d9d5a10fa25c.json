@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-10",
+  "fights": [
+    {
+      "blue": "a93f94c923c3a9cb",
+      "finish_tier": null,
+      "id": "7db1a3dac7e343e7",
+      "red": "2f181c0467965b98",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 5,
+        "time": "2:46",
+        "winner": "2f181c0467965b98"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "72f890c5d421e705",
+      "finish_tier": null,
+      "id": "295339c08c80a3cf",
+      "red": "4c88a1db5a46c6a4",
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "4c88a1db5a46c6a4"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "8bd4200561c77a62",
+      "finish_tier": null,
+      "id": "4f0f783503d5b5c4",
+      "red": "8e5d953bdb9ae5e7",
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "8e5d953bdb9ae5e7"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Strawweight"
+    },
+    {
+      "blue": "eee0ef3e2b14816b",
+      "finish_tier": null,
+      "id": "e8710a6236db464e",
+      "red": "8fd808923cffff82",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "0:22",
+        "winner": "8fd808923cffff82"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "2e45d08b3f2f02c8",
+      "finish_tier": null,
+      "id": "c56bbc28d155f846",
+      "red": "b9124c308671e303",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "2:39",
+        "winner": "b9124c308671e303"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "6ac9bc2953c47345",
+      "finish_tier": null,
+      "id": "eda03e3ddf74d1cd",
+      "red": "6add18754930182b",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "3:35",
+        "winner": "6add18754930182b"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "eb393afdbe3293d5",
+      "finish_tier": null,
+      "id": "254ace2091125fc6",
+      "red": "3920d0cc288f9b0d",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "4:23",
+        "winner": "3920d0cc288f9b0d"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "9eed2bcc9e0b92af",
+      "finish_tier": null,
+      "id": "e5496bb07c76d010",
+      "red": "d8da10db80131bec",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "1:58",
+        "winner": "d8da10db80131bec"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "e564146b9cf6dbef",
+      "finish_tier": null,
+      "id": "ab17995c72396061",
+      "red": "49edd0d90f60fb7d",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 1,
+        "time": "1:49",
+        "winner": "49edd0d90f60fb7d"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "e03187ec8b5b6abc",
+      "finish_tier": null,
+      "id": "e997bc8caf59cf03",
+      "red": "73a78713bd899f4c",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "2:59",
+        "winner": "73a78713bd899f4c"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "07047eb7d17fb0a2",
+      "finish_tier": null,
+      "id": "335b3ce2b5c0a3cd",
+      "red": "81d2c551886bd5a1",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "5:00",
+        "winner": "81d2c551886bd5a1"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Bantamweight"
+    },
+    {
+      "blue": "a4a80dd7336ffd59",
+      "finish_tier": null,
+      "id": "e556bdf83f767d4b",
+      "red": "e4faa79383c9f214",
+      "result": {
+        "method": "M-DEC",
+        "outcome": "draw",
+        "round": 3,
+        "time": "5:00",
+        "winner": null
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    }
+  ],
+  "id": "7f98d9d5a10fa25c",
+  "location": "Las Vegas, Nevada, USA",
+  "name": "UFC Fight Night: Allen vs. Duncan",
+  "slug": "ufc-fight-night-allen-vs-duncan",
+  "status": "completed"
+}

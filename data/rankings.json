@@ -122,7 +122,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1709,
+      "elo": 1708,
       "id": "b4b496ec2197ee3e",
       "name": "Navajo Stirling",
       "p4p_rank": 15,
@@ -842,7 +842,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1614,
+      "elo": 1613,
       "id": "20bccc9bb4ceb23e",
       "name": "Melquizael Costa",
       "p4p_rank": null,
@@ -1818,7 +1818,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1548,
+      "elo": 1547,
       "id": "329e403448756217",
       "name": "Nathaniel Wood",
       "p4p_rank": null,
@@ -3586,7 +3586,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1451,
+      "elo": 1452,
       "id": "c051c2e12d692b8a",
       "name": "Jesus Aguilar",
       "p4p_rank": null,
@@ -3626,7 +3626,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1447,
+      "elo": 1448,
       "id": "a54660deb6a8489c",
       "name": "Muin Gafurov",
       "p4p_rank": null,
@@ -3682,7 +3682,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1443,
+      "elo": 1444,
       "id": "a6eb54ae17a551be",
       "name": "Gabriella Fernandes",
       "p4p_rank": null,
@@ -5074,7 +5074,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1301,
+      "elo": 1302,
       "id": "9c27f3217891f3f0",
       "name": "Kris Moutinho",
       "p4p_rank": null,
@@ -5153,7 +5153,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-10-27",
+  "as_of": "2026-10-28",
   "p4p": {
     "men": [
       {
@@ -5270,7 +5270,7 @@
       },
       {
         "division": "Light Heavyweight",
-        "elo": 1709,
+        "elo": 1708,
         "id": "b4b496ec2197ee3e",
         "image": "images/b4b496ec2197ee3e.webp",
         "name": "Navajo Stirling",

@@ -1,0 +1,231 @@
+{
+  "date": "2026-10-17",
+  "fights": [
+    {
+      "blue": "b9437600497350f3",
+      "finish_tier": null,
+      "id": "c20c949ceba035f3",
+      "red": "dd6103dd7127db1d",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "2:32",
+        "winner": "dd6103dd7127db1d"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "669970f7feba8ecd",
+      "finish_tier": null,
+      "id": "16f8c3c83d56a25a",
+      "red": "a9e260472d321361",
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "a9e260472d321361"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    },
+    {
+      "blue": "31f8081c7600da93",
+      "finish_tier": null,
+      "id": "3f8c17d553845f70",
+      "red": "d84033157714ee94",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "0:27",
+        "winner": "d84033157714ee94"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "d6c0cdd7e467c440",
+      "finish_tier": null,
+      "id": "250651ba9f60e12f",
+      "red": "8e9eb3fc86db0f7d",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "4:28",
+        "winner": "8e9eb3fc86db0f7d"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "91cd52cb92dfdd52",
+      "finish_tier": null,
+      "id": "5192be72d199804c",
+      "red": "0e46690e55a8df75",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 2,
+        "time": "2:48",
+        "winner": "0e46690e55a8df75"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "583ee11abddfc581",
+      "finish_tier": null,
+      "id": "49707683a6ebf34c",
+      "red": "8f4528c10bd34fab",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "0:47",
+        "winner": "8f4528c10bd34fab"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "25f9a5f3e8a52618",
+      "finish_tier": null,
+      "id": "856716a6ee05e0ca",
+      "red": "04c8b08b16a5b99e",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 3,
+        "time": "4:26",
+        "winner": "04c8b08b16a5b99e"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "cd0dfd9846bd03b9",
+      "finish_tier": null,
+      "id": "b6ab5f1be3d3eb9e",
+      "red": "8988705468d04ef7",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 1,
+        "time": "1:26",
+        "winner": "8988705468d04ef7"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "e9f9add1481fc11c",
+      "finish_tier": null,
+      "id": "88247eaef34c209b",
+      "red": "6188ad39d85a8bf8",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "2:11",
+        "winner": "6188ad39d85a8bf8"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "55896e25df067f9d",
+      "finish_tier": null,
+      "id": "d9b442194ca25bd9",
+      "red": "e872e9a9a902c045",
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "4:46",
+        "winner": "e872e9a9a902c045"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Flyweight"
+    },
+    {
+      "blue": "c7c39e2fb70248b3",
+      "finish_tier": null,
+      "id": "fb6b38c62d1a78be",
+      "red": "84512339473dd300",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 3,
+        "time": "4:31",
+        "winner": "84512339473dd300"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "51e2f44a8dbf6984",
+      "finish_tier": null,
+      "id": "f07778a744322922",
+      "red": "af9efbfd63d39734",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 1,
+        "time": "4:52",
+        "winner": "af9efbfd63d39734"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Women's Bantamweight"
+    },
+    {
+      "blue": "3c4320a1b6106611",
+      "finish_tier": null,
+      "id": "0768a3792443212d",
+      "red": "a474aade8eb3a8f0",
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 3,
+        "time": "4:19",
+        "winner": "a474aade8eb3a8f0"
+      },
+      "segment": null,
+      "tier_frozen_at": "2026-10-28T08:23:53Z",
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    }
+  ],
+  "id": "55e94a9b525dcf45",
+  "location": "Edmonton, Alberta, Canada",
+  "name": "UFC Fight Night: Buckley vs. Malott",
+  "slug": "ufc-fight-night-buckley-vs-malott",
+  "status": "completed"
+}

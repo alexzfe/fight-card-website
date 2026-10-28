@@ -68,17 +68,6 @@
       "weight_class": "Featherweight"
     },
     {
-      "blue": "5f61780fe5e9b6d0",
-      "finish_tier": "high",
-      "id": "c85f2afed5547177",
-      "red": "3bc3f60b21cddc6a",
-      "result": null,
-      "segment": "prelims",
-      "tier_frozen_at": null,
-      "title_fight": false,
-      "weight_class": "Middleweight"
-    },
-    {
       "blue": "feef5f8f5629e5e7",
       "finish_tier": "high",
       "id": "8b2fcf7f83bf72b6",
@@ -99,6 +88,17 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Featherweight"
+    },
+    {
+      "blue": "9e50097a89442158",
+      "finish_tier": "high",
+      "id": "b6cee8bf625cc566",
+      "red": "23dec7c47cb418f8",
+      "result": null,
+      "segment": "prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
     },
     {
       "blue": "8a81a0707350c4a8",
@@ -132,17 +132,6 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Women's Flyweight"
-    },
-    {
-      "blue": "9e50097a89442158",
-      "finish_tier": "high",
-      "id": "b6cee8bf625cc566",
-      "red": "23dec7c47cb418f8",
-      "result": null,
-      "segment": "prelims",
-      "tier_frozen_at": null,
-      "title_fight": false,
-      "weight_class": "Middleweight"
     }
   ],
   "id": "0a66de3a797cf73a",

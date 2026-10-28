@@ -40,7 +40,7 @@
       "id": "01751a4065e30e97",
       "red": "792be9a24df82ed6",
       "result": null,
-      "segment": "early_prelims",
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Flyweight"
@@ -51,7 +51,7 @@
       "id": "c1e90dd65e631ebf",
       "red": "6a740daf1b279661",
       "result": null,
-      "segment": "early_prelims",
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Women's Flyweight"
