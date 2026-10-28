@@ -582,7 +582,7 @@ def test_not_deployed_says_only_what_is_true_for_every_cancel(tmp_path):
     (body,) = issue_bodies(tmp_path)
     error = next(line for line in result.stdout.splitlines() if line.startswith("::error::"))
     for text in (body, error):
-        assert "before it started" not in text and "doesn't run" not in text and "pending prod deploy" not in text
+        assert "before it started" not in text and "doesn't run" not in text and "its pending" not in text
         assert "was not deployed" not in text
     assert "may not run this tag's code" in body
     assert "by hand" in body and "timed out" in body
