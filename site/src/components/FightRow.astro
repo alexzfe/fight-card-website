@@ -44,12 +44,14 @@ const bestWins = [formatBestWin(red.best_win), formatBestWin(blue.best_win)] as 
 // The last fights, as tiles and in Stats: an upcoming fight shows today's; a completed one the form going into it
 // (contract 1.4), never today's, which would count the fights after it; none without it.
 const formAt = (side: 'red' | 'blue', f: Fighter) => (done ? (fight.form?.[side] ?? []) : (f.recent_fights ?? []));
-const history = [formAt('red', red), formAt('blue', blue)];
+const redForm = formAt('red', red);
+const blueForm = formAt('blue', blue);
+const history = [redForm, blueForm];
 ---
 
 <li class:list={['fight', { done, 'main-event': mainEvent }]} data-testid="fight">
   <div class="bout">
-    <Corner side="red" fighter={red} winner={winner === red.id} lost={!!winner && winner !== red.id} form={history[0]!} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
+    <Corner side="red" fighter={red} winner={winner === red.id} lost={!!winner && winner !== red.id} form={redForm} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'red')} />
     <div class="mid">
       {mainEvent && <span class="main-event-marker" data-testid="main-event">Main event</span>}
       {/* A completed fight leads with how it ended; the pre-fight badge, frozen at the start, stays below when there was one. */}
@@ -73,7 +75,7 @@ const history = [formAt('red', red), formAt('blue', blue)];
         )
       }
     </div>
-    <Corner side="blue" fighter={blue} winner={winner === blue.id} lost={!!winner && winner !== blue.id} form={history[1]!} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
+    <Corner side="blue" fighter={blue} winner={winner === blue.id} lost={!!winner && winner !== blue.id} form={blueForm} eager={eager} large={mainEvent} atFight={eloAtFight(fight, 'blue')} />
   </div>
   <details class="stats">
     <summary>Stats</summary>
