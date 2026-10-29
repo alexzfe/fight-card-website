@@ -58,7 +58,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1727,
+      "elo": 1726,
       "id": "c32aeb1a59e6272d",
       "name": "Michael Morales",
       "p4p_rank": 7,
@@ -82,7 +82,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1721,
+      "elo": 1720,
       "id": "0d7b51c9d2649a6e",
       "name": "Dricus Du Plessis",
       "p4p_rank": 10,
@@ -218,7 +218,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1686,
+      "elo": 1685,
       "id": "a09ed60aa67a3f67",
       "name": "Farid Basharat",
       "p4p_rank": null,
@@ -354,7 +354,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1667,
+      "elo": 1666,
       "id": "39d309957c5c210d",
       "name": "Mario Pinto",
       "p4p_rank": null,
@@ -866,7 +866,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1613,
+      "elo": 1612,
       "id": "fa6796c55d6c5440",
       "name": "Curtis Blaydes",
       "p4p_rank": null,
@@ -1650,7 +1650,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1558,
+      "elo": 1557,
       "id": "1b35af4d1529adf6",
       "name": "Stephanie Luciano",
       "p4p_rank": null,
@@ -2026,7 +2026,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1538,
+      "elo": 1537,
       "id": "8e4902b4a8045070",
       "name": "Hector Santiago",
       "p4p_rank": null,
@@ -2042,7 +2042,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1537,
+      "elo": 1536,
       "id": "1338e2c7480bdf9e",
       "name": "Israel Adesanya",
       "p4p_rank": null,
@@ -3570,7 +3570,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1452,
+      "elo": 1453,
       "id": "6a2f7c151031653d",
       "name": "Rafael Dos Anjos",
       "p4p_rank": null,
@@ -4210,7 +4210,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1395,
+      "elo": 1396,
       "id": "22e07d3da1aa3475",
       "name": "Andrey Pulyaev",
       "p4p_rank": null,
@@ -4370,7 +4370,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1383,
+      "elo": 1384,
       "id": "99223fbb4a05326b",
       "name": "Damian Rzepecki",
       "p4p_rank": null,
@@ -4522,7 +4522,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1373,
+      "elo": 1374,
       "id": "095854a135e6db55",
       "name": "Marcus Buchecha",
       "p4p_rank": null,
@@ -4618,7 +4618,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1368,
+      "elo": 1369,
       "id": "e9f9add1481fc11c",
       "name": "Javad Mahjoub",
       "p4p_rank": null,
@@ -5146,14 +5146,14 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1254,
+      "elo": 1255,
       "id": "baa9be02c3e3e038",
       "name": "Jose Daniel Medina",
       "p4p_rank": null,
       "provisional": false
     }
   ],
-  "as_of": "2026-10-28",
+  "as_of": "2026-10-29",
   "p4p": {
     "men": [
       {
@@ -5206,7 +5206,7 @@
       },
       {
         "division": "Welterweight",
-        "elo": 1727,
+        "elo": 1726,
         "id": "c32aeb1a59e6272d",
         "image": "images/c32aeb1a59e6272d.webp",
         "name": "Michael Morales",
@@ -5230,7 +5230,7 @@
       },
       {
         "division": "Middleweight",
-        "elo": 1721,
+        "elo": 1720,
         "id": "0d7b51c9d2649a6e",
         "image": "images/0d7b51c9d2649a6e.webp",
         "name": "Dricus Du Plessis",

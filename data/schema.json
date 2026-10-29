@@ -172,6 +172,17 @@
           "default": null,
           "title": "Finish Tier"
         },
+        "form": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FightForm"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "id": {
           "title": "Id",
           "type": "string"
@@ -299,6 +310,31 @@
         "blue_p4p_rank"
       ],
       "title": "FightElo",
+      "type": "object"
+    },
+    "FightForm": {
+      "description": "A completed bout's form at the time (docs/CONTRACT.md, \"1.4\"), set by `score` from the history store: each\ncorner's last results strictly before the bout's day, newest first, at most 3; empty for a debut.",
+      "properties": {
+        "blue": {
+          "items": {
+            "$ref": "#/$defs/PastFight"
+          },
+          "title": "Blue",
+          "type": "array"
+        },
+        "red": {
+          "items": {
+            "$ref": "#/$defs/PastFight"
+          },
+          "title": "Red",
+          "type": "array"
+        }
+      },
+      "required": [
+        "red",
+        "blue"
+      ],
+      "title": "FightForm",
       "type": "object"
     },
     "Fighter": {
@@ -1017,5 +1053,5 @@
   "$id": "https://ufc-data.xlobax.com/v1/schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "index.json is #/$defs/Index, events/{id}.json is #/$defs/Event, fighters.json is #/$defs/Fighters, rankings.json is #/$defs/Rankings.",
-  "title": "fightcard /v1 (contract 1.3)"
+  "title": "fightcard /v1 (contract 1.4)"
 }
