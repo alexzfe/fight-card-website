@@ -362,7 +362,7 @@
   "0575068a0f83f963": {
     "best_win": {
       "date": "2026-09-22",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Paris Moran",
       "opponent_id": "abe2e048a04d22cf"
     },
@@ -1002,7 +1002,7 @@
   "130b65b53f30f33c": {
     "best_win": {
       "date": "2026-09-26",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Mahammadali Osmanli",
       "opponent_id": "2bbdbc925f4323ac"
     },
@@ -1162,7 +1162,7 @@
   "15b1f83a90302adf": {
     "best_win": {
       "date": "2026-09-08",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Arlind Berisha",
       "opponent_id": "364e7a7a1ea5e200"
     },
@@ -1526,7 +1526,7 @@
   "1c23ec2f1b71be40": {
     "best_win": {
       "date": "2025-09-16",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Mahamed Aly",
       "opponent_id": "86c1441676af2c73"
     },
@@ -1911,7 +1911,7 @@
   "23dec7c47cb418f8": {
     "best_win": {
       "date": "2023-08-22",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Eli Aronov",
       "opponent_id": "a90c200c3fbb22c4"
     },
@@ -2277,7 +2277,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1721,
+    "elo": 1720,
     "elo_inactive": false,
     "elo_peak": 1721,
     "elo_provisional": false,
@@ -2391,7 +2391,7 @@
   "2975297f505e9447": {
     "best_win": {
       "date": "2021-10-19",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Solomon Renfro",
       "opponent_id": "ce6b5b93a96dd15b"
     },
@@ -2596,7 +2596,7 @@
   "2c5f5749569eef66": {
     "best_win": {
       "date": "2023-10-14",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Ravena Oliveira",
       "opponent_id": "4948e412fa6ab67d"
     },
@@ -3471,7 +3471,7 @@
   "3c4320a1b6106611": {
     "best_win": {
       "date": "2025-09-16",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Raphael Uchegbu",
       "opponent_id": "cb680d85b84cbfd9"
     },
@@ -3521,7 +3521,7 @@
   "3cc506f115cbb9d5": {
     "best_win": {
       "date": "2025-09-23",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Djani Barbir",
       "opponent_id": "d4baaa0630bf5798"
     },
@@ -4501,13 +4501,13 @@
   "4e6738062d469256": {
     "best_win": {
       "date": "2022-08-30",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Matej Penaz",
       "opponent_id": "abd64006fd37298d"
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1995-08-06",
-    "elo": 1320,
+    "elo": 1321,
     "elo_inactive": false,
     "elo_peak": 1494,
     "elo_provisional": false,
@@ -4621,7 +4621,7 @@
   "5182316da3c1d891": {
     "best_win": {
       "date": "2026-08-29",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Nilson Rojas",
       "opponent_id": "bf60dd3256801649"
     },
@@ -4952,7 +4952,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1988-06-06",
-    "elo": 1361,
+    "elo": 1362,
     "elo_inactive": false,
     "elo_peak": 1559,
     "elo_provisional": false,
@@ -5226,7 +5226,7 @@
   "5d495dec23d7c68e": {
     "best_win": {
       "date": "2026-04-25",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Lucas Brennan",
       "opponent_id": "33a8708747b7f943"
     },
@@ -5286,7 +5286,7 @@
   "5dad1e8a516e6477": {
     "best_win": {
       "date": "2026-09-15",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Hugo Guillon",
       "opponent_id": "aabf33d691f64d61"
     },
@@ -5551,7 +5551,7 @@
   "6188ad39d85a8bf8": {
     "best_win": {
       "date": "2026-10-17",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Javad Mahjoub",
       "opponent_id": "e9f9add1481fc11c"
     },
@@ -5591,13 +5591,13 @@
   "6266abf6e4245c72": {
     "best_win": {
       "date": "2026-08-01",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Milos Janicic",
       "opponent_id": "dfcadfcbd3a3f097"
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1446,
+    "elo": 1447,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -7197,7 +7197,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1686,
+    "elo": 1685,
     "elo_inactive": false,
     "elo_peak": 1784,
     "elo_provisional": false,
@@ -7617,7 +7617,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": "1988-05-30",
-    "elo": 1636,
+    "elo": 1635,
     "elo_inactive": false,
     "elo_peak": 1688,
     "elo_provisional": false,
@@ -7671,7 +7671,7 @@
   "7eaa5e31c2dd86aa": {
     "best_win": {
       "date": "2024-10-15",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Heraldo Souza",
       "opponent_id": "22b43be04d7454d0"
     },
@@ -7971,7 +7971,7 @@
   "814e5233e2acf2ee": {
     "best_win": {
       "date": "2025-08-23",
-      "elo": 1587,
+      "elo": 1588,
       "opponent": "Lone'er Kavanagh",
       "opponent_id": "bb2c3c3a466224af"
     },
@@ -8261,7 +8261,7 @@
   "8988705468d04ef7": {
     "best_win": {
       "date": "2026-08-25",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Carlos Petruzzella",
       "opponent_id": "2e1f3640443272ad"
     },
@@ -8311,7 +8311,7 @@
   "8a81a0707350c4a8": {
     "best_win": {
       "date": "2026-08-11",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Jon Kunneman",
       "opponent_id": "2694c4997a51ed01"
     },
@@ -8651,7 +8651,7 @@
   "8f4528c10bd34fab": {
     "best_win": {
       "date": "2025-09-02",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Samuel Silva",
       "opponent_id": "04e0507b94014dbb"
     },
@@ -8777,7 +8777,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1481,
+    "elo": 1482,
     "elo_inactive": false,
     "elo_peak": 1574,
     "elo_provisional": false,
@@ -8831,7 +8831,7 @@
   "91cd52cb92dfdd52": {
     "best_win": {
       "date": "2025-09-30",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Magno Dias",
       "opponent_id": "270e84d8174721d2"
     },
@@ -9187,7 +9187,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1678,
+    "elo": 1677,
     "elo_inactive": false,
     "elo_peak": 1709,
     "elo_provisional": false,
@@ -9361,7 +9361,7 @@
   "9d62c2d8ee151f08": {
     "best_win": {
       "date": "2025-08-16",
-      "elo": 1526,
+      "elo": 1527,
       "opponent": "Dione Barbosa",
       "opponent_id": "27b388f0aab49780"
     },
@@ -9656,7 +9656,7 @@
   "a1a91dbf41a029c4": {
     "best_win": {
       "date": "2026-09-26",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Melissa Amaya",
       "opponent_id": "71758ab9f337716c"
     },
@@ -9987,7 +9987,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-05-02",
-    "elo": 1457,
+    "elo": 1458,
     "elo_inactive": false,
     "elo_peak": 1528,
     "elo_provisional": false,
@@ -10806,7 +10806,7 @@
   "b34976c022b24568": {
     "best_win": {
       "date": "2026-10-03",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Lucas Armand",
       "opponent_id": "20e04625a5395a06"
     },
@@ -10866,7 +10866,7 @@
   "b4443fae47e7eb9d": {
     "best_win": {
       "date": "2026-05-02",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Ben Johnston",
       "opponent_id": "3261aa79bf6caa64"
     },
@@ -12521,7 +12521,7 @@
   "d3f89fa685bd8420": {
     "best_win": {
       "date": "2025-08-02",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "John Yannis",
       "opponent_id": "450bcab0968562c4"
     },
@@ -12811,7 +12811,7 @@
   "d7c4956d61ae76a9": {
     "best_win": {
       "date": "2025-08-19",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Manuel Exposito",
       "opponent_id": "a1cb266d7f44f35f"
     },
@@ -13331,7 +13331,7 @@
   "e047d3b541afd4a7": {
     "best_win": {
       "date": "2026-06-27",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Jefferson Nascimento",
       "opponent_id": "4b85abc5abbe657c"
     },
@@ -13491,7 +13491,7 @@
   "e3fc6c1fab298561": {
     "best_win": {
       "date": "2026-09-01",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Charlie Cleveland",
       "opponent_id": "a221b4812b0e7364"
     },
@@ -13711,7 +13711,7 @@
   "e564146b9cf6dbef": {
     "best_win": {
       "date": "2026-07-18",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Levi Rodrigues Jr.",
       "opponent_id": "9ac4e43ed56429ed"
     },
@@ -14191,7 +14191,7 @@
   "ed7d329d7c29428d": {
     "best_win": {
       "date": "2026-10-24",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Asaf Chopurov",
       "opponent_id": "a24bc9922ee76e9f"
     },
@@ -14251,7 +14251,7 @@
   "eee0ef3e2b14816b": {
     "best_win": {
       "date": "2026-04-04",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Dakota Hope",
       "opponent_id": "6142edbd477d20c9"
     },
@@ -14881,7 +14881,7 @@
   "fc0a4053eb8a3a59": {
     "best_win": {
       "date": "2024-09-10",
-      "elo": 1440,
+      "elo": 1441,
       "opponent": "Corinne Laframboise",
       "opponent_id": "fbe9f4efc2153be2"
     },

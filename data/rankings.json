@@ -74,7 +74,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1721,
+      "elo": 1720,
       "id": "279566840aa55bf2",
       "name": "Alexander Volkov",
       "p4p_rank": 9,
@@ -170,7 +170,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1699,
+      "elo": 1698,
       "id": "52ef95b5860fb28c",
       "name": "Jean Silva",
       "p4p_rank": null,
@@ -210,7 +210,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1686,
+      "elo": 1685,
       "id": "787bb1f087ccff8a",
       "name": "Ciryl Gane",
       "p4p_rank": null,
@@ -250,7 +250,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1681,
+      "elo": 1680,
       "id": "bc711b6dd95c1af6",
       "name": "Mario Bautista",
       "p4p_rank": null,
@@ -258,7 +258,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1678,
+      "elo": 1677,
       "id": "99bd51917728c25d",
       "name": "Grant Dawson",
       "p4p_rank": null,
@@ -634,7 +634,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1636,
+      "elo": 1635,
       "id": "7dda2cf308f24a02",
       "name": "Virna Jandiroba",
       "p4p_rank": null,
@@ -1034,7 +1034,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1597,
+      "elo": 1596,
       "id": "4d8fa64202cee4c1",
       "name": "Jalin Turner",
       "p4p_rank": null,
@@ -1914,7 +1914,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1544,
+      "elo": 1543,
       "id": "83455a9d17f57dae",
       "name": "Rafael Estevam",
       "p4p_rank": null,
@@ -3082,7 +3082,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1481,
+      "elo": 1482,
       "id": "902ec2cc48c8ae8a",
       "name": "Julian Erosa",
       "p4p_rank": null,
@@ -3474,7 +3474,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1457,
+      "elo": 1458,
       "id": "a4a80dd7336ffd59",
       "name": "Melissa Gatto",
       "p4p_rank": null,
@@ -3650,7 +3650,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1446,
+      "elo": 1447,
       "id": "6266abf6e4245c72",
       "name": "Noah Gugnon",
       "p4p_rank": null,
@@ -3922,7 +3922,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1421,
+      "elo": 1422,
       "id": "41cc71cbf210e0fe",
       "name": "Hyder Amil",
       "p4p_rank": null,
@@ -3946,7 +3946,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1419,
+      "elo": 1420,
       "id": "46e2011d92463b7e",
       "name": "Oumar Sy",
       "p4p_rank": null,
@@ -4642,7 +4642,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1364,
+      "elo": 1365,
       "id": "3261aa79bf6caa64",
       "name": "Ben Johnston",
       "p4p_rank": null,
@@ -4682,7 +4682,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1361,
+      "elo": 1362,
       "id": "583ee11abddfc581",
       "name": "Nate Landwehr",
       "p4p_rank": null,
@@ -4890,7 +4890,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1342,
+      "elo": 1343,
       "id": "fd7ab338e4953644",
       "name": "Manolo Zecchini",
       "p4p_rank": null,
@@ -4970,7 +4970,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1331,
+      "elo": 1332,
       "id": "3e8118c1ab52f211",
       "name": "Tuco Tokkos",
       "p4p_rank": null,
@@ -5010,7 +5010,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1320,
+      "elo": 1321,
       "id": "4e6738062d469256",
       "name": "Sedriques Dumas",
       "p4p_rank": null,
@@ -5153,7 +5153,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-10-29",
+  "as_of": "2026-10-30",
   "p4p": {
     "men": [
       {
@@ -5222,7 +5222,7 @@
       },
       {
         "division": "Heavyweight",
-        "elo": 1721,
+        "elo": 1720,
         "id": "279566840aa55bf2",
         "image": "images/279566840aa55bf2.webp",
         "name": "Alexander Volkov",

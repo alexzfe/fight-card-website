@@ -11,7 +11,7 @@
       "result": null,
       "segment": "main",
       "tier_frozen_at": null,
-      "title_fight": false,
+      "title_fight": true,
       "weight_class": "Lightweight"
     },
     {
