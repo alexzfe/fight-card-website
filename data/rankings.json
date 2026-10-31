@@ -10,7 +10,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1780,
+      "elo": 1779,
       "id": "17e97649403ba428",
       "name": "Joshua Van",
       "p4p_rank": 2,
@@ -106,7 +106,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1713,
+      "elo": 1712,
       "id": "a67d071163962af8",
       "name": "Michael Page",
       "p4p_rank": 13,
@@ -178,7 +178,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1697,
+      "elo": 1696,
       "id": "955da1675ad58a50",
       "name": "Josh Hokit",
       "p4p_rank": null,
@@ -234,7 +234,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1685,
+      "elo": 1684,
       "id": "a9e260472d321361",
       "name": "Jasmine Jasudavicius",
       "p4p_rank": 3,
@@ -346,7 +346,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1668,
+      "elo": 1667,
       "id": "e5549c82bfb5582d",
       "name": "Alex Pereira",
       "p4p_rank": null,
@@ -666,7 +666,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1631,
+      "elo": 1630,
       "id": "18d01f7f8338ae72",
       "name": "Vinicius Oliveira",
       "p4p_rank": null,
@@ -834,7 +834,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1614,
+      "elo": 1613,
       "id": "6b453bc35a823c3f",
       "name": "Jack Della Maddalena",
       "p4p_rank": null,
@@ -1210,7 +1210,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1586,
+      "elo": 1585,
       "id": "9c393e836a852f30",
       "name": "Mauricio Ruffy",
       "p4p_rank": null,
@@ -1746,7 +1746,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1550,
+      "elo": 1549,
       "id": "ec3bd30378d63dd1",
       "name": "Hecher Sosa",
       "p4p_rank": null,
@@ -1786,7 +1786,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1549,
+      "elo": 1548,
       "id": "ef5dcb10d2bd4b0f",
       "name": "Bogdan Guskov",
       "p4p_rank": null,
@@ -3890,7 +3890,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1425,
+      "elo": 1426,
       "id": "7138a15258dabf20",
       "name": "Bruna Brasil",
       "p4p_rank": null,
@@ -4418,7 +4418,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1381,
+      "elo": 1382,
       "id": "bf60dd3256801649",
       "name": "Nilson Rojas",
       "p4p_rank": null,
@@ -4794,7 +4794,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1351,
+      "elo": 1352,
       "id": "29162be25ebef5f0",
       "name": "Luis Gurule",
       "p4p_rank": null,
@@ -5082,7 +5082,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1300,
+      "elo": 1301,
       "id": "cd3d7e37ff2d679c",
       "name": "Ricky Turcios",
       "p4p_rank": null,
@@ -5106,7 +5106,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1288,
+      "elo": 1289,
       "id": "9eed2bcc9e0b92af",
       "name": "Leon Shahbazyan",
       "p4p_rank": null,
@@ -5153,7 +5153,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-10-30",
+  "as_of": "2026-10-31",
   "p4p": {
     "men": [
       {
@@ -5166,7 +5166,7 @@
       },
       {
         "division": "Flyweight",
-        "elo": 1780,
+        "elo": 1779,
         "id": "17e97649403ba428",
         "image": "images/17e97649403ba428.webp",
         "name": "Joshua Van",
@@ -5254,7 +5254,7 @@
       },
       {
         "division": "Middleweight",
-        "elo": 1713,
+        "elo": 1712,
         "id": "a67d071163962af8",
         "image": "images/a67d071163962af8.webp",
         "name": "Michael Page",
@@ -5296,7 +5296,7 @@
       },
       {
         "division": "Women's Flyweight",
-        "elo": 1685,
+        "elo": 1684,
         "id": "a9e260472d321361",
         "image": "images/a9e260472d321361.webp",
         "name": "Jasmine Jasudavicius",

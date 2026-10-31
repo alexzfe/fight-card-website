@@ -2,17 +2,17 @@
   "date": "2026-11-07",
   "fights": [
     {
-      "blue": "45f7cb591c3ab00b",
+      "blue": "c21f26bbde777573",
       "elo": null,
-      "finish_tier": "medium",
+      "finish_tier": "high",
       "form": null,
-      "id": "8f7e5ebb20694f22",
-      "red": "01641ba5df0c69b0",
+      "id": "4e6c304705f82ce0",
+      "red": "fc08099550072fe4",
       "result": null,
       "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
-      "weight_class": "Welterweight"
+      "weight_class": "Heavyweight"
     },
     {
       "blue": "7dda2cf308f24a02",
@@ -80,11 +80,11 @@
       "weight_class": "Middleweight"
     },
     {
-      "blue": "ab2a4b5e04dc5fe9",
+      "blue": "764d39074a352e33",
       "elo": null,
       "finish_tier": null,
       "form": null,
-      "id": "bf08333b500a81ad",
+      "id": "a21a21810258623e",
       "red": "e3fc6c1fab298561",
       "result": null,
       "segment": "prelims",
@@ -186,7 +186,7 @@
   ],
   "id": "110404b505fb562c",
   "location": "Las Vegas, Nevada, USA",
-  "name": "UFC Fight Night: Bonfim vs. Brady",
-  "slug": "ufc-fight-night-bonfim-vs-brady",
+  "name": "UFC Fight Night: Cortes Acosta vs. Walker",
+  "slug": "ufc-fight-night-cortes-acosta-vs-walker",
   "status": "upcoming"
 }

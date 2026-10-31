@@ -1268,7 +1268,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "2001-10-10",
-    "elo": 1780,
+    "elo": 1779,
     "elo_inactive": false,
     "elo_peak": 1784,
     "elo_provisional": false,
@@ -2337,7 +2337,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1351,
+    "elo": 1352,
     "elo_inactive": false,
     "elo_peak": 1347,
     "elo_provisional": false,
@@ -2716,7 +2716,7 @@
   "2e45d08b3f2f02c8": {
     "best_win": {
       "date": "2025-04-26",
-      "elo": 1473,
+      "elo": 1474,
       "opponent": "Cameron Saaiman",
       "opponent_id": "3c8a5200436e19f3"
     },
@@ -7068,6 +7068,66 @@
     },
     "stance": "Orthodox"
   },
+  "764d39074a352e33": {
+    "best_win": {
+      "date": "2024-07-20",
+      "elo": 1528,
+      "opponent": "Mohammed Usman",
+      "opponent_id": "da7f113b5ea39c43"
+    },
+    "details_fetched_at": "2026-10-31T01:17:03Z",
+    "dob": "1995-03-30",
+    "elo": 1458,
+    "elo_inactive": false,
+    "elo_peak": 1497,
+    "elo_provisional": false,
+    "height_in": 73.0,
+    "id": "764d39074a352e33",
+    "image": "images/764d39074a352e33.webp",
+    "name": "Thomas Petersen",
+    "nickname": "The Train",
+    "p4p_rank": null,
+    "reach_in": 74.0,
+    "recent_fights": [
+      {
+        "date": "2026-07-25",
+        "event": "UFC Fight Night: Ankalaev vs. Guskov",
+        "method": "SUB",
+        "opponent": "Valter Walker",
+        "opponent_id": "f5779a2303ed76ec",
+        "result": "loss",
+        "round": 1,
+        "time": "1:32"
+      },
+      {
+        "date": "2026-04-04",
+        "event": "UFC Fight Night: Moicano vs. Duncan",
+        "method": "M-DEC",
+        "opponent": "Guilherme Pat",
+        "opponent_id": "ba15006c804a8de0",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-10-11",
+        "event": "UFC Fight Night: Oliveira vs. Gamrot",
+        "method": "KO/TKO",
+        "opponent": "Vitor Petrino",
+        "opponent_id": "71171fc96445bf65",
+        "result": "loss",
+        "round": 3,
+        "time": "0:26"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Southpaw"
+  },
   "7674b836ce0698a0": {
     "best_win": {
       "date": "2026-03-28",
@@ -8887,7 +8947,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1697,
+    "elo": 1696,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -9247,7 +9307,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-06-17",
-    "elo": 1586,
+    "elo": 1585,
     "elo_inactive": false,
     "elo_peak": 1638,
     "elo_provisional": false,
@@ -9542,7 +9602,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1995-11-18",
-    "elo": 1288,
+    "elo": 1289,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -10227,7 +10287,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1989-03-01",
-    "elo": 1685,
+    "elo": 1684,
     "elo_inactive": false,
     "elo_peak": 1685,
     "elo_provisional": false,
@@ -12589,7 +12649,7 @@
     "dob": null,
     "elo": 1522,
     "elo_inactive": false,
-    "elo_peak": 1586,
+    "elo_peak": 1587,
     "elo_provisional": false,
     "height_in": 69.0,
     "id": "d4270315cbcf2569",
@@ -13657,7 +13717,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1668,
+    "elo": 1667,
     "elo_inactive": false,
     "elo_peak": 1790,
     "elo_provisional": false,
@@ -14875,6 +14935,66 @@
       "l": 1,
       "nc": 0,
       "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "fc08099550072fe4": {
+    "best_win": {
+      "date": "2025-11-22",
+      "elo": 1599,
+      "opponent": "Shamil Gaziev",
+      "opponent_id": "6747ccd6d1acd266"
+    },
+    "details_fetched_at": "2026-10-31T01:17:03Z",
+    "dob": "1991-10-03",
+    "elo": 1595,
+    "elo_inactive": false,
+    "elo_peak": 1715,
+    "elo_provisional": false,
+    "height_in": 76.0,
+    "id": "fc08099550072fe4",
+    "image": "images/fc08099550072fe4.webp",
+    "name": "Waldo Cortes Acosta",
+    "nickname": "Salsa Boy",
+    "p4p_rank": null,
+    "reach_in": 78.0,
+    "recent_fights": [
+      {
+        "date": "2026-09-12",
+        "event": "Noche UFC: Silva vs. Delgado",
+        "method": "U-DEC",
+        "opponent": "Curtis Blaydes",
+        "opponent_id": "fa6796c55d6c5440",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-09",
+        "event": "UFC 328: Chimaev vs. Strickland",
+        "method": "U-DEC",
+        "opponent": "Alexander Volkov",
+        "opponent_id": "279566840aa55bf2",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-01-24",
+        "event": "UFC 324: Gaethje vs. Pimblett",
+        "method": "KO/TKO",
+        "opponent": "Derrick Lewis",
+        "opponent_id": "d3df1add9d9a7efb",
+        "result": "win",
+        "round": 2,
+        "time": "3:14"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 17
     },
     "stance": "Orthodox"
   },
