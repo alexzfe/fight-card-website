@@ -1,6 +1,6 @@
 {
   "contract_version": "1.4",
-  "generated_at": "2026-10-31T21:17:04Z",
+  "generated_at": "2026-11-01T06:17:03Z",
   "model": {
     "as_of": "2026-10-27",
     "importance": [
@@ -63,6 +63,7 @@
     "version": "2026-10-27+5006318a"
   },
   "recent": [
+    "0a66de3a797cf73a",
     "cc18abc046b382c9",
     "55e94a9b525dcf45",
     "7f98d9d5a10fa25c",

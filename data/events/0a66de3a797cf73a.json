@@ -3,12 +3,90 @@
   "fights": [
     {
       "blue": "6c3b2525436cf5d4",
-      "elo": null,
+      "elo": {
+        "blue_delta": 44,
+        "blue_p4p_rank": null,
+        "blue_pre": 1646,
+        "red_delta": -33,
+        "red_p4p_rank": null,
+        "red_pre": 1602
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-06-06",
+            "event": "UFC Fight Night: Muhammad vs. Bonfim",
+            "method": "U-DEC",
+            "opponent": "Fares Ziam",
+            "opponent_id": "1e4f273069fb9e85",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-09-27",
+            "event": "UFC Fight Night: Ulberg vs. Reyes",
+            "method": "SUB",
+            "opponent": "Charlie Campbell",
+            "opponent_id": "b39f7a6c2be17ee8",
+            "result": "win",
+            "round": 1,
+            "time": "4:08"
+          },
+          {
+            "date": "2025-02-08",
+            "event": "UFC 312: Du Plessis vs. Strickland 2",
+            "method": "U-DEC",
+            "opponent": "Viacheslav Borshchev",
+            "opponent_id": "19c591115a58982c",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-04-04",
+            "event": "UFC Fight Night: Moicano vs. Duncan",
+            "method": "SUB",
+            "opponent": "Chris Duncan",
+            "opponent_id": "fd406a32a6fb3a29",
+            "result": "win",
+            "round": 2,
+            "time": "3:14"
+          },
+          {
+            "date": "2025-06-28",
+            "event": "UFC 317: Topuria vs. Oliveira",
+            "method": "U-DEC",
+            "opponent": "Beneil Dariush",
+            "opponent_id": "08af939f41b5a57b",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-01-18",
+            "event": "UFC 311: Makhachev vs. Moicano",
+            "method": "SUB",
+            "opponent": "Islam Makhachev",
+            "opponent_id": "275aca31f61ba28c",
+            "result": "loss",
+            "round": 1,
+            "time": "4:05"
+          }
+        ]
+      },
       "id": "6d7244be5589953c",
       "red": "b6452706b373eea1",
-      "result": null,
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 3,
+        "time": "1:28",
+        "winner": "6c3b2525436cf5d4"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -16,12 +94,90 @@
     },
     {
       "blue": "85497ffd934ecf7e",
-      "elo": null,
+      "elo": {
+        "blue_delta": 39,
+        "blue_p4p_rank": null,
+        "blue_pre": 1647,
+        "red_delta": -26,
+        "red_p4p_rank": null,
+        "red_pre": 1545
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-10-03",
+            "event": "UFC 332: Silva vs. Wang",
+            "method": "KO/TKO",
+            "opponent": "Bruce Whitehead",
+            "opponent_id": "6c39d016053601ee",
+            "result": "win",
+            "round": 1,
+            "time": "1:32"
+          },
+          {
+            "date": "2026-02-21",
+            "event": "UFC Fight Night: Strickland vs. Hernandez",
+            "method": "KO/TKO",
+            "opponent": "Josiah Harrell",
+            "opponent_id": "e5864a42c80294f6",
+            "result": "win",
+            "round": 1,
+            "time": "3:01"
+          },
+          {
+            "date": "2025-06-28",
+            "event": "UFC 317: Topuria vs. Oliveira",
+            "method": "SUB",
+            "opponent": "Niko Price",
+            "opponent_id": "d8da10db80131bec",
+            "result": "win",
+            "round": 2,
+            "time": "4:03"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-04-11",
+            "event": "UFC 327: Prochazka vs. Ulberg",
+            "method": "U-DEC",
+            "opponent": "Kevin Holland",
+            "opponent_id": "3a46b268013afede",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-11-08",
+            "event": "UFC Fight Night: Bonfim vs. Brown",
+            "method": "KO/TKO",
+            "opponent": "Gabriel Bonfim",
+            "opponent_id": "01641ba5df0c69b0",
+            "result": "loss",
+            "round": 2,
+            "time": "1:40"
+          },
+          {
+            "date": "2025-04-26",
+            "event": "UFC Fight Night: Machado Garry vs. Prates",
+            "method": "KO/TKO",
+            "opponent": "Nicolas Dalby",
+            "opponent_id": "9d19d9e4aa2662e8",
+            "result": "win",
+            "round": 2,
+            "time": "1:39"
+          }
+        ]
+      },
       "id": "d37d3af2529c3fd5",
       "red": "c6aee362c7a7d482",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "85497ffd934ecf7e"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -29,12 +185,90 @@
     },
     {
       "blue": "7f6ed67d3ed3c036",
-      "elo": null,
+      "elo": {
+        "blue_delta": 38,
+        "blue_p4p_rank": null,
+        "blue_pre": 1396,
+        "red_delta": -41,
+        "red_p4p_rank": null,
+        "red_pre": 1382
+      },
       "finish_tier": "medium",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-07-11",
+            "event": "UFC 329: McGregor vs. Holloway 2",
+            "method": "SUB",
+            "opponent": "Alessandro Costa",
+            "opponent_id": "3fa97913cfd205d3",
+            "result": "loss",
+            "round": 2,
+            "time": "2:19"
+          },
+          {
+            "date": "2026-04-25",
+            "event": "UFC Fight Night: Sterling vs. Zalal",
+            "method": "U-DEC",
+            "opponent": "Jafel Filho",
+            "opponent_id": "65adf3856c4d9256",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2026-03-07",
+            "event": "UFC 326: Holloway vs. Oliveira 2",
+            "method": "U-DEC",
+            "opponent": "Nyamjargal Tumendemberel",
+            "opponent_id": "17cb6d8e8187f304",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-02-21",
+            "event": "UFC Fight Night: Strickland vs. Hernandez",
+            "method": "Overturned",
+            "opponent": "Alibi Idiris",
+            "opponent_id": "30cad5a751adcb48",
+            "result": "nc",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-08-09",
+            "event": "UFC Fight Night: Dolidze vs. Hernandez",
+            "method": "U-DEC",
+            "opponent": "Steve Erceg",
+            "opponent_id": "32ab52e5de93092d",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-04-05",
+            "event": "UFC Fight Night: Emmett vs. Murphy",
+            "method": "KO/TKO",
+            "opponent": "Luis Gurule",
+            "opponent_id": "29162be25ebef5f0",
+            "result": "win",
+            "round": 2,
+            "time": "1:54"
+          }
+        ]
+      },
       "id": "b74a628c5fa4ce55",
       "red": "6d68c1afe954f121",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "7f6ed67d3ed3c036"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -42,12 +276,90 @@
     },
     {
       "blue": "5078e1dacf9d25f4",
-      "elo": null,
+      "elo": {
+        "blue_delta": 42,
+        "blue_p4p_rank": null,
+        "blue_pre": 1625,
+        "red_delta": -37,
+        "red_p4p_rank": null,
+        "red_pre": 1565
+      },
       "finish_tier": "low",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-06-20",
+            "event": "UFC Fight Night: Kape vs. Horiguchi",
+            "method": "U-DEC",
+            "opponent": "Karol Rosa",
+            "opponent_id": "351c4ec637380ad5",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-12-13",
+            "event": "UFC Fight Night: Royval vs. Kape",
+            "method": "U-DEC",
+            "opponent": "Melissa Croden",
+            "opponent_id": "51e2f44a8dbf6984",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-05-17",
+            "event": "UFC Fight Night: Burns vs. Morales",
+            "method": "SUB",
+            "opponent": "Tainara Lisboa",
+            "opponent_id": "2c5f5749569eef66",
+            "result": "win",
+            "round": 2,
+            "time": "4:59"
+          }
+        ],
+        "red": [
+          {
+            "date": "2025-10-04",
+            "event": "UFC 320: Ankalaev vs. Pereira 2",
+            "method": "U-DEC",
+            "opponent": "Macy Chiasson",
+            "opponent_id": "9cdd2da1a9104a0b",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-05-03",
+            "event": "UFC Fight Night: Sandhagen vs. Figueiredo",
+            "method": "U-DEC",
+            "opponent": "Miesha Tate",
+            "opponent_id": "b96619b3acd7d9da",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-08-10",
+            "event": "UFC Fight Night: Tybura vs. Spivac 2",
+            "method": "U-DEC",
+            "opponent": "Chelsea Chandler",
+            "opponent_id": "af9efbfd63d39734",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ]
+      },
       "id": "d08ad0f685b82b5b",
       "red": "3143bf892608139a",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "5078e1dacf9d25f4"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -55,12 +367,70 @@
     },
     {
       "blue": "c88f8a9c1ea7165d",
-      "elo": null,
+      "elo": {
+        "blue_delta": -49,
+        "blue_p4p_rank": null,
+        "blue_pre": 1499,
+        "red_delta": 44,
+        "red_p4p_rank": null,
+        "red_pre": 1594
+      },
       "finish_tier": "medium",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-06-27",
+            "event": "UFC Fight Night: Fiziev vs. Torres",
+            "method": "U-DEC",
+            "opponent": "Eric Nolan",
+            "opponent_id": "64b12fe31be7560c",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-07-18",
+            "event": "UFC Fight Night: Du Plessis vs. Usman",
+            "method": "U-DEC",
+            "opponent": "Seokhyeon Ko",
+            "opponent_id": "4a07b1988477502c",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2026-02-21",
+            "event": "UFC Fight Night: Strickland vs. Hernandez",
+            "method": "S-DEC",
+            "opponent": "Phil Rowe",
+            "opponent_id": "8e382b585a92affe",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-09-02",
+            "event": "DWCS 9.4",
+            "method": "KO/TKO",
+            "opponent": "Jack Congdon",
+            "opponent_id": "c44530d3969134a3",
+            "result": "win",
+            "round": 1,
+            "time": "1:08"
+          }
+        ]
+      },
       "id": "a7b3c1386172d083",
       "red": "a3dda21be645be93",
-      "result": null,
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 3,
+        "time": "2:11",
+        "winner": "a3dda21be645be93"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -68,12 +438,70 @@
     },
     {
       "blue": "6142edbd477d20c9",
-      "elo": null,
+      "elo": {
+        "blue_delta": 34,
+        "blue_p4p_rank": null,
+        "blue_pre": 1423,
+        "red_delta": -25,
+        "red_p4p_rank": null,
+        "red_pre": 1532
+      },
       "finish_tier": "medium",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-04-04",
+            "event": "UFC Fight Night: Moicano vs. Duncan",
+            "method": "S-DEC",
+            "opponent": "Kai Kamaka III",
+            "opponent_id": "eee0ef3e2b14816b",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-04-25",
+            "event": "UFC Fight Night: Sterling vs. Zalal",
+            "method": "U-DEC",
+            "opponent": "Lucas Brennan",
+            "opponent_id": "33a8708747b7f943",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2026-02-28",
+            "event": "UFC Fight Night: Moreno vs. Kavanagh",
+            "method": "SUB",
+            "opponent": "Erik Silva",
+            "opponent_id": "21b813b919776d90",
+            "result": "win",
+            "round": 1,
+            "time": "2:29"
+          },
+          {
+            "date": "2025-03-08",
+            "event": "UFC 313: Pereira vs. Ankalaev",
+            "method": "S-DEC",
+            "opponent": "Mairon Santos",
+            "opponent_id": "480779d7f9a424d3",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          }
+        ]
+      },
       "id": "b7f8e619c7d9a7de",
       "red": "5d495dec23d7c68e",
-      "result": null,
+      "result": {
+        "method": "S-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "6142edbd477d20c9"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -81,12 +509,50 @@
     },
     {
       "blue": "feef5f8f5629e5e7",
-      "elo": null,
+      "elo": {
+        "blue_delta": -71,
+        "blue_p4p_rank": null,
+        "blue_pre": 1394,
+        "red_delta": 71,
+        "red_p4p_rank": null,
+        "red_pre": 1377
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-06-27",
+            "event": "UFC Fight Night: Fiziev vs. Torres",
+            "method": "KO/TKO",
+            "opponent": "Daniil Donchenko",
+            "opponent_id": "70dd69b6a703257e",
+            "result": "loss",
+            "round": 2,
+            "time": "1:35"
+          }
+        ],
+        "red": [
+          {
+            "date": "2025-09-13",
+            "event": "Noche UFC: Lopes vs. Silva",
+            "method": "KO/TKO",
+            "opponent": "Daniil Donchenko",
+            "opponent_id": "70dd69b6a703257e",
+            "result": "loss",
+            "round": 1,
+            "time": "4:27"
+          }
+        ]
+      },
       "id": "8b2fcf7f83bf72b6",
       "red": "c06d6b18862f9a53",
-      "result": null,
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "5:00",
+        "winner": "c06d6b18862f9a53"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -94,12 +560,90 @@
     },
     {
       "blue": "d008d785f6347dc2",
-      "elo": null,
+      "elo": {
+        "blue_delta": -50,
+        "blue_p4p_rank": null,
+        "blue_pre": 1463,
+        "red_delta": 37,
+        "red_p4p_rank": null,
+        "red_pre": 1482
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2025-05-10",
+            "event": "UFC 315: Muhammad vs. Della Maddalena",
+            "method": "U-DEC",
+            "opponent": "Daniel Santos",
+            "opponent_id": "b67d6bacc68d4c92",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-07-20",
+            "event": "UFC Fight Night: Lemos vs. Jandiroba",
+            "method": "KO/TKO",
+            "opponent": "Hyder Amil",
+            "opponent_id": "41cc71cbf210e0fe",
+            "result": "loss",
+            "round": 1,
+            "time": "1:05"
+          },
+          {
+            "date": "2024-02-03",
+            "event": "UFC Fight Night: Dolidze vs. Imavov",
+            "method": "U-DEC",
+            "opponent": "Blake Bilder",
+            "opponent_id": "5095b0920a3602aa",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-03-28",
+            "event": "UFC Fight Night: Adesanya vs. Pyfer",
+            "method": "KO/TKO",
+            "opponent": "Lerryan Douglas",
+            "opponent_id": "640a0f838f057a81",
+            "result": "loss",
+            "round": 1,
+            "time": "3:33"
+          },
+          {
+            "date": "2025-05-17",
+            "event": "UFC Fight Night: Burns vs. Morales",
+            "method": "U-DEC",
+            "opponent": "Melquizael Costa",
+            "opponent_id": "20bccc9bb4ceb23e",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-04-12",
+            "event": "UFC 314: Volkanovski vs. Lopes",
+            "method": "KO/TKO",
+            "opponent": "Darren Elkins",
+            "opponent_id": "92a9aa9c93192871",
+            "result": "win",
+            "round": 1,
+            "time": "4:15"
+          }
+        ]
+      },
       "id": "52d61656f77f6650",
       "red": "902ec2cc48c8ae8a",
-      "result": null,
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 1,
+        "time": "1:31",
+        "winner": "902ec2cc48c8ae8a"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -107,12 +651,90 @@
     },
     {
       "blue": "9e50097a89442158",
-      "elo": null,
+      "elo": {
+        "blue_delta": -31,
+        "blue_p4p_rank": null,
+        "blue_pre": 1363,
+        "red_delta": 33,
+        "red_p4p_rank": null,
+        "red_pre": 1465
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2024-11-16",
+            "event": "UFC 309: Jones vs. Miocic",
+            "method": "KO/TKO",
+            "opponent": "Ramiz Brahimaj",
+            "opponent_id": "3d074044a33825e7",
+            "result": "loss",
+            "round": 1,
+            "time": "2:55"
+          },
+          {
+            "date": "2024-06-01",
+            "event": "UFC 302: Makhachev vs. Poirier",
+            "method": "U-DEC",
+            "opponent": "Bassil Hafez",
+            "opponent_id": "f4d92416da98804b",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2022-04-09",
+            "event": "UFC 273: Volkanovski vs. The Korean Zombie",
+            "method": "KO/TKO",
+            "opponent": "Mike Malott",
+            "opponent_id": "dd6103dd7127db1d",
+            "result": "loss",
+            "round": 1,
+            "time": "3:41"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-07-11",
+            "event": "UFC 329: McGregor vs. Holloway 2",
+            "method": "KO/TKO",
+            "opponent": "Ryan Gandra",
+            "opponent_id": "e463ce0a2ca474f4",
+            "result": "loss",
+            "round": 1,
+            "time": "1:15"
+          },
+          {
+            "date": "2026-02-21",
+            "event": "UFC Fight Night: Strickland vs. Hernandez",
+            "method": "S-DEC",
+            "opponent": "Michel Pereira",
+            "opponent_id": "595db60957de51d3",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-11-08",
+            "event": "UFC Fight Night: Bonfim vs. Brown",
+            "method": "SUB",
+            "opponent": "Jackson McVey",
+            "opponent_id": "3eeec2f53cebdf12",
+            "result": "win",
+            "round": 2,
+            "time": "1:38"
+          }
+        ]
+      },
       "id": "b6cee8bf625cc566",
       "red": "23dec7c47cb418f8",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "23dec7c47cb418f8"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -120,12 +742,70 @@
     },
     {
       "blue": "8a81a0707350c4a8",
-      "elo": null,
+      "elo": {
+        "blue_delta": 45,
+        "blue_p4p_rank": null,
+        "blue_pre": 1511,
+        "red_delta": -40,
+        "red_p4p_rank": null,
+        "red_pre": 1393
+      },
       "finish_tier": null,
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-08-11",
+            "event": "DWCS 10.1",
+            "method": "U-DEC",
+            "opponent": "Jon Kunneman",
+            "opponent_id": "2694c4997a51ed01",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2025-08-02",
+            "event": "UFC Fight Night: Taira vs. Park",
+            "method": "KO/TKO",
+            "opponent": "Andrey Pulyaev",
+            "opponent_id": "22e07d3da1aa3475",
+            "result": "loss",
+            "round": 2,
+            "time": "1:31"
+          },
+          {
+            "date": "2025-02-22",
+            "event": "UFC Fight Night: Cejudo vs. Song",
+            "method": "KO/TKO",
+            "opponent": "Mansur Abdul-Malik",
+            "opponent_id": "841695e02c99a521",
+            "result": "loss",
+            "round": 2,
+            "time": "3:24"
+          },
+          {
+            "date": "2024-10-15",
+            "event": "DWCS 8.10",
+            "method": "SUB",
+            "opponent": "Heraldo Souza",
+            "opponent_id": "22b43be04d7454d0",
+            "result": "win",
+            "round": 1,
+            "time": "0:37"
+          }
+        ]
+      },
       "id": "f9bda28454d49c78",
       "red": "7eaa5e31c2dd86aa",
-      "result": null,
+      "result": {
+        "method": "SUB",
+        "outcome": "win",
+        "round": 2,
+        "time": "1:25",
+        "winner": "8a81a0707350c4a8"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -133,12 +813,90 @@
     },
     {
       "blue": "e375cb5caf4717b6",
-      "elo": null,
+      "elo": {
+        "blue_delta": 49,
+        "blue_p4p_rank": null,
+        "blue_pre": 1557,
+        "red_delta": -52,
+        "red_p4p_rank": null,
+        "red_pre": 1552
+      },
       "finish_tier": "low",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-03-14",
+            "event": "UFC Fight Night: Emmett vs. Vallejos",
+            "method": "U-DEC",
+            "opponent": "Sam Hughes",
+            "opponent_id": "e94085e821bd81de",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-08-02",
+            "event": "UFC Fight Night: Taira vs. Park",
+            "method": "S-DEC",
+            "opponent": "Ketlen Souza",
+            "opponent_id": "8bd4200561c77a62",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-12-14",
+            "event": "UFC Fight Night: Covington vs. Buckley",
+            "method": "U-DEC",
+            "opponent": "Josefine Knutsson",
+            "opponent_id": "971dba22c622af12",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-04-25",
+            "event": "UFC Fight Night: Sterling vs. Zalal",
+            "method": "U-DEC",
+            "opponent": "Julia Polastri",
+            "opponent_id": "abb68e3c7ca128f2",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-11-01",
+            "event": "UFC Fight Night: Garcia vs. Onama",
+            "method": "SUB",
+            "opponent": "Ariane Carnelossi",
+            "opponent_id": "c0d5c0c95c59050b",
+            "result": "win",
+            "round": 3,
+            "time": "4:36"
+          },
+          {
+            "date": "2025-04-05",
+            "event": "UFC Fight Night: Emmett vs. Murphy",
+            "method": "U-DEC",
+            "opponent": "Vanessa Demopoulos",
+            "opponent_id": "2c483cf443f38ece",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ]
+      },
       "id": "78b166a244a2b534",
       "red": "d35298b6df168456",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "e375cb5caf4717b6"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -146,12 +904,59 @@
     },
     {
       "blue": "2c5f5749569eef66",
-      "elo": null,
+      "elo": {
+        "blue_delta": -51,
+        "blue_p4p_rank": null,
+        "blue_pre": 1404,
+        "red_delta": 65,
+        "red_p4p_rank": null,
+        "red_pre": 1441
+      },
       "finish_tier": null,
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2025-10-18",
+            "event": "UFC Fight Night: De Ridder vs. Allen",
+            "method": "KO/TKO",
+            "opponent": "Melissa Croden",
+            "opponent_id": "51e2f44a8dbf6984",
+            "result": "loss",
+            "round": 3,
+            "time": "4:32"
+          },
+          {
+            "date": "2025-05-17",
+            "event": "UFC Fight Night: Burns vs. Morales",
+            "method": "SUB",
+            "opponent": "Luana Santos",
+            "opponent_id": "5078e1dacf9d25f4",
+            "result": "loss",
+            "round": 2,
+            "time": "4:59"
+          },
+          {
+            "date": "2023-10-14",
+            "event": "UFC Fight Night: Yusuff vs. Barboza",
+            "method": "U-DEC",
+            "opponent": "Ravena Oliveira",
+            "opponent_id": "4948e412fa6ab67d",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": []
+      },
       "id": "1bf2edb30de4c976",
       "red": "184f6ec4ee712e9f",
-      "result": null,
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 3,
+        "time": "3:20",
+        "winner": "184f6ec4ee712e9f"
+      },
       "segment": "prelims",
       "tier_frozen_at": "2026-10-31T00:17:50Z",
       "title_fight": false,
@@ -162,5 +967,5 @@
   "location": "Las Vegas, Nevada, USA",
   "name": "UFC Fight Night: Moicano vs. Nolan",
   "slug": "ufc-fight-night-moicano-vs-nolan",
-  "status": "upcoming"
+  "status": "completed"
 }
