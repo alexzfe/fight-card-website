@@ -9,7 +9,7 @@
         "blue_pre": 1618,
         "red_delta": 50,
         "red_p4p_rank": null,
-        "red_pre": 1615
+        "red_pre": 1614
       },
       "finish_tier": null,
       "form": {
@@ -100,7 +100,7 @@
         "blue_pre": 1583,
         "red_delta": 45,
         "red_p4p_rank": null,
-        "red_pre": 1624
+        "red_pre": 1623
       },
       "finish_tier": null,
       "form": {
@@ -191,7 +191,7 @@
         "blue_pre": 1345,
         "red_delta": 37,
         "red_p4p_rank": null,
-        "red_pre": 1513
+        "red_pre": 1512
       },
       "finish_tier": null,
       "form": {
@@ -259,10 +259,10 @@
       "elo": {
         "blue_delta": -72,
         "blue_p4p_rank": null,
-        "blue_pre": 1441,
+        "blue_pre": 1440,
         "red_delta": 72,
         "red_p4p_rank": null,
-        "red_pre": 1441
+        "red_pre": 1440
       },
       "finish_tier": null,
       "form": {
@@ -288,10 +288,10 @@
       "elo": {
         "blue_delta": -81,
         "blue_p4p_rank": null,
-        "blue_pre": 1441,
+        "blue_pre": 1440,
         "red_delta": 75,
         "red_p4p_rank": null,
-        "red_pre": 1398
+        "red_pre": 1397
       },
       "finish_tier": null,
       "form": {
@@ -328,10 +328,10 @@
       "elo": {
         "blue_delta": -53,
         "blue_p4p_rank": null,
-        "blue_pre": 1570,
+        "blue_pre": 1569,
         "red_delta": 60,
         "red_p4p_rank": null,
-        "red_pre": 1554
+        "red_pre": 1553
       },
       "finish_tier": null,
       "form": {
@@ -584,7 +584,7 @@
         "blue_pre": 1401,
         "red_delta": 49,
         "red_p4p_rank": null,
-        "red_pre": 1425
+        "red_pre": 1424
       },
       "finish_tier": null,
       "form": {
@@ -652,7 +652,7 @@
       "elo": {
         "blue_delta": -29,
         "blue_p4p_rank": null,
-        "blue_pre": 1516,
+        "blue_pre": 1515,
         "red_delta": 31,
         "red_p4p_rank": null,
         "red_pre": 1613
@@ -834,10 +834,10 @@
       "elo": {
         "blue_delta": -33,
         "blue_p4p_rank": null,
-        "blue_pre": 1354,
+        "blue_pre": 1353,
         "red_delta": 40,
         "red_p4p_rank": null,
-        "red_pre": 1450
+        "red_pre": 1449
       },
       "finish_tier": null,
       "form": {

@@ -95,7 +95,7 @@
     {
       "blue": "a6eb54ae17a551be",
       "elo": null,
-      "finish_tier": "medium",
+      "finish_tier": "low",
       "form": null,
       "id": "1452e906a169875d",
       "red": "9d62c2d8ee151f08",
@@ -178,7 +178,7 @@
       "id": "e2cd8521c8ba55b2",
       "red": "2975297f505e9447",
       "result": null,
-      "segment": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"

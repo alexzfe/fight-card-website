@@ -17,7 +17,7 @@
     {
       "blue": "239d8e5359022f3b",
       "elo": null,
-      "finish_tier": "medium",
+      "finish_tier": "low",
       "form": null,
       "id": "07ea5460ba2f04c6",
       "red": "cb696ebfb6598724",
@@ -43,7 +43,7 @@
     {
       "blue": "b07aed698fba8624",
       "elo": null,
-      "finish_tier": "medium",
+      "finish_tier": "high",
       "form": null,
       "id": "7ba7765e1a7cd03f",
       "red": "13a0275fa13c4d26",
@@ -69,7 +69,7 @@
     {
       "blue": "e047d3b541afd4a7",
       "elo": null,
-      "finish_tier": "medium",
+      "finish_tier": "high",
       "form": null,
       "id": "16abc15d8c49da5c",
       "red": "a845f0735bc67405",

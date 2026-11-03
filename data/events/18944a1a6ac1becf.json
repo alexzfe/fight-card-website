@@ -1,0 +1,36 @@
+{
+  "date": "2027-02-06",
+  "fights": [
+    {
+      "blue": "c2299ec916bc7c56",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "e78fa9d27d4b9d2f",
+      "red": "17734443a833cdf7",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "e1147d3d2dabe1ce",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "97b5e68e22570c27",
+      "red": "ef5dcb10d2bd4b0f",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
+    }
+  ],
+  "id": "18944a1a6ac1becf",
+  "location": "Sydney, New South Wales, Australia",
+  "name": "UFC Fight Night: Salkilld vs. Saint Denis",
+  "slug": "ufc-fight-night-salkilld-vs-saint-denis",
+  "status": "upcoming"
+}

@@ -9,7 +9,7 @@
         "blue_pre": 1701,
         "red_delta": 41,
         "red_p4p_rank": null,
-        "red_pre": 1683
+        "red_pre": 1682
       },
       "finish_tier": null,
       "form": {
@@ -97,10 +97,10 @@
       "elo": {
         "blue_delta": -41,
         "blue_p4p_rank": 5,
-        "blue_pre": 1732,
+        "blue_pre": 1731,
         "red_delta": 42,
         "red_p4p_rank": 8,
-        "red_pre": 1723
+        "red_pre": 1722
       },
       "finish_tier": null,
       "form": {
@@ -188,7 +188,7 @@
       "elo": {
         "blue_delta": -79,
         "blue_p4p_rank": null,
-        "blue_pre": 1625,
+        "blue_pre": 1624,
         "red_delta": 70,
         "red_p4p_rank": null,
         "red_pre": 1508
@@ -282,7 +282,7 @@
         "blue_pre": 1650,
         "red_delta": 35,
         "red_p4p_rank": null,
-        "red_pre": 1687
+        "red_pre": 1686
       },
       "finish_tier": null,
       "form": {
@@ -805,7 +805,7 @@
       "elo": {
         "blue_delta": -5,
         "blue_p4p_rank": null,
-        "blue_pre": 1441,
+        "blue_pre": 1440,
         "red_delta": 4,
         "red_p4p_rank": null,
         "red_pre": 1484
@@ -939,7 +939,7 @@
         "blue_pre": 1395,
         "red_delta": 32,
         "red_p4p_rank": null,
-        "red_pre": 1538
+        "red_pre": 1537
       },
       "finish_tier": null,
       "form": {
@@ -1030,7 +1030,7 @@
         "blue_pre": 1511,
         "red_delta": 57,
         "red_p4p_rank": null,
-        "red_pre": 1525
+        "red_pre": 1524
       },
       "finish_tier": null,
       "form": {
@@ -1101,7 +1101,7 @@
         "blue_pre": 1472,
         "red_delta": 40,
         "red_p4p_rank": null,
-        "red_pre": 1547
+        "red_pre": 1546
       },
       "finish_tier": null,
       "form": {
