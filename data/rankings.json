@@ -26,7 +26,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1763,
+      "elo": 1762,
       "id": "262d32ebda89efc4",
       "name": "Natalia Silva",
       "p4p_rank": 1,
@@ -290,7 +290,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1676,
+      "elo": 1675,
       "id": "45f7cb591c3ab00b",
       "name": "Sean Brady",
       "p4p_rank": null,
@@ -330,7 +330,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1672,
+      "elo": 1671,
       "id": "9a97acbfd5a08bfa",
       "name": "David Martinez",
       "p4p_rank": null,
@@ -514,7 +514,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1649,
+      "elo": 1648,
       "id": "71171fc96445bf65",
       "name": "Vitor Petrino",
       "p4p_rank": null,
@@ -690,7 +690,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1630,
+      "elo": 1629,
       "id": "7674b836ce0698a0",
       "name": "Yousri Belgaroui",
       "p4p_rank": null,
@@ -730,7 +730,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1624,
+      "elo": 1623,
       "id": "a13d755965a4ec9f",
       "name": "Rongzhu",
       "p4p_rank": null,
@@ -1266,7 +1266,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1582,
+      "elo": 1581,
       "id": "084532da3d25f3b8",
       "name": "Cezary Oleksiejczuk",
       "p4p_rank": null,
@@ -3282,7 +3282,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1470,
+      "elo": 1471,
       "id": "595db60957de51d3",
       "name": "Michel Pereira",
       "p4p_rank": null,
@@ -3890,7 +3890,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1426,
+      "elo": 1427,
       "id": "59c438c81fbf3ece",
       "name": "Tereza Bleda",
       "p4p_rank": null,
@@ -3906,7 +3906,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1425,
+      "elo": 1426,
       "id": "62f3039da2f92a8c",
       "name": "Eduardo Chapolin",
       "p4p_rank": null,
@@ -4058,7 +4058,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1410,
+      "elo": 1411,
       "id": "64b12fe31be7560c",
       "name": "Eric Nolan",
       "p4p_rank": null,
@@ -4106,7 +4106,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1404,
+      "elo": 1405,
       "id": "20a0e4cc5227c117",
       "name": "Jose Souza",
       "p4p_rank": null,
@@ -4498,7 +4498,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1374,
+      "elo": 1375,
       "id": "523fa774700d7d3f",
       "name": "Court McGee",
       "p4p_rank": null,
@@ -4514,7 +4514,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1373,
+      "elo": 1374,
       "id": "0f1efce7d2571d10",
       "name": "Nikolay Veretennikov",
       "p4p_rank": null,
@@ -4794,7 +4794,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1351,
+      "elo": 1352,
       "id": "2dbc60c52de126d8",
       "name": "Harry Hardwick",
       "p4p_rank": null,
@@ -5098,7 +5098,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1301,
+      "elo": 1302,
       "id": "9c27f3217891f3f0",
       "name": "Kris Moutinho",
       "p4p_rank": null,
@@ -5177,7 +5177,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-03",
+  "as_of": "2026-11-04",
   "p4p": {
     "men": [
       {
@@ -5304,7 +5304,7 @@
     "women": [
       {
         "division": "Women's Flyweight",
-        "elo": 1763,
+        "elo": 1762,
         "id": "262d32ebda89efc4",
         "image": "images/262d32ebda89efc4.webp",
         "name": "Natalia Silva",
