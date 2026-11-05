@@ -130,7 +130,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1708,
+      "elo": 1707,
       "id": "9e8f6c728eb01124",
       "name": "Justin Gaethje",
       "p4p_rank": null,
@@ -138,7 +138,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1703,
+      "elo": 1702,
       "id": "d1c65d2cf2925ddd",
       "name": "Gregory Rodrigues",
       "p4p_rank": null,
@@ -186,7 +186,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1695,
+      "elo": 1694,
       "id": "54f64b5e283b0ce7",
       "name": "Ilia Topuria",
       "p4p_rank": null,
@@ -210,7 +210,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1690,
+      "elo": 1689,
       "id": "c03520b5c88ed6b4",
       "name": "Merab Dvalishvili",
       "p4p_rank": null,
@@ -218,7 +218,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1686,
+      "elo": 1685,
       "id": "85497ffd934ecf7e",
       "name": "Jacobe Smith",
       "p4p_rank": null,
@@ -418,7 +418,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1657,
+      "elo": 1656,
       "id": "0d8011111be000b2",
       "name": "Sean Strickland",
       "p4p_rank": null,
@@ -602,7 +602,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1640,
+      "elo": 1639,
       "id": "e8b731feff72294b",
       "name": "Alexa Grasso",
       "p4p_rank": 8,
@@ -1914,7 +1914,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1543,
+      "elo": 1542,
       "id": "3a46b268013afede",
       "name": "Kevin Holland",
       "p4p_rank": null,
@@ -3770,7 +3770,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1436,
+      "elo": 1437,
       "id": "3a314d9fa7c6825d",
       "name": "Douglas Silva de Andrade",
       "p4p_rank": null,
@@ -4034,7 +4034,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1411,
+      "elo": 1412,
       "id": "450bcab0968562c4",
       "name": "John Yannis",
       "p4p_rank": null,
@@ -4394,7 +4394,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1382,
+      "elo": 1383,
       "id": "0abcf6bc47191219",
       "name": "Bruno Lopes",
       "p4p_rank": null,
@@ -4538,7 +4538,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1371,
+      "elo": 1372,
       "id": "ac7c765882f2c68c",
       "name": "Elise Reed",
       "p4p_rank": null,
@@ -4666,7 +4666,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1362,
+      "elo": 1363,
       "id": "86bace9e4ad85542",
       "name": "Xiao Long",
       "p4p_rank": null,
@@ -4770,7 +4770,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1352,
+      "elo": 1353,
       "id": "0bc697c5936a2d0a",
       "name": "Trevor Peek",
       "p4p_rank": null,
@@ -5177,7 +5177,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-04",
+  "as_of": "2026-11-05",
   "p4p": {
     "men": [
       {
@@ -5360,7 +5360,7 @@
       },
       {
         "division": "Women's Flyweight",
-        "elo": 1640,
+        "elo": 1639,
         "id": "e8b731feff72294b",
         "image": "images/e8b731feff72294b.webp",
         "name": "Alexa Grasso",

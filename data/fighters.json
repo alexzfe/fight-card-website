@@ -3433,7 +3433,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1543,
+    "elo": 1542,
     "elo_inactive": false,
     "elo_peak": 1654,
     "elo_provisional": false,
@@ -3705,7 +3705,7 @@
     "dob": null,
     "elo": 1537,
     "elo_inactive": false,
-    "elo_peak": 1540,
+    "elo_peak": 1541,
     "elo_provisional": false,
     "height_in": 64.0,
     "id": "3fa97913cfd205d3",
@@ -3765,7 +3765,7 @@
     "dob": "1999-02-28",
     "elo": 1489,
     "elo_inactive": false,
-    "elo_peak": 1489,
+    "elo_peak": 1490,
     "elo_provisional": false,
     "height_in": 63.0,
     "id": "40cb680ae1cd331f",
@@ -4140,7 +4140,7 @@
     "dob": "1996-09-08",
     "elo": 1404,
     "elo_inactive": false,
-    "elo_peak": 1464,
+    "elo_peak": 1465,
     "elo_provisional": false,
     "height_in": 75.0,
     "id": "49edd0d90f60fb7d",
@@ -6784,6 +6784,66 @@
     },
     "stance": "Orthodox"
   },
+  "6eedb757f13b9978": {
+    "best_win": {
+      "date": "2026-05-02",
+      "elo": 1440,
+      "opponent": "Ollie Schmid",
+      "opponent_id": "b701f095e6ccb149"
+    },
+    "details_fetched_at": "2026-11-05T06:00:03Z",
+    "dob": "2002-05-10",
+    "elo": 1529,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": false,
+    "height_in": 68.0,
+    "id": "6eedb757f13b9978",
+    "image": "images/6eedb757f13b9978.webp",
+    "name": "Marwan Rahiki",
+    "nickname": "Freaky",
+    "p4p_rank": null,
+    "reach_in": 72.0,
+    "recent_fights": [
+      {
+        "date": "2026-09-12",
+        "event": "Noche UFC: Silva vs. Delgado",
+        "method": "U-DEC",
+        "opponent": "Tommy McMillen",
+        "opponent_id": "6b0a6def604de298",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-02",
+        "event": "UFC Fight Night: Della Maddalena vs. Prates",
+        "method": "KO/TKO",
+        "opponent": "Ollie Schmid",
+        "opponent_id": "b701f095e6ccb149",
+        "result": "win",
+        "round": 1,
+        "time": "2:47"
+      },
+      {
+        "date": "2026-03-14",
+        "event": "UFC Fight Night: Emmett vs. Vallejos",
+        "method": "KO/TKO",
+        "opponent": "Harry Hardwick",
+        "opponent_id": "2dbc60c52de126d8",
+        "result": "win",
+        "round": 2,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
   "7026eca45f65377b": {
     "best_win": {
       "date": "2021-10-02",
@@ -7759,6 +7819,41 @@
     },
     "stance": "Orthodox"
   },
+  "7d4d7583df7eebf9": {
+    "best_win": null,
+    "details_fetched_at": "2026-11-05T06:00:03Z",
+    "dob": "1996-02-10",
+    "elo": 1382,
+    "elo_inactive": true,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 71.0,
+    "id": "7d4d7583df7eebf9",
+    "image": "images/7d4d7583df7eebf9.webp",
+    "name": "Carlos Calderon",
+    "nickname": "Chief",
+    "p4p_rank": null,
+    "reach_in": 71.0,
+    "recent_fights": [
+      {
+        "date": "2024-10-01",
+        "event": "DWCS 8.8",
+        "method": "SUB",
+        "opponent": "Alberto Montes",
+        "opponent_id": "a112097ad877a48f",
+        "result": "loss",
+        "round": 2,
+        "time": "2:38"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 1,
+      "w": 11
+    },
+    "stance": "Switch"
+  },
   "7dda2cf308f24a02": {
     "best_win": {
       "date": "2025-04-12",
@@ -7770,7 +7865,7 @@
     "dob": "1988-05-30",
     "elo": 1635,
     "elo_inactive": false,
-    "elo_peak": 1687,
+    "elo_peak": 1688,
     "elo_provisional": false,
     "height_in": 63.0,
     "id": "7dda2cf308f24a02",
@@ -7998,6 +8093,66 @@
       "w": 19
     },
     "stance": "Southpaw"
+  },
+  "7facc9c45d792985": {
+    "best_win": {
+      "date": "2026-06-27",
+      "elo": 1565,
+      "opponent": "Javier Reyes",
+      "opponent_id": "4a574b8512fc1b30"
+    },
+    "details_fetched_at": "2026-11-05T06:00:03Z",
+    "dob": "1993-06-19",
+    "elo": 1538,
+    "elo_inactive": false,
+    "elo_peak": 1541,
+    "elo_provisional": false,
+    "height_in": 67.0,
+    "id": "7facc9c45d792985",
+    "image": "images/7facc9c45d792985.webp",
+    "name": "Kaan Ofli",
+    "nickname": "Genghis",
+    "p4p_rank": null,
+    "reach_in": 66.0,
+    "recent_fights": [
+      {
+        "date": "2026-06-27",
+        "event": "UFC Fight Night: Fiziev vs. Torres",
+        "method": "SUB",
+        "opponent": "Javier Reyes",
+        "opponent_id": "4a574b8512fc1b30",
+        "result": "win",
+        "round": 1,
+        "time": "4:16"
+      },
+      {
+        "date": "2026-01-31",
+        "event": "UFC 325: Volkanovski vs. Lopes 2",
+        "method": "M-DEC",
+        "opponent": "Yizha",
+        "opponent_id": "3f11fd1751fa83b1",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-10-11",
+        "event": "UFC Fight Night: Oliveira vs. Gamrot",
+        "method": "SUB",
+        "opponent": "Ricardo Ramos",
+        "opponent_id": "1ae8f3c723aacff4",
+        "result": "win",
+        "round": 1,
+        "time": "3:02"
+      }
+    ],
+    "record": {
+      "d": 1,
+      "l": 4,
+      "nc": 0,
+      "w": 15
+    },
+    "stance": "Orthodox"
   },
   "809bd1a871491508": {
     "best_win": {
@@ -8298,7 +8453,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1996-01-17",
-    "elo": 1686,
+    "elo": 1685,
     "elo_inactive": false,
     "elo_peak": 1686,
     "elo_provisional": false,
@@ -9222,7 +9377,7 @@
   "98a58c26c5b1ed17": {
     "best_win": {
       "date": "2026-09-19",
-      "elo": 1575,
+      "elo": 1576,
       "opponent": "Dooho Choi",
       "opponent_id": "e93b04e308913c2e"
     },
@@ -10262,7 +10417,7 @@
   "a845f0735bc67405": {
     "best_win": {
       "date": "2016-03-19",
-      "elo": 1636,
+      "elo": 1637,
       "opponent": "Johnny Case",
       "opponent_id": "1f4b04a926ef1287"
     },
@@ -10907,7 +11062,7 @@
   "b1e5bcaad32a3cac": {
     "best_win": {
       "date": "2025-03-15",
-      "elo": 1477,
+      "elo": 1478,
       "opponent": "Josiane Nunes",
       "opponent_id": "68d35296f566792b"
     },
@@ -11548,7 +11703,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1690,
+    "elo": 1689,
     "elo_inactive": false,
     "elo_peak": 1821,
     "elo_provisional": false,
