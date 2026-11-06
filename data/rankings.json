@@ -66,7 +66,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1723,
+      "elo": 1722,
       "id": "e1248941344b3288",
       "name": "Alexander Volkanovski",
       "p4p_rank": 8,
@@ -314,7 +314,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1674,
+      "elo": 1673,
       "id": "c1085e1701b13eca",
       "name": "Joe Pyfer",
       "p4p_rank": null,
@@ -666,7 +666,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1631,
+      "elo": 1630,
       "id": "3618e0632ecdba9c",
       "name": "Keiichiro Nakamura",
       "p4p_rank": null,
@@ -858,7 +858,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1613,
+      "elo": 1612,
       "id": "6e8349a0a0476d60",
       "name": "Imanol Rodriguez",
       "p4p_rank": null,
@@ -930,7 +930,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1608,
+      "elo": 1607,
       "id": "093e1f5bb73850be",
       "name": "Anthony Hernandez",
       "p4p_rank": null,
@@ -1090,7 +1090,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1595,
+      "elo": 1594,
       "id": "fc08099550072fe4",
       "name": "Waldo Cortes Acosta",
       "p4p_rank": null,
@@ -1146,7 +1146,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1590,
+      "elo": 1589,
       "id": "24656ef4d605c96f",
       "name": "Aiemann Zahabi",
       "p4p_rank": null,
@@ -1330,7 +1330,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1577,
+      "elo": 1576,
       "id": "f1fac969a1d70b08",
       "name": "Leon Edwards",
       "p4p_rank": null,
@@ -1506,7 +1506,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1567,
+      "elo": 1566,
       "id": "037cfd34a27d59e9",
       "name": "Michael Oliveira",
       "p4p_rank": null,
@@ -3410,7 +3410,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1460,
+      "elo": 1461,
       "id": "6add18754930182b",
       "name": "Julius Walker",
       "p4p_rank": null,
@@ -3450,7 +3450,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1458,
+      "elo": 1459,
       "id": "65adf3856c4d9256",
       "name": "Jafel Filho",
       "p4p_rank": null,
@@ -3674,7 +3674,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1445,
+      "elo": 1446,
       "id": "82a5152216251682",
       "name": "Dan Ige",
       "p4p_rank": null,
@@ -4082,7 +4082,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1407,
+      "elo": 1408,
       "id": "aa171d55d4b5208f",
       "name": "Billy Quarantillo",
       "p4p_rank": null,
@@ -4346,7 +4346,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1384,
+      "elo": 1385,
       "id": "e6666480a830f764",
       "name": "YiSak Lee",
       "p4p_rank": null,
@@ -4530,7 +4530,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1372,
+      "elo": 1373,
       "id": "cdb7b38b1b357f26",
       "name": "Louie Sutherland",
       "p4p_rank": null,
@@ -5002,7 +5002,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1323,
+      "elo": 1324,
       "id": "feef5f8f5629e5e7",
       "name": "Theodor Berggren",
       "p4p_rank": null,
@@ -5106,7 +5106,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1300,
+      "elo": 1301,
       "id": "cd3d7e37ff2d679c",
       "name": "Ricky Turcios",
       "p4p_rank": null,
@@ -5130,7 +5130,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1288,
+      "elo": 1289,
       "id": "9eed2bcc9e0b92af",
       "name": "Leon Shahbazyan",
       "p4p_rank": null,
@@ -5177,7 +5177,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-05",
+  "as_of": "2026-11-06",
   "p4p": {
     "men": [
       {
@@ -5238,7 +5238,7 @@
       },
       {
         "division": "Featherweight",
-        "elo": 1723,
+        "elo": 1722,
         "id": "e1248941344b3288",
         "image": "images/e1248941344b3288.webp",
         "name": "Alexander Volkanovski",
