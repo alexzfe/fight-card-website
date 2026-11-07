@@ -10,7 +10,7 @@
       "red": "fc08099550072fe4",
       "result": null,
       "segment": "main",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Heavyweight"
     },
@@ -23,7 +23,7 @@
       "red": "b08012bbe542592a",
       "result": null,
       "segment": "main",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Women's Strawweight"
     },
@@ -36,7 +36,7 @@
       "red": "113df4fde64735c6",
       "result": null,
       "segment": "main",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Bantamweight"
     },
@@ -49,7 +49,7 @@
       "red": "07a74004d964c7f4",
       "result": null,
       "segment": "main",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Light Heavyweight"
     },
@@ -62,7 +62,7 @@
       "red": "b1e5bcaad32a3cac",
       "result": null,
       "segment": "main",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Women's Bantamweight"
     },
@@ -75,7 +75,7 @@
       "red": "0be6776db31d98ec",
       "result": null,
       "segment": "main",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Flyweight"
     },
@@ -88,7 +88,7 @@
       "red": "3618e0632ecdba9c",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Featherweight"
     },
@@ -101,7 +101,7 @@
       "red": "e3fc6c1fab298561",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Heavyweight"
     },
@@ -114,7 +114,7 @@
       "red": "9d62c2d8ee151f08",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Women's Flyweight"
     },
@@ -127,7 +127,7 @@
       "red": "d7c4956d61ae76a9",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Featherweight"
     },
@@ -140,7 +140,7 @@
       "red": "d3f89fa685bd8420",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Featherweight"
     },
@@ -153,7 +153,7 @@
       "red": "3cc506f115cbb9d5",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Middleweight"
     },
@@ -166,7 +166,7 @@
       "red": "4a07b1988477502c",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Welterweight"
     },
@@ -179,7 +179,7 @@
       "red": "2975297f505e9447",
       "result": null,
       "segment": "prelims",
-      "tier_frozen_at": null,
+      "tier_frozen_at": "2026-11-07T00:17:46Z",
       "title_fight": false,
       "weight_class": "Welterweight"
     }

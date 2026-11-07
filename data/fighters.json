@@ -70,7 +70,7 @@
     "dob": null,
     "elo": 1691,
     "elo_inactive": false,
-    "elo_peak": 1702,
+    "elo_peak": 1703,
     "elo_provisional": false,
     "height_in": 73.0,
     "id": "01641ba5df0c69b0",
@@ -708,7 +708,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1995-10-02",
-    "elo": 1525,
+    "elo": 1524,
     "elo_inactive": false,
     "elo_peak": 1610,
     "elo_provisional": false,
@@ -2407,7 +2407,7 @@
   "29162be25ebef5f0": {
     "best_win": {
       "date": "2024-10-15",
-      "elo": 1454,
+      "elo": 1455,
       "opponent": "Nick Piccininni",
       "opponent_id": "a5cb1c29461853ca"
     },
@@ -4583,7 +4583,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1995-08-06",
-    "elo": 1320,
+    "elo": 1321,
     "elo_inactive": false,
     "elo_peak": 1493,
     "elo_provisional": false,
@@ -5852,7 +5852,7 @@
   "669970f7feba8ecd": {
     "best_win": {
       "date": "2023-02-18",
-      "elo": 1664,
+      "elo": 1665,
       "opponent": "Jessica Andrade",
       "opponent_id": "6a1901c62ab3870f"
     },
@@ -6613,7 +6613,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1992-01-09",
-    "elo": 1341,
+    "elo": 1342,
     "elo_inactive": false,
     "elo_peak": 1521,
     "elo_provisional": false,
@@ -11248,7 +11248,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1708,
+    "elo": 1707,
     "elo_inactive": false,
     "elo_peak": 1715,
     "elo_provisional": false,
@@ -11457,7 +11457,7 @@
   "b9124c308671e303": {
     "best_win": {
       "date": "2026-10-10",
-      "elo": 1445,
+      "elo": 1446,
       "opponent": "Malcolm Wellmaker",
       "opponent_id": "2e45d08b3f2f02c8"
     },
@@ -14112,7 +14112,7 @@
   "e5549c82bfb5582d": {
     "best_win": {
       "date": "2022-11-12",
-      "elo": 1782,
+      "elo": 1783,
       "opponent": "Israel Adesanya",
       "opponent_id": "1338e2c7480bdf9e"
     },
