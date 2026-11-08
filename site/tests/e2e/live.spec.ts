@@ -52,8 +52,14 @@ async function mockApi(page: Page, first: Answer) {
   await page.route(API, (route: Route) => {
     api.requests += 1;
     if (api.answer === 'error') return route.fulfill({ status: 503, headers: CORS, body: 'down' });
-    if (api.answer === 'garbage') return route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: '{"id": 3' });
-    return route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: JSON.stringify(api.answer) });
+    if (api.answer === 'garbage')
+      return route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: '{"id": 3' });
+    return route.fulfill({
+      status: 200,
+      headers: CORS,
+      contentType: 'application/json',
+      body: JSON.stringify(api.answer),
+    });
   });
   return api;
 }
@@ -143,13 +149,30 @@ test.describe('live results', () => {
     const api = await openLive(page, 'error');
     await expect.poll(() => api.requests).toBe(1);
     const before = await page.locator('main').innerHTML();
-    await page.clock.runFor(60_000);
-    await expect.poll(() => api.requests).toBe(2);
+    // A failed fetch schedules its retry asynchronously, so step the clock and see when the next request comes.
+    const untilNext = async () => {
+      const seen = api.requests;
+      let waited = 0;
+      await expect
+        .poll(
+          async () => {
+            await page.clock.runFor(10_000);
+            waited += 10_000;
+            return api.requests;
+          },
+          { timeout: 30_000, intervals: [50] },
+        )
+        .toBeGreaterThan(seen);
+      return waited;
+    };
+    expect(await untilNext()).toBeLessThanOrEqual(70_000); // 1st retry after 60 s
     api.answer = 'garbage';
-    await page.clock.runFor(120_000);
-    await expect.poll(() => api.requests).toBe(3);
-    await page.clock.runFor(200_000); // the next try is 4 min after the last
-    expect(api.requests).toBe(3);
+    const second = await untilNext();
+    expect(second).toBeGreaterThanOrEqual(110_000); // then 2 min
+    expect(second).toBeLessThanOrEqual(130_000);
+    const third = await untilNext();
+    expect(third).toBeGreaterThanOrEqual(230_000); // then 4 min
+    expect(third).toBeLessThanOrEqual(250_000);
     expect(await page.locator('main').innerHTML()).toBe(before);
     await expect(liveLine(page)).toBeHidden();
   });
