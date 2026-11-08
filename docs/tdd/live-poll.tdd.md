@@ -26,7 +26,6 @@ are the rebased ones. The commit messages still name the old SHAs: `64a62a8`=`66
 | `be37894` | GREEN | `npx vitest run` (unit + component projects) 351 passed; `npm run test:e2e` 97 passed; `astro check` 0 errors. |
 | `74bc1ae` | REFACTOR | prettier on the new files, `applyFight` loop tidied, dev mock pace; the same 351 / 97 / 0. |
 | `17fb580` | test fix | CI failed once on the backoff e2e test: a failed fetch schedules its retry asynchronously, and `clock.runFor(120_000)` could land before the timer existed. The test now steps the clock 10 s at a time until the next request and checks the gaps (≤70 s, 110–130 s, 230–250 s). `--project live --repeat-each 4`: 52 passed, twice; CI `test` passed. |
-
 | `c5f1b9b` | RED (review fixes) | `npx vitest run`: 13 failed / 351 passed. Each fails for the reason under test: `runningOrder` missing; the embedded card in array order (Live now on `P1`, not the late `LATE`); `cardPhase` 'live', `carriesLivePoll` true and grace-long `currentEvent` for a decided main event; `isComplete` false for it; a winner id outside the fight rejected; `onStop` never called; a batch whose render threw is lost (`applied` empty after two retries). The new e2e CORS-simple test passes on the old code. It is a guard: with an `x-probe` header added to the fetch it fails with `header x-probe` (checked, then reverted). |
 | `7059a52` | GREEN (review fixes) | `npx vitest run` 364 passed; `npm run test:e2e` 98 passed; `astro check` 0 errors. Re-run after the rebase onto main: the same. |
 
