@@ -7,13 +7,14 @@
     "build": "astro build",
     "build:fixtures": "DATA_DIR=tests/fixtures/data BUILD_NOW=2026-10-24T06:00:00Z astro build",
     "preview": "astro preview",
-    "test": "vitest run",
+    "test": "vitest run && vitest run -c vitest.component.config.ts",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "npm run build:fixtures && npm run build:fixtures:live && playwright test",
     "check": "astro check",
     "validate-data": "node scripts/validate-data.mjs",
     "icons": "node scripts/build-icons.mjs",
-    "build:fixtures:live": "DATA_DIR=tests/fixtures/live BUILD_NOW=2026-11-08T00:44:00Z astro build --outDir dist-live"
+    "build:fixtures:live": "DATA_DIR=tests/fixtures/live BUILD_NOW=2026-11-08T00:44:00Z astro build --outDir dist-live",
+    "test:component": "vitest run -c vitest.component.config.ts"
   },
   "dependencies": {
     "astro": "^7.4.2",
@@ -25,6 +26,7 @@
     "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^5.0.5",
     "ajv": "^8.20.0",
+    "happy-dom": "^21.0.4",
     "typescript": "^6.0.3",
     "vitest": "^5.0.5"
   }
