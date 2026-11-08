@@ -13,7 +13,7 @@ beforeAll(() => {
   fs.rmSync(DIST, { recursive: true, force: true });
   execFileSync('npx', ['astro', 'build', '--outDir', DIST], {
     cwd: SITE,
-    env: { ...process.env, DATA_DIR: 'tests/fixtures/v1' },
+    env: { ...process.env, BUILD_NOW: '2026-10-24T06:00:00Z', DATA_DIR: 'tests/fixtures/v1' },
     stdio: 'pipe',
   });
 }, 300_000);

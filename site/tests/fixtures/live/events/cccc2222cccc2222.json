@@ -1,0 +1,21 @@
+{
+  "id": "cccc2222cccc2222",
+  "slug": "ufc-324-next-vs-upcoming",
+  "name": "UFC 324: Next vs. Upcoming",
+  "date": "2026-11-14",
+  "location": "New York, New York, USA",
+  "status": "upcoming",
+  "fights": [
+    {
+      "id": "f000000000000006",
+      "red": "g1g1g1g1g1g1g1g1",
+      "blue": "g2g2g2g2g2g2g2g2",
+      "weight_class": "Welterweight",
+      "title_fight": false,
+      "finish_tier": "medium",
+      "segment": "main",
+      "tier_frozen_at": null,
+      "result": null
+    }
+  ]
+}

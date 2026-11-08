@@ -1,16 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { byDateAscending, findBySlug, nextEvent, orderEvents } from '../../src/lib/events';
+import { RESULTS_GRACE_DAYS, byDateAscending, currentEvent, findBySlug, orderEvents } from '../../src/lib/events';
 import type { Event } from '../../src/lib/schema';
 
-const ev = (id: string, date: string, status: Event['status']): Event => ({
+const ev = (id: string, date: string, status: Event['status'], fights: Event['fights'] = []): Event => ({
   id,
   slug: `slug-${id}`,
   name: `Event ${id}`,
   date,
   location: null,
   status,
-  fights: [],
+  fights,
 });
+
+/** `done` bouts with a result, then `left` without one. */
+const bouts = (done: number, left: number): Event['fights'] =>
+  Array.from({ length: done + left }, (_, i) => ({
+    id: `f${i}`,
+    red: 'r',
+    blue: 'b',
+    title_fight: false,
+    result: i < done ? { winner: 'r', method: 'KO/TKO', round: 1, time: '1:00' } : null,
+  }));
+
+const at = (iso: string) => new Date(iso);
+// Long before every fixture date, so only the fallback applies.
+const EARLY = at('2026-08-01T12:00:00Z');
 
 const events = [
   ev('past-old', '2026-09-01', 'completed'),
@@ -42,15 +56,75 @@ describe('byDateAscending', () => {
   });
 });
 
-describe('nextEvent', () => {
+describe('currentEvent: fallback', () => {
   it('returns the soonest upcoming event', () => {
-    expect(nextEvent(events)?.id).toBe('up-soon');
+    expect(currentEvent(events, EARLY)?.id).toBe('up-soon');
   });
   it('falls back to the latest completed event when nothing is upcoming', () => {
-    expect(nextEvent(events.filter((e) => e.status === 'completed'))?.id).toBe('past-new');
+    expect(currentEvent(events.filter((e) => e.status === 'completed'), EARLY)?.id).toBe('past-new');
   });
   it('returns undefined for no events', () => {
-    expect(nextEvent([])).toBeUndefined();
+    expect(currentEvent([], EARLY)).toBeUndefined();
+  });
+  it('does not mutate its input', () => {
+    const copy = [...events];
+    currentEvent(events, at('2026-11-07T23:00:00Z'));
+    expect(events).toEqual(copy);
+  });
+});
+
+// Fight night 2026-11-07: the engine flips an event to `completed` on its first result, and the next card is a week out.
+describe('currentEvent: a live or just-finished card stays current', () => {
+  const prev = ev('prev', '2026-10-31', 'completed', bouts(12, 0));
+  const next = ev('next', '2026-11-14', 'upcoming', bouts(0, 13));
+  const tonight = (done: number, left: number, status: Event['status'] = done ? 'completed' : 'upcoming') =>
+    [prev, ev('tonight', '2026-11-07', status, bouts(done, left)), next];
+
+  it('keeps the grace at 2 days', () => {
+    expect(RESULTS_GRACE_DAYS).toBe(2);
+  });
+  it('is the card dated today (UTC) before its first result', () => {
+    expect(currentEvent(tonight(0, 14), at('2026-11-07T00:00:00Z'))?.id).toBe('tonight');
+    expect(currentEvent(tonight(0, 14), at('2026-11-07T23:59:59Z'))?.id).toBe('tonight');
+  });
+  it('is the card dated today even when its status is already completed', () => {
+    expect(currentEvent(tonight(1, 13), at('2026-11-07T22:30:00Z'))?.id).toBe('tonight');
+  });
+  it('stays on a card with some results after midnight UTC (the real 6/14 at 00:44Z)', () => {
+    expect(currentEvent(tonight(6, 8), at('2026-11-08T00:44:00Z'))?.id).toBe('tonight');
+  });
+  it('stays on a card with some results for the 2-day grace, then lets go', () => {
+    expect(currentEvent(tonight(13, 1), at('2026-11-09T23:59:59Z'))?.id).toBe('tonight');
+    // A cancelled bout that never gets a result must not pin the card forever.
+    expect(currentEvent(tonight(13, 1), at('2026-11-10T00:00:00Z'))?.id).toBe('next');
+    expect(currentEvent(tonight(13, 1), at('2026-11-12T12:00:00Z'))?.id).toBe('next');
+  });
+  it('stays on a finished card until noon UTC the next day', () => {
+    expect(currentEvent(tonight(14, 0), at('2026-11-08T04:17:00Z'))?.id).toBe('tonight');
+    expect(currentEvent(tonight(14, 0), at('2026-11-08T11:59:59Z'))?.id).toBe('tonight');
+  });
+  it('moves on from a finished card at noon UTC the next day', () => {
+    expect(currentEvent(tonight(14, 0), at('2026-11-08T12:00:00Z'))?.id).toBe('next');
+    expect(currentEvent(tonight(14, 0), at('2026-11-08T12:30:00Z'))?.id).toBe('next');
+  });
+  it('falls back to the latest completed card when a finished one is past noon and nothing is upcoming', () => {
+    expect(currentEvent(tonight(14, 0).slice(0, 2), at('2026-11-08T12:30:00Z'))?.id).toBe('tonight');
+    expect(currentEvent([prev], at('2026-11-08T12:30:00Z'))?.id).toBe('prev');
+  });
+  it('picks the most recent of several qualifying cards', () => {
+    // Yesterday's card finished (before noon) and still has a bout pending; today's has started.
+    const yesterday = ev('yesterday', '2026-11-07', 'completed', bouts(13, 1));
+    const today = ev('today', '2026-11-08', 'upcoming', bouts(0, 10));
+    expect(currentEvent([prev, today, yesterday, next], at('2026-11-08T10:00:00Z'))?.id).toBe('today');
+    expect(currentEvent([prev, yesterday, today, next], at('2026-11-08T10:00:00Z'))?.id).toBe('today');
+  });
+  it('ignores a future card that somehow has results', () => {
+    const odd = ev('odd', '2026-11-20', 'completed', bouts(1, 1));
+    expect(currentEvent([prev, odd, next], at('2026-11-08T10:00:00Z'))?.id).toBe('next');
+  });
+  it('treats a card with no fights as never finished', () => {
+    const empty = ev('empty', '2026-11-07', 'completed', []);
+    expect(currentEvent([empty, next], at('2026-11-08T10:00:00Z'))?.id).toBe('next');
   });
 });
 

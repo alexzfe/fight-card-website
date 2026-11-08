@@ -18,7 +18,7 @@ const walk = (dir: string): string[] =>
 beforeAll(() => {
   execFileSync('npx', ['astro', 'build'], {
     cwd: SITE,
-    env: { ...process.env, DATA_DIR: 'tests/fixtures/data' },
+    env: { ...process.env, BUILD_NOW: '2026-10-24T06:00:00Z', DATA_DIR: 'tests/fixtures/data' },
     stdio: 'pipe',
   });
 }, 180_000);

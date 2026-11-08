@@ -1,0 +1,26 @@
+{
+  "id": "aaaa0000aaaa0000",
+  "slug": "ufc-fight-night-oldcard-vs-past",
+  "name": "UFC Fight Night: Oldcard vs. Past",
+  "date": "2026-10-31",
+  "location": "Paris, France",
+  "status": "completed",
+  "fights": [
+    {
+      "id": "f000000000000001",
+      "red": "e1e1e1e1e1e1e1e1",
+      "blue": "e2e2e2e2e2e2e2e2",
+      "weight_class": "Welterweight",
+      "title_fight": false,
+      "finish_tier": "medium",
+      "segment": "main",
+      "tier_frozen_at": "2026-11-07T22:00:00Z",
+      "result": {
+        "winner": "e1e1e1e1e1e1e1e1",
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      }
+    }
+  ]
+}
