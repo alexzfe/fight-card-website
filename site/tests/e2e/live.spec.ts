@@ -46,11 +46,20 @@ const withResults = (...ids: string[]) => ({
 
 type Answer = object | 'error' | 'garbage';
 
-/** Serve the event file from `answers[0]` (changeable mid-test); counts the requests. */
+// Headers a CORS-simple request may carry: the safelisted ones plus those the browser itself sets (it may add
+// sec-* and the like; a script cannot). Anything else (x-*, a hand-set if-none-match, authorization) costs a
+// preflight, and the engine answers OPTIONS with 405.
+const SIMPLE_HEADER = /^(accept|accept-language|content-language|user-agent|referer|origin|sec-.*)$/;
+
+/** Serve the event file from `answers[0]` (changeable mid-test); counts the requests, notes any that are not simple. */
 async function mockApi(page: Page, first: Answer) {
-  const api = { answer: first, requests: 0 };
-  await page.route(API, (route: Route) => {
+  const api = { answer: first, requests: 0, notSimple: [] as string[] };
+  await page.route(API, async (route: Route) => {
     api.requests += 1;
+    const req = route.request();
+    if (req.method() !== 'GET') api.notSimple.push(`method ${req.method()}`);
+    for (const name of Object.keys(await req.allHeaders()))
+      if (!SIMPLE_HEADER.test(name)) api.notSimple.push(`header ${name}`);
     if (api.answer === 'error') return route.fulfill({ status: 503, headers: CORS, body: 'down' });
     if (api.answer === 'garbage')
       return route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: '{"id": 3' });
@@ -175,6 +184,14 @@ test.describe('live results', () => {
     expect(third).toBeLessThanOrEqual(250_000);
     expect(await page.locator('main').innerHTML()).toBe(before);
     await expect(liveLine(page)).toBeHidden();
+  });
+
+  test('every poll is a CORS-simple request: a GET without headers that need a preflight', async ({ page }) => {
+    const api = await openLive(page, staticCard);
+    await expect(liveNow(page)).toHaveCount(1);
+    await page.clock.runFor(60_000);
+    await expect.poll(() => api.requests).toBeGreaterThanOrEqual(2);
+    expect(api.notSimple).toEqual([]);
   });
 
   test('never removes a result the page shows', async ({ page }) => {
