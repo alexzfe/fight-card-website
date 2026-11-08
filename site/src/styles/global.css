@@ -1348,3 +1348,30 @@ img.avatar {
   padding-left: 1.1rem;
   list-style: disc;
 }
+
+/* A running card's rail tile: an ember dot before its date. */
+.tile-live .tile-meta::before {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin-right: 0.35em;
+  border-radius: 50%;
+  background: var(--color-accent);
+  vertical-align: 0.1em;
+}
+
+/* The bout in progress, beside the main-event marker; the "updated N min ago" line under the card's meta. */
+.live-marker {
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.live-line {
+  margin-top: var(--space-1);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+}

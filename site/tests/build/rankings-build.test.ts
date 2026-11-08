@@ -95,8 +95,9 @@ describe('the rankings page budget', () => {
     expect(zlib.gzipSync(html, { level: 9 }).length).toBeLessThanOrEqual(BUDGET_GZ_BYTES);
   });
 
-  it('adds no JavaScript file and loads no stylesheet or script from elsewhere', () => {
-    expect(walk(dist).filter((f) => /\.m?js$/.test(f))).toEqual([]);
+  it('adds no JavaScript file (beyond the live script module, which this page never loads) and loads no stylesheet or script from elsewhere', () => {
+    const js = walk(dist).filter((f) => /\.m?js$/.test(f)).map((f) => path.basename(f));
+    expect(js.filter((f) => !f.startsWith('LivePoll.astro_'))).toEqual([]);
     const html = fs.readFileSync(path.join(dist, 'rankings', 'index.html'), 'utf8');
     expect(html).not.toMatch(/<script[^>]+src=/i);
     expect(html).not.toMatch(/<link[^>]+rel="stylesheet"/i);

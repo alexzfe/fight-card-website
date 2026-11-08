@@ -41,7 +41,10 @@ describe('fixture build', () => {
   });
 
   it('ships no JavaScript beyond the event rail\'s inline scroll keeper and the rankings search', () => {
-    expect(walk(DIST).filter((f) => /\.m?js$/.test(f))).toEqual([]);
+    // Astro emits the live script's module (components/LivePoll.astro) on every build; no card here can go live, so
+    // no page loads it (tests/build/live-build.test.ts checks the pages that do).
+    const js = walk(DIST).filter((f) => /\.m?js$/.test(f));
+    expect(js.map((f) => path.basename(f))).toEqual(js.length ? [expect.stringMatching(/^LivePoll\.astro_/)] : []);
     for (const f of walk(DIST).filter((p) => p.endsWith('.html'))) {
       const isRankings = f === path.join(DIST, 'rankings', 'index.html');
       // speculation rules and JSON-LD are JSON the browser reads natively, and so is the rankings data, but only on
