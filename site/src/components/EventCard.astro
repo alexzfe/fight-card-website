@@ -1,8 +1,11 @@
 ---
 import FightRow from './FightRow.astro';
+import LivePoll from './LivePoll.astro';
 import { groupBySegment, segmentLabel } from '../lib/card';
+import { cardPhase, carriesLivePoll } from '../lib/events';
 import { formatLongDate, splitEventName } from '../lib/format';
 import type { Event, Fighter } from '../lib/schema';
+import { buildNow, site } from '../lib/site-data';
 
 interface Props {
   event: Event;
@@ -12,9 +15,11 @@ interface Props {
 const { event, fighters } = Astro.props;
 // Rows visible on a phone's first screen load their photos eagerly.
 const EAGER_ROWS = 3;
-const meta = [formatLongDate(event.date), event.location, event.status === 'completed' ? 'Results' : null]
-  .filter(Boolean)
-  .join(' · ');
+const meta = [formatLongDate(event.date), event.location].filter(Boolean).join(' · ');
+// "Live" while the card is running at build time, "Results" once it's done; the live script keeps it current.
+const phase = cardPhase(event, buildNow);
+const status = phase ? ` · ${phase === 'live' ? 'Live' : 'Results'}` : '';
+const live = carriesLivePoll(event, buildNow);
 // The colon stays in the text (visually hidden) so the heading still reads as the full event name.
 const { kicker, headline } = splitEventName(event.name);
 const groups = groupBySegment(event.fights);
@@ -27,8 +32,10 @@ const indexOf = new Map(event.fights.map((f, i) => [f.id, i]));
     {kicker && <span class="kicker">{kicker}<span class="sr-only">:</span> </span>}
     <span class="headline">{headline}</span>
   </h1>
-  <p class="event-meta">{meta}</p>
+  <p class="event-meta">{meta}<span data-event-status>{status}</span></p>
+  {live && <p class="live-line" data-testid="live-line" data-live-line hidden />}
 </header>
+{live && <LivePoll event={event} fighters={fighters} since={site.index.generated_at} />}
 {
   event.fights.length ? (
     groups.map((group) => (

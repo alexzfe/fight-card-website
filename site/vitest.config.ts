@@ -2,7 +2,12 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    include: ['tests/unit/**/*.test.ts', 'tests/build/**/*.test.ts'],
+    // Two projects: plain unit and build tests, and component tests that need Astro's Vite setup to render .astro
+    // files (vitest.component.config.ts). One run, one coverage report.
+    projects: [
+      { test: { name: 'unit', include: ['tests/unit/**/*.test.ts', 'tests/build/**/*.test.ts'] } },
+      './vitest.component.config.ts',
+    ],
     coverage: {
       provider: 'v8',
       include: ['src/lib/**'],
