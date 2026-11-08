@@ -53,13 +53,17 @@ const SIMPLE_HEADER = /^(accept|accept-language|content-language|user-agent|refe
 
 /** Serve the event file from `answers[0]` (changeable mid-test); counts the requests, notes any that are not simple. */
 async function mockApi(page: Page, first: Answer) {
-  const api = { answer: first, requests: 0, notSimple: [] as string[] };
-  await page.route(API, async (route: Route) => {
+  const api = { answer: first, requests: 0, notSimple: [] as string[], checks: [] as Promise<void>[] };
+  await page.route(API, (route: Route) => {
     api.requests += 1;
     const req = route.request();
     if (req.method() !== 'GET') api.notSimple.push(`method ${req.method()}`);
-    for (const name of Object.keys(await req.allHeaders()))
-      if (!SIMPLE_HEADER.test(name)) api.notSimple.push(`header ${name}`);
+    // Checked on the side: holding the answer back would shift the poller's timers (the backoff test times them).
+    api.checks.push(
+      req.allHeaders().then((headers) => {
+        for (const name of Object.keys(headers)) if (!SIMPLE_HEADER.test(name)) api.notSimple.push(`header ${name}`);
+      }),
+    );
     if (api.answer === 'error') return route.fulfill({ status: 503, headers: CORS, body: 'down' });
     if (api.answer === 'garbage')
       return route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: '{"id": 3' });
@@ -191,6 +195,7 @@ test.describe('live results', () => {
     await expect(liveNow(page)).toHaveCount(1);
     await page.clock.runFor(60_000);
     await expect.poll(() => api.requests).toBeGreaterThanOrEqual(2);
+    await Promise.all(api.checks);
     expect(api.notSimple).toEqual([]);
   });
 
