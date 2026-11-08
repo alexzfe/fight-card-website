@@ -5,4 +5,6 @@ import { getViteConfig } from 'astro/config';
 process.env.DATA_DIR ??= 'tests/fixtures/data';
 process.env.BUILD_NOW ??= '2026-10-24T06:00:00Z';
 
-export default getViteConfig({ test: { name: 'component', include: ['tests/component/**/*.test.ts'] } } as Parameters<typeof getViteConfig>[0]);
+export default getViteConfig({ test: { name: 'component', include: ['tests/component/**/*.test.ts'] } } as Parameters<
+  typeof getViteConfig
+>[0]);

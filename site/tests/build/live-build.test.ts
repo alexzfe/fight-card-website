@@ -42,7 +42,12 @@ describe('live fixture build', () => {
     const m = html.match(/<script type="application\/json" id="live-card"[^>]*>([^<]*)<\/script>/);
     expect(m).not.toBeNull();
     const card = JSON.parse(m![1]!);
-    expect(card).toMatchObject({ id: 'bbbb1111bbbb1111', date: '2026-11-07', slug: 'ufc-fight-night-live-vs-wire', since: '2026-11-08T00:44:00Z' });
+    expect(card).toMatchObject({
+      id: 'bbbb1111bbbb1111',
+      date: '2026-11-07',
+      slug: 'ufc-fight-night-live-vs-wire',
+      since: '2026-11-08T00:44:00Z',
+    });
     expect(card.fights.map((f: { id: string }) => f.id)).toEqual([
       'f000000000000002',
       'f000000000000003',
