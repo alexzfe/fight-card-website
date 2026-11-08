@@ -1,7 +1,7 @@
 """Decide whether this refresh.yml run should do any work.
 
-The workflow fires daily at 06:00 UTC and once an hour. The daily run and manual runs always go ahead; an
-hourly run only goes ahead on an event's day or the day after (US cards end after midnight UTC, and results
+The workflow fires daily at 06:00 UTC, daily at 12:30 UTC (the noon rebuild) and once an hour. The daily run, the
+noon rebuild and manual runs always go ahead; an hourly run only goes ahead on an event's day or the day after (US cards end after midnight UTC, and results
 are scraped the day after).
 
 Stdlib only, so the gate job doesn't have to install the pipeline.
@@ -21,6 +21,10 @@ from gh_output import emit
 
 # Must match the daily `cron:` entry in .github/workflows/refresh.yml (a test checks it).
 DAILY_CRON = "0 6 * * *"
+# Must match the noon `cron:` entry in .github/workflows/refresh.yml (a test checks it). The home page keeps a finished
+# card until 12:00 UTC the next day (site/src/lib/events.ts), but a static page only changes at a build, and the daily
+# run rebuilds only when data/ changed; this run always rebuilds, so the card moves on soon after noon.
+NOON_REBUILD_CRON = "30 12 * * *"
 
 
 def utc_today() -> date:
@@ -39,6 +43,8 @@ def decide(data_dir: Path, *, event_name: str, schedule: str, today: date) -> tu
         return True, f"{event_name} run"
     if schedule == DAILY_CRON:
         return True, "daily run"
+    if schedule == NOON_REBUILD_CRON:
+        return True, "noon rebuild run"
 
     index_path = data_dir / "index.json"
     if not index_path.exists():

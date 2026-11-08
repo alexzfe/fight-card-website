@@ -8,6 +8,10 @@
 #   then validate data/ with the site's schema (npm run validate-data); an unusable one fails the run. A stale one
 #   keeps data/ and opens the single "Data API stale" issue; only the daily and manual runs also fail on it.
 #
+# The noon run (12:30 UTC) also always rebuilds and redeploys prod, as workflow_dispatch does: the home page keeps a
+# finished card until 12:00 UTC the next day (site/src/lib/events.ts, read at build time), and the other runs only
+# rebuild when data/ changed, so without it the next card wouldn't show until the next data change.
+#
 # Any step exiting non-zero fails the job before anything is committed or deployed.
 #
 # Prod is deployed by calling infra's deploy-app.yml directly rather than by pushing a v* tag: a tag pushed with
@@ -18,6 +22,7 @@ name: refresh
 on:
   schedule:
     - cron: "0 6 * * *" # daily; keep in sync with DAILY_CRON in scripts/should_run.py
+    - cron: "30 12 * * *" # noon rebuild, always builds and deploys; keep in sync with NOON_REBUILD_CRON in scripts/should_run.py
     - cron: "17 * * * *" # hourly, off the daily slot; only does work around event days
   workflow_dispatch: # always runs, and always rebuilds and redeploys prod
 
@@ -215,15 +220,18 @@ jobs:
             gh issue close "$number" --repo "$GITHUB_REPOSITORY" --comment "/v1/ is fresh again (generated_at $GENERATED_AT)."
           fi
 
-  # One of pipeline/v1 is always skipped, hence always(); a failed or cancelled source never builds.
+  # One of pipeline/v1 is always skipped, hence always(); a failed or cancelled source never builds. Manual runs and
+  # the noon rebuild (NOON_REBUILD_CRON) build even when data/ didn't change.
   build:
     needs: [pipeline, v1]
     if: >-
       always() && (
         (needs.pipeline.result == 'success' &&
-          (needs.pipeline.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')) ||
+          (needs.pipeline.outputs.changed == 'true' || github.event_name == 'workflow_dispatch' ||
+            github.event.schedule == '30 12 * * *')) ||
         (needs.v1.result == 'success' &&
-          (needs.v1.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'))
+          (needs.v1.outputs.changed == 'true' || github.event_name == 'workflow_dispatch' ||
+            github.event.schedule == '30 12 * * *'))
       )
     permissions:
       contents: read
