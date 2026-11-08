@@ -126,6 +126,22 @@ the job fails before the commit step, so nothing reaches `main`. Run it locally 
 The swap extracts into a temp dir beside `data/` and renames it into place; if the second rename fails, the old
 `data/` is put back.
 
+### Live results in the browser
+
+Between rebuilds, a card that is running fills in its results in the visitor's browser: pages for a card that can be
+live before the next build (`carriesLivePoll` in `site/src/lib/events.ts`: bouts still without a result, from 2 days
+before its date to the end of its grace) load a small script (`site/src/components/LivePoll.astro`). While the card is
+live by the browser's clock it fetches `/v1/events/<id>.json` from the engine every 60 s, a plain CORS `GET` with no
+custom headers (the engine answers `OPTIONS` with 405), and switches each newly decided bout to the completed look.
+It backs off to 5 minutes on errors, pauses in a hidden tab, and stops when every bout has a result. It needs the
+engine's CORS header (`Access-Control-Allow-Origin: *`) on prod; until then the fetch fails quietly and the page stays
+as built.
+
+The API origin is fixed at build time: `LIVE_API` (an https origin), default `https://ufc-data.xlobax.com`. Staging and
+prod run the same image, so both poll production, where `data/` comes from anyway. To watch it locally:
+`DATA_DIR=tests/fixtures/live npx astro dev`, then open `/?live-api=/__live-mock`. The dev server replays
+`tests/fixtures/live-final/` one bout a minute; the `live-api` parameter only works under `astro dev`.
+
 ## How the refresh works (pipeline mode)
 
 ```
