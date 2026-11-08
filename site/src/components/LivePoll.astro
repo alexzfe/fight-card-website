@@ -3,6 +3,7 @@
 // as built goes in as JSON, and the script polls the engine's event file while the card is live by the browser clock,
 // filling in each result as it lands (lib/live.ts, lib/live-row.ts). Without JS, or with the API down, the page stays
 // as built.
+import { runningOrder } from '../lib/card';
 import { scriptJson } from '../lib/rankings';
 import { eloTags } from '../lib/format';
 import type { Event, Fighter } from '../lib/schema';
@@ -20,7 +21,8 @@ const card = {
   slug: event.slug,
   date: event.date,
   since,
-  fights: event.fights.map((f) => ({
+  // As the page shows them, main event first: the "Live now" pick reads the running order from this list.
+  fights: runningOrder(event.fights).map((f) => ({
     id: f.id,
     red: f.red,
     blue: f.blue,
@@ -34,7 +36,15 @@ const card = {
 
 <script type="application/json" id="live-card" is:inline set:html={scriptJson(card)} />
 <script>
-  import { createPoller, liveFightView, liveLine, liveNowId, parseLiveEvent, type LiveFight } from '../lib/live';
+  import {
+    createPoller,
+    liveFightView,
+    liveLine,
+    liveNowId,
+    parseLiveEvent,
+    type LiveEvent,
+    type LiveFight,
+  } from '../lib/live';
   import { applyFight, markLiveNow, renderCard } from '../lib/live-row';
 
   declare const __LIVE_API__: string;
@@ -47,49 +57,60 @@ const card = {
   // Dev only (stripped from the build): ?live-api=/__live-mock replays a finished card (astro.config.mjs).
   if (__LIVE_DEV__) base = new URLSearchParams(location.search).get('live-api') ?? base;
   const url = `${base}/v1/events/${card.id}.json`;
-  const initial = parseLiveEvent(card, card.id)!;
+  // Null only if the build's own card doesn't parse: then the page stays as built, and says why.
+  const initial = parseLiveEvent(card, card.id);
+  if (initial) startPolling(initial);
+  else console.error('live: the embedded card does not parse; the page stays as built');
 
-  let since = Date.parse(card.since);
-  let complete = false;
-  let heard = false; // nothing changes on the page until the API has answered once
-  let fights = initial.fights;
-  const show = () => {
-    const decided = fights.some((f) => f.result);
-    renderCard(document, {
-      phase: complete ? 'results' : decided ? 'live' : null,
-      line: liveLine(since, Date.now()),
-      slug: card.slug,
+  function startPolling(initial: LiveEvent) {
+    let since = Date.parse(card.since);
+    let complete = false;
+    let heard = false; // nothing changes on the page until the API has answered once
+    let fights = initial.fights;
+    const show = () => {
+      const decided = fights.some((f) => f.result);
+      renderCard(document, {
+        phase: complete ? 'results' : decided ? 'live' : null,
+        line: liveLine(since, Date.now()),
+        slug: card.slug,
+      });
+      markLiveNow(document, complete ? null : liveNowId(fights));
+    };
+
+    let ticker: ReturnType<typeof setInterval> | undefined;
+    const poller = createPoller(initial, since, {
+      // A simple request (no custom headers), so no CORS preflight; no-cache revalidates with the ETag.
+      load: async () => {
+        const res = await fetch(url, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(String(res.status));
+        const event = parseLiveEvent(await res.json(), card.id);
+        const modified = Date.parse(res.headers.get('last-modified') ?? '');
+        return event && { event, modified: Number.isNaN(modified) ? null : modified };
+      },
+      render: (state) => {
+        for (const f of state.changed) {
+          const row = document.querySelector<HTMLElement>(`[data-fight-id="${CSS.escape(f.id)}"]`);
+          // One row that doesn't take the update stays as built; the others still get theirs.
+          try {
+            if (row) applyFight(row, liveFightView(f, tags.get(f.id)!));
+          } catch (err) {
+            console.error(`live: could not update bout ${f.id}`, err);
+          }
+        }
+        ({ since, complete } = state);
+        heard = true;
+        fights = state.event.fights;
+        show();
+      },
+      onStop: () => clearInterval(ticker),
+      now: Date.now,
+      hidden: () => document.hidden,
+      setTimer: (fn, ms) => setTimeout(fn, ms),
+      clearTimer: (h) => clearTimeout(h as number),
     });
-    markLiveNow(document, complete ? null : liveNowId(fights));
-  };
-
-  const poller = createPoller(initial, since, {
-    // A simple request (no custom headers), so no CORS preflight; no-cache revalidates with the ETag.
-    load: async () => {
-      const res = await fetch(url, { cache: 'no-cache' });
-      if (!res.ok) throw new Error(String(res.status));
-      const event = parseLiveEvent(await res.json(), card.id);
-      const modified = Date.parse(res.headers.get('last-modified') ?? '');
-      return event && { event, modified: Number.isNaN(modified) ? null : modified };
-    },
-    render: (state) => {
-      for (const f of state.changed) {
-        const row = document.querySelector<HTMLElement>(`[data-fight-id="${f.id}"]`);
-        if (row) applyFight(row, liveFightView(f, tags.get(f.id)!));
-      }
-      ({ since, complete } = state);
-      heard = true;
-      fights = state.event.fights;
-      show();
-      if (complete) clearInterval(ticker);
-    },
-    now: Date.now,
-    hidden: () => document.hidden,
-    setTimer: (fn, ms) => setTimeout(fn, ms),
-    clearTimer: (h) => clearTimeout(h as number),
-  });
-  // The "updated N min ago" line moves on between polls.
-  const ticker = setInterval(() => heard && poller.state() === 'polling' && show(), 30_000);
-  document.addEventListener('visibilitychange', poller.visibilityChanged);
-  poller.start();
+    // The "updated N min ago" line moves on between polls, until the poller stops.
+    ticker = setInterval(() => heard && poller.state() === 'polling' && show(), 30_000);
+    document.addEventListener('visibilitychange', poller.visibilityChanged);
+    poller.start();
+  }
 </script>

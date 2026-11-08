@@ -75,7 +75,7 @@ describe('parseLiveEvent', () => {
 describe('isComplete', () => {
   it('is true once every bout has a result, never for a card without bouts', () => {
     expect(isComplete(fights(true, true))).toBe(true);
-    expect(isComplete(fights(true, false))).toBe(false);
+    expect(isComplete(fights(false, true))).toBe(false);
     expect(isComplete([])).toBe(false);
   });
   it('is true once the main event (first in card order) is decided, even with a bout left without a result', () => {
