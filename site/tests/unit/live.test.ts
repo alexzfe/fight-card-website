@@ -1,7 +1,7 @@
 // The browser poller's pure parts (src/lib/live.ts): reading the engine's event JSON, merging it into what the page
 // shows (never removing a result), the "Live now" pick, the "updated N min ago" text, and the poll/backoff state
 // machine driven by fake timers, a fake clock and a fake fetch.
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   MAX_BACKOFF_MS,
   POLL_MS,
@@ -45,6 +45,10 @@ describe('parseLiveEvent', () => {
   });
 
   const f0 = staticCard.fights[0]!;
+  it('accepts any winner id, as schema.ts does (the build reads the same card through it)', () => {
+    const raw = { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: 'zz' } }] };
+    expect(parseLiveEvent(raw, 'bbbb1111bbbb1111')!.fights[0]!.result!.winner).toBe('zz');
+  });
   it.each([
     ['not an object', 'nope'],
     ['null', null],
@@ -57,7 +61,6 @@ describe('parseLiveEvent', () => {
       'a round that is not a positive integer',
       { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: null, round: 0 } }] },
     ],
-    ['a winner outside the fight', { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: 'zz' } }] }],
     [
       'a method that is not text',
       { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: null, method: 3 } }] },
@@ -74,6 +77,12 @@ describe('isComplete', () => {
     expect(isComplete(fights(true, true))).toBe(true);
     expect(isComplete(fights(true, false))).toBe(false);
     expect(isComplete([])).toBe(false);
+  });
+  it('is true once the main event (first in card order) is decided, even with a bout left without a result', () => {
+    // A bout cancelled on the night but still listed never gets a result: the main event ends the card.
+    expect(isComplete(fights(true, false, true))).toBe(true);
+    expect(isComplete(fights(true, false, false))).toBe(true);
+    expect(isComplete(fights(false, true, true))).toBe(false);
   });
 });
 
@@ -93,6 +102,12 @@ describe('liveNowId: the bout in progress', () => {
   it('is none once the card is complete, or the main event is decided', () => {
     expect(liveNowId(fights(true, true, true))).toBeNull();
     expect(liveNowId(fights(true, false, true))).toBeNull();
+  });
+  it('follows the order it is given: the page passes the card as shown (card.ts runningOrder)', () => {
+    // A late-added prelim shown after P1 runs after the early prelims: once E1 is decided, it is in the cage.
+    const order = ['ME', 'M2', 'P1', 'LATE', 'E1'];
+    const shown = order.map((id) => ({ id, result: id === 'E1' ? RESULT : null }));
+    expect(liveNowId(shown)).toBe('LATE');
   });
   it('reads the fixture: 2 prelims decided, the co-main is next', () => {
     expect(liveNowId(parseLiveEvent(staticCard, 'bbbb1111bbbb1111')!.fights)).toBe('f000000000000003');
@@ -368,5 +383,56 @@ describe('createPoller', () => {
     expect(v.applied.at(-1)!.since).toBe(built); // nothing new: still the build's data
     await v.advance(POLL_MS);
     expect(v.applied.at(-1)!.since).toBe(t(NIGHT) + POLL_MS); // a change seen now
+  });
+
+  it('stops and says complete once the main event is decided, with a bout still left without a result', async () => {
+    const w = world(NIGHT, [card('2026-11-07', fights(true, false, true))]);
+    const p = createPoller(running, 0, w.deps);
+    p.start();
+    await w.settle();
+    expect(w.applied.at(-1)!.complete).toBe(true);
+    expect(p.state()).toBe('stopped');
+    expect(w.timerIn).toBeNull();
+  });
+
+  it('tells the page when it stops, however it stops (complete, expired, never started)', async () => {
+    const stops = (start: string, initial: LiveEvent, answers: LiveEvent[]) => {
+      const w = world(start, answers);
+      let n = 0;
+      w.deps.onStop = () => (n += 1);
+      const p = createPoller(initial, 0, w.deps);
+      p.start();
+      return { w, p, count: () => n };
+    };
+    const complete = stops(NIGHT, running, [done]);
+    await complete.w.settle();
+    expect(complete.count()).toBe(1);
+    expect(stops('2026-11-10T00:00:00Z', running, [running]).count()).toBe(1); // grace over
+    expect(stops(NIGHT, done, [done]).count()).toBe(1); // already complete
+    const live = stops(NIGHT, running, [running]);
+    await live.w.settle();
+    expect(live.count()).toBe(0);
+  });
+
+  it('keeps a batch it could not render: no backoff, and the same rows come again on the next poll', async () => {
+    const w = world(NIGHT, [more]);
+    let fails = 2;
+    const render = w.deps.render;
+    w.deps.render = (state) => {
+      if (fails-- > 0) throw new Error('markup changed');
+      render(state);
+    };
+    const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const p = createPoller(running, 0, w.deps);
+    p.start();
+    await w.settle();
+    expect(w.timerIn).toBe(POLL_MS); // a render error is not a fetch failure
+    await w.advance(POLL_MS);
+    expect(w.timerIn).toBe(POLL_MS); // still not backing off (a second failure would wait 2 min)
+    await w.advance(POLL_MS);
+    expect(w.applied).toHaveLength(1);
+    expect(w.applied[0]!.changed).toEqual(['f1']); // the batch that failed twice, not lost
+    expect(p.state()).toBe('polling');
+    quiet.mockRestore();
   });
 });

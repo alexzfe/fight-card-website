@@ -20,15 +20,24 @@ const ev = (id: string, date: string, status: Event['status'], fights: Event['fi
   fights,
 });
 
-/** `done` bouts with a result, then `left` without one. */
+/**
+ * A card in card order (main event first) with its `done` earliest bouts decided: `left` without a result, then `done`
+ * with one. The main event runs last, so it is the last to get a result.
+ */
 const bouts = (done: number, left: number): Event['fights'] =>
   Array.from({ length: done + left }, (_, i) => ({
     id: `f${i}`,
     red: 'r',
     blue: 'b',
     title_fight: false,
-    result: i < done ? { winner: 'r', method: 'KO/TKO', round: 1, time: '1:00' } : null,
+    result: i >= left ? { winner: 'r', method: 'KO/TKO', round: 1, time: '1:00' } : null,
   }));
+/** `bouts`, with the main event decided and the `cancelled` bouts after it left without a result. */
+const mainDecided = (done: number, cancelled: number): Event['fights'] => {
+  const card = bouts(done + cancelled, 0);
+  for (let i = 1; i <= cancelled; i++) card[i] = { ...card[i]!, result: null };
+  return card;
+};
 
 const at = (iso: string) => new Date(iso);
 // Long before every fixture date, so only the fallback applies.
@@ -153,6 +162,22 @@ describe('currentEvent: a live or just-finished card stays current', () => {
   it('treats a card with no fights as never finished', () => {
     const empty = ev('empty', '2026-11-07', 'completed', []);
     expect(currentEvent([empty, next], at('2026-11-08T10:00:00Z'))?.id).toBe('next');
+  });
+});
+
+describe('a decided main event ends the card (a cancelled bout left listed never gets a result)', () => {
+  const night = at('2026-11-08T03:00:00Z');
+  const ended = () => ev('x', '2026-11-07', 'completed', mainDecided(12, 1));
+  it('reads as results, not live', () => {
+    expect(cardPhase(ended(), night)).toBe('results');
+  });
+  it('carries no live script', () => {
+    expect(carriesLivePoll(ended(), at('2026-11-07T23:00:00Z'))).toBe(false);
+  });
+  it('stays current only until noon UTC the next day, like a finished card', () => {
+    expect(currentEvent([ended()], at('2026-11-08T11:59:59Z'))?.id).toBe('x');
+    const next = ev('next', '2026-11-14', 'upcoming', bouts(0, 13));
+    expect(currentEvent([ended(), next], at('2026-11-08T12:00:00Z'))?.id).toBe('next');
   });
 });
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { groupBySegment, segmentLabel } from '../../src/lib/card';
+import { groupBySegment, runningOrder, segmentLabel } from '../../src/lib/card';
 import type { Fight } from '../../src/lib/schema';
 
 const fight = (id: string, segment?: Fight['segment']): Fight => ({
@@ -60,5 +60,27 @@ describe('groupBySegment', () => {
   });
   it('returns no groups for an empty card', () => {
     expect(groupBySegment([])).toEqual([]);
+  });
+});
+
+describe('runningOrder: the card as the page shows it, main event first', () => {
+  it('puts a late-added bout in its segment, where the page shows it, not at the end of the list', () => {
+    // ufcstats appends late additions: LATE is a prelim listed after every early prelim.
+    const card = [
+      fight('ME', 'main'),
+      fight('M2', 'main'),
+      fight('P1', 'prelims'),
+      fight('E1', 'early_prelims'),
+      fight('E2', 'early_prelims'),
+      fight('LATE', 'prelims'),
+    ];
+    expect(runningOrder(card).map((f) => f.id)).toEqual(['ME', 'M2', 'P1', 'LATE', 'E1', 'E2']);
+  });
+  it('keeps the main event first, whatever its segment says', () => {
+    const card = [fight('ME'), fight('M2', 'main'), fight('P1', 'prelims')];
+    expect(runningOrder(card).map((f) => f.id)).toEqual(['ME', 'M2', 'P1']);
+  });
+  it('is empty for a card without bouts', () => {
+    expect(runningOrder([])).toEqual([]);
   });
 });
