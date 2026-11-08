@@ -10,7 +10,7 @@ import pytest
 
 import fetch_v1
 from ops_helpers import REPO
-from should_run import DAILY_CRON
+from should_run import DAILY_CRON, NOON_REBUILD_CRON
 from stale_issue import TITLE
 
 WORKFLOWS = REPO / ".github" / "workflows"
@@ -30,8 +30,25 @@ def test_refresh_has_daily_cron_matching_should_run():
     assert DAILY_CRON in crons(read("refresh.yml"))
 
 
+def test_refresh_has_noon_rebuild_cron_matching_should_run():
+    assert NOON_REBUILD_CRON in crons(read("refresh.yml"))
+    assert len(crons(read("refresh.yml"))) == 3
+
+
+def test_refresh_noon_rebuild_always_builds_and_deploys_either_source():
+    """Like workflow_dispatch: the build follows even when data/ didn't change, so the home page drops a card
+    that finished yesterday once it's past noon UTC (site/src/lib/events.ts)."""
+    cond = job_if(jobs("refresh.yml")["build"])
+    noon = f"github.event.schedule == '{NOON_REBUILD_CRON}'"
+    assert cond.count(noon) == 2
+    for source in ("pipeline", "v1"):
+        clause = cond[cond.index(f"needs.{source}.result == 'success'"):]
+        clause = clause[:clause.index("))") + 2]
+        assert f"needs.{source}.outputs.changed == 'true'" in clause and noon in clause, clause
+
+
 def test_refresh_hourly_cron_avoids_the_daily_slot():
-    hourly = [c for c in crons(read("refresh.yml")) if c != DAILY_CRON]
+    hourly = [c for c in crons(read("refresh.yml")) if c not in (DAILY_CRON, NOON_REBUILD_CRON)]
     assert len(hourly) == 1
     minute, hour, *rest = hourly[0].split()
     assert hour == "*" and rest == ["*", "*", "*"]
@@ -312,7 +329,7 @@ def run_step(tmp_path, script: str, fakes: dict[str, str], env: dict[str, str],
 
 FETCH = "Fetch /v1/ snapshot"
 DATA_ISSUE = 'Open, update or close the "Data API stale" issue'
-HOURLY = next(c for c in crons(read("refresh.yml")) if c != DAILY_CRON)
+HOURLY = next(c for c in crons(read("refresh.yml")) if c not in (DAILY_CRON, NOON_REBUILD_CRON))
 STALE = 3  # fetch_v1.EXIT_STALE (test_fetch_v1.py checks it)
 
 FAKE_PYTHON = """#!/usr/bin/env bash
@@ -351,6 +368,7 @@ def test_refresh_v1_fetch_step_knows_the_schedule_through_env():
     (0, "schedule", DAILY_CRON, 0),
     (STALE, "schedule", HOURLY, 0),  # quiet: the issue carries the alert
     (STALE, "schedule", DAILY_CRON, STALE),
+    (STALE, "schedule", NOON_REBUILD_CRON, 0),  # the noon run only rebuilds; the daily run carries the alert
     (STALE, "workflow_dispatch", "", STALE),
     (1, "schedule", HOURLY, 1),  # unsafe, unreachable, wrong contract: always fail
     (1, "schedule", DAILY_CRON, 1),

@@ -23,7 +23,7 @@ const build = (dataDir: string, outDir: string) => {
   fs.rmSync(outDir, { recursive: true, force: true });
   execFileSync('npx', ['astro', 'build', '--outDir', outDir], {
     cwd: SITE,
-    env: { ...process.env, DATA_DIR: dataDir },
+    env: { ...process.env, BUILD_NOW: '2026-10-24T06:00:00Z', DATA_DIR: dataDir },
     stdio: 'pipe',
   });
 };

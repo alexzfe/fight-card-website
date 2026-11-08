@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 
 import should_run
-from should_run import DAILY_CRON, decide, main
+from should_run import DAILY_CRON, NOON_REBUILD_CRON, decide, main
 
 HOURLY = "17 * * * *"
 TODAY = date(2026, 10, 25)
@@ -20,6 +20,22 @@ def test_daily_schedule_always_runs(data_dir, make_index):
     run, reason = decide(data_dir, event_name="schedule", schedule=DAILY_CRON, today=TODAY)
     assert run
     assert "daily" in reason
+
+
+def test_noon_rebuild_always_runs(data_dir, make_index, make_event):
+    """The 12:30 UTC run rebuilds the site so a finished card leaves the home page at noon (site/src/lib/events.ts)."""
+    make_event("a", "2026-11-01")
+    make_index(upcoming=["a"])
+    run, reason = decide(data_dir, event_name="schedule", schedule=NOON_REBUILD_CRON, today=TODAY)
+    assert run
+    assert "noon" in reason
+
+
+def test_noon_rebuild_cron_is_its_own_slot():
+    assert NOON_REBUILD_CRON != DAILY_CRON
+    minute, hour, *rest = NOON_REBUILD_CRON.split()
+    assert rest == ["*", "*", "*"]
+    assert int(hour) == 12 and int(minute) >= 15  # after the noon cutoff, with room for GitHub's late starts
 
 
 def test_hourly_skips_when_no_event_near(data_dir, make_index, make_event):

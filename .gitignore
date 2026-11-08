@@ -9,4 +9,5 @@ site/dist/
 site/.astro/
 .cache/
 site/dist-v1/
+site/dist-live/
 site/dist-rankings-*/

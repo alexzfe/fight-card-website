@@ -5,14 +5,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:fixtures": "DATA_DIR=tests/fixtures/data astro build",
+    "build:fixtures": "DATA_DIR=tests/fixtures/data BUILD_NOW=2026-10-24T06:00:00Z astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "npm run build:fixtures && playwright test",
+    "test:e2e": "npm run build:fixtures && npm run build:fixtures:live && playwright test",
     "check": "astro check",
     "validate-data": "node scripts/validate-data.mjs",
-    "icons": "node scripts/build-icons.mjs"
+    "icons": "node scripts/build-icons.mjs",
+    "build:fixtures:live": "DATA_DIR=tests/fixtures/live BUILD_NOW=2026-11-08T00:44:00Z astro build --outDir dist-live"
   },
   "dependencies": {
     "astro": "^7.4.2",
