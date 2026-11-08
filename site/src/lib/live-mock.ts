@@ -1,5 +1,5 @@
 // Dev only: `astro dev` serves /__live-mock/v1/events/<id>.json, a finished card (LIVE_MOCK_DIR, default
-// tests/fixtures/live-final) replayed on top of the page's data/, one more bout every STEP_MS in running order, so the
+// tests/fixtures/live-final) replayed on top of the page's data/, one more bout a minute in running order, so the
 // live script can be watched locally: open a live card's page with ?live-api=/__live-mock. Never part of a build.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -8,7 +8,7 @@ import type { Plugin } from 'vite';
 type Fight = { id: string; result?: unknown; elo?: unknown };
 type Card = { fights: Fight[] };
 
-const STEP_MS = 20_000;
+const STEP_MS = 60_000; // one bout per poll
 
 /**
  * `final` with the results data/ already has (`shown`) plus the next `steps` bouts in running order (the card

@@ -33,7 +33,8 @@ function readElo(v: unknown): FightElo | null | undefined {
 
 /** The event file as the page needs it, or null when it isn't one (or isn't event `id`): ignore it then. */
 export function parseLiveEvent(raw: unknown, id: string): LiveEvent | null {
-  if (!isObj(raw) || raw.id !== id || typeof raw.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(raw.date)) return null;
+  if (!isObj(raw) || raw.id !== id || typeof raw.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(raw.date))
+    return null;
   if (!Array.isArray(raw.fights)) return null;
   const fights: LiveFight[] = [];
   for (const f of raw.fights) {
@@ -195,7 +196,8 @@ export function createPoller(initial: LiveEvent, since: number, deps: PollerDeps
       if (timer != null) deps.clearTimer(timer);
       timer = null;
       if (deps.hidden()) state = 'hidden';
-      else if (inFlight) state = 'polling'; // its answer schedules the next one
+      else if (inFlight)
+        state = 'polling'; // its answer schedules the next one
       else tick();
     },
     state: () => state,
