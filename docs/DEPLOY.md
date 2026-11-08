@@ -130,11 +130,12 @@ The swap extracts into a temp dir beside `data/` and renames it into place; if t
 
 ```
 cron 06:00 UTC daily ─┐
+cron 12:30 UTC daily ─┤
 cron :17 hourly ──────┼─▶ gate (should_run.py) ─▶ pipeline ─▶ build ─▶ prod
 workflow_dispatch ────┘        │                   │           │        │
                          skip unless daily,   scrape → images   only if data/ changed
-                         manual, or an event  → score → commit  (or manual run)
-                         today/yesterday      data/ → issue
+                         noon, manual, or an  → score → commit  (or noon or manual run)
+                         event today/yesterday data/ → issue
 ```
 
 - **When it works.** The 06:00 run and manual runs always go ahead. An hourly run goes ahead only if an event in
@@ -142,6 +143,11 @@ workflow_dispatch ────┘        │                   │           │
   day after. The script matches on `github.event.schedule`, the cron string that fired, not on the clock, because
   GitHub often starts scheduled runs late. The hourly cron uses minute 17 so it never fires in the same slot as the
   daily run.
+- **Noon rebuild.** The 12:30 UTC run (`NOON_REBUILD_CRON` in `scripts/should_run.py`, both data sources) always
+  builds and deploys, like a manual run. The home page keeps a live or just-finished card as the current one until
+  12:00 UTC the day after its date (`currentEvent` in `site/src/lib/events.ts`), but the static page only reads the
+  clock at build time and the other runs only rebuild when `data/` changed. Under `DATA_SOURCE=v1` a stale `/v1/` on
+  this run is quiet, as on hourly runs.
 - **Failure.** `scrape`, `images` and `score` run in order. If any of them exits non-zero, the job fails before
   anything is committed, built or deployed, and GitHub emails the failure.
 - **Cookie.** `.cache/ufcstats/` is restored and saved with `actions/cache`, so the `_fmc` cookie (valid 7 days) is
@@ -152,7 +158,7 @@ workflow_dispatch ────┘        │                   │           │
 - **Stale model.** `score` writes `data/stale_fighters.json` when a fighter has fought since the model export.
   The job then opens the single "Re-export finish model" issue, or updates it if it is already open. When nothing is
   stale it closes the issue.
-- **Deploy.** If `data/` changed (or the run was manual), `build.yml` builds the new commit and prod is deployed to
+- **Deploy.** If `data/` changed (or the run was the noon rebuild or manual), `build.yml` builds the new commit and prod is deployed to
   that SHA.
 
 ### Why refresh calls deploy-app directly instead of tagging
