@@ -5,7 +5,8 @@ import { revealResults } from '../../src/lib/live-mock';
 import finalCard from '../fixtures/live-final/events/bbbb1111bbbb1111.json';
 import staticCard from '../fixtures/live/events/bbbb1111bbbb1111.json';
 
-const decided = (e: { fights: Array<{ id: string; result?: unknown }> }) => e.fights.filter((f) => f.result).map((f) => f.id);
+const decided = (e: { fights: Array<{ id: string; result?: unknown }> }) =>
+  e.fights.filter((f) => f.result).map((f) => f.id);
 
 describe('revealResults', () => {
   it('starts from what data/ already has (step 0)', () => {

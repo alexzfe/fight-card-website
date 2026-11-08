@@ -21,7 +21,12 @@ function fillAtFightElo(elo: HTMLElement, a: NonNullable<CornerView['atFight']>)
   elo.removeAttribute('tabindex');
   elo.replaceChildren(a.elo);
   if (a.delta) {
-    const chip = el(doc, 'span', { class: `elo-delta elo-${a.change}`, 'data-testid': 'elo-delta', 'aria-hidden': 'true' }, a.delta);
+    const chip = el(
+      doc,
+      'span',
+      { class: `elo-delta elo-${a.change}`, 'data-testid': 'elo-delta', 'aria-hidden': 'true' },
+      a.delta,
+    );
     elo.append(' ', chip);
   }
   elo.append(el(doc, 'span', { class: 'sr-only' }, ` (${a.spoken})`));
@@ -49,7 +54,9 @@ function applyCorner(corner: HTMLElement, view: CornerView, result: boolean) {
   if (!elo) {
     // No Elo today, so the row was built without an Elo line: the completed row has one, with the corner's tags.
     elo = el(doc, 'span', { class: 'elo', 'data-testid': 'elo' });
-    const tags = view.tags.map((t) => el(doc, 'span', { class: 'elo-tag', 'data-testid': 'elo-tag', 'data-tip': tagTip(t), tabindex: '-1' }, t));
+    const tags = view.tags.map((t) =>
+      el(doc, 'span', { class: 'elo-tag', 'data-testid': 'elo-tag', 'data-tip': tagTip(t), tabindex: '-1' }, t),
+    );
     who.querySelector('.record')!.after(el(doc, 'span', { class: 'elo-line' }, elo, ...tags));
   }
   fillAtFightElo(elo, view.atFight);
@@ -82,10 +89,9 @@ export function applyFight(row: HTMLElement, view: FightView) {
   // The Elo going in, once: the at-time Elo always carries its spoken change.
   const corners = (['red', 'blue'] as const).map((side) => row.querySelector<HTMLElement>(`.corner-${side}`)!);
   const hasAtFight = corners.some((c) => c.querySelector('.elo .sr-only'));
-  corners.forEach((c, i) => {
-    const view_ = i === 0 ? view.red : view.blue;
-    applyCorner(c, hasAtFight ? { ...view_, atFight: null } : view_, fresh);
-  });
+  [view.red, view.blue].forEach((side, i) =>
+    applyCorner(corners[i]!, hasAtFight ? { ...side, atFight: null } : side, fresh),
+  );
 }
 
 /** Put the "Live now" marker on bout `id` (after its main-event marker), or nowhere. */
@@ -102,7 +108,10 @@ export function markLiveNow(root: ParentNode, id: string | null) {
 }
 
 /** The card reads as live (header word, "updated" line, rail tile) or as finished; null leaves the page as built. */
-export function renderCard(doc: Document, view: { phase: 'live' | 'results' | null; line: string | null; slug: string }) {
+export function renderCard(
+  doc: Document,
+  view: { phase: 'live' | 'results' | null; line: string | null; slug: string },
+) {
   if (!view.phase) return;
   const live = view.phase === 'live';
   const status = doc.querySelector('[data-event-status]');

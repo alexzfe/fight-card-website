@@ -53,9 +53,15 @@ describe('parseLiveEvent', () => {
     ['fights not a list', { ...staticCard, fights: {} }],
     ['a fight without an id', { ...staticCard, fights: [{ red: 'a', blue: 'b' }] }],
     ['a result that is not an object', { ...staticCard, fights: [{ ...f0, result: 'win' }] }],
-    ['a round that is not a positive integer', { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: null, round: 0 } }] }],
+    [
+      'a round that is not a positive integer',
+      { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: null, round: 0 } }] },
+    ],
     ['a winner outside the fight', { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: 'zz' } }] }],
-    ['a method that is not text', { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: null, method: 3 } }] }],
+    [
+      'a method that is not text',
+      { ...staticCard, fights: [{ ...f0, result: { ...RESULT, winner: null, method: 3 } }] },
+    ],
     ['an elo with a fractional value', { ...staticCard, fights: [{ ...f0, elo: { ...ELO, red_pre: 1.5 } }] }],
     ['an elo rank of 0', { ...staticCard, fights: [{ ...f0, elo: { ...ELO, red_p4p_rank: 0 } }] }],
   ])('rejects %s', (_, raw) => {
@@ -128,7 +134,10 @@ describe('mergeEvent: only ever adds', () => {
 
   it('ignores an elo on a bout without a result, and bouts the page does not have', () => {
     const shown = card('2026-11-07', fights(false));
-    const incoming = card('2026-11-07', [...fights(false), { id: 'new', red: 'x', blue: 'y', result: RESULT, elo: null }]);
+    const incoming = card('2026-11-07', [
+      ...fights(false),
+      { id: 'new', red: 'x', blue: 'y', result: RESULT, elo: null },
+    ]);
     incoming.fights[0]!.elo = ELO;
     const { event, changed } = mergeEvent(shown, incoming);
     expect(event.fights).toHaveLength(1);

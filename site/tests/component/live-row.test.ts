@@ -26,7 +26,9 @@ const fighter = (id: string, name: string, extra: Partial<Fighter> = {}): Fighte
   reach_in: 72,
   stance: 'Orthodox',
   dob: '1995-03-04',
-  recent_fights: [{ result: 'win', opponent: 'Old Foe', method: 'KO/TKO', round: 1, event: 'UFC 300', date: '2026-04-13' }],
+  recent_fights: [
+    { result: 'win', opponent: 'Old Foe', method: 'KO/TKO', round: 1, event: 'UFC 300', date: '2026-04-13' },
+  ],
   ...extra,
 });
 
@@ -107,7 +109,11 @@ const live = (fight: Fight): LiveFight => ({
 const cases: Array<[string, Partial<Fight>, Fighter[], RowProps]> = [
   [
     'red wins by KO, main event, title fight, with Elo and a P4P rank going in',
-    { result: { winner: RED.id, method: 'KO/TKO', round: 2, time: '4:54', outcome: 'win' }, elo: ELO, title_fight: true },
+    {
+      result: { winner: RED.id, method: 'KO/TKO', round: 2, time: '4:54', outcome: 'win' },
+      elo: ELO,
+      title_fight: true,
+    },
     [RED, BLUE],
     { mainEvent: true, finishLabel: true },
   ],
@@ -168,7 +174,10 @@ describe('applyFight matches the server-built completed row', () => {
     const server = await render(done, [RED, BLUE], {});
     const before = canon(server);
     applyFight(server, liveFightView(live(done), tagsOf([RED, BLUE])));
-    applyFight(server, liveFightView(live({ ...done, result: { winner: BLUE.id, method: 'SUB' } }), tagsOf([RED, BLUE])));
+    applyFight(
+      server,
+      liveFightView(live({ ...done, result: { winner: BLUE.id, method: 'SUB' } }), tagsOf([RED, BLUE])),
+    );
     expect(canon(server)).toEqual(before);
   });
 
