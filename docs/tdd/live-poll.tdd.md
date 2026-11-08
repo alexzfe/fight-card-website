@@ -14,14 +14,21 @@
    last result lands they turn to "Results".
 4. As a visitor without JS, or while the API is down, the page is exactly the static build: no error, nothing removed.
 
-## Checkpoint commits (on `feat/live-poll`)
+## Checkpoint commits (on `feat/live-poll-v2`)
+
+PR #26 was rebased onto main after #25 merged and replaced by a new PR from `feat/live-poll-v2`. The SHAs below
+are the rebased ones. The commit messages still name the old SHAs: `64a62a8`=`66bc54d`, `ddb953d`=`be37894`,
+`8cff0a9`=`74bc1ae`, `44fc850`=`17fb580`, `d0b1013`=`1b1bc71`, `544bd42`=`03446bd`.
 
 | Commit | Stage | Evidence |
 |---|---|---|
-| `64a62a8` | RED | `npx vitest run`: 12 failed / 277 passed, and `live.test.ts`, `live-card.test.ts` and `live-mock.test.ts` failed to import (`src/lib/live*.ts` missing). `vitest -c vitest.component.config.ts`: the file failed to import `../../src/lib/live`. `npm run test:e2e`: 8 failed / 89 passed (no "Live" header, no marker, rows never flip). The 2 e2e tests that passed check that nothing is added (finished/far-out cards; no JS). |
-| `ddb953d` | GREEN | `npx vitest run` (unit + component projects) 351 passed; `npm run test:e2e` 97 passed; `astro check` 0 errors. |
-| `8cff0a9` | REFACTOR | prettier on the new files, `applyFight` loop tidied, dev mock pace; the same 351 / 97 / 0. |
-| `44fc850` | test fix | CI failed once on the backoff e2e test: a failed fetch schedules its retry asynchronously, and `clock.runFor(120_000)` could land before the timer existed. The test now steps the clock 10 s at a time until the next request and checks the gaps (≤70 s, 110–130 s, 230–250 s). `--project live --repeat-each 4`: 52 passed, twice; CI `test` passed. |
+| `66bc54d` | RED | `npx vitest run`: 12 failed / 277 passed, and `live.test.ts`, `live-card.test.ts` and `live-mock.test.ts` failed to import (`src/lib/live*.ts` missing). `vitest -c vitest.component.config.ts`: the file failed to import `../../src/lib/live`. `npm run test:e2e`: 8 failed / 89 passed (no "Live" header, no marker, rows never flip). The 2 e2e tests that passed check that nothing is added (finished/far-out cards; no JS). |
+| `be37894` | GREEN | `npx vitest run` (unit + component projects) 351 passed; `npm run test:e2e` 97 passed; `astro check` 0 errors. |
+| `74bc1ae` | REFACTOR | prettier on the new files, `applyFight` loop tidied, dev mock pace; the same 351 / 97 / 0. |
+| `17fb580` | test fix | CI failed once on the backoff e2e test: a failed fetch schedules its retry asynchronously, and `clock.runFor(120_000)` could land before the timer existed. The test now steps the clock 10 s at a time until the next request and checks the gaps (≤70 s, 110–130 s, 230–250 s). `--project live --repeat-each 4`: 52 passed, twice; CI `test` passed. |
+
+| `c5f1b9b` | RED (review fixes) | `npx vitest run`: 13 failed / 351 passed. Each fails for the reason under test: `runningOrder` missing; the embedded card in array order (Live now on `P1`, not the late `LATE`); `cardPhase` 'live', `carriesLivePoll` true and grace-long `currentEvent` for a decided main event; `isComplete` false for it; a winner id outside the fight rejected; `onStop` never called; a batch whose render threw is lost (`applied` empty after two retries). The new e2e CORS-simple test passes on the old code. It is a guard: with an `x-probe` header added to the fetch it fails with `header x-probe` (checked, then reverted). |
+| `7059a52` | GREEN (review fixes) | `npx vitest run` 364 passed; `npm run test:e2e` 98 passed; `astro check` 0 errors. Re-run after the rebase onto main: the same. |
 
 **Tests changed after RED**, and why:
 - `tests/component/live-row.test.ts`: `canon()` now sorts the tokens in `class` and merges adjacent text nodes
@@ -32,6 +39,11 @@
   that no page there loads it (no `<script src>`). `live-build.test.ts` checks the pages that do load it.
 - `vitest.config.ts` now runs two projects (unit, and component with Astro's Vite setup), so `npm test` and coverage
   cover both.
+
+- Review fixes: `isComplete(fights(true, false))` was "not complete"; with a decided main event ending the card, the
+  assertion now uses `fights(false, true)`. `events.test.ts`'s `bouts(done, left)` now decides the earliest bouts
+  (the end of the list) instead of the first ones, because the main event runs last. Every earlier case keeps its
+  meaning: a partial card still has its main event undecided.
 
 Coverage (`npx vitest run --coverage`): all files 95.72% statements, 90.35% branches; `live.ts` 96.8%, `live-row.ts`
 98.9%. `live-mock.ts` is 46.7%: its middleware only runs under `astro dev` and was checked by hand (below).
@@ -83,3 +95,18 @@ after the replay the main event and co-main flipped, the header said "Results", 
 | 12 | The dev mock reveals one more bout per step in running order | `tests/unit/live-mock.test.ts` | unit |
 | 13 | Live fixture build: one script only on the live card's pages, under 8 KB, prod origin, no dev override in the bundle; the embedded card; `data-fight-id` rows; hidden line; "· Live" header and `tile-live` | `tests/build/live-build.test.ts` | build |
 | 14 | In Chromium, API mocked via `page.route` with `Access-Control-Allow-Origin: *`, clock pinned: header/tile live; marker plus "updated 6 → 8 min ago"; a result flips the row (outcome, WIN chip, lost corner, Elo chips) and the marker moves; the live row has the same parts as a build-time completed row; polling stops when complete and the card reads "Results"; 503 and garbage leave `<main>` unchanged and back off; never removes a result; the event page polls; finished and far-out cards make no request; no JS changes nothing | `tests/e2e/live.spec.ts › live results`, `› without JavaScript` | e2e |
+
+## Review fixes (Phase 4 review)
+
+| Finding | Fix | Test |
+|---|---|---|
+| M1: Live now read array order, but a late addition shows (and runs) inside its segment | `card.ts runningOrder` (`groupBySegment` flattened, main event first). `LivePoll.astro` embeds the card in that order, and `liveNowId` reads it bottom-up | `card.test.ts › runningOrder`; `live.test.ts › liveNowId › follows the order it is given`; `tests/component/live-poll.test.ts` (renders `LivePoll`: the embedded order, and Live now on the late prelim once the early prelims are done) |
+| L1: a render error lost the batch and backed off | The poller commits `event`/`since` only after `render` returns. `failures` is reset before render, so a render error never backs off, and the same rows come again next poll. `LivePoll` wraps each row's `applyFight` in try/catch and logs the error | `live.test.ts › keeps a batch it could not render` |
+| L2: a winner outside the fight rejected the whole card; a null embedded card threw | `readResult` takes any winner string, as `schema.ts` does (`FightRow` shows no winner then). The script starts only if the embedded card parses, else it logs and leaves the page as built | `live.test.ts › accepts any winner id` |
+| L4: nothing asserted CORS-simple requests | The e2e mock records the method and every header outside the safelisted and browser-set ones | `live.spec.ts › every poll is a CORS-simple request` |
+| L5: a cancelled bout left listed kept the card live | `events.ts isComplete`: every bout decided, or the main event decided. One rule for `live.ts` (stop, show Results), `cardPhase`, `carriesLivePoll`, `isLive`'s grace and `currentEvent`'s ranking | `events.test.ts › a decided main event ends the card`; `live.test.ts › isComplete`, `› stops and says complete once the main event is decided` |
+| Nit: unescaped selector | `CSS.escape(f.id)` in `LivePoll`'s row lookup | none (ids come from the build) |
+| Nit: ticker kept running after stop | `PollerDeps.onStop`, called once however the poller stops. `LivePoll` clears the ticker there | `live.test.ts › tells the page when it stops` |
+| L3: Cloudflare edge caching with `cache: 'no-cache'` | No code change: check `cf-cache-status` and `ETag`/`Last-Modified` on the next fight night | none |
+
+Coverage after the fixes: all files 95.51% statements, 90.01% branches; `live.ts` 95.4%, `live-row.ts` 98.9%.
