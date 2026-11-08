@@ -81,7 +81,10 @@ function canon(node: Node): unknown {
   }
   if (node.nodeType !== 1) return null;
   const el = node as Element;
-  const attrs = [...el.attributes].map((a) => `${a.name}=${a.value}`).sort();
+  el.normalize(); // adjacent text nodes read as one, as on screen
+  // Class order doesn't matter (class:list and classList.add order them differently); everything else does.
+  const value = (a: Attr) => (a.name === 'class' ? a.value.split(/\s+/).sort().join(' ') : a.value);
+  const attrs = [...el.attributes].map((a) => `${a.name}=${value(a)}`).sort();
   return [el.tagName.toLowerCase(), attrs, [...el.childNodes].map(canon).filter((c) => c != null)];
 }
 

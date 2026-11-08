@@ -1,0 +1,95 @@
+---
+// Live results in the browser, on a card that can be live before the next build (events.ts carriesLivePoll): the card
+// as built goes in as JSON, and the script polls the engine's event file while the card is live by the browser clock,
+// filling in each result as it lands (lib/live.ts, lib/live-row.ts). Without JS, or with the API down, the page stays
+// as built.
+import { scriptJson } from '../lib/rankings';
+import { eloTags } from '../lib/format';
+import type { Event, Fighter } from '../lib/schema';
+
+interface Props {
+  event: Event;
+  fighters: { [id: string]: Fighter };
+  /** When the page's data was generated (index.json generated_at): "updated N min ago" counts from it. */
+  since: string;
+}
+
+const { event, fighters, since } = Astro.props;
+const card = {
+  id: event.id,
+  slug: event.slug,
+  date: event.date,
+  since,
+  fights: event.fights.map((f) => ({
+    id: f.id,
+    red: f.red,
+    blue: f.blue,
+    result: f.result ?? null,
+    elo: f.elo ?? null,
+    // For a row that gains its Elo line live (no Elo today): the corner's tags, as Corner.astro shows them.
+    tags: { red: eloTags(fighters[f.red]!), blue: eloTags(fighters[f.blue]!) },
+  })),
+};
+---
+
+<script type="application/json" id="live-card" is:inline set:html={scriptJson(card)} />
+<script>
+  import { createPoller, liveFightView, liveLine, liveNowId, parseLiveEvent, type LiveFight } from '../lib/live';
+  import { applyFight, markLiveNow, renderCard } from '../lib/live-row';
+
+  declare const __LIVE_API__: string;
+  declare const __LIVE_DEV__: boolean; // true under `astro dev` only (lib/live-mock.ts), whatever NODE_ENV says
+
+  type Tags = { red: string[]; blue: string[] };
+  const card = JSON.parse(document.getElementById('live-card')!.textContent!);
+  const tags = new Map<string, Tags>(card.fights.map((f: LiveFight & { tags: Tags }) => [f.id, f.tags]));
+  let base = __LIVE_API__;
+  // Dev only (stripped from the build): ?live-api=/__live-mock replays a finished card (astro.config.mjs).
+  if (__LIVE_DEV__) base = new URLSearchParams(location.search).get('live-api') ?? base;
+  const url = `${base}/v1/events/${card.id}.json`;
+  const initial = parseLiveEvent(card, card.id)!;
+
+  let since = Date.parse(card.since);
+  let complete = false;
+  let heard = false; // nothing changes on the page until the API has answered once
+  let fights = initial.fights;
+  const show = () => {
+    const decided = fights.some((f) => f.result);
+    renderCard(document, {
+      phase: complete ? 'results' : decided ? 'live' : null,
+      line: liveLine(since, Date.now()),
+      slug: card.slug,
+    });
+    markLiveNow(document, complete ? null : liveNowId(fights));
+  };
+
+  const poller = createPoller(initial, since, {
+    // A simple request (no custom headers), so no CORS preflight; no-cache revalidates with the ETag.
+    load: async () => {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) throw new Error(String(res.status));
+      const event = parseLiveEvent(await res.json(), card.id);
+      const modified = Date.parse(res.headers.get('last-modified') ?? '');
+      return event && { event, modified: Number.isNaN(modified) ? null : modified };
+    },
+    render: (state) => {
+      for (const f of state.changed) {
+        const row = document.querySelector<HTMLElement>(`[data-fight-id="${f.id}"]`);
+        if (row) applyFight(row, liveFightView(f, tags.get(f.id)!));
+      }
+      ({ since, complete } = state);
+      heard = true;
+      fights = state.event.fights;
+      show();
+      if (complete) clearInterval(ticker);
+    },
+    now: Date.now,
+    hidden: () => document.hidden,
+    setTimer: (fn, ms) => setTimeout(fn, ms),
+    clearTimer: (h) => clearTimeout(h as number),
+  });
+  // The "updated N min ago" line moves on between polls.
+  const ticker = setInterval(() => heard && poller.state() === 'polling' && show(), 30_000);
+  document.addEventListener('visibilitychange', poller.visibilityChanged);
+  poller.start();
+</script>
