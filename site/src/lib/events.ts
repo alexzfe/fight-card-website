@@ -25,11 +25,15 @@ type Card = Pick<Event, 'date'> & { fights: ReadonlyArray<Pick<Event['fights'][n
 
 const decidedCount = (event: Card) => event.fights.filter((f) => f.result).length;
 
-/** Some but not all fights have a result: the card is (probably) still running. */
-const isPartial = (event: Card) => {
-  const decided = decidedCount(event);
-  return decided > 0 && decided < event.fights.length;
-};
+/**
+ * The card is over: every bout has a result, or the main event (first in card order, last to run) has one. A bout
+ * cancelled on the night but still listed never gets a result, so the main event ends the card.
+ */
+export const isComplete = (fights: Card['fights']) =>
+  fights.length > 0 && (!!fights[0]!.result || fights.every((f) => f.result));
+
+/** Some results, and the card isn't over: it is (probably) still running. */
+const isPartial = (event: Card) => decidedCount(event) > 0 && !isComplete(event.fights);
 
 /**
  * Whether the card is live or just finished at `now`. Read from the fights' results, not `status`: the engine marks an
@@ -42,8 +46,8 @@ export function isLive(event: Card, now: number): boolean {
   if (now < (decided > 0 ? start - DAY_MS : start)) return false;
   if (now < start + DAY_MS) return true; // dated today (UTC), or tomorrow with a result
   if (decided === 0) return false;
-  if (decided < event.fights.length) return now < start + (1 + RESULTS_GRACE_DAYS) * DAY_MS;
-  return now < start + DAY_MS + DAY_MS / 2; // all in: until 12:00 UTC the next day
+  if (!isComplete(event.fights)) return now < start + (1 + RESULTS_GRACE_DAYS) * DAY_MS;
+  return now < start + DAY_MS + DAY_MS / 2; // over: until 12:00 UTC the next day
 }
 
 /** Qualifying cards: one with some but not all results first (it's running), then the most recent date. */
@@ -76,7 +80,7 @@ export function cardPhase(event: Card & Pick<Event, 'status'>, now: Date): 'live
 export function carriesLivePoll(event: Card, now: Date): boolean {
   const start = midnightUtc(event.date);
   const t = now.getTime();
-  const open = event.fights.length > 0 && decidedCount(event) < event.fights.length;
+  const open = event.fights.length > 0 && !isComplete(event.fights);
   return open && t >= start - 2 * DAY_MS && t < start + (1 + RESULTS_GRACE_DAYS) * DAY_MS;
 }
 

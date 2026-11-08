@@ -2,7 +2,7 @@
 // the page shows, pick the bout in progress, and run the poll loop. No DOM here (live-row.ts) and nothing Node-only:
 // it ships in the live script (components/LivePoll.astro). The script stays small, so no zod: parseLiveEvent checks
 // just the fields the page reads, as strictly as schema.ts does.
-import { isLive } from './events';
+import { isComplete, isLive } from './events';
 import { eloAtFight, resultParts, type EloAtFight } from './format';
 import type { FightElo, Result } from './schema';
 
@@ -16,10 +16,10 @@ const optStr = (v: unknown) => v == null || typeof v === 'string';
 const isInt = (v: unknown): v is number => Number.isInteger(v);
 const optPos = (v: unknown) => v == null || (isInt(v) && v > 0);
 
-function readResult(v: unknown, red: string, blue: string): Result | null | undefined {
+function readResult(v: unknown): Result | null | undefined {
   if (v == null) return null;
   if (!isObj(v) || !optStr(v.method) || !optStr(v.time) || !optPos(v.round)) return undefined;
-  if (v.winner != null && v.winner !== red && v.winner !== blue) return undefined;
+  if (!optStr(v.winner)) return undefined; // any id, as schema.ts: a winner outside the fight shows no winner
   if (v.outcome != null && v.outcome !== 'win' && v.outcome !== 'draw' && v.outcome !== 'nc') return undefined;
   return v as Result;
 }
@@ -39,7 +39,7 @@ export function parseLiveEvent(raw: unknown, id: string): LiveEvent | null {
   const fights: LiveFight[] = [];
   for (const f of raw.fights) {
     if (!isObj(f) || !isStr(f.id) || !isStr(f.red) || !isStr(f.blue)) return null;
-    const result = readResult(f.result, f.red, f.blue);
+    const result = readResult(f.result);
     const elo = readElo(f.elo);
     if (result === undefined || elo === undefined) return null;
     fights.push({ id: f.id, red: f.red, blue: f.blue, result, elo });
@@ -47,11 +47,12 @@ export function parseLiveEvent(raw: unknown, id: string): LiveEvent | null {
   return { id, date: raw.date, fights };
 }
 
-export const isComplete = (fights: ReadonlyArray<Pick<LiveFight, 'result'>>) =>
-  fights.length > 0 && fights.every((f) => f.result);
+/** Every bout decided, or the main event (first) decided: the card is over (events.ts). */
+export { isComplete };
 
 /**
- * The bout in progress: in running order (the card bottom-up, earliest prelim first, main event last), the bout right
+ * The bout in progress, from the fights as the page shows them (card.ts runningOrder: a late addition sits in its
+ * segment, not at the end of the list). In running order (that list bottom-up, main event last), the bout right
  * after the last one with a result. Bouts left without one before it were cancelled. None before the first result,
  * or once the last bout (the main event) has one.
  */
@@ -125,7 +126,10 @@ export type RenderState = { event: LiveEvent; changed: LiveFight[]; complete: bo
 export interface PollerDeps {
   /** One fetch: the parsed event and its Last-Modified (ms), or null when it didn't parse. Rejects on errors. */
   load(): Promise<{ event: LiveEvent; modified: number | null } | null>;
+  /** Apply a batch to the page. If it throws, the batch isn't kept: the next poll brings the same rows again. */
   render(state: RenderState): void;
+  /** The loop has stopped for good (card over, or no longer live by the browser clock). */
+  onStop?(): void;
   now(): number;
   hidden(): boolean;
   setTimer(fn: () => void, ms: number): unknown;
@@ -153,27 +157,40 @@ export function createPoller(initial: LiveEvent, since: number, deps: PollerDeps
     }, ms);
   };
 
+  const stop = () => {
+    if (state === 'stopped') return;
+    state = 'stopped';
+    deps.onStop?.();
+  };
+
   const done = (got: Awaited<ReturnType<PollerDeps['load']>>) => {
     if (!got) throw new Error('unparsable');
+    failures = 0; // the fetch worked: a render error below is not a fetch failure, so it never backs off
     const { event: next, changed } = mergeEvent(event, got.event);
+    let nextSince = since;
+    if (got.modified != null) nextSince = Math.max(since, got.modified);
+    else if (changed.length) nextSince = deps.now();
+    const complete = isComplete(next.fights);
+    try {
+      deps.render({ event: next, changed, complete, since: nextSince });
+    } catch (err) {
+      console.error('live: could not show the update; trying again on the next poll', err);
+      return; // nothing kept: the next poll reports the same rows as changed
+    }
     event = next;
-    failures = 0;
-    if (got.modified != null) since = Math.max(since, got.modified);
-    else if (changed.length) since = deps.now();
-    const complete = isComplete(event.fights);
-    deps.render({ event, changed, complete, since });
-    if (complete) state = 'stopped';
+    since = nextSince;
+    if (complete) stop();
   };
 
   function tick() {
     if (state === 'stopped' || inFlight) return;
     const now = deps.now();
-    if (isComplete(event.fights)) return void (state = 'stopped');
+    if (isComplete(event.fights)) return stop();
     if (now < Date.parse(`${event.date}T00:00:00Z`) && !event.fights.some((f) => f.result)) {
       state = 'waiting';
       return schedule(POLL_MS);
     }
-    if (!isLive(event, now)) return void (state = 'stopped');
+    if (!isLive(event, now)) return stop();
     if (deps.hidden()) return void (state = 'hidden');
     state = 'polling';
     inFlight = true;
