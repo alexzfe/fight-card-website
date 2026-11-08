@@ -21,6 +21,7 @@
 | `64a62a8` | RED | `npx vitest run`: 12 failed / 277 passed, and `live.test.ts`, `live-card.test.ts` and `live-mock.test.ts` failed to import (`src/lib/live*.ts` missing). `vitest -c vitest.component.config.ts`: the file failed to import `../../src/lib/live`. `npm run test:e2e`: 8 failed / 89 passed (no "Live" header, no marker, rows never flip). The 2 e2e tests that passed check that nothing is added (finished/far-out cards; no JS). |
 | `ddb953d` | GREEN | `npx vitest run` (unit + component projects) 351 passed; `npm run test:e2e` 97 passed; `astro check` 0 errors. |
 | `8cff0a9` | REFACTOR | prettier on the new files, `applyFight` loop tidied, dev mock pace; the same 351 / 97 / 0. |
+| `44fc850` | test fix | CI failed once on the backoff e2e test: a failed fetch schedules its retry asynchronously, and `clock.runFor(120_000)` could land before the timer existed. The test now steps the clock 10 s at a time until the next request and checks the gaps (≤70 s, 110–130 s, 230–250 s). `--project live --repeat-each 4`: 52 passed, twice; CI `test` passed. |
 
 **Tests changed after RED**, and why:
 - `tests/component/live-row.test.ts`: `canon()` now sorts the tokens in `class` and merges adjacent text nodes
