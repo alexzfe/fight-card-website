@@ -135,7 +135,8 @@ cron :17 hourly ──────┼─▶ gate (should_run.py) ─▶ pipeline
 workflow_dispatch ────┘        │                   │           │        │
                          skip unless daily,   scrape → images   only if data/ changed
                          noon, manual, or an  → score → commit  (or noon or manual run)
-                         event today/yesterday data/ → issue
+                         event today or       data/ → issue
+                         yesterday
 ```
 
 - **When it works.** The 06:00 run and manual runs always go ahead. An hourly run goes ahead only if an event in
@@ -147,7 +148,8 @@ workflow_dispatch ────┘        │                   │           │
   builds and deploys, like a manual run. The home page keeps a live or just-finished card as the current one until
   12:00 UTC the day after its date (`currentEvent` in `site/src/lib/events.ts`), but the static page only reads the
   clock at build time and the other runs only rebuild when `data/` changed. Under `DATA_SOURCE=v1` a stale `/v1/` on
-  this run is quiet, as on hourly runs.
+  this run is quiet, as on hourly runs. On a day with no data change it rebuilds the same commit, so it re-pushes the
+  same `:<sha>` image tag with a new digest (see [Rolling back](#rolling-back)).
 - **Failure.** `scrape`, `images` and `score` run in order. If any of them exits non-zero, the job fails before
   anything is committed, built or deployed, and GitHub emails the failure.
 - **Cookie.** `.cache/ufcstats/` is restored and saved with `actions/cache`, so the `_fmc` cookie (valid 7 days) is
@@ -234,8 +236,18 @@ issue: `docs/tdd/tag-release.tdd.md`.
 ## Rolling back
 
 **A rollback doesn't stick on its own.** A `v*` tag deploys the tagged code, but the next refresh that changes
-`data/` (daily 06:00 UTC; hourly on event days) deploys main's HEAD code again, the broken code. `deploy-app ufc prod
-<sha>` on the box is undone the same way, and until then it also puts prod back on that commit's `data/`.
+`data/` (daily 06:00 UTC; hourly on event days), or the 12:30 UTC noon rebuild whatever the data, deploys main's HEAD
+code again, the broken code. `deploy-app ufc prod <sha>` on the box is undone the same way, and until then it also
+puts prod back on that commit's `data/`.
+
+**`:<sha>` image tags aren't immutable.** The noon rebuild rebuilds main's HEAD and re-pushes the same `:<sha>` tag
+(no tag scheme change), so:
+
+- `deploy-app ufc prod <sha>` pulls that SHA's latest rebuild, not the image it first shipped. For a static page
+  that's the same code and data, only built at a later time.
+- On a noon run with no data change, deploy-app's previous tag is the same `:<sha>`. If the new image fails its
+  health check, deploy-app's automatic "rolling back to $prev" starts the same image again, so it doesn't roll back
+  that run. Code and data are unchanged, so this is unlikely; if it happens, fix forward or deploy an older SHA.
 
 - **Preferred: fix main.** `git revert` the bad commit on a branch, PR, merge, then tag. Every later refresh ships
   the good code.

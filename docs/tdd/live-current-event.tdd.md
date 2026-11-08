@@ -10,7 +10,9 @@
 An event is current at `now` if its date is today (UTC), or it has some but not all fight results and `now` is within
 `RESULTS_GRACE_DAYS = 2` days after its date (a cancelled bout that never gets a result can't pin the card forever),
 or all results are in and `now` is before 12:00 UTC the day after its date. "Live" is read from the fights' `result`,
-never from `status`. Several qualify: the most recent date wins. None: the old behaviour (soonest upcoming, else latest
+never from `status`. A card with at least one result also counts from 00:00Z the day *before* its date: cards in
+Australia and Asia start their prelims on the previous UTC day (review follow-up). Several qualify: a card with some
+but not all results ranks first (it's still running), then the most recent date wins (review follow-up). None: the old behaviour (soonest upcoming, else latest
 completed). `currentEvent(events, now)` in `site/src/lib/events.ts` is pure with no Node imports, so phase 4 can run
 it in the browser.
 
@@ -28,6 +30,8 @@ it in the browser.
 |---|---|---|
 | `789d101` | RED | vitest: 15 failed / 257 passed, plus `build-time.test.ts` failing to load (`currentEvent` / `RESULTS_GRACE_DAYS` / `resolveBuildNow` missing). Playwright: 3 failed / 84 passed (live fixture home page showed `UFC 324: Next vs. Upcoming`; the rail's current tile `Nov 14 · UFC 324`; JSON-LD the same). pytest: `test_should_run.py` and `test_workflows.py` fail to import `NOON_REBUILD_CRON` (compile-time RED). `astro check`: 3 errors (the missing exports). |
 | `19edf21` | GREEN | `npm test` 275/275, `npm run test:e2e` 87/87, `uv run --project pipeline pytest scripts/tests` 259 passed / 2 skipped (actionlint not on PATH; a data-freshness skip), `astro check` 0 errors, `actionlint -shellcheck=` clean. No test changed after RED. |
+| `61a5a06` | RED (review fixes) | vitest `tests/unit/events.test.ts`: 2 failed / 21 passed. A Sydney card dated 11-08 with 1 result at 11-07T22:30Z gave `next` (want `sydney`); a running 13/14 card dated 11-07 vs a 0-result card dated 11-08 at 03:00Z gave `sunday` (want `running`). The old "picks the most recent" test was replaced (its expectation flipped under the new ranking) and "ignores a future card" moved to a card 2 days out. |
+| `bcc24b4` | GREEN (review fixes) | `npm test` 277/277, `npm run test:e2e` 87/87, `uv run --project pipeline pytest scripts/tests` 259 passed / 2 skipped, `astro check` 0 errors. |
 
 Coverage (`npx vitest run --coverage`): all files 97.46% statements, 92.24% branches, over the 80% thresholds.
 
@@ -46,8 +50,10 @@ Walker` with the clock and with `BUILD_NOW=2026-11-08T04:17:00Z`.
 | 6 | 13/14 stays current through day +2, lets go at day +3 00:00Z (cancelled bout) | `› stays on a card with some results for the 2-day grace, then lets go` | unit |
 | 7 | 14/14 stays current until 11:59:59Z the next day, not at 12:00Z | `› stays on a finished card until noon…`, `› moves on from a finished card at noon…` | unit |
 | 8 | Past noon with nothing upcoming: latest completed | `› falls back to the latest completed card…` | unit |
-| 9 | Several qualifying: the most recent date, whatever the input order | `› picks the most recent of several qualifying cards` | unit |
-| 10 | A future card with results, and a fightless card from yesterday, are not live | `› ignores a future card…`, `› treats a card with no fights as never finished` | unit |
+| 9 | Several qualifying: a card with some but not all results beats one with none (a Saturday card still running at 03:00Z vs a Sunday card), whatever the input order | `› ranks a card with some but not all results above one with none…` | unit |
+| 9b | Same rank: the most recent date, whatever the input order (finished vs none; partial vs partial) | `› picks the most recent date among qualifying cards in the same rank` | unit |
+| 9c | A card dated tomorrow with a result is current from 00:00:00Z the day before (Sydney prelims at 22:30Z), not at 23:59:59Z two days before | `› is a card dated tomorrow once it has a result, from 00:00Z the day before its date` | unit |
+| 10 | A card with results more than a day out, and a fightless card from yesterday, are not live | `› ignores a card with results more than a day in the future`, `› treats a card with no fights as never finished` | unit |
 | 11 | `BUILD_NOW` pins the build's now; unset/empty is the clock; a malformed one throws | `tests/unit/build-time.test.ts` | unit |
 | 12 | Live fixture built at 2026-11-08T00:44Z: home h1, 4 fights and title are tonight's card, not the next | `tests/e2e/live.spec.ts › the home page keeps the live card, not the next one` | e2e |
 | 13 | The rail's `aria-current` tile is the live card | `› the rail marks the live card as current` | e2e |

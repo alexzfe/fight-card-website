@@ -36,8 +36,10 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      # With data_ref, data/ is replaced wholesale (files main deleted go too) and the tag names both commits, so
-      # the image built for a commit with its own data/ is never overwritten.
+      # With data_ref, data/ is replaced wholesale (files main deleted go too) and the tag names both commits, so a
+      # data_ref build never overwrites the image built for a commit with its own data/. That :<sha> tag is not
+      # immutable, though: refresh.yml's 12:30 UTC noon rebuild rebuilds the same commit and re-pushes the same
+      # :<sha> tag (docs/DEPLOY.md, "Rolling back").
       - name: Pick data/ and the image tag
         id: data
         env:
