@@ -111,15 +111,35 @@ describe('currentEvent: a live or just-finished card stays current', () => {
     expect(currentEvent(tonight(14, 0).slice(0, 2), at('2026-11-08T12:30:00Z'))?.id).toBe('tonight');
     expect(currentEvent([prev], at('2026-11-08T12:30:00Z'))?.id).toBe('prev');
   });
-  it('picks the most recent of several qualifying cards', () => {
-    // Yesterday's card finished (before noon) and still has a bout pending; today's has started.
-    const yesterday = ev('yesterday', '2026-11-07', 'completed', bouts(13, 1));
-    const today = ev('today', '2026-11-08', 'upcoming', bouts(0, 10));
-    expect(currentEvent([prev, today, yesterday, next], at('2026-11-08T10:00:00Z'))?.id).toBe('today');
-    expect(currentEvent([prev, yesterday, today, next], at('2026-11-08T10:00:00Z'))?.id).toBe('today');
+  it('ranks a card with some but not all results above one with none, whatever the dates', () => {
+    // Saturday's card is still running past midnight UTC; a Sunday card exists with no results yet.
+    const running = ev('running', '2026-11-07', 'completed', bouts(13, 1));
+    const sunday = ev('sunday', '2026-11-08', 'upcoming', bouts(0, 10));
+    expect(currentEvent([prev, sunday, running, next], at('2026-11-08T03:00:00Z'))?.id).toBe('running');
+    expect(currentEvent([prev, running, sunday, next], at('2026-11-08T03:00:00Z'))?.id).toBe('running');
   });
-  it('ignores a future card that somehow has results', () => {
-    const odd = ev('odd', '2026-11-20', 'completed', bouts(1, 1));
+  it('picks the most recent date among qualifying cards in the same rank', () => {
+    // Neither partial: yesterday's finished card (before noon) and today's card with no results.
+    const finished = ev('finished', '2026-11-07', 'completed', bouts(14, 0));
+    const today = ev('today', '2026-11-08', 'upcoming', bouts(0, 10));
+    expect(currentEvent([prev, today, finished, next], at('2026-11-08T10:00:00Z'))?.id).toBe('today');
+    expect(currentEvent([prev, finished, today, next], at('2026-11-08T10:00:00Z'))?.id).toBe('today');
+    // Both partial.
+    const older = ev('older', '2026-11-07', 'completed', bouts(5, 5));
+    const newer = ev('newer', '2026-11-08', 'completed', bouts(1, 9));
+    expect(currentEvent([prev, newer, older, next], at('2026-11-08T10:00:00Z'))?.id).toBe('newer');
+    expect(currentEvent([prev, older, newer, next], at('2026-11-08T10:00:00Z'))?.id).toBe('newer');
+  });
+  // Cards in Australia and Asia start their prelims on the previous UTC day (Sydney 09:00 AEDT = 22:00Z the day before).
+  it('is a card dated tomorrow once it has a result, from 00:00Z the day before its date', () => {
+    const sydney = ev('sydney', '2026-11-08', 'completed', bouts(1, 12));
+    expect(currentEvent([prev, sydney, next], at('2026-11-07T22:30:00Z'))?.id).toBe('sydney');
+    expect(currentEvent([prev, sydney, next], at('2026-11-07T00:00:00Z'))?.id).toBe('sydney');
+    expect(currentEvent([prev, sydney, next], at('2026-11-06T23:59:59Z'))?.id).toBe('next');
+  });
+  it('ignores a card with results more than a day in the future', () => {
+    const odd = ev('odd', '2026-11-10', 'completed', bouts(1, 1));
+    expect(currentEvent([prev, odd, next], at('2026-11-08T23:59:59Z'))?.id).toBe('next');
     expect(currentEvent([prev, odd, next], at('2026-11-08T10:00:00Z'))?.id).toBe('next');
   });
   it('treats a card with no fights as never finished', () => {
