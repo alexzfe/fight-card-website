@@ -366,7 +366,7 @@
       "opponent": "Paris Moran",
       "opponent_id": "abe2e048a04d22cf"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "2000-05-13",
     "elo": 1438,
     "elo_inactive": false,
@@ -381,6 +381,16 @@
     "reach_in": 67.0,
     "recent_fights": [
       {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Mitch Raposo",
+        "opponent_id": "0be6776db31d98ec",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
         "date": "2026-09-22",
         "event": "DWCS 10.7",
         "method": "SUB",
@@ -393,7 +403,7 @@
     ],
     "record": {
       "d": 0,
-      "l": 3,
+      "l": 4,
       "nc": 0,
       "w": 15
     },
@@ -586,7 +596,7 @@
       "opponent": "Kevin Christian",
       "opponent_id": "7e9b36a9847db116"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1995-05-28",
     "elo": 1487,
     "elo_inactive": false,
@@ -600,6 +610,16 @@
     "p4p_rank": null,
     "reach_in": 77.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Lucas Fernando",
+        "opponent_id": "3df223aeaacecf3f",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-01-31",
         "event": "UFC 325: Volkanovski vs. Lopes 2",
@@ -619,21 +639,11 @@
         "result": "win",
         "round": 1,
         "time": "3:33"
-      },
-      {
-        "date": "2025-07-26",
-        "event": "UFC Fight Night: Whittaker vs. De Ridder",
-        "method": "U-DEC",
-        "opponent": "Ibo Aslan",
-        "opponent_id": "6e8f1bcdda94ff45",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
-      "l": 2,
+      "l": 3,
       "nc": 0,
       "w": 10
     },
@@ -646,7 +656,7 @@
       "opponent": "Allan Nascimento",
       "opponent_id": "253076a23d03dcd0"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1998-10-16",
     "elo": 1540,
     "elo_inactive": false,
@@ -660,6 +670,16 @@
     "p4p_rank": null,
     "reach_in": 64.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Marcos Degli",
+        "opponent_id": "0575068a0f83f963",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-06-20",
         "event": "UFC Fight Night: Kape vs. Horiguchi",
@@ -679,23 +699,13 @@
         "result": "win",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-04-12",
-        "event": "UFC 314: Volkanovski vs. Lopes",
-        "method": "S-DEC",
-        "opponent": "Sumudaerji",
-        "opponent_id": "3cf18e01cb6cbde3",
-        "result": "loss",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 3,
       "nc": 0,
-      "w": 11
+      "w": 12
     },
     "stance": "Switch"
   },
@@ -946,7 +956,7 @@
       "opponent": "Da'Mon Blackshear",
       "opponent_id": "da22387a0407a2dc"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1985-12-18",
     "elo": 1538,
     "elo_inactive": false,
@@ -960,6 +970,16 @@
     "p4p_rank": null,
     "reach_in": 69.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Elijah Smith",
+        "opponent_id": "7478b7f959ba61f5",
+        "result": "loss",
+        "round": 1,
+        "time": "1:00"
+      },
       {
         "date": "2026-04-25",
         "event": "UFC Fight Night: Sterling vs. Zalal",
@@ -979,21 +999,11 @@
         "result": "loss",
         "round": 1,
         "time": "3:05"
-      },
-      {
-        "date": "2025-07-26",
-        "event": "UFC Fight Night: Whittaker vs. De Ridder",
-        "method": "U-DEC",
-        "opponent": "Da'Mon Blackshear",
-        "opponent_id": "da22387a0407a2dc",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
-      "l": 8,
+      "l": 9,
       "nc": 0,
       "w": 18
     },
@@ -3271,7 +3281,7 @@
       "opponent": "Kaiwen",
       "opponent_id": "0565706b1e7f7e7c"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1998-12-02",
     "elo": 1535,
     "elo_inactive": false,
@@ -3285,6 +3295,16 @@
     "p4p_rank": null,
     "reach_in": 70.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Ollie Schmid",
+        "opponent_id": "b701f095e6ccb149",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-01-31",
         "event": "UFC 325: Volkanovski vs. Lopes 2",
@@ -3304,21 +3324,11 @@
         "result": "win",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-05-22",
-        "event": "Road to UFC 4.1 + 4.2",
-        "method": "KO/TKO",
-        "opponent": "EoJin Park",
-        "opponent_id": "f79e7f138bf50cc0",
-        "result": "win",
-        "round": 2,
-        "time": "2:24"
       }
     ],
     "record": {
       "d": 0,
-      "l": 1,
+      "l": 2,
       "nc": 0,
       "w": 8
     },
@@ -3621,7 +3631,7 @@
       "opponent": "Djani Barbir",
       "opponent_id": "d4baaa0630bf5798"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1999-07-17",
     "elo": 1454,
     "elo_inactive": false,
@@ -3635,6 +3645,16 @@
     "p4p_rank": null,
     "reach_in": 75.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Andre Petroski",
+        "opponent_id": "5f61780fe5e9b6d0",
+        "result": "loss",
+        "round": 2,
+        "time": "4:39"
+      },
       {
         "date": "2026-03-21",
         "event": "UFC Fight Night: Evloev vs. Murphy",
@@ -3658,7 +3678,7 @@
     ],
     "record": {
       "d": 0,
-      "l": 1,
+      "l": 2,
       "nc": 0,
       "w": 9
     },
@@ -3671,7 +3691,7 @@
       "opponent": "Billy Elekana",
       "opponent_id": "07a74004d964c7f4"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1997-01-10",
     "elo": 1541,
     "elo_inactive": false,
@@ -3685,6 +3705,16 @@
     "p4p_rank": null,
     "reach_in": 80.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Billy Elekana",
+        "opponent_id": "07a74004d964c7f4",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-08-15",
         "event": "UFC 330: Makhachev vs. Machado Garry",
@@ -3710,7 +3740,7 @@
       "d": 0,
       "l": 3,
       "nc": 0,
-      "w": 14
+      "w": 15
     },
     "stance": "Orthodox"
   },
@@ -4216,7 +4246,7 @@
       "opponent": "Oban Elliott",
       "opponent_id": "6b56e94a59b7b134"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1993-09-24",
     "elo": 1576,
     "elo_inactive": false,
@@ -4230,6 +4260,16 @@
     "p4p_rank": null,
     "reach_in": 71.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Wellington Turman",
+        "opponent_id": "4dcfb28c011c11b2",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-07-18",
         "event": "UFC Fight Night: Du Plessis vs. Usman",
@@ -4249,23 +4289,13 @@
         "result": "win",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-06-21",
-        "event": "UFC Fight Night: Hill vs. Rountree Jr.",
-        "method": "U-DEC",
-        "opponent": "Oban Elliott",
-        "opponent_id": "6b56e94a59b7b134",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 3,
       "nc": 0,
-      "w": 13
+      "w": 14
     },
     "stance": "Southpaw"
   },
@@ -4541,7 +4571,7 @@
       "opponent": "Misha Cirkunov",
       "opponent_id": "67f272324a030d00"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1996-07-22",
     "elo": 1344,
     "elo_inactive": false,
@@ -4555,6 +4585,16 @@
     "p4p_rank": null,
     "reach_in": 72.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Seokhyeon Ko",
+        "opponent_id": "4a07b1988477502c",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2023-12-02",
         "event": "UFC Fight Night: Dariush vs. Tsarukyan",
@@ -4574,21 +4614,11 @@
         "result": "loss",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2022-11-12",
-        "event": "UFC 281: Adesanya vs. Pereira",
-        "method": "U-DEC",
-        "opponent": "Andre Petroski",
-        "opponent_id": "5f61780fe5e9b6d0",
-        "result": "loss",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
-      "l": 8,
+      "l": 9,
       "nc": 0,
       "w": 18
     },
@@ -5496,7 +5526,7 @@
       "opponent": "Rodolfo Vieira",
       "opponent_id": "260e9e0d4954aea6"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1991-06-12",
     "elo": 1483,
     "elo_inactive": false,
@@ -5510,6 +5540,16 @@
     "p4p_rank": null,
     "reach_in": 73.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Mantas Kondratavicius",
+        "opponent_id": "3cc506f115cbb9d5",
+        "result": "win",
+        "round": 2,
+        "time": "4:39"
+      },
       {
         "date": "2026-05-16",
         "event": "UFC Fight Night: Allen vs. Costa",
@@ -5529,23 +5569,13 @@
         "result": "loss",
         "round": 1,
         "time": "2:41"
-      },
-      {
-        "date": "2025-06-14",
-        "event": "UFC Fight Night: Usman vs. Buckley",
-        "method": "U-DEC",
-        "opponent": "Edmen Shahbazyan",
-        "opponent_id": "4144798612ef96e5",
-        "result": "loss",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 6,
       "nc": 0,
-      "w": 13
+      "w": 14
     },
     "stance": "Switch"
   },
@@ -7136,7 +7166,7 @@
       "opponent": "SuYoung You",
       "opponent_id": "a474aade8eb3a8f0"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "2002-09-05",
     "elo": 1683,
     "elo_inactive": false,
@@ -7150,6 +7180,16 @@
     "p4p_rank": null,
     "reach_in": 71.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Davey Grant",
+        "opponent_id": "113df4fde64735c6",
+        "result": "win",
+        "round": 1,
+        "time": "1:00"
+      },
       {
         "date": "2026-03-14",
         "event": "UFC Fight Night: Emmett vs. Vallejos",
@@ -7169,23 +7209,13 @@
         "result": "win",
         "round": 1,
         "time": "4:10"
-      },
-      {
-        "date": "2025-02-15",
-        "event": "UFC Fight Night: Cannonier vs. Rodrigues",
-        "method": "U-DEC",
-        "opponent": "Vince Morales",
-        "opponent_id": "37098a6e6c27fb66",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 1,
       "nc": 0,
-      "w": 10
+      "w": 11
     },
     "stance": "Orthodox"
   },
@@ -7246,7 +7276,7 @@
       "opponent": "Mohammed Usman",
       "opponent_id": "da7f113b5ea39c43"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1995-03-30",
     "elo": 1515,
     "elo_inactive": false,
@@ -7260,6 +7290,16 @@
     "p4p_rank": null,
     "reach_in": 74.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Gabriel Lorenco",
+        "opponent_id": "e3fc6c1fab298561",
+        "result": "win",
+        "round": 3,
+        "time": "4:47"
+      },
       {
         "date": "2026-07-25",
         "event": "UFC Fight Night: Ankalaev vs. Guskov",
@@ -7279,23 +7319,13 @@
         "result": "win",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-10-11",
-        "event": "UFC Fight Night: Oliveira vs. Gamrot",
-        "method": "KO/TKO",
-        "opponent": "Vitor Petrino",
-        "opponent_id": "71171fc96445bf65",
-        "result": "loss",
-        "round": 3,
-        "time": "0:26"
       }
     ],
     "record": {
       "d": 0,
       "l": 5,
       "nc": 0,
-      "w": 11
+      "w": 12
     },
     "stance": "Southpaw"
   },
@@ -7841,7 +7871,7 @@
   },
   "7d4d7583df7eebf9": {
     "best_win": null,
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1996-02-10",
     "elo": 1328,
     "elo_inactive": false,
@@ -7856,6 +7886,16 @@
     "reach_in": 71.0,
     "recent_fights": [
       {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "SUB",
+        "opponent": "Austin Bashi",
+        "opponent_id": "d3f89fa685bd8420",
+        "result": "loss",
+        "round": 1,
+        "time": "1:07"
+      },
+      {
         "date": "2024-10-01",
         "event": "DWCS 8.8",
         "method": "SUB",
@@ -7868,7 +7908,7 @@
     ],
     "record": {
       "d": 0,
-      "l": 4,
+      "l": 5,
       "nc": 1,
       "w": 11
     },
@@ -7881,7 +7921,7 @@
       "opponent": "Yan Xiaonan",
       "opponent_id": "c41d426cc7326d1b"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1988-05-30",
     "elo": 1593,
     "elo_inactive": false,
@@ -7895,6 +7935,16 @@
     "p4p_rank": null,
     "reach_in": 64.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Tatiana Suarez",
+        "opponent_id": "b08012bbe542592a",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-04-04",
         "event": "UFC Fight Night: Moicano vs. Duncan",
@@ -7914,21 +7964,11 @@
         "result": "loss",
         "round": 5,
         "time": "5:00"
-      },
-      {
-        "date": "2025-04-12",
-        "event": "UFC 314: Volkanovski vs. Lopes",
-        "method": "U-DEC",
-        "opponent": "Yan Xiaonan",
-        "opponent_id": "c41d426cc7326d1b",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
-      "l": 4,
+      "l": 5,
       "nc": 0,
       "w": 23
     },
@@ -9701,7 +9741,7 @@
       "opponent": "Dione Barbosa",
       "opponent_id": "27b388f0aab49780"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1993-12-02",
     "elo": 1545,
     "elo_inactive": false,
@@ -9715,6 +9755,16 @@
     "p4p_rank": null,
     "reach_in": 67.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Gabriella Fernandes",
+        "opponent_id": "a6eb54ae17a551be",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-04-18",
         "event": "UFC Fight Night: Burns vs. Malott",
@@ -9734,23 +9784,13 @@
         "result": "loss",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-08-16",
-        "event": "UFC 319: Du Plessis vs. Chimaev",
-        "method": "U-DEC",
-        "opponent": "Dione Barbosa",
-        "opponent_id": "27b388f0aab49780",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 7,
       "nc": 0,
-      "w": 19
+      "w": 20
     },
     "stance": "Orthodox"
   },
@@ -10381,7 +10421,7 @@
       "opponent": "Wang Cong",
       "opponent_id": "2997e7fe3c9d3d4a"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1993-08-13",
     "elo": 1400,
     "elo_inactive": false,
@@ -10395,6 +10435,16 @@
     "p4p_rank": null,
     "reach_in": 66.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Karine Silva",
+        "opponent_id": "9d62c2d8ee151f08",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-03-28",
         "event": "UFC Fight Night: Adesanya vs. Pyfer",
@@ -10414,21 +10464,11 @@
         "result": "win",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2024-11-23",
-        "event": "UFC Fight Night: Yan vs. Figueiredo",
-        "method": "SUB",
-        "opponent": "Wang Cong",
-        "opponent_id": "2997e7fe3c9d3d4a",
-        "result": "win",
-        "round": 2,
-        "time": "3:49"
       }
     ],
     "record": {
       "d": 0,
-      "l": 4,
+      "l": 5,
       "nc": 0,
       "w": 11
     },
@@ -11026,7 +11066,7 @@
       "opponent": "Virna Jandiroba",
       "opponent_id": "7dda2cf308f24a02"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1990-12-19",
     "elo": 1694,
     "elo_inactive": false,
@@ -11040,6 +11080,16 @@
     "p4p_rank": 3,
     "reach_in": 66.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Virna Jandiroba",
+        "opponent_id": "7dda2cf308f24a02",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-04-11",
         "event": "UFC 327: Prochazka vs. Ulberg",
@@ -11059,23 +11109,13 @@
         "result": "win",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-02-08",
-        "event": "UFC 312: Du Plessis vs. Strickland 2",
-        "method": "U-DEC",
-        "opponent": "Zhang Weili",
-        "opponent_id": "1ebe20ebbfa15e29",
-        "result": "loss",
-        "round": 5,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 1,
       "nc": 0,
-      "w": 13
+      "w": 14
     },
     "stance": "Southpaw"
   },
@@ -11086,7 +11126,7 @@
       "opponent": "Josiane Nunes",
       "opponent_id": "68d35296f566792b"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1988-08-19",
     "elo": 1319,
     "elo_inactive": false,
@@ -11100,6 +11140,16 @@
     "p4p_rank": null,
     "reach_in": 65.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Nina Milosevic",
+        "opponent_id": "eabece0edc2d62ca",
+        "result": "loss",
+        "round": 2,
+        "time": "3:40"
+      },
       {
         "date": "2026-06-06",
         "event": "UFC Fight Night: Muhammad vs. Bonfim",
@@ -11119,21 +11169,11 @@
         "result": "loss",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-08-09",
-        "event": "UFC Fight Night: Dolidze vs. Hernandez",
-        "method": "KO/TKO",
-        "opponent": "Joselyne Edwards",
-        "opponent_id": "f9ab66e67240db7b",
-        "result": "loss",
-        "round": 1,
-        "time": "2:24"
       }
     ],
     "record": {
       "d": 0,
-      "l": 9,
+      "l": 10,
       "nc": 0,
       "w": 13
     },
@@ -11446,7 +11486,7 @@
       "opponent": "Keiichiro Nakamura",
       "opponent_id": "3618e0632ecdba9c"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "2000-12-28",
     "elo": 1500,
     "elo_inactive": false,
@@ -11460,6 +11500,16 @@
     "p4p_rank": null,
     "reach_in": 71.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Keiichiro Nakamura",
+        "opponent_id": "3618e0632ecdba9c",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-05-02",
         "event": "UFC Fight Night: Della Maddalena vs. Prates",
@@ -11475,7 +11525,7 @@
       "d": 0,
       "l": 3,
       "nc": 0,
-      "w": 4
+      "w": 5
     },
     "stance": "Orthodox"
   },
@@ -12016,7 +12066,7 @@
       "opponent": "Zhang Mingyang",
       "opponent_id": "8a65fd9ba31fd3f7"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1992-03-30",
     "elo": 1624,
     "elo_inactive": false,
@@ -12030,6 +12080,16 @@
     "p4p_rank": null,
     "reach_in": 82.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Waldo Cortes Acosta",
+        "opponent_id": "fc08099550072fe4",
+        "result": "win",
+        "round": 3,
+        "time": "2:27"
+      },
       {
         "date": "2026-10-03",
         "event": "UFC 332: Silva vs. Wang",
@@ -12049,23 +12109,13 @@
         "result": "loss",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2025-08-23",
-        "event": "UFC Fight Night: Walker vs. Zhang",
-        "method": "KO/TKO",
-        "opponent": "Zhang Mingyang",
-        "opponent_id": "8a65fd9ba31fd3f7",
-        "result": "win",
-        "round": 2,
-        "time": "2:37"
       }
     ],
     "record": {
       "d": 0,
       "l": 10,
       "nc": 1,
-      "w": 23
+      "w": 24
     },
     "stance": "Orthodox"
   },
@@ -12951,7 +13001,7 @@
       "opponent": "John Yannis",
       "opponent_id": "450bcab0968562c4"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "2001-09-29",
     "elo": 1494,
     "elo_inactive": false,
@@ -12965,6 +13015,16 @@
     "p4p_rank": null,
     "reach_in": 70.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "SUB",
+        "opponent": "Carlos Calderon",
+        "opponent_id": "7d4d7583df7eebf9",
+        "result": "win",
+        "round": 1,
+        "time": "1:07"
+      },
       {
         "date": "2026-07-18",
         "event": "UFC Fight Night: Du Plessis vs. Usman",
@@ -12984,23 +13044,13 @@
         "result": "win",
         "round": 1,
         "time": "3:39"
-      },
-      {
-        "date": "2025-01-11",
-        "event": "UFC Fight Night: Dern vs. Ribas 2",
-        "method": "U-DEC",
-        "opponent": "Christian Rodriguez",
-        "opponent_id": "5ec591b78349ba7e",
-        "result": "loss",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 2,
       "nc": 0,
-      "w": 14
+      "w": 15
     },
     "stance": "Orthodox"
   },
@@ -13071,7 +13121,7 @@
       "opponent": "Jose Delano",
       "opponent_id": "d7c4956d61ae76a9"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1999-08-26",
     "elo": 1626,
     "elo_inactive": false,
@@ -13085,6 +13135,16 @@
     "p4p_rank": null,
     "reach_in": 70.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Jose Delano",
+        "opponent_id": "d7c4956d61ae76a9",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-06-20",
         "event": "UFC Fight Night: Kape vs. Horiguchi",
@@ -13110,7 +13170,7 @@
       "d": 0,
       "l": 0,
       "nc": 0,
-      "w": 11
+      "w": 12
     },
     "stance": "Orthodox"
   },
@@ -13241,7 +13301,7 @@
       "opponent": "Manuel Exposito",
       "opponent_id": "a1cb266d7f44f35f"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1996-09-11",
     "elo": 1487,
     "elo_inactive": false,
@@ -13255,6 +13315,16 @@
     "p4p_rank": null,
     "reach_in": 70.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "U-DEC",
+        "opponent": "Murtazali Magomedov",
+        "opponent_id": "d436f5d55156a521",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-04-04",
         "event": "UFC Fight Night: Moicano vs. Duncan",
@@ -13278,7 +13348,7 @@
     ],
     "record": {
       "d": 0,
-      "l": 3,
+      "l": 4,
       "nc": 0,
       "w": 17
     },
@@ -13981,7 +14051,7 @@
       "opponent": "Charlie Cleveland",
       "opponent_id": "a221b4812b0e7364"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1999-09-30",
     "elo": 1434,
     "elo_inactive": false,
@@ -13996,6 +14066,16 @@
     "reach_in": 76.0,
     "recent_fights": [
       {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Thomas Petersen",
+        "opponent_id": "764d39074a352e33",
+        "result": "loss",
+        "round": 3,
+        "time": "4:47"
+      },
+      {
         "date": "2026-09-01",
         "event": "DWCS 10.4",
         "method": "KO/TKO",
@@ -14008,7 +14088,7 @@
     ],
     "record": {
       "d": 0,
-      "l": 1,
+      "l": 2,
       "nc": 0,
       "w": 8
     },
@@ -14521,7 +14601,7 @@
       "opponent": "Priscila Cachoeira",
       "opponent_id": "b1e5bcaad32a3cac"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1996-08-08",
     "elo": 1528,
     "elo_inactive": false,
@@ -14535,6 +14615,16 @@
     "p4p_rank": null,
     "reach_in": 67.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Priscila Cachoeira",
+        "opponent_id": "b1e5bcaad32a3cac",
+        "result": "win",
+        "round": 2,
+        "time": "3:40"
+      },
       {
         "date": "2026-08-01",
         "event": "UFC Fight Night: Medic vs. Rodriguez",
@@ -14550,7 +14640,7 @@
       "d": 0,
       "l": 1,
       "nc": 0,
-      "w": 9
+      "w": 10
     },
     "stance": "Orthodox"
   },
@@ -15431,7 +15521,7 @@
       "opponent": "Shamil Gaziev",
       "opponent_id": "6747ccd6d1acd266"
     },
-    "details_fetched_at": "2026-11-07T22:17:03Z",
+    "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1991-10-03",
     "elo": 1552,
     "elo_inactive": false,
@@ -15445,6 +15535,16 @@
     "p4p_rank": null,
     "reach_in": 78.0,
     "recent_fights": [
+      {
+        "date": "2026-11-07",
+        "event": "UFC Fight Night: Cortes Acosta vs. Walker",
+        "method": "KO/TKO",
+        "opponent": "Johnny Walker",
+        "opponent_id": "c21f26bbde777573",
+        "result": "loss",
+        "round": 3,
+        "time": "2:27"
+      },
       {
         "date": "2026-09-12",
         "event": "Noche UFC: Silva vs. Delgado",
@@ -15464,21 +15564,11 @@
         "result": "loss",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2026-01-24",
-        "event": "UFC 324: Gaethje vs. Pimblett",
-        "method": "KO/TKO",
-        "opponent": "Derrick Lewis",
-        "opponent_id": "d3df1add9d9a7efb",
-        "result": "win",
-        "round": 2,
-        "time": "3:14"
       }
     ],
     "record": {
       "d": 0,
-      "l": 4,
+      "l": 5,
       "nc": 0,
       "w": 17
     },
