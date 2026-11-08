@@ -2,11 +2,11 @@
 import Base from '../layouts/Base.astro';
 import EventRail from '../components/EventRail.astro';
 import EventCard from '../components/EventCard.astro';
-import { nextEvent } from '../lib/events';
+import { currentEvent } from '../lib/events';
 import { SITE_NAME, eventJsonLd, homeDescription, homeTitle } from '../lib/seo';
-import { site } from '../lib/site-data';
+import { buildNow, site } from '../lib/site-data';
 
-const event = nextEvent(site.events);
+const event = currentEvent(site.events, buildNow);
 const jsonLd: object[] = [{ '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: Astro.site!.href }];
 if (event) jsonLd.push(eventJsonLd(event, site.fighters, new URL(`/events/${event.slug}/`, Astro.site).href));
 ---
