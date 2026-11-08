@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { RESULTS_GRACE_DAYS, byDateAscending, currentEvent, findBySlug, orderEvents } from '../../src/lib/events';
+import {
+  RESULTS_GRACE_DAYS,
+  byDateAscending,
+  cardPhase,
+  carriesLivePoll,
+  currentEvent,
+  findBySlug,
+  orderEvents,
+} from '../../src/lib/events';
 import type { Event } from '../../src/lib/schema';
 
 const ev = (id: string, date: string, status: Event['status'], fights: Event['fights'] = []): Event => ({
@@ -154,5 +162,34 @@ describe('findBySlug', () => {
   });
   it('returns undefined for an unknown slug', () => {
     expect(findBySlug(events, 'nope')).toBeUndefined();
+  });
+});
+
+describe('cardPhase: what the header and the rail tile say', () => {
+  const night = at('2026-11-08T00:44:00Z');
+  it('is live for a card with some but not all results, while it is current', () => {
+    expect(cardPhase(ev('x', '2026-11-07', 'completed', bouts(2, 2)), night)).toBe('live');
+  });
+  it('is results for a complete card, and for a completed one past its grace', () => {
+    expect(cardPhase(ev('x', '2026-11-07', 'completed', bouts(4, 0)), night)).toBe('results');
+    expect(cardPhase(ev('x', '2026-11-01', 'completed', bouts(3, 1)), night)).toBe('results');
+  });
+  it('is nothing for an upcoming card, before its first result', () => {
+    expect(cardPhase(ev('x', '2026-11-08', 'upcoming', bouts(0, 4)), night)).toBeNull();
+  });
+});
+
+describe('carriesLivePoll: pages that get the live script', () => {
+  const night = at('2026-11-08T00:44:00Z');
+  it('is a card that can still get results within the poll window', () => {
+    expect(carriesLivePoll(ev('x', '2026-11-07', 'completed', bouts(2, 2)), night)).toBe(true); // running
+    expect(carriesLivePoll(ev('x', '2026-11-08', 'upcoming', bouts(0, 4)), night)).toBe(true); // tonight
+    expect(carriesLivePoll(ev('x', '2026-11-10', 'upcoming', bouts(0, 4)), night)).toBe(true); // 2 days out
+  });
+  it('is not a complete card, a fightless one, one further out, or one past the grace', () => {
+    expect(carriesLivePoll(ev('x', '2026-11-07', 'completed', bouts(4, 0)), night)).toBe(false);
+    expect(carriesLivePoll(ev('x', '2026-11-08', 'upcoming'), night)).toBe(false);
+    expect(carriesLivePoll(ev('x', '2026-11-11', 'upcoming', bouts(0, 4)), night)).toBe(false);
+    expect(carriesLivePoll(ev('x', '2026-11-05', 'completed', bouts(3, 1)), night)).toBe(false);
   });
 });
