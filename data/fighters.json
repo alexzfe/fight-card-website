@@ -368,7 +368,7 @@
     },
     "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "2000-05-13",
-    "elo": 1438,
+    "elo": 1439,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -1272,7 +1272,7 @@
   "17923f676f100e16": {
     "best_win": {
       "date": "2025-02-08",
-      "elo": 1489,
+      "elo": 1490,
       "opponent": "Justin Tafa",
       "opponent_id": "e13abac8089a801a"
     },
@@ -5072,7 +5072,7 @@
   "583ee11abddfc581": {
     "best_win": {
       "date": "2020-05-16",
-      "elo": 1509,
+      "elo": 1510,
       "opponent": "Darren Elkins",
       "opponent_id": "92a9aa9c93192871"
     },
@@ -6783,7 +6783,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1999-11-15",
-    "elo": 1613,
+    "elo": 1612,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -7112,7 +7112,7 @@
   "73a78713bd899f4c": {
     "best_win": {
       "date": "2026-10-10",
-      "elo": 1501,
+      "elo": 1502,
       "opponent": "RJ Harris",
       "opponent_id": "e03187ec8b5b6abc"
     },
@@ -10297,7 +10297,7 @@
   "a495f599e787614f": {
     "best_win": {
       "date": "2023-12-16",
-      "elo": 1616,
+      "elo": 1617,
       "opponent": "Dustin Jacoby",
       "opponent_id": "e4277e87a789d687"
     },
@@ -10882,7 +10882,7 @@
   "aebaa8cec15b083d": {
     "best_win": {
       "date": "2026-05-02",
-      "elo": 1620,
+      "elo": 1621,
       "opponent": "Dom Mar Fan",
       "opponent_id": "530af2900b5a1693"
     },
@@ -11308,7 +11308,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1708,
+    "elo": 1707,
     "elo_inactive": false,
     "elo_peak": 1715,
     "elo_provisional": false,
@@ -12188,7 +12188,7 @@
     },
     "details_fetched_at": "2026-10-27T06:00:04Z",
     "dob": "1999-06-24",
-    "elo": 1726,
+    "elo": 1725,
     "elo_inactive": false,
     "elo_peak": 1757,
     "elo_provisional": false,
@@ -14773,7 +14773,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1488,
+    "elo": 1489,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -14835,7 +14835,7 @@
     "dob": "1995-01-05",
     "elo": 1352,
     "elo_inactive": false,
-    "elo_peak": 1436,
+    "elo_peak": 1437,
     "elo_provisional": false,
     "height_in": 67.0,
     "id": "eee0ef3e2b14816b",
@@ -15403,7 +15403,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1990-07-04",
-    "elo": 1364,
+    "elo": 1365,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -15517,7 +15517,7 @@
   "fc08099550072fe4": {
     "best_win": {
       "date": "2025-11-22",
-      "elo": 1598,
+      "elo": 1599,
       "opponent": "Shamil Gaziev",
       "opponent_id": "6747ccd6d1acd266"
     },
@@ -15697,7 +15697,7 @@
   "fdd22e895a70e4a8": {
     "best_win": {
       "date": "2026-07-11",
-      "elo": 1530,
+      "elo": 1531,
       "opponent": "Cesar Almeida",
       "opponent_id": "64d47ef881a437a4"
     },

@@ -58,7 +58,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1726,
+      "elo": 1725,
       "id": "c32aeb1a59e6272d",
       "name": "Michael Morales",
       "p4p_rank": 7,
@@ -122,7 +122,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1708,
+      "elo": 1707,
       "id": "b4b496ec2197ee3e",
       "name": "Navajo Stirling",
       "p4p_rank": 15,
@@ -858,7 +858,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1613,
+      "elo": 1612,
       "id": "6e8349a0a0476d60",
       "name": "Imanol Rodriguez",
       "p4p_rank": null,
@@ -1258,7 +1258,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1582,
+      "elo": 1581,
       "id": "084532da3d25f3b8",
       "name": "Cezary Oleksiejczuk",
       "p4p_rank": null,
@@ -1373,14 +1373,6 @@
       "elo": 1574,
       "id": "4144798612ef96e5",
       "name": "Edmen Shahbazyan",
-      "p4p_rank": null,
-      "provisional": false
-    },
-    {
-      "division": "Bantamweight",
-      "elo": 1572,
-      "id": "850266b3dc4e506e",
-      "name": "Daniel Marcos",
       "p4p_rank": null,
       "provisional": false
     },
@@ -1770,7 +1762,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1548,
+      "elo": 1547,
       "id": "476fe566d2df676e",
       "name": "Modestas Bukauskas",
       "p4p_rank": null,
@@ -2159,14 +2151,6 @@
       "name": "Dom Mar Fan",
       "p4p_rank": null,
       "provisional": true
-    },
-    {
-      "division": "Women's Strawweight",
-      "elo": 1526,
-      "id": "31ef8b67e13495b3",
-      "name": "Tecia Pennington",
-      "p4p_rank": null,
-      "provisional": false
     },
     {
       "division": "Lightweight",
@@ -2818,7 +2802,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1494,
+      "elo": 1495,
       "id": "a9936818d709e2d7",
       "name": "Liu Ce",
       "p4p_rank": null,
@@ -2946,7 +2930,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1488,
+      "elo": 1489,
       "id": "ed7d329d7c29428d",
       "name": "Colby Thicknesse",
       "p4p_rank": null,
@@ -3770,7 +3754,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1438,
+      "elo": 1439,
       "id": "aa0c573da7119292",
       "name": "Juliana Miller",
       "p4p_rank": null,
@@ -3778,7 +3762,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1438,
+      "elo": 1439,
       "id": "0575068a0f83f963",
       "name": "Marcos Degli",
       "p4p_rank": null,
@@ -4321,14 +4305,6 @@
       "provisional": false
     },
     {
-      "division": "Heavyweight",
-      "elo": 1388,
-      "id": "6a311920edd73c85",
-      "name": "Max Gimenis",
-      "p4p_rank": null,
-      "provisional": true
-    },
-    {
       "division": "Middleweight",
       "elo": 1388,
       "id": "d5bab53a1a603aac",
@@ -4426,7 +4402,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1382,
+      "elo": 1383,
       "id": "6e8f1bcdda94ff45",
       "name": "Ibo Aslan",
       "p4p_rank": null,
@@ -4490,7 +4466,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1376,
+      "elo": 1377,
       "id": "b2a78df161bd67f9",
       "name": "Gauge Young",
       "p4p_rank": null,
@@ -4586,7 +4562,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1370,
+      "elo": 1371,
       "id": "fa07345cc9db5cc9",
       "name": "Billy Ray Goff",
       "p4p_rank": null,
@@ -4666,7 +4642,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1364,
+      "elo": 1365,
       "id": "f96856f9d69fd7e4",
       "name": "Robert Bryczek",
       "p4p_rank": null,
@@ -4842,7 +4818,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1350,
+      "elo": 1351,
       "id": "21b813b919776d90",
       "name": "Erik Silva",
       "p4p_rank": null,
@@ -5217,7 +5193,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-08",
+  "as_of": "2026-11-09",
   "p4p": {
     "men": [
       {
@@ -5270,7 +5246,7 @@
       },
       {
         "division": "Welterweight",
-        "elo": 1726,
+        "elo": 1725,
         "id": "c32aeb1a59e6272d",
         "image": "images/c32aeb1a59e6272d.webp",
         "name": "Michael Morales",
@@ -5334,7 +5310,7 @@
       },
       {
         "division": "Light Heavyweight",
-        "elo": 1708,
+        "elo": 1707,
         "id": "b4b496ec2197ee3e",
         "image": "images/b4b496ec2197ee3e.webp",
         "name": "Navajo Stirling",
