@@ -69,7 +69,7 @@
     {
       "blue": "feedf3053472fe56",
       "elo": null,
-      "finish_tier": "high",
+      "finish_tier": "medium",
       "form": null,
       "id": "7c4d24762cdfdae5",
       "red": "4a28cb716c19157a",
@@ -134,7 +134,7 @@
     {
       "blue": "eff9074bc066f0f2",
       "elo": null,
-      "finish_tier": "low",
+      "finish_tier": "medium",
       "form": null,
       "id": "f24ca8e51be2ba77",
       "red": "9cdd2da1a9104a0b",

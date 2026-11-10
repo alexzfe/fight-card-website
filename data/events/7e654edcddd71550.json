@@ -9,7 +9,7 @@
         "blue_pre": 1618,
         "red_delta": 50,
         "red_p4p_rank": null,
-        "red_pre": 1615
+        "red_pre": 1614
       },
       "finish_tier": null,
       "form": {
@@ -331,7 +331,7 @@
         "blue_pre": 1569,
         "red_delta": 60,
         "red_p4p_rank": null,
-        "red_pre": 1554
+        "red_pre": 1553
       },
       "finish_tier": null,
       "form": {
@@ -652,7 +652,7 @@
       "elo": {
         "blue_delta": -29,
         "blue_p4p_rank": null,
-        "blue_pre": 1516,
+        "blue_pre": 1515,
         "red_delta": 31,
         "red_p4p_rank": null,
         "red_pre": 1613
@@ -834,10 +834,10 @@
       "elo": {
         "blue_delta": -33,
         "blue_p4p_rank": null,
-        "blue_pre": 1354,
+        "blue_pre": 1353,
         "red_delta": 40,
         "red_p4p_rank": null,
-        "red_pre": 1450
+        "red_pre": 1449
       },
       "finish_tier": null,
       "form": {
