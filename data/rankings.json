@@ -114,7 +114,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1708,
+      "elo": 1707,
       "id": "eae48ff31db420c2",
       "name": "Arman Tsarukyan",
       "p4p_rank": 14,
@@ -146,7 +146,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1701,
+      "elo": 1700,
       "id": "d802174b0c0c1f4e",
       "name": "Magomed Ankalaev",
       "p4p_rank": null,
@@ -298,7 +298,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1676,
+      "elo": 1675,
       "id": "4126a78111c0855a",
       "name": "Caio Borralho",
       "p4p_rank": null,
@@ -378,7 +378,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1667,
+      "elo": 1666,
       "id": "e5549c82bfb5582d",
       "name": "Alex Pereira",
       "p4p_rank": null,
@@ -1106,7 +1106,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1593,
+      "elo": 1592,
       "id": "b1b0729d27936f2f",
       "name": "Belal Muhammad",
       "p4p_rank": null,
@@ -3490,7 +3490,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1456,
+      "elo": 1457,
       "id": "7debc13b36343605",
       "name": "Cristian Quinonez",
       "p4p_rank": null,
@@ -4098,7 +4098,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1407,
+      "elo": 1408,
       "id": "aa171d55d4b5208f",
       "name": "Billy Quarantillo",
       "p4p_rank": null,
@@ -4898,7 +4898,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1342,
+      "elo": 1343,
       "id": "fd7ab338e4953644",
       "name": "Manolo Zecchini",
       "p4p_rank": null,
@@ -5106,7 +5106,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1303,
+      "elo": 1304,
       "id": "6d48a2df51749d91",
       "name": "Antonio Trocoli",
       "p4p_rank": null,
@@ -5193,7 +5193,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-10",
+  "as_of": "2026-11-11",
   "p4p": {
     "men": [
       {
@@ -5302,7 +5302,7 @@
       },
       {
         "division": "Lightweight",
-        "elo": 1708,
+        "elo": 1707,
         "id": "eae48ff31db420c2",
         "image": "images/eae48ff31db420c2.webp",
         "name": "Arman Tsarukyan",

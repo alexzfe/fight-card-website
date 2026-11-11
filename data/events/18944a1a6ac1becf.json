@@ -52,6 +52,58 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Featherweight"
+    },
+    {
+      "blue": "70186298465de3f3",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "b96ecfc4fe676593",
+      "red": "122ae3b34275fbb2",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "34fbfc3f65b64645",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "c47c19808287afe2",
+      "red": "9f8bd85aaeec2f56",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "81d59c1e07478361",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "88cc3d3001f8d53e",
+      "red": "c14a683dac2ebc4c",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Flyweight"
+    },
+    {
+      "blue": "504d3a11e4408253",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "53832a4b77afb255",
+      "red": "2d85fcb4468c30d7",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Strawweight"
     }
   ],
   "id": "18944a1a6ac1becf",

@@ -494,7 +494,7 @@
     "dob": "1994-05-16",
     "elo": 1618,
     "elo_inactive": false,
-    "elo_peak": 1625,
+    "elo_peak": 1626,
     "elo_provisional": false,
     "height_in": 74.0,
     "id": "06734ca9d88dec3a",
@@ -726,7 +726,7 @@
   "07a74004d964c7f4": {
     "best_win": {
       "date": "2025-11-01",
-      "elo": 1504,
+      "elo": 1505,
       "opponent": "Kevin Christian",
       "opponent_id": "7e9b36a9847db116"
     },
@@ -1182,6 +1182,66 @@
       "w": 18
     },
     "stance": "Orthodox"
+  },
+  "122ae3b34275fbb2": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1511,
+      "opponent": "Ahejiang Ailinuer",
+      "opponent_id": "ff584c17bccbae0b"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "2003-08-19",
+    "elo": 1525,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 68.0,
+    "id": "122ae3b34275fbb2",
+    "image": "images/122ae3b34275fbb2.webp",
+    "name": "George Mangos",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 69.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "SUB",
+        "opponent": "Ahejiang Ailinuer",
+        "opponent_id": "ff584c17bccbae0b",
+        "result": "win",
+        "round": 2,
+        "time": "2:03"
+      },
+      {
+        "date": "2026-05-28",
+        "event": "Road To UFC 5.1",
+        "method": "KO/TKO",
+        "opponent": "Yuito Yanagawa",
+        "opponent_id": "7c592bf20095fd17",
+        "result": "win",
+        "round": 1,
+        "time": "3:19"
+      },
+      {
+        "date": "2025-08-12",
+        "event": "DWCS 9.1",
+        "method": "U-DEC",
+        "opponent": "Radley Da Silva",
+        "opponent_id": "0d68c7bfdff1dc34",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 10
+    },
+    "stance": "Switch"
   },
   "130b65b53f30f33c": {
     "best_win": {
@@ -2034,7 +2094,7 @@
     "dob": "1996-09-14",
     "elo": 1613,
     "elo_inactive": false,
-    "elo_peak": 1691,
+    "elo_peak": 1692,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "20bccc9bb4ceb23e",
@@ -3153,6 +3213,56 @@
     },
     "stance": "Orthodox"
   },
+  "2d85fcb4468c30d7": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1511,
+      "opponent": "Machi Fukuda",
+      "opponent_id": "42189c98d434a413"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "1996-03-29",
+    "elo": 1526,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 64.0,
+    "id": "2d85fcb4468c30d7",
+    "image": null,
+    "name": "Meng Bo",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 62.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "S-DEC",
+        "opponent": "Machi Fukuda",
+        "opponent_id": "42189c98d434a413",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-29",
+        "event": "Road To UFC 5.2",
+        "method": "U-DEC",
+        "opponent": "Arisa Matsuda",
+        "opponent_id": "4c33b3d37955aa85",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 8,
+      "nc": 0,
+      "w": 24
+    },
+    "stance": "Orthodox"
+  },
   "2e19380f34871c6a": {
     "best_win": {
       "date": "2026-10-24",
@@ -3607,6 +3717,56 @@
       "w": 11
     },
     "stance": "Southpaw"
+  },
+  "34fbfc3f65b64645": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1511,
+      "opponent": "Chungreng Koren",
+      "opponent_id": "000774e57404d8c7"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "1999-08-14",
+    "elo": 1530,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 68.0,
+    "id": "34fbfc3f65b64645",
+    "image": null,
+    "name": "Ryo Tajima",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 71.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "U-DEC",
+        "opponent": "Chungreng Koren",
+        "opponent_id": "000774e57404d8c7",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-28",
+        "event": "Road To UFC 5.1",
+        "method": "S-DEC",
+        "opponent": "Ti Haitao",
+        "opponent_id": "3848cd6cac73e091",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
   },
   "35673bf5204524ee": {
     "best_win": {
@@ -4327,7 +4487,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1676,
+    "elo": 1675,
     "elo_inactive": false,
     "elo_peak": 1747,
     "elo_provisional": false,
@@ -4916,7 +5076,7 @@
   "4a28cb716c19157a": {
     "best_win": {
       "date": "2016-02-06",
-      "elo": 1697,
+      "elo": 1698,
       "opponent": "Johny Hendricks",
       "opponent_id": "0941df56f6ac954b"
     },
@@ -5294,6 +5454,56 @@
       "d": 0,
       "l": 6,
       "nc": 1,
+      "w": 10
+    },
+    "stance": "Orthodox"
+  },
+  "504d3a11e4408253": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1515,
+      "opponent": "Farida Abdueva",
+      "opponent_id": "8f3837b4c06f3d1e"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "1999-05-14",
+    "elo": 1538,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 62.0,
+    "id": "504d3a11e4408253",
+    "image": null,
+    "name": "BoHyun Park",
+    "nickname": "The Rush",
+    "p4p_rank": null,
+    "reach_in": 61.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "U-DEC",
+        "opponent": "Farida Abdueva",
+        "opponent_id": "8f3837b4c06f3d1e",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-29",
+        "event": "Road To UFC 5.2",
+        "method": "S-DEC",
+        "opponent": "Dong Huaxiang",
+        "opponent_id": "bad82b681819b272",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
       "w": 10
     },
     "stance": "Orthodox"
@@ -7279,7 +7489,7 @@
     "dob": null,
     "elo": 1478,
     "elo_inactive": false,
-    "elo_peak": 1612,
+    "elo_peak": 1613,
     "elo_provisional": false,
     "height_in": 65.0,
     "id": "6d35bf94f7d30241",
@@ -7565,6 +7775,56 @@
       "l": 1,
       "nc": 0,
       "w": 9
+    },
+    "stance": "Orthodox"
+  },
+  "70186298465de3f3": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1457,
+      "opponent": "YoungJae Song",
+      "opponent_id": "0efb0d4ebb950fcb"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "1999-12-31",
+    "elo": 1520,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 68.0,
+    "id": "70186298465de3f3",
+    "image": null,
+    "name": "Dagiisuren Chagnaadorj",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 71.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "SUB",
+        "opponent": "YoungJae Song",
+        "opponent_id": "0efb0d4ebb950fcb",
+        "result": "win",
+        "round": 1,
+        "time": "2:51"
+      },
+      {
+        "date": "2026-05-28",
+        "event": "Road To UFC 5.1",
+        "method": "S-DEC",
+        "opponent": "Regezhen",
+        "opponent_id": "be5fd2ae27d20842",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 12
     },
     "stance": "Orthodox"
   },
@@ -8899,7 +9159,7 @@
     "dob": null,
     "elo": 1489,
     "elo_inactive": false,
-    "elo_peak": 1533,
+    "elo_peak": 1534,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "809bd1a871491508",
@@ -9128,6 +9388,56 @@
     },
     "stance": "Orthodox"
   },
+  "81d59c1e07478361": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1454,
+      "opponent": "Joseph Larcinese",
+      "opponent_id": "62a72adeb0227603"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "2004-09-08",
+    "elo": 1564,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 67.0,
+    "id": "81d59c1e07478361",
+    "image": null,
+    "name": "Takaya Suzuki",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 68.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "KO/TKO",
+        "opponent": "Joseph Larcinese",
+        "opponent_id": "62a72adeb0227603",
+        "result": "win",
+        "round": 3,
+        "time": "0:15"
+      },
+      {
+        "date": "2026-05-29",
+        "event": "Road To UFC 5.2",
+        "method": "KO/TKO",
+        "opponent": "Otgonbaatar Boldbaatar",
+        "opponent_id": "3f773caad71c4131",
+        "result": "win",
+        "round": 1,
+        "time": "4:36"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Southpaw"
+  },
   "84512339473dd300": {
     "best_win": {
       "date": "2026-10-17",
@@ -9249,7 +9559,7 @@
     "dob": "1986-09-09",
     "elo": 1544,
     "elo_inactive": false,
-    "elo_peak": 1610,
+    "elo_peak": 1611,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "887961364be5ceb3",
@@ -10151,7 +10461,7 @@
   "95aff2fd8d09a5f0": {
     "best_win": {
       "date": "2026-10-24",
-      "elo": 1504,
+      "elo": 1505,
       "opponent": "Nikita Krylov",
       "opponent_id": "1091d4d957141094"
     },
@@ -10742,6 +11052,56 @@
       "w": 12
     },
     "stance": "Orthodox"
+  },
+  "9f8bd85aaeec2f56": {
+    "best_win": {
+      "date": "2026-08-28",
+      "elo": 1511,
+      "opponent": "Kasib Murdoch",
+      "opponent_id": "3a51f8d30900b580"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "1998-11-30",
+    "elo": 1522,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 67.0,
+    "id": "9f8bd85aaeec2f56",
+    "image": null,
+    "name": "Rabindra Dhant",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 69.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-28",
+        "event": "Road To UFC 5.3",
+        "method": "S-DEC",
+        "opponent": "Kasib Murdoch",
+        "opponent_id": "3a51f8d30900b580",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-05-28",
+        "event": "Road To UFC 5.1",
+        "method": "KO/TKO",
+        "opponent": "Kimbert Alintozon",
+        "opponent_id": "a075a34d7527fadf",
+        "result": "win",
+        "round": 2,
+        "time": "4:37"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 1,
+      "nc": 0,
+      "w": 11
+    },
+    "stance": "Switch"
   },
   "a0f0004aadf10b71": {
     "best_win": {
@@ -11584,7 +11944,7 @@
     "dob": null,
     "elo": 1586,
     "elo_inactive": false,
-    "elo_peak": 1586,
+    "elo_peak": 1587,
     "elo_provisional": false,
     "height_in": 63.0,
     "id": "abcf2cc6efc42031",
@@ -12852,6 +13212,66 @@
       "w": 16
     },
     "stance": "Orthodox"
+  },
+  "c14a683dac2ebc4c": {
+    "best_win": {
+      "date": "2023-08-27",
+      "elo": 1546,
+      "opponent": "SeungGuk Choi",
+      "opponent_id": "adccbc19b22e19af"
+    },
+    "details_fetched_at": "2026-11-11T06:00:05Z",
+    "dob": "2000-12-09",
+    "elo": 1560,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 68.0,
+    "id": "c14a683dac2ebc4c",
+    "image": null,
+    "name": "Jiniushiyue",
+    "nickname": "Little Vajra",
+    "p4p_rank": null,
+    "reach_in": 68.0,
+    "recent_fights": [
+      {
+        "date": "2026-05-29",
+        "event": "Road To UFC 5.2",
+        "method": "U-DEC",
+        "opponent": "Kaito Oda",
+        "opponent_id": "629bac37f70891fb",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2024-05-19",
+        "event": "Road to UFC 3.3 + 3.4",
+        "method": "S-DEC",
+        "opponent": "DongHun Choi",
+        "opponent_id": "3be16d817b36098b",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2024-02-03",
+        "event": "Road to UFC 2.7",
+        "method": "KO/TKO",
+        "opponent": "Rei Tsuruya",
+        "opponent_id": "2f43a3e82661fa99",
+        "result": "loss",
+        "round": 1,
+        "time": "4:59"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 4,
+      "nc": 0,
+      "w": 17
+    },
+    "stance": "Southpaw"
   },
   "c15fa95b9a12fde4": {
     "best_win": {
@@ -15197,7 +15617,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1667,
+    "elo": 1666,
     "elo_inactive": false,
     "elo_peak": 1789,
     "elo_provisional": false,
@@ -15677,7 +16097,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-10-11",
-    "elo": 1708,
+    "elo": 1707,
     "elo_inactive": false,
     "elo_peak": 1712,
     "elo_provisional": false,
@@ -16181,7 +16601,7 @@
   "f14cf73e51b29254": {
     "best_win": {
       "date": "2023-04-22",
-      "elo": 1715,
+      "elo": 1716,
       "opponent": "Curtis Blaydes",
       "opponent_id": "fa6796c55d6c5440"
     },
