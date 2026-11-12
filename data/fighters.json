@@ -242,7 +242,7 @@
   "02f484417a6fa69d": {
     "best_win": {
       "date": "2025-08-23",
-      "elo": 1426,
+      "elo": 1427,
       "opponent": "Diyar Nurgozhay",
       "opponent_id": "709fadb644ee3f51"
     },
@@ -786,7 +786,7 @@
   "0be6776db31d98ec": {
     "best_win": {
       "date": "2026-06-20",
-      "elo": 1601,
+      "elo": 1602,
       "opponent": "Allan Nascimento",
       "opponent_id": "253076a23d03dcd0"
     },
@@ -2092,7 +2092,7 @@
     },
     "details_fetched_at": "2026-10-28T06:00:04Z",
     "dob": "1996-09-14",
-    "elo": 1613,
+    "elo": 1612,
     "elo_inactive": false,
     "elo_peak": 1692,
     "elo_provisional": false,
@@ -2827,7 +2827,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1351,
+    "elo": 1352,
     "elo_inactive": false,
     "elo_peak": 1347,
     "elo_provisional": false,
@@ -4421,7 +4421,7 @@
   "40cb680ae1cd331f": {
     "best_win": {
       "date": "2024-02-24",
-      "elo": 1450,
+      "elo": 1451,
       "opponent": "Sam Hughes",
       "opponent_id": "e94085e821bd81de"
     },
@@ -5902,7 +5902,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1988-06-06",
-    "elo": 1361,
+    "elo": 1362,
     "elo_inactive": false,
     "elo_peak": 1559,
     "elo_provisional": false,
@@ -10521,7 +10521,7 @@
   "98a58c26c5b1ed17": {
     "best_win": {
       "date": "2026-09-19",
-      "elo": 1575,
+      "elo": 1576,
       "opponent": "Dooho Choi",
       "opponent_id": "e93b04e308913c2e"
     },
@@ -11114,7 +11114,7 @@
     "dob": "1990-04-16",
     "elo": 1604,
     "elo_inactive": false,
-    "elo_peak": 1701,
+    "elo_peak": 1702,
     "elo_provisional": false,
     "height_in": 65.0,
     "id": "a0f0004aadf10b71",
@@ -12182,7 +12182,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1667,
+    "elo": 1666,
     "elo_inactive": false,
     "elo_peak": 1676,
     "elo_provisional": false,
@@ -14879,7 +14879,7 @@
     "dob": "1997-04-11",
     "elo": 1493,
     "elo_inactive": true,
-    "elo_peak": 1502,
+    "elo_peak": 1503,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "d9a56ecb6e94f02e",
@@ -15732,7 +15732,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1998-11-13",
-    "elo": 1339,
+    "elo": 1340,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -15886,7 +15886,7 @@
   "e90a2f22417af68e": {
     "best_win": {
       "date": "2023-04-15",
-      "elo": 1627,
+      "elo": 1628,
       "opponent": "Dustin Jacoby",
       "opponent_id": "e4277e87a789d687"
     },
@@ -15954,7 +15954,7 @@
     "dob": "1991-04-10",
     "elo": 1507,
     "elo_inactive": false,
-    "elo_peak": 1580,
+    "elo_peak": 1581,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "e93b04e308913c2e",
@@ -16007,7 +16007,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1991-05-26",
-    "elo": 1368,
+    "elo": 1369,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -16667,7 +16667,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1652,
+    "elo": 1651,
     "elo_inactive": false,
     "elo_peak": 1679,
     "elo_provisional": false,
