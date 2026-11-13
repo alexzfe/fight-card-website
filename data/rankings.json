@@ -2,7 +2,7 @@
   "active": [
     {
       "division": "Welterweight",
-      "elo": 1817,
+      "elo": 1816,
       "id": "275aca31f61ba28c",
       "name": "Islam Makhachev",
       "p4p_rank": 1,
@@ -98,7 +98,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1716,
+      "elo": 1715,
       "id": "2f181c0467965b98",
       "name": "Brendan Allen",
       "p4p_rank": 12,
@@ -666,7 +666,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1630,
+      "elo": 1629,
       "id": "18d01f7f8338ae72",
       "name": "Vinicius Oliveira",
       "p4p_rank": null,
@@ -722,7 +722,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1624,
+      "elo": 1623,
       "id": "c21f26bbde777573",
       "name": "Johnny Walker",
       "p4p_rank": null,
@@ -874,7 +874,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1612,
+      "elo": 1611,
       "id": "fa6796c55d6c5440",
       "name": "Curtis Blaydes",
       "p4p_rank": null,
@@ -1482,7 +1482,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1567,
+      "elo": 1566,
       "id": "2e7878927067fdca",
       "name": "Manuel Torres",
       "p4p_rank": null,
@@ -1906,7 +1906,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1542,
+      "elo": 1541,
       "id": "7d6ceff6747f2de2",
       "name": "Jose Delgado",
       "p4p_rank": null,
@@ -2378,7 +2378,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1514,
+      "elo": 1513,
       "id": "327d5f279895110d",
       "name": "Roman Dolidze",
       "p4p_rank": null,
@@ -3546,7 +3546,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1454,
+      "elo": 1455,
       "id": "8fd808923cffff82",
       "name": "Andre Fili",
       "p4p_rank": null,
@@ -4154,7 +4154,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1402,
+      "elo": 1403,
       "id": "6c39d016053601ee",
       "name": "Bruce Whitehead",
       "p4p_rank": null,
@@ -4378,7 +4378,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1383,
+      "elo": 1384,
       "id": "99223fbb4a05326b",
       "name": "Damian Rzepecki",
       "p4p_rank": null,
@@ -4698,7 +4698,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1359,
+      "elo": 1360,
       "id": "e6679e38e7fab7a8",
       "name": "Jamie Siraj",
       "p4p_rank": null,
@@ -5050,7 +5050,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1320,
+      "elo": 1321,
       "id": "5c84f673b7bb7c15",
       "name": "Cameron Smotherman",
       "p4p_rank": null,
@@ -5066,7 +5066,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1318,
+      "elo": 1319,
       "id": "b1e5bcaad32a3cac",
       "name": "Priscila Cachoeira",
       "p4p_rank": null,
@@ -5098,7 +5098,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1307,
+      "elo": 1308,
       "id": "07797f10b9569cfc",
       "name": "Angel Pacheco",
       "p4p_rank": null,
@@ -5193,12 +5193,12 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-12",
+  "as_of": "2026-11-13",
   "p4p": {
     "men": [
       {
         "division": "Welterweight",
-        "elo": 1817,
+        "elo": 1816,
         "id": "275aca31f61ba28c",
         "image": "images/275aca31f61ba28c.webp",
         "name": "Islam Makhachev",
@@ -5286,7 +5286,7 @@
       },
       {
         "division": "Middleweight",
-        "elo": 1716,
+        "elo": 1715,
         "id": "2f181c0467965b98",
         "image": "images/2f181c0467965b98.webp",
         "name": "Brendan Allen",
