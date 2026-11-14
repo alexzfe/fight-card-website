@@ -554,7 +554,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1646,
+      "elo": 1645,
       "id": "6b0a6def604de298",
       "name": "Tommy McMillen",
       "p4p_rank": null,
@@ -1530,7 +1530,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1563,
+      "elo": 1562,
       "id": "5537efc6e496dd84",
       "name": "Aaron Pico",
       "p4p_rank": null,
@@ -1650,7 +1650,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1553,
+      "elo": 1552,
       "id": "5182316da3c1d891",
       "name": "Bilal Hasan",
       "p4p_rank": null,
@@ -3682,7 +3682,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1445,
+      "elo": 1446,
       "id": "82a5152216251682",
       "name": "Dan Ige",
       "p4p_rank": null,
@@ -3874,7 +3874,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1429,
+      "elo": 1430,
       "id": "af9f42e6894047fc",
       "name": "Jamie Mullarkey",
       "p4p_rank": null,
@@ -4106,7 +4106,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1405,
+      "elo": 1406,
       "id": "34b96d52db1d26e6",
       "name": "Kevin Borjas",
       "p4p_rank": null,
@@ -4730,7 +4730,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1355,
+      "elo": 1356,
       "id": "7e9b36a9847db116",
       "name": "Kevin Christian",
       "p4p_rank": null,
@@ -4810,7 +4810,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1350,
+      "elo": 1351,
       "id": "be9bdec19b7e9ffe",
       "name": "Austen Lane",
       "p4p_rank": null,
@@ -5130,7 +5130,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1295,
+      "elo": 1296,
       "id": "e99eb0ef25885de5",
       "name": "Mitch Ramirez",
       "p4p_rank": null,
@@ -5193,7 +5193,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-13",
+  "as_of": "2026-11-14",
   "p4p": {
     "men": [
       {

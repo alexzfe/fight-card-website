@@ -117,6 +117,32 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"
+    },
+    {
+      "blue": "530af2900b5a1693",
+      "elo": null,
+      "finish_tier": "medium",
+      "form": null,
+      "id": "0488c8d91361ad0f",
+      "red": "37f560436d745c18",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
+    },
+    {
+      "blue": "92b5f4ee9ff40321",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "c3fa8091bc2428d7",
+      "red": "709fadb644ee3f51",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Light Heavyweight"
     }
   ],
   "id": "cbf69fa846c7e3ee",

@@ -2821,7 +2821,7 @@
   "29162be25ebef5f0": {
     "best_win": {
       "date": "2024-10-15",
-      "elo": 1454,
+      "elo": 1455,
       "opponent": "Nick Piccininni",
       "opponent_id": "a5cb1c29461853ca"
     },
@@ -3945,6 +3945,66 @@
       "l": 7,
       "nc": 0,
       "w": 30
+    },
+    "stance": "Orthodox"
+  },
+  "37f560436d745c18": {
+    "best_win": {
+      "date": "2024-01-13",
+      "elo": 1509,
+      "opponent": "Tom Nolan",
+      "opponent_id": "6c3b2525436cf5d4"
+    },
+    "details_fetched_at": "2026-11-14T04:17:03Z",
+    "dob": "1993-02-08",
+    "elo": 1482,
+    "elo_inactive": true,
+    "elo_peak": 1534,
+    "elo_provisional": false,
+    "height_in": 69.0,
+    "id": "37f560436d745c18",
+    "image": "images/37f560436d745c18.webp",
+    "name": "Nikolas Motta",
+    "nickname": "Iron",
+    "p4p_rank": null,
+    "reach_in": 70.0,
+    "recent_fights": [
+      {
+        "date": "2025-06-21",
+        "event": "UFC Fight Night: Hill vs. Rountree Jr.",
+        "method": "KO/TKO",
+        "opponent": "Nazim Sadykhov",
+        "opponent_id": "ff62013d2fce6d13",
+        "result": "loss",
+        "round": 2,
+        "time": "4:17"
+      },
+      {
+        "date": "2024-11-23",
+        "event": "UFC Fight Night: Yan vs. Figueiredo",
+        "method": "U-DEC",
+        "opponent": "Maheshate",
+        "opponent_id": "8c1ca54b5089d199",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2024-01-13",
+        "event": "UFC Fight Night: Ankalaev vs. Walker 2",
+        "method": "KO/TKO",
+        "opponent": "Tom Nolan",
+        "opponent_id": "6c3b2525436cf5d4",
+        "result": "win",
+        "round": 1,
+        "time": "1:03"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 1,
+      "w": 15
     },
     "stance": "Orthodox"
   },
@@ -5577,7 +5637,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1553,
+    "elo": 1552,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -5798,6 +5858,66 @@
     },
     "stance": "Orthodox"
   },
+  "530af2900b5a1693": {
+    "best_win": {
+      "date": "2026-01-31",
+      "elo": 1555,
+      "opponent": "Sangwook Kim",
+      "opponent_id": "a264d4e9a4d6bfe4"
+    },
+    "details_fetched_at": "2026-11-14T04:17:03Z",
+    "dob": "2000-03-19",
+    "elo": 1526,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 71.0,
+    "id": "530af2900b5a1693",
+    "image": "images/530af2900b5a1693.webp",
+    "name": "Dom Mar Fan",
+    "nickname": "Street Buddha",
+    "p4p_rank": null,
+    "reach_in": 75.0,
+    "recent_fights": [
+      {
+        "date": "2026-05-02",
+        "event": "UFC Fight Night: Della Maddalena vs. Prates",
+        "method": "SUB",
+        "opponent": "Kody Steele",
+        "opponent_id": "aebaa8cec15b083d",
+        "result": "loss",
+        "round": 1,
+        "time": "3:56"
+      },
+      {
+        "date": "2026-01-31",
+        "event": "UFC 325: Volkanovski vs. Lopes 2",
+        "method": "U-DEC",
+        "opponent": "Sangwook Kim",
+        "opponent_id": "a264d4e9a4d6bfe4",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-08-22",
+        "event": "Road to UFC 4.5 + 4.6",
+        "method": "U-DEC",
+        "opponent": "JaeHyun Park",
+        "opponent_id": "fe1595732dfb08fc",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 3,
+      "nc": 0,
+      "w": 9
+    },
+    "stance": "Orthodox"
+  },
   "5537efc6e496dd84": {
     "best_win": {
       "date": "2026-10-24",
@@ -5807,7 +5927,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1563,
+    "elo": 1562,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -7888,6 +8008,66 @@
     },
     "stance": "Orthodox"
   },
+  "709fadb644ee3f51": {
+    "best_win": {
+      "date": "2026-03-07",
+      "elo": 1509,
+      "opponent": "Rafael Tobias",
+      "opponent_id": "d6a8edb7410223a0"
+    },
+    "details_fetched_at": "2026-11-14T04:17:03Z",
+    "dob": "1997-04-22",
+    "elo": 1498,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": false,
+    "height_in": 74.0,
+    "id": "709fadb644ee3f51",
+    "image": "images/709fadb644ee3f51.webp",
+    "name": "Diyar Nurgozhay",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 74.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-08",
+        "event": "UFC Fight Night: Gamrot vs. Salkilld",
+        "method": "KO/TKO",
+        "opponent": "Bruno Lopes",
+        "opponent_id": "0abcf6bc47191219",
+        "result": "win",
+        "round": 1,
+        "time": "4:59"
+      },
+      {
+        "date": "2026-03-07",
+        "event": "UFC 326: Holloway vs. Oliveira 2",
+        "method": "U-DEC",
+        "opponent": "Rafael Tobias",
+        "opponent_id": "d6a8edb7410223a0",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-08-23",
+        "event": "UFC Fight Night: Walker vs. Zhang",
+        "method": "SUB",
+        "opponent": "Uran Satybaldiev",
+        "opponent_id": "02f484417a6fa69d",
+        "result": "loss",
+        "round": 1,
+        "time": "2:45"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Southpaw"
+  },
   "71758ab9f337716c": {
     "best_win": null,
     "details_fetched_at": "2026-10-28T08:08:48Z",
@@ -9091,7 +9271,7 @@
   "7facc9c45d792985": {
     "best_win": {
       "date": "2026-06-27",
-      "elo": 1565,
+      "elo": 1566,
       "opponent": "Javier Reyes",
       "opponent_id": "4a574b8512fc1b30"
     },
@@ -10238,6 +10418,56 @@
     },
     "stance": "Orthodox"
   },
+  "92b5f4ee9ff40321": {
+    "best_win": {
+      "date": "2026-08-18",
+      "elo": 1375,
+      "opponent": "Mahamed Aly",
+      "opponent_id": "86c1441676af2c73"
+    },
+    "details_fetched_at": "2026-11-14T04:17:03Z",
+    "dob": "1997-01-25",
+    "elo": 1442,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": true,
+    "height_in": 74.0,
+    "id": "92b5f4ee9ff40321",
+    "image": "images/92b5f4ee9ff40321.webp",
+    "name": "Alik Lorenz",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 77.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-18",
+        "event": "DWCS 10.2",
+        "method": "KO/TKO",
+        "opponent": "Mahamed Aly",
+        "opponent_id": "86c1441676af2c73",
+        "result": "win",
+        "round": 1,
+        "time": "2:23"
+      },
+      {
+        "date": "2025-08-26",
+        "event": "DWCS 9.3",
+        "method": "KO/TKO",
+        "opponent": "Abdul Rakhman Yakhyaev",
+        "opponent_id": "95aff2fd8d09a5f0",
+        "result": "loss",
+        "round": 1,
+        "time": "0:30"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 8
+    },
+    "stance": "Orthodox"
+  },
   "9384e71bca6c409d": {
     "best_win": {
       "date": "2025-04-12",
@@ -10949,7 +11179,7 @@
     "dob": "1992-01-22",
     "elo": 1332,
     "elo_inactive": false,
-    "elo_peak": 1554,
+    "elo_peak": 1555,
     "elo_provisional": false,
     "height_in": 74.0,
     "id": "9e50097a89442158",
@@ -15111,7 +15341,7 @@
   "e03187ec8b5b6abc": {
     "best_win": {
       "date": "2026-07-18",
-      "elo": 1393,
+      "elo": 1394,
       "opponent": "Alvin Hines",
       "opponent_id": "ab2a4b5e04dc5fe9"
     },
@@ -17239,7 +17469,7 @@
     "dob": "1993-05-10",
     "elo": 1568,
     "elo_inactive": false,
-    "elo_peak": 1640,
+    "elo_peak": 1641,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "fd406a32a6fb3a29",
@@ -17419,7 +17649,7 @@
     "dob": null,
     "elo": 1547,
     "elo_inactive": false,
-    "elo_peak": 1553,
+    "elo_peak": 1554,
     "elo_provisional": false,
     "height_in": 69.0,
     "id": "feedf3053472fe56",
