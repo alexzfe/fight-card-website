@@ -242,7 +242,7 @@
   "02f484417a6fa69d": {
     "best_win": {
       "date": "2025-08-23",
-      "elo": 1427,
+      "elo": 1426,
       "opponent": "Diyar Nurgozhay",
       "opponent_id": "709fadb644ee3f51"
     },
@@ -494,7 +494,7 @@
     "dob": "1994-05-16",
     "elo": 1618,
     "elo_inactive": false,
-    "elo_peak": 1626,
+    "elo_peak": 1625,
     "elo_provisional": false,
     "height_in": 74.0,
     "id": "06734ca9d88dec3a",
@@ -726,7 +726,7 @@
   "07a74004d964c7f4": {
     "best_win": {
       "date": "2025-11-01",
-      "elo": 1505,
+      "elo": 1504,
       "opponent": "Kevin Christian",
       "opponent_id": "7e9b36a9847db116"
     },
@@ -786,7 +786,7 @@
   "0be6776db31d98ec": {
     "best_win": {
       "date": "2026-06-20",
-      "elo": 1602,
+      "elo": 1601,
       "opponent": "Allan Nascimento",
       "opponent_id": "253076a23d03dcd0"
     },
@@ -906,7 +906,7 @@
   "0e46690e55a8df75": {
     "best_win": {
       "date": "2025-11-01",
-      "elo": 1574,
+      "elo": 1573,
       "opponent": "ChangHo Lee",
       "opponent_id": "117a06469813e4ef"
     },
@@ -2094,7 +2094,7 @@
     "dob": "1996-09-14",
     "elo": 1612,
     "elo_inactive": false,
-    "elo_peak": 1692,
+    "elo_peak": 1691,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "20bccc9bb4ceb23e",
@@ -2467,7 +2467,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1991-06-23",
-    "elo": 1445,
+    "elo": 1444,
     "elo_inactive": false,
     "elo_peak": 1518,
     "elo_provisional": false,
@@ -2647,7 +2647,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-02-03",
-    "elo": 1762,
+    "elo": 1761,
     "elo_inactive": false,
     "elo_peak": 1765,
     "elo_provisional": false,
@@ -2821,7 +2821,7 @@
   "29162be25ebef5f0": {
     "best_win": {
       "date": "2024-10-15",
-      "elo": 1455,
+      "elo": 1454,
       "opponent": "Nick Piccininni",
       "opponent_id": "a5cb1c29461853ca"
     },
@@ -2889,7 +2889,7 @@
     "dob": "1990-03-16",
     "elo": 1459,
     "elo_inactive": false,
-    "elo_peak": 1568,
+    "elo_peak": 1567,
     "elo_provisional": false,
     "height_in": 64.0,
     "id": "294aa73dbf37d281",
@@ -3626,13 +3626,13 @@
   "323d4ca260dfa0ba": {
     "best_win": {
       "date": "2026-10-03",
-      "elo": 1578,
+      "elo": 1577,
       "opponent": "King Green",
       "opponent_id": "887961364be5ceb3"
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-04-27",
-    "elo": 1613,
+    "elo": 1612,
     "elo_inactive": false,
     "elo_peak": 1615,
     "elo_provisional": false,
@@ -4429,7 +4429,7 @@
     "dob": null,
     "elo": 1537,
     "elo_inactive": false,
-    "elo_peak": 1541,
+    "elo_peak": 1540,
     "elo_provisional": false,
     "height_in": 64.0,
     "id": "3fa97913cfd205d3",
@@ -4481,7 +4481,7 @@
   "40cb680ae1cd331f": {
     "best_win": {
       "date": "2024-02-24",
-      "elo": 1451,
+      "elo": 1450,
       "opponent": "Sam Hughes",
       "opponent_id": "e94085e821bd81de"
     },
@@ -4489,7 +4489,7 @@
     "dob": "1999-02-28",
     "elo": 1489,
     "elo_inactive": false,
-    "elo_peak": 1490,
+    "elo_peak": 1489,
     "elo_provisional": false,
     "height_in": 63.0,
     "id": "40cb680ae1cd331f",
@@ -4607,7 +4607,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-11-20",
-    "elo": 1574,
+    "elo": 1573,
     "elo_inactive": false,
     "elo_peak": 1580,
     "elo_provisional": false,
@@ -4667,8 +4667,8 @@
     },
     "details_fetched_at": "2026-10-28T06:00:04Z",
     "dob": "2003-01-28",
-    "elo": 1492,
-    "elo_inactive": true,
+    "elo": 1425,
+    "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
     "height_in": 70.0,
@@ -5024,7 +5024,7 @@
     "dob": "1996-09-08",
     "elo": 1404,
     "elo_inactive": false,
-    "elo_peak": 1465,
+    "elo_peak": 1464,
     "elo_provisional": false,
     "height_in": 75.0,
     "id": "49edd0d90f60fb7d",
@@ -5136,7 +5136,7 @@
   "4a28cb716c19157a": {
     "best_win": {
       "date": "2016-02-06",
-      "elo": 1698,
+      "elo": 1697,
       "opponent": "Johny Hendricks",
       "opponent_id": "0941df56f6ac954b"
     },
@@ -6412,7 +6412,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1998-04-24",
-    "elo": 1504,
+    "elo": 1503,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -6972,7 +6972,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1543,
+    "elo": 1542,
     "elo_inactive": false,
     "elo_peak": 1551,
     "elo_provisional": false,
@@ -7394,7 +7394,7 @@
     "dob": "1987-12-18",
     "elo": 1356,
     "elo_inactive": false,
-    "elo_peak": 1600,
+    "elo_peak": 1599,
     "elo_provisional": false,
     "height_in": 73.0,
     "id": "6ac9bc2953c47345",
@@ -7507,7 +7507,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-12-14",
-    "elo": 1403,
+    "elo": 1402,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -7609,7 +7609,7 @@
     "dob": null,
     "elo": 1478,
     "elo_inactive": false,
-    "elo_peak": 1613,
+    "elo_peak": 1612,
     "elo_provisional": false,
     "height_in": 65.0,
     "id": "6d35bf94f7d30241",
@@ -8512,7 +8512,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1651,
+    "elo": 1650,
     "elo_inactive": false,
     "elo_peak": 1723,
     "elo_provisional": false,
@@ -9039,7 +9039,7 @@
     "dob": "1988-05-30",
     "elo": 1593,
     "elo_inactive": false,
-    "elo_peak": 1688,
+    "elo_peak": 1687,
     "elo_provisional": false,
     "height_in": 63.0,
     "id": "7dda2cf308f24a02",
@@ -9157,7 +9157,7 @@
     },
     "details_fetched_at": "2026-10-27T06:00:04Z",
     "dob": "1993-08-17",
-    "elo": 1726,
+    "elo": 1725,
     "elo_inactive": false,
     "elo_peak": 1742,
     "elo_provisional": false,
@@ -9271,7 +9271,7 @@
   "7facc9c45d792985": {
     "best_win": {
       "date": "2026-06-27",
-      "elo": 1566,
+      "elo": 1565,
       "opponent": "Javier Reyes",
       "opponent_id": "4a574b8512fc1b30"
     },
@@ -9339,7 +9339,7 @@
     "dob": null,
     "elo": 1489,
     "elo_inactive": false,
-    "elo_peak": 1534,
+    "elo_peak": 1533,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "809bd1a871491508",
@@ -9739,7 +9739,7 @@
     "dob": "1986-09-09",
     "elo": 1544,
     "elo_inactive": false,
-    "elo_peak": 1611,
+    "elo_peak": 1610,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "887961364be5ceb3",
@@ -10019,7 +10019,7 @@
     "dob": "1993-09-06",
     "elo": 1556,
     "elo_inactive": false,
-    "elo_peak": 1574,
+    "elo_peak": 1573,
     "elo_provisional": false,
     "height_in": 62.0,
     "id": "8e5d953bdb9ae5e7",
@@ -10257,7 +10257,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1990-06-25",
-    "elo": 1455,
+    "elo": 1454,
     "elo_inactive": false,
     "elo_peak": 1572,
     "elo_provisional": false,
@@ -10691,7 +10691,7 @@
   "95aff2fd8d09a5f0": {
     "best_win": {
       "date": "2026-10-24",
-      "elo": 1505,
+      "elo": 1504,
       "opponent": "Nikita Krylov",
       "opponent_id": "1091d4d957141094"
     },
@@ -10751,7 +10751,7 @@
   "98a58c26c5b1ed17": {
     "best_win": {
       "date": "2026-09-19",
-      "elo": 1576,
+      "elo": 1575,
       "opponent": "Dooho Choi",
       "opponent_id": "e93b04e308913c2e"
     },
@@ -11179,7 +11179,7 @@
     "dob": "1992-01-22",
     "elo": 1332,
     "elo_inactive": false,
-    "elo_peak": 1555,
+    "elo_peak": 1554,
     "elo_provisional": false,
     "height_in": 74.0,
     "id": "9e50097a89442158",
@@ -11344,7 +11344,7 @@
     "dob": "1990-04-16",
     "elo": 1604,
     "elo_inactive": false,
-    "elo_peak": 1702,
+    "elo_peak": 1701,
     "elo_provisional": false,
     "height_in": 65.0,
     "id": "a0f0004aadf10b71",
@@ -11487,7 +11487,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1999-01-27",
-    "elo": 1637,
+    "elo": 1636,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -11787,7 +11787,7 @@
     },
     "details_fetched_at": "2026-11-10T06:00:05Z",
     "dob": "1996-10-02",
-    "elo": 1503,
+    "elo": 1502,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -11881,7 +11881,7 @@
   "a845f0735bc67405": {
     "best_win": {
       "date": "2016-03-19",
-      "elo": 1637,
+      "elo": 1636,
       "opponent": "Johnny Case",
       "opponent_id": "1f4b04a926ef1287"
     },
@@ -11941,7 +11941,7 @@
   "a93f94c923c3a9cb": {
     "best_win": {
       "date": "2025-11-08",
-      "elo": 1617,
+      "elo": 1616,
       "opponent": "Marco Tulio",
       "opponent_id": "9384e71bca6c409d"
     },
@@ -12174,7 +12174,7 @@
     "dob": null,
     "elo": 1586,
     "elo_inactive": false,
-    "elo_peak": 1587,
+    "elo_peak": 1586,
     "elo_provisional": false,
     "height_in": 63.0,
     "id": "abcf2cc6efc42031",
@@ -12526,7 +12526,7 @@
   "b1e5bcaad32a3cac": {
     "best_win": {
       "date": "2025-03-15",
-      "elo": 1478,
+      "elo": 1477,
       "opponent": "Josiane Nunes",
       "opponent_id": "68d35296f566792b"
     },
@@ -12826,7 +12826,7 @@
   "b67d6bacc68d4c92": {
     "best_win": {
       "date": "2022-10-01",
-      "elo": 1556,
+      "elo": 1555,
       "opponent": "John Castaneda",
       "opponent_id": "5fa2974cbd18e05c"
     },
@@ -13932,7 +13932,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1995-08-01",
-    "elo": 1450,
+    "elo": 1449,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -14627,7 +14627,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1522,
+    "elo": 1521,
     "elo_inactive": false,
     "elo_peak": 1586,
     "elo_provisional": false,
@@ -15100,16 +15100,16 @@
   },
   "d9a56ecb6e94f02e": {
     "best_win": {
-      "date": "2024-07-13",
-      "elo": 1383,
-      "opponent": "Darrius Flowers",
-      "opponent_id": "65db4065e2bc107d"
+      "date": "2026-11-14",
+      "elo": 1492,
+      "opponent": "Samuel Sanches",
+      "opponent_id": "438d497617ecb16e"
     },
     "details_fetched_at": "2026-10-28T06:00:04Z",
     "dob": "1997-04-11",
-    "elo": 1493,
-    "elo_inactive": true,
-    "elo_peak": 1503,
+    "elo": 1548,
+    "elo_inactive": false,
+    "elo_peak": 1548,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "d9a56ecb6e94f02e",
@@ -15167,7 +15167,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1991-11-07",
-    "elo": 1698,
+    "elo": 1697,
     "elo_inactive": false,
     "elo_peak": 1700,
     "elo_provisional": false,
@@ -15341,7 +15341,7 @@
   "e03187ec8b5b6abc": {
     "best_win": {
       "date": "2026-07-18",
-      "elo": 1394,
+      "elo": 1393,
       "opponent": "Alvin Hines",
       "opponent_id": "ab2a4b5e04dc5fe9"
     },
@@ -16116,7 +16116,7 @@
   "e90a2f22417af68e": {
     "best_win": {
       "date": "2023-04-15",
-      "elo": 1628,
+      "elo": 1627,
       "opponent": "Dustin Jacoby",
       "opponent_id": "e4277e87a789d687"
     },
@@ -16184,7 +16184,7 @@
     "dob": "1991-04-10",
     "elo": 1507,
     "elo_inactive": false,
-    "elo_peak": 1581,
+    "elo_peak": 1580,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "e93b04e308913c2e",
@@ -16831,13 +16831,13 @@
   "f14cf73e51b29254": {
     "best_win": {
       "date": "2023-04-22",
-      "elo": 1716,
+      "elo": 1715,
       "opponent": "Curtis Blaydes",
       "opponent_id": "fa6796c55d6c5440"
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": "1992-05-13",
-    "elo": 1673,
+    "elo": 1672,
     "elo_inactive": false,
     "elo_peak": 1723,
     "elo_provisional": false,
@@ -17469,7 +17469,7 @@
     "dob": "1993-05-10",
     "elo": 1568,
     "elo_inactive": false,
-    "elo_peak": 1641,
+    "elo_peak": 1640,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "fd406a32a6fb3a29",
@@ -17649,7 +17649,7 @@
     "dob": null,
     "elo": 1547,
     "elo_inactive": false,
-    "elo_peak": 1554,
+    "elo_peak": 1553,
     "elo_provisional": false,
     "height_in": 69.0,
     "id": "feedf3053472fe56",
@@ -17746,7 +17746,7 @@
   "ff62013d2fce6d13": {
     "best_win": {
       "date": "2025-02-15",
-      "elo": 1550,
+      "elo": 1549,
       "opponent": "Ismael Bonfim",
       "opponent_id": "eb393afdbe3293d5"
     },

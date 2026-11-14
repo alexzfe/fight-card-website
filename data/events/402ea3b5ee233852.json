@@ -159,12 +159,70 @@
     },
     {
       "blue": "438d497617ecb16e",
-      "elo": null,
+      "elo": {
+        "blue_delta": -67,
+        "blue_p4p_rank": null,
+        "blue_pre": 1492,
+        "red_delta": 55,
+        "red_p4p_rank": null,
+        "red_pre": 1493
+      },
       "finish_tier": null,
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2025-09-09",
+            "event": "DWCS 9.5",
+            "method": "KO/TKO",
+            "opponent": "Chasen Blair",
+            "opponent_id": "0f4a536507f33576",
+            "result": "win",
+            "round": 1,
+            "time": "2:01"
+          }
+        ],
+        "red": [
+          {
+            "date": "2025-04-26",
+            "event": "UFC Fight Night: Machado Garry vs. Prates",
+            "method": "U-DEC",
+            "opponent": "Gauge Young",
+            "opponent_id": "b2a78df161bd67f9",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-07-13",
+            "event": "UFC Fight Night: Namajunas vs. Cortez",
+            "method": "SUB",
+            "opponent": "Darrius Flowers",
+            "opponent_id": "65db4065e2bc107d",
+            "result": "win",
+            "round": 2,
+            "time": "1:46"
+          },
+          {
+            "date": "2023-07-15",
+            "event": "UFC Fight Night: Holm vs. Bueno Silva",
+            "method": "U-DEC",
+            "opponent": "Genaro Valdez",
+            "opponent_id": "cda1099995b46cc2",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ]
+      },
       "id": "aad8a97d1a0852a0",
       "red": "d9a56ecb6e94f02e",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "d9a56ecb6e94f02e"
+      },
       "segment": "early_prelims",
       "tier_frozen_at": "2026-11-14T00:00:59Z",
       "title_fight": false,
@@ -175,5 +233,5 @@
   "location": "New York City, New York, USA",
   "name": "UFC 334: Gane vs. Hokit",
   "slug": "ufc-334-gane-vs-hokit",
-  "status": "upcoming"
+  "status": "completed"
 }
