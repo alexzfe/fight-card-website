@@ -126,7 +126,7 @@
       "id": "0488c8d91361ad0f",
       "red": "37f560436d745c18",
       "result": null,
-      "segment": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Lightweight"
@@ -139,7 +139,7 @@
       "id": "c3fa8091bc2428d7",
       "red": "709fadb644ee3f51",
       "result": null,
-      "segment": null,
+      "segment": "prelims",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Light Heavyweight"
