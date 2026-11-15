@@ -100,7 +100,7 @@
         "blue_pre": 1693,
         "red_delta": 51,
         "red_p4p_rank": null,
-        "red_pre": 1635
+        "red_pre": 1634
       },
       "finish_tier": null,
       "form": {
@@ -746,7 +746,7 @@
         "blue_pre": 1397,
         "red_delta": 66,
         "red_p4p_rank": null,
-        "red_pre": 1402
+        "red_pre": 1401
       },
       "finish_tier": null,
       "form": {
@@ -905,7 +905,7 @@
       "elo": {
         "blue_delta": -57,
         "blue_p4p_rank": null,
-        "blue_pre": 1505,
+        "blue_pre": 1504,
         "red_delta": 45,
         "red_p4p_rank": null,
         "red_pre": 1558

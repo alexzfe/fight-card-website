@@ -6,7 +6,7 @@
       "elo": {
         "blue_delta": 44,
         "blue_p4p_rank": null,
-        "blue_pre": 1646,
+        "blue_pre": 1645,
         "red_delta": -33,
         "red_p4p_rank": null,
         "red_pre": 1601
@@ -97,7 +97,7 @@
       "elo": {
         "blue_delta": 39,
         "blue_p4p_rank": null,
-        "blue_pre": 1647,
+        "blue_pre": 1646,
         "red_delta": -26,
         "red_p4p_rank": null,
         "red_pre": 1545
@@ -563,7 +563,7 @@
       "elo": {
         "blue_delta": -50,
         "blue_p4p_rank": null,
-        "blue_pre": 1463,
+        "blue_pre": 1462,
         "red_delta": 37,
         "red_p4p_rank": null,
         "red_pre": 1481
