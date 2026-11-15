@@ -6,7 +6,7 @@
       "elo": {
         "blue_delta": -49,
         "blue_p4p_rank": null,
-        "blue_pre": 1701,
+        "blue_pre": 1700,
         "red_delta": 41,
         "red_p4p_rank": null,
         "red_pre": 1682
@@ -370,7 +370,7 @@
       "elo": {
         "blue_delta": -71,
         "blue_p4p_rank": null,
-        "blue_pre": 1537,
+        "blue_pre": 1536,
         "red_delta": 71,
         "red_p4p_rank": null,
         "red_pre": 1492
@@ -444,7 +444,7 @@
         "blue_pre": 1622,
         "red_delta": 49,
         "red_p4p_rank": null,
-        "red_pre": 1559
+        "red_pre": 1558
       },
       "finish_tier": null,
       "form": {
@@ -623,7 +623,7 @@
       "elo": {
         "blue_delta": -57,
         "blue_p4p_rank": null,
-        "blue_pre": 1609,
+        "blue_pre": 1608,
         "red_delta": 51,
         "red_p4p_rank": null,
         "red_pre": 1596
@@ -868,7 +868,7 @@
         "blue_pre": 1579,
         "red_delta": 80,
         "red_p4p_rank": null,
-        "red_pre": 1512
+        "red_pre": 1511
       },
       "finish_tier": null,
       "form": {
@@ -1027,7 +1027,7 @@
       "elo": {
         "blue_delta": -65,
         "blue_p4p_rank": null,
-        "blue_pre": 1511,
+        "blue_pre": 1510,
         "red_delta": 57,
         "red_p4p_rank": null,
         "red_pre": 1524
