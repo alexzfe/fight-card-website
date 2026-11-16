@@ -1,0 +1,23 @@
+{
+  "date": "2027-02-13",
+  "fights": [
+    {
+      "blue": "35673bf5204524ee",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "bb78a93f0e674080",
+      "red": "c1085e1701b13eca",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    }
+  ],
+  "id": "09f8c233de88998d",
+  "location": "Cleveland, Ohio, USA",
+  "name": "UFC Fight Night: Pyfer vs. Nickal",
+  "slug": "ufc-fight-night-pyfer-vs-nickal",
+  "status": "upcoming"
+}

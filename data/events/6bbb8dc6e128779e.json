@@ -1,0 +1,49 @@
+{
+  "date": "2027-01-16",
+  "fights": [
+    {
+      "blue": "97cf1a2c7c5e7889",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "f2c9950b9e47f04f",
+      "red": "cbf5e6f231b55443",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "5a229cbd9cdd28ca",
+      "elo": null,
+      "finish_tier": "medium",
+      "form": null,
+      "id": "c414b8f1f1a9e5db",
+      "red": "8a1f3b5c526cd6e6",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    },
+    {
+      "blue": "e4a47b07044ddd72",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "73f5e0e8e1aff6aa",
+      "red": "c68c68efaa5ca6ef",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    }
+  ],
+  "id": "6bbb8dc6e128779e",
+  "location": "Dallas, Texas, USA",
+  "name": "UFC Fight Night: Rodriguez vs. Garcia",
+  "slug": "ufc-fight-night-rodriguez-vs-garcia",
+  "status": "upcoming"
+}

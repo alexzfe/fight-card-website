@@ -128,7 +128,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "2000-09-27",
-    "elo": 1367,
+    "elo": 1368,
     "elo_inactive": false,
     "elo_peak": 1366,
     "elo_provisional": false,
@@ -561,7 +561,7 @@
     "image": "images/06e4245d16fc5315.webp",
     "name": "Ailin Perez",
     "nickname": "Fiona",
-    "p4p_rank": 6,
+    "p4p_rank": 5,
     "reach_in": 66.0,
     "recent_fights": [
       {
@@ -612,7 +612,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-01-23",
-    "elo": 1393,
+    "elo": 1394,
     "elo_inactive": false,
     "elo_peak": 1393,
     "elo_provisional": false,
@@ -2707,7 +2707,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1719,
+    "elo": 1718,
     "elo_inactive": false,
     "elo_peak": 1720,
     "elo_provisional": false,
@@ -2716,7 +2716,7 @@
     "image": "images/279566840aa55bf2.webp",
     "name": "Alexander Volkov",
     "nickname": "Drago",
-    "p4p_rank": 10,
+    "p4p_rank": 9,
     "reach_in": 80.0,
     "recent_fights": [
       {
@@ -3164,7 +3164,7 @@
     "dob": "1991-03-02",
     "elo": 1353,
     "elo_inactive": false,
-    "elo_peak": 1352,
+    "elo_peak": 1353,
     "elo_provisional": false,
     "height_in": 67.0,
     "id": "2c5f5749569eef66",
@@ -3401,7 +3401,7 @@
     "image": "images/2f181c0467965b98.webp",
     "name": "Brendan Allen",
     "nickname": "All In",
-    "p4p_rank": 13,
+    "p4p_rank": 12,
     "reach_in": 75.0,
     "recent_fights": [
       {
@@ -4556,7 +4556,7 @@
     "image": "images/4126a78111c0855a.webp",
     "name": "Caio Borralho",
     "nickname": "The Natural",
-    "p4p_rank": 14,
+    "p4p_rank": 13,
     "reach_in": 75.0,
     "recent_fights": [
       {
@@ -5257,7 +5257,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1370,
+    "elo": 1371,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -5596,7 +5596,7 @@
     "image": "images/5078e1dacf9d25f4.webp",
     "name": "Luana Santos",
     "nickname": null,
-    "p4p_rank": 5,
+    "p4p_rank": 4,
     "reach_in": 67.0,
     "recent_fights": [
       {
@@ -6941,7 +6941,7 @@
     "image": "images/669970f7feba8ecd.webp",
     "name": "Erin Blanchfield",
     "nickname": "Cold Blooded",
-    "p4p_rank": null,
+    "p4p_rank": 9,
     "reach_in": 66.0,
     "recent_fights": [
       {
@@ -7567,7 +7567,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "2000-03-08",
-    "elo": 1689,
+    "elo": 1688,
     "elo_inactive": false,
     "elo_peak": 1690,
     "elo_provisional": false,
@@ -9868,6 +9868,66 @@
     },
     "stance": "Southpaw"
   },
+  "8a1f3b5c526cd6e6": {
+    "best_win": {
+      "date": "2022-09-10",
+      "elo": 1599,
+      "opponent": "Li Jingliang",
+      "opponent_id": "e64b96c07d7ce999"
+    },
+    "details_fetched_at": "2026-11-16T06:00:05Z",
+    "dob": "1986-12-31",
+    "elo": 1533,
+    "elo_inactive": false,
+    "elo_peak": 1670,
+    "elo_provisional": false,
+    "height_in": 73.0,
+    "id": "8a1f3b5c526cd6e6",
+    "image": "images/8a1f3b5c526cd6e6.webp",
+    "name": "Daniel Rodriguez",
+    "nickname": "D-Rod",
+    "p4p_rank": null,
+    "reach_in": 74.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-01",
+        "event": "UFC Fight Night: Medic vs. Rodriguez",
+        "method": "KO/TKO",
+        "opponent": "Uros Medic",
+        "opponent_id": "681399317dbf4701",
+        "result": "loss",
+        "round": 1,
+        "time": "0:30"
+      },
+      {
+        "date": "2025-07-19",
+        "event": "UFC 318: Holloway vs. Poirier 3",
+        "method": "U-DEC",
+        "opponent": "Kevin Holland",
+        "opponent_id": "3a46b268013afede",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-05-03",
+        "event": "UFC Fight Night: Sandhagen vs. Figueiredo",
+        "method": "KO/TKO",
+        "opponent": "Santiago Ponzinibbio",
+        "opponent_id": "6d1bffff14897645",
+        "result": "win",
+        "round": 3,
+        "time": "1:12"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 20
+    },
+    "stance": "Southpaw"
+  },
   "8a81a0707350c4a8": {
     "best_win": {
       "date": "2026-08-11",
@@ -10778,6 +10838,66 @@
     },
     "stance": "Orthodox"
   },
+  "97cf1a2c7c5e7889": {
+    "best_win": {
+      "date": "2025-11-01",
+      "elo": 1628,
+      "opponent": "David Onama",
+      "opponent_id": "ffe9703408fb5964"
+    },
+    "details_fetched_at": "2026-11-16T06:00:05Z",
+    "dob": "1992-05-22",
+    "elo": 1620,
+    "elo_inactive": false,
+    "elo_peak": 1700,
+    "elo_provisional": false,
+    "height_in": 72.0,
+    "id": "97cf1a2c7c5e7889",
+    "image": "images/97cf1a2c7c5e7889.webp",
+    "name": "Steve Garcia",
+    "nickname": "Mean Machine",
+    "p4p_rank": null,
+    "reach_in": 75.0,
+    "recent_fights": [
+      {
+        "date": "2026-06-14",
+        "event": "UFC Freedom 250",
+        "method": "KO/TKO",
+        "opponent": "Diego Lopes",
+        "opponent_id": "f166e93d04a8c274",
+        "result": "loss",
+        "round": 2,
+        "time": "2:42"
+      },
+      {
+        "date": "2025-11-01",
+        "event": "UFC Fight Night: Garcia vs. Onama",
+        "method": "KO/TKO",
+        "opponent": "David Onama",
+        "opponent_id": "ffe9703408fb5964",
+        "result": "win",
+        "round": 1,
+        "time": "3:34"
+      },
+      {
+        "date": "2025-07-12",
+        "event": "UFC Fight Night: Lewis vs. Teixeira",
+        "method": "U-DEC",
+        "opponent": "Calvin Kattar",
+        "opponent_id": "751de04455cfaac0",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 0,
+      "w": 19
+    },
+    "stance": "Southpaw"
+  },
   "98a58c26c5b1ed17": {
     "best_win": {
       "date": "2026-09-19",
@@ -11477,7 +11597,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1434,
+    "elo": 1435,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -11751,7 +11871,7 @@
   "a4a80dd7336ffd59": {
     "best_win": {
       "date": "2021-12-18",
-      "elo": 1470,
+      "elo": 1471,
       "opponent": "Sijara Eubanks",
       "opponent_id": "4234f0097c83fa62"
     },
@@ -12046,7 +12166,7 @@
     "image": "images/a9e260472d321361.webp",
     "name": "Jasmine Jasudavicius",
     "nickname": null,
-    "p4p_rank": 4,
+    "p4p_rank": 3,
     "reach_in": 68.0,
     "recent_fights": [
       {
@@ -12152,7 +12272,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1338,
+    "elo": 1339,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -12511,7 +12631,7 @@
     "image": "images/b08012bbe542592a.webp",
     "name": "Tatiana Suarez",
     "nickname": null,
-    "p4p_rank": 3,
+    "p4p_rank": 2,
     "reach_in": 66.0,
     "recent_fights": [
       {
@@ -13723,7 +13843,7 @@
     "details_fetched_at": "2026-10-27T06:00:04Z",
     "dob": "1999-06-24",
     "elo": 1724,
-    "elo_inactive": false,
+    "elo_inactive": true,
     "elo_peak": 1756,
     "elo_provisional": false,
     "height_in": 72.0,
@@ -13731,7 +13851,7 @@
     "image": "images/c32aeb1a59e6272d.webp",
     "name": "Michael Morales",
     "nickname": null,
-    "p4p_rank": 8,
+    "p4p_rank": null,
     "reach_in": 79.0,
     "recent_fights": [
       {
@@ -13832,6 +13952,66 @@
       "w": 15
     },
     "stance": "Southpaw"
+  },
+  "c68c68efaa5ca6ef": {
+    "best_win": {
+      "date": "2026-08-15",
+      "elo": 1594,
+      "opponent": "Joel Alvarez",
+      "opponent_id": "58bbef3770bb2dfc"
+    },
+    "details_fetched_at": "2026-11-16T06:00:05Z",
+    "dob": "1988-12-31",
+    "elo": 1505,
+    "elo_inactive": false,
+    "elo_peak": 1550,
+    "elo_provisional": false,
+    "height_in": 75.0,
+    "id": "c68c68efaa5ca6ef",
+    "image": "images/c68c68efaa5ca6ef.webp",
+    "name": "Chidi Njokuani",
+    "nickname": "Bang Bang",
+    "p4p_rank": null,
+    "reach_in": 80.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-15",
+        "event": "UFC 330: Makhachev vs. Machado Garry",
+        "method": "U-DEC",
+        "opponent": "Joel Alvarez",
+        "opponent_id": "58bbef3770bb2dfc",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-02-21",
+        "event": "UFC Fight Night: Strickland vs. Hernandez",
+        "method": "U-DEC",
+        "opponent": "Carlos Leal",
+        "opponent_id": "28d421729451c8ca",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-07-12",
+        "event": "UFC Fight Night: Lewis vs. Teixeira",
+        "method": "SUB",
+        "opponent": "Jake Matthews",
+        "opponent_id": "a845f0735bc67405",
+        "result": "loss",
+        "round": 1,
+        "time": "1:09"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 12,
+      "nc": 1,
+      "w": 26
+    },
+    "stance": "Orthodox"
   },
   "c6aee362c7a7d482": {
     "best_win": {
@@ -14014,7 +14194,7 @@
     "dob": null,
     "elo": 1581,
     "elo_inactive": false,
-    "elo_peak": 1581,
+    "elo_peak": 1582,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "ca28cdf526d6b6e9",
@@ -14120,6 +14300,66 @@
       "l": 5,
       "nc": 0,
       "w": 26
+    },
+    "stance": "Orthodox"
+  },
+  "cbf5e6f231b55443": {
+    "best_win": {
+      "date": "2023-02-11",
+      "elo": 1651,
+      "opponent": "Josh Emmett",
+      "opponent_id": "fba03cd6cc28dc41"
+    },
+    "details_fetched_at": "2026-11-16T06:00:05Z",
+    "dob": "1992-10-06",
+    "elo": 1546,
+    "elo_inactive": true,
+    "elo_peak": 1648,
+    "elo_provisional": false,
+    "height_in": 71.0,
+    "id": "cbf5e6f231b55443",
+    "image": "images/cbf5e6f231b55443.webp",
+    "name": "Yair Rodriguez",
+    "nickname": "El Pantera",
+    "p4p_rank": null,
+    "reach_in": 71.0,
+    "recent_fights": [
+      {
+        "date": "2025-04-12",
+        "event": "UFC 314: Volkanovski vs. Lopes",
+        "method": "U-DEC",
+        "opponent": "Patricio Pitbull",
+        "opponent_id": "98a58c26c5b1ed17",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2024-02-24",
+        "event": "UFC Fight Night: Moreno vs. Royval 2",
+        "method": "SUB",
+        "opponent": "Brian Ortega",
+        "opponent_id": "def8166ff24bd237",
+        "result": "loss",
+        "round": 3,
+        "time": "0:58"
+      },
+      {
+        "date": "2023-07-08",
+        "event": "UFC 290: Volkanovski vs. Rodriguez",
+        "method": "KO/TKO",
+        "opponent": "Alexander Volkanovski",
+        "opponent_id": "e1248941344b3288",
+        "result": "loss",
+        "round": 3,
+        "time": "4:19"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 6,
+      "nc": 1,
+      "w": 21
     },
     "stance": "Orthodox"
   },
@@ -15019,7 +15259,7 @@
     "dob": "1995-03-23",
     "elo": 1515,
     "elo_inactive": false,
-    "elo_peak": 1585,
+    "elo_peak": 1586,
     "elo_provisional": false,
     "height_in": 67.0,
     "id": "d8c811df0386d5e8",
@@ -15536,7 +15776,7 @@
     "image": "images/e1248941344b3288.webp",
     "name": "Alexander Volkanovski",
     "nickname": "The Great",
-    "p4p_rank": 9,
+    "p4p_rank": 8,
     "reach_in": 71.0,
     "recent_fights": [
       {
@@ -15805,6 +16045,66 @@
       "l": 1,
       "nc": 0,
       "w": 11
+    },
+    "stance": "Orthodox"
+  },
+  "e4a47b07044ddd72": {
+    "best_win": {
+      "date": "2024-09-14",
+      "elo": 1619,
+      "opponent": "Manuel Torres",
+      "opponent_id": "2e7878927067fdca"
+    },
+    "details_fetched_at": "2026-11-16T06:00:05Z",
+    "dob": "1997-08-27",
+    "elo": 1548,
+    "elo_inactive": false,
+    "elo_peak": 1659,
+    "elo_provisional": false,
+    "height_in": 75.0,
+    "id": "e4a47b07044ddd72",
+    "image": "images/e4a47b07044ddd72.webp",
+    "name": "Ignacio Bahamondes",
+    "nickname": "La Jaula",
+    "p4p_rank": null,
+    "reach_in": 75.0,
+    "recent_fights": [
+      {
+        "date": "2026-09-12",
+        "event": "Noche UFC: Silva vs. Delgado",
+        "method": "U-DEC",
+        "opponent": "Muslim Salikhov",
+        "opponent_id": "447f9858ae78f921",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2026-03-28",
+        "event": "UFC Fight Night: Adesanya vs. Pyfer",
+        "method": "U-DEC",
+        "opponent": "Tofiq Musayev",
+        "opponent_id": "ae81a3ac7b260411",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-06-21",
+        "event": "UFC Fight Night: Hill vs. Rountree Jr.",
+        "method": "U-DEC",
+        "opponent": "Rafael Fiziev",
+        "opponent_id": "c814b4c899793af6",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 7,
+      "nc": 0,
+      "w": 18
     },
     "stance": "Orthodox"
   },
@@ -16366,7 +16666,7 @@
     "image": "images/eae48ff31db420c2.webp",
     "name": "Arman Tsarukyan",
     "nickname": "The Batman",
-    "p4p_rank": null,
+    "p4p_rank": 15,
     "reach_in": 72.0,
     "recent_fights": [
       {
@@ -17041,7 +17341,7 @@
   "f1d64ae34e088832": {
     "best_win": {
       "date": "2025-10-18",
-      "elo": 1597,
+      "elo": 1598,
       "opponent": "Davey Grant",
       "opponent_id": "113df4fde64735c6"
     },

@@ -1,0 +1,23 @@
+{
+  "date": "2027-01-23",
+  "fights": [
+    {
+      "blue": "45f7cb591c3ab00b",
+      "elo": null,
+      "finish_tier": "medium",
+      "form": null,
+      "id": "c7a31ca5cb3e763e",
+      "red": "01641ba5df0c69b0",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
+    }
+  ],
+  "id": "16044bd8762cf794",
+  "location": "Las Vegas, Nevada, USA",
+  "name": "UFC Fight Night: Bonfim vs. Brady",
+  "slug": "ufc-fight-night-bonfim-vs-brady",
+  "status": "upcoming"
+}
