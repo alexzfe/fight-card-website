@@ -188,7 +188,7 @@
       "elo": {
         "blue_delta": 38,
         "blue_p4p_rank": null,
-        "blue_pre": 1395,
+        "blue_pre": 1396,
         "red_delta": -41,
         "red_p4p_rank": null,
         "red_pre": 1382
@@ -512,7 +512,7 @@
       "elo": {
         "blue_delta": -71,
         "blue_p4p_rank": null,
-        "blue_pre": 1393,
+        "blue_pre": 1394,
         "red_delta": 71,
         "red_p4p_rank": null,
         "red_pre": 1376

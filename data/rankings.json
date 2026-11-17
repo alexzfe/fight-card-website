@@ -18,7 +18,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1762,
+      "elo": 1761,
       "id": "d661ce4da776fc20",
       "name": "Petr Yan",
       "p4p_rank": 3,
@@ -42,7 +42,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1740,
+      "elo": 1739,
       "id": "17734443a833cdf7",
       "name": "Quillan Salkilld",
       "p4p_rank": 5,
@@ -1378,7 +1378,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1569,
+      "elo": 1570,
       "id": "9256f591b30c073e",
       "name": "Felipe Lima",
       "p4p_rank": null,
@@ -1498,7 +1498,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1562,
+      "elo": 1563,
       "id": "84b3e7d38f2d2ec5",
       "name": "Neil Magny",
       "p4p_rank": null,
@@ -1970,7 +1970,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1536,
+      "elo": 1537,
       "id": "3fa97913cfd205d3",
       "name": "Alessandro Costa",
       "p4p_rank": null,
@@ -2354,7 +2354,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1512,
+      "elo": 1513,
       "id": "cad24459b28592ca",
       "name": "Eryk Anders",
       "p4p_rank": null,
@@ -2386,7 +2386,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1511,
+      "elo": 1512,
       "id": "6188ad39d85a8bf8",
       "name": "Joel Faglier",
       "p4p_rank": null,
@@ -2642,7 +2642,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1501,
+      "elo": 1502,
       "id": "f2b3f4ef3f780168",
       "name": "Nora Cornolle",
       "p4p_rank": null,
@@ -3338,7 +3338,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1466,
+      "elo": 1467,
       "id": "33a86e839ad202d8",
       "name": "Luis Felipe Dias",
       "p4p_rank": null,
@@ -3386,7 +3386,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1462,
+      "elo": 1463,
       "id": "71505842fb6455c3",
       "name": "Dustin Stoltzfus",
       "p4p_rank": null,
@@ -3490,7 +3490,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1455,
+      "elo": 1456,
       "id": "abb68e3c7ca128f2",
       "name": "Julia Polastri",
       "p4p_rank": null,
@@ -3586,7 +3586,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1450,
+      "elo": 1451,
       "id": "7026eca45f65377b",
       "name": "Jared Gordon",
       "p4p_rank": null,
@@ -3714,7 +3714,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1440,
+      "elo": 1441,
       "id": "a52bc1e62cf0b7c6",
       "name": "Melsik Baghdasaryan",
       "p4p_rank": null,
@@ -4034,7 +4034,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1412,
+      "elo": 1413,
       "id": "d008d785f6347dc2",
       "name": "JeongYeong Lee",
       "p4p_rank": null,
@@ -4146,7 +4146,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1402,
+      "elo": 1403,
       "id": "c0d5c0c95c59050b",
       "name": "Ariane Carnelossi",
       "p4p_rank": null,
@@ -4210,7 +4210,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1396,
+      "elo": 1397,
       "id": "8c1ca54b5089d199",
       "name": "Maheshate",
       "p4p_rank": null,
@@ -4322,7 +4322,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1387,
+      "elo": 1388,
       "id": "cc8c623cca88f54f",
       "name": "Mayra Bueno Silva",
       "p4p_rank": null,
@@ -4346,7 +4346,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1384,
+      "elo": 1385,
       "id": "20d37922ba85e6fc",
       "name": "Artur Minev",
       "p4p_rank": null,
@@ -4434,7 +4434,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1379,
+      "elo": 1380,
       "id": "de26d906f2874dd4",
       "name": "Saygid Izagakhmaev",
       "p4p_rank": null,
@@ -4458,7 +4458,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1377,
+      "elo": 1378,
       "id": "c62fbc117d57b943",
       "name": "Tai Tuivasa",
       "p4p_rank": null,
@@ -4610,7 +4610,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1368,
+      "elo": 1369,
       "id": "6fc506e1099afe20",
       "name": "Luan Lacerda",
       "p4p_rank": null,
@@ -4778,7 +4778,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1352,
+      "elo": 1353,
       "id": "0bc697c5936a2d0a",
       "name": "Trevor Peek",
       "p4p_rank": null,
@@ -4802,7 +4802,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1351,
+      "elo": 1352,
       "id": "2dbc60c52de126d8",
       "name": "Harry Hardwick",
       "p4p_rank": null,
@@ -5002,7 +5002,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1323,
+      "elo": 1324,
       "id": "feef5f8f5629e5e7",
       "name": "Theodor Berggren",
       "p4p_rank": null,
@@ -5034,7 +5034,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1320,
+      "elo": 1321,
       "id": "4e6738062d469256",
       "name": "Sedriques Dumas",
       "p4p_rank": null,
@@ -5185,7 +5185,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-16",
+  "as_of": "2026-11-17",
   "p4p": {
     "men": [
       {
@@ -5206,7 +5206,7 @@
       },
       {
         "division": "Bantamweight",
-        "elo": 1762,
+        "elo": 1761,
         "id": "d661ce4da776fc20",
         "image": "images/d661ce4da776fc20.webp",
         "name": "Petr Yan",
@@ -5222,7 +5222,7 @@
       },
       {
         "division": "Lightweight",
-        "elo": 1740,
+        "elo": 1739,
         "id": "17734443a833cdf7",
         "image": "images/17734443a833cdf7.webp",
         "name": "Quillan Salkilld",
