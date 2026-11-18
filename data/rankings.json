@@ -114,7 +114,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1711,
+      "elo": 1710,
       "id": "a67d071163962af8",
       "name": "Michael Page",
       "p4p_rank": 14,
@@ -170,7 +170,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1697,
+      "elo": 1696,
       "id": "52ef95b5860fb28c",
       "name": "Jean Silva",
       "p4p_rank": null,
@@ -226,7 +226,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1684,
+      "elo": 1683,
       "id": "a09ed60aa67a3f67",
       "name": "Farid Basharat",
       "p4p_rank": null,
@@ -274,7 +274,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1678,
+      "elo": 1677,
       "id": "1af1170ed937cba7",
       "name": "Kayla Harrison",
       "p4p_rank": null,
@@ -338,7 +338,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1668,
+      "elo": 1667,
       "id": "442c9011034ae1fd",
       "name": "Ian Machado Garry",
       "p4p_rank": null,
@@ -1378,7 +1378,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1570,
+      "elo": 1569,
       "id": "9256f591b30c073e",
       "name": "Felipe Lima",
       "p4p_rank": null,
@@ -1498,7 +1498,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1563,
+      "elo": 1562,
       "id": "84b3e7d38f2d2ec5",
       "name": "Neil Magny",
       "p4p_rank": null,
@@ -3514,7 +3514,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1454,
+      "elo": 1455,
       "id": "e94085e821bd81de",
       "name": "Sam Hughes",
       "p4p_rank": null,
@@ -4114,7 +4114,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1404,
+      "elo": 1405,
       "id": "c940b42df95bbd28",
       "name": "Feng Xiaocan",
       "p4p_rank": null,
@@ -4266,7 +4266,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1393,
+      "elo": 1394,
       "id": "e4faa79383c9f214",
       "name": "Ernesta Kareckaite",
       "p4p_rank": null,
@@ -4890,7 +4890,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1343,
+      "elo": 1344,
       "id": "4dcfb28c011c11b2",
       "name": "Wellington Turman",
       "p4p_rank": null,
@@ -4986,7 +4986,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1331,
+      "elo": 1332,
       "id": "3e8118c1ab52f211",
       "name": "Tuco Tokkos",
       "p4p_rank": null,
@@ -5098,7 +5098,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1303,
+      "elo": 1304,
       "id": "6d48a2df51749d91",
       "name": "Antonio Trocoli",
       "p4p_rank": null,
@@ -5154,7 +5154,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1282,
+      "elo": 1283,
       "id": "873626e5547b5235",
       "name": "Kyle Prepolec",
       "p4p_rank": null,
@@ -5185,7 +5185,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-17",
+  "as_of": "2026-11-18",
   "p4p": {
     "men": [
       {
@@ -5294,7 +5294,7 @@
       },
       {
         "division": "Middleweight",
-        "elo": 1711,
+        "elo": 1710,
         "id": "a67d071163962af8",
         "image": "images/a67d071163962af8.webp",
         "name": "Michael Page",
