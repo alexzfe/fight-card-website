@@ -2,7 +2,7 @@
   "active": [
     {
       "division": "Welterweight",
-      "elo": 1816,
+      "elo": 1815,
       "id": "275aca31f61ba28c",
       "name": "Islam Makhachev",
       "p4p_rank": 1,
@@ -90,7 +90,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1718,
+      "elo": 1717,
       "id": "767755fd74662dbf",
       "name": "Khamzat Chimaev",
       "p4p_rank": 11,
@@ -386,7 +386,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1665,
+      "elo": 1664,
       "id": "06e4245d16fc5315",
       "name": "Ailin Perez",
       "p4p_rank": 5,
@@ -1210,7 +1210,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1584,
+      "elo": 1583,
       "id": "8e6654e9f0461b8f",
       "name": "Cody Haddon",
       "p4p_rank": null,
@@ -1970,7 +1970,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1537,
+      "elo": 1536,
       "id": "3fa97913cfd205d3",
       "name": "Alessandro Costa",
       "p4p_rank": null,
@@ -2386,7 +2386,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1512,
+      "elo": 1511,
       "id": "6188ad39d85a8bf8",
       "name": "Joel Faglier",
       "p4p_rank": null,
@@ -4082,7 +4082,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1407,
+      "elo": 1408,
       "id": "563a1d42bb0e3cef",
       "name": "Tre'ston Vines",
       "p4p_rank": null,
@@ -4506,7 +4506,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1374,
+      "elo": 1375,
       "id": "523fa774700d7d3f",
       "name": "Court McGee",
       "p4p_rank": null,
@@ -4522,7 +4522,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1373,
+      "elo": 1374,
       "id": "0f1efce7d2571d10",
       "name": "Nikolay Veretennikov",
       "p4p_rank": null,
@@ -4674,7 +4674,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1362,
+      "elo": 1363,
       "id": "86bace9e4ad85542",
       "name": "Xiao Long",
       "p4p_rank": null,
@@ -4898,7 +4898,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1342,
+      "elo": 1343,
       "id": "fd7ab338e4953644",
       "name": "Manolo Zecchini",
       "p4p_rank": null,
@@ -4914,7 +4914,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1341,
+      "elo": 1342,
       "id": "6d68c1afe954f121",
       "name": "Ode Osbourne",
       "p4p_rank": null,
@@ -5185,12 +5185,12 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-18",
+  "as_of": "2026-11-19",
   "p4p": {
     "men": [
       {
         "division": "Welterweight",
-        "elo": 1816,
+        "elo": 1815,
         "id": "275aca31f61ba28c",
         "image": "images/275aca31f61ba28c.webp",
         "name": "Islam Makhachev",
@@ -5270,7 +5270,7 @@
       },
       {
         "division": "Middleweight",
-        "elo": 1718,
+        "elo": 1717,
         "id": "767755fd74662dbf",
         "image": "images/767755fd74662dbf.webp",
         "name": "Khamzat Chimaev",
@@ -5344,7 +5344,7 @@
       },
       {
         "division": "Women's Bantamweight",
-        "elo": 1665,
+        "elo": 1664,
         "id": "06e4245d16fc5315",
         "image": "images/06e4245d16fc5315.webp",
         "name": "Ailin Perez",

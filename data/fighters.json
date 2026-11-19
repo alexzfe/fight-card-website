@@ -546,13 +546,13 @@
   "06e4245d16fc5315": {
     "best_win": {
       "date": "2026-09-26",
-      "elo": 1582,
+      "elo": 1583,
       "opponent": "Norma Dumont",
       "opponent_id": "d3f5d33d61cd00c9"
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1994-10-05",
-    "elo": 1665,
+    "elo": 1664,
     "elo_inactive": false,
     "elo_peak": 1668,
     "elo_provisional": false,
@@ -2871,7 +2871,7 @@
   "285ae0b4a68221f4": {
     "best_win": {
       "date": "2021-05-08",
-      "elo": 1555,
+      "elo": 1556,
       "opponent": "Tafon Nchukwi",
       "opponent_id": "6aae253467e8f9ce"
     },
@@ -3564,7 +3564,7 @@
     "dob": "2002-04-10",
     "elo": 1586,
     "elo_inactive": false,
-    "elo_peak": 1667,
+    "elo_peak": 1668,
     "elo_provisional": false,
     "height_in": 76.0,
     "id": "2f815ed5f8278ba6",
@@ -4577,7 +4577,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1537,
+    "elo": 1536,
     "elo_inactive": false,
     "elo_peak": 1540,
     "elo_provisional": false,
@@ -4751,7 +4751,7 @@
   "4144798612ef96e5": {
     "best_win": {
       "date": "2025-06-14",
-      "elo": 1594,
+      "elo": 1595,
       "opponent": "Andre Petroski",
       "opponent_id": "5f61780fe5e9b6d0"
     },
@@ -6077,7 +6077,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1984-12-12",
-    "elo": 1374,
+    "elo": 1375,
     "elo_inactive": false,
     "elo_peak": 1520,
     "elo_provisional": false,
@@ -6972,7 +6972,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "2001-01-18",
-    "elo": 1512,
+    "elo": 1511,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -7997,7 +7997,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1992-01-09",
-    "elo": 1341,
+    "elo": 1342,
     "elo_inactive": false,
     "elo_peak": 1520,
     "elo_provisional": false,
@@ -9739,7 +9739,7 @@
     "dob": "1988-05-30",
     "elo": 1576,
     "elo_inactive": false,
-    "elo_peak": 1742,
+    "elo_peak": 1743,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "80fa8218c99f9c58",
@@ -13826,7 +13826,7 @@
   "c0ac37a4a1133da9": {
     "best_win": {
       "date": "2024-11-16",
-      "elo": 1618,
+      "elo": 1619,
       "opponent": "Jonathan Martinez",
       "opponent_id": "f2477cf43c4975cc"
     },
