@@ -258,7 +258,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1682,
+      "elo": 1681,
       "id": "7478b7f959ba61f5",
       "name": "Elijah Smith",
       "p4p_rank": null,
@@ -266,7 +266,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1679,
+      "elo": 1678,
       "id": "bc711b6dd95c1af6",
       "name": "Mario Bautista",
       "p4p_rank": null,
@@ -370,7 +370,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1666,
+      "elo": 1665,
       "id": "5078e1dacf9d25f4",
       "name": "Luana Santos",
       "p4p_rank": 4,
@@ -378,7 +378,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1665,
+      "elo": 1664,
       "id": "39d309957c5c210d",
       "name": "Mario Pinto",
       "p4p_rank": null,
@@ -394,7 +394,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1661,
+      "elo": 1660,
       "id": "fe2babf95de24fb1",
       "name": "Raul Rosas Jr.",
       "p4p_rank": null,
@@ -426,7 +426,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1655,
+      "elo": 1654,
       "id": "8d3273573b85be09",
       "name": "Asu Almabayev",
       "p4p_rank": null,
@@ -498,7 +498,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1648,
+      "elo": 1647,
       "id": "95aff2fd8d09a5f0",
       "name": "Abdul Rakhman Yakhyaev",
       "p4p_rank": null,
@@ -850,7 +850,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1612,
+      "elo": 1611,
       "id": "6e8349a0a0476d60",
       "name": "Imanol Rodriguez",
       "p4p_rank": null,
@@ -1090,7 +1090,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1594,
+      "elo": 1593,
       "id": "41e83a89929d1327",
       "name": "Jailton Almeida",
       "p4p_rank": null,
@@ -1314,7 +1314,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1576,
+      "elo": 1575,
       "id": "80fa8218c99f9c58",
       "name": "Amanda Nunes",
       "p4p_rank": null,
@@ -1514,7 +1514,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1562,
+      "elo": 1561,
       "id": "0232cabbc30a2372",
       "name": "Adrian Yanez",
       "p4p_rank": null,
@@ -2882,7 +2882,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1489,
+      "elo": 1490,
       "id": "feedf3053472fe56",
       "name": "Charles Radtke",
       "p4p_rank": null,
@@ -3618,7 +3618,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1447,
+      "elo": 1448,
       "id": "3c4320a1b6106611",
       "name": "Cody Chovancek",
       "p4p_rank": null,
@@ -4282,7 +4282,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1392,
+      "elo": 1393,
       "id": "abde3388a589103c",
       "name": "Richie Miranda",
       "p4p_rank": null,
@@ -4402,7 +4402,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1382,
+      "elo": 1383,
       "id": "0abcf6bc47191219",
       "name": "Bruno Lopes",
       "p4p_rank": null,
@@ -4538,7 +4538,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1372,
+      "elo": 1373,
       "id": "cdb7b38b1b357f26",
       "name": "Louie Sutherland",
       "p4p_rank": null,
@@ -4546,7 +4546,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1371,
+      "elo": 1372,
       "id": "ac7c765882f2c68c",
       "name": "Elise Reed",
       "p4p_rank": null,
@@ -5010,7 +5010,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1323,
+      "elo": 1324,
       "id": "87e4a3a5080ee7ce",
       "name": "Elisha Ellison",
       "p4p_rank": null,
@@ -5058,7 +5058,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1318,
+      "elo": 1319,
       "id": "b1e5bcaad32a3cac",
       "name": "Priscila Cachoeira",
       "p4p_rank": null,
@@ -5090,7 +5090,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1307,
+      "elo": 1308,
       "id": "07797f10b9569cfc",
       "name": "Angel Pacheco",
       "p4p_rank": null,
@@ -5185,7 +5185,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-19",
+  "as_of": "2026-11-20",
   "p4p": {
     "men": [
       {
@@ -5336,7 +5336,7 @@
       },
       {
         "division": "Women's Bantamweight",
-        "elo": 1666,
+        "elo": 1665,
         "id": "5078e1dacf9d25f4",
         "image": "images/5078e1dacf9d25f4.webp",
         "name": "Luana Santos",

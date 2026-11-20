@@ -104,6 +104,19 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Women's Strawweight"
+    },
+    {
+      "blue": "8b6e5dc2ba1edbe7",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "b8199e798dd18b62",
+      "red": "f782f953bfe7b5f2",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Welterweight"
     }
   ],
   "id": "18944a1a6ac1becf",

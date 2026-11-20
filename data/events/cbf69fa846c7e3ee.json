@@ -143,6 +143,19 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "ccf25f81fcdaecb4",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "3ea07d2afb794f82",
+      "red": "5f183a54b8875e61",
+      "result": null,
+      "segment": "prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
     }
   ],
   "id": "cbf69fa846c7e3ee",
