@@ -122,7 +122,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1707,
+      "elo": 1706,
       "id": "eae48ff31db420c2",
       "name": "Arman Tsarukyan",
       "p4p_rank": 15,
@@ -242,7 +242,7 @@
     },
     {
       "division": "Women's Flyweight",
-      "elo": 1683,
+      "elo": 1682,
       "id": "a9e260472d321361",
       "name": "Jasmine Jasudavicius",
       "p4p_rank": 3,
@@ -282,7 +282,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1676,
+      "elo": 1675,
       "id": "99bd51917728c25d",
       "name": "Grant Dawson",
       "p4p_rank": null,
@@ -490,7 +490,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1648,
+      "elo": 1647,
       "id": "cffb87059e645bd1",
       "name": "Denise Gomes",
       "p4p_rank": 6,
@@ -642,7 +642,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1630,
+      "elo": 1629,
       "id": "681399317dbf4701",
       "name": "Uros Medic",
       "p4p_rank": null,
@@ -1098,7 +1098,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1593,
+      "elo": 1592,
       "id": "7dda2cf308f24a02",
       "name": "Virna Jandiroba",
       "p4p_rank": null,
@@ -1266,7 +1266,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1581,
+      "elo": 1580,
       "id": "ca28cdf526d6b6e9",
       "name": "Nurullo Aliev",
       "p4p_rank": null,
@@ -1946,7 +1946,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1538,
+      "elo": 1537,
       "id": "f53d4f21d1b5f2dc",
       "name": "Diego Ferreira",
       "p4p_rank": null,
@@ -3498,7 +3498,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1455,
+      "elo": 1456,
       "id": "92a9aa9c93192871",
       "name": "Darren Elkins",
       "p4p_rank": null,
@@ -3842,7 +3842,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1430,
+      "elo": 1431,
       "id": "d6c0cdd7e467c440",
       "name": "Kyle Daukaus",
       "p4p_rank": null,
@@ -4074,7 +4074,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1408,
+      "elo": 1409,
       "id": "312f7d7b2b2f7de4",
       "name": "Djorden Santos",
       "p4p_rank": null,
@@ -4922,7 +4922,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1339,
+      "elo": 1340,
       "id": "e5864a42c80294f6",
       "name": "Josiah Harrell",
       "p4p_rank": null,
@@ -5042,7 +5042,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1320,
+      "elo": 1321,
       "id": "5c84f673b7bb7c15",
       "name": "Cameron Smotherman",
       "p4p_rank": null,
@@ -5122,7 +5122,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1295,
+      "elo": 1296,
       "id": "e99eb0ef25885de5",
       "name": "Mitch Ramirez",
       "p4p_rank": null,
@@ -5185,7 +5185,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-20",
+  "as_of": "2026-11-21",
   "p4p": {
     "men": [
       {
@@ -5302,7 +5302,7 @@
       },
       {
         "division": "Lightweight",
-        "elo": 1707,
+        "elo": 1706,
         "id": "eae48ff31db420c2",
         "image": "images/eae48ff31db420c2.webp",
         "name": "Arman Tsarukyan",
@@ -5328,7 +5328,7 @@
       },
       {
         "division": "Women's Flyweight",
-        "elo": 1683,
+        "elo": 1682,
         "id": "a9e260472d321361",
         "image": "images/a9e260472d321361.webp",
         "name": "Jasmine Jasudavicius",
@@ -5352,7 +5352,7 @@
       },
       {
         "division": "Women's Strawweight",
-        "elo": 1648,
+        "elo": 1647,
         "id": "cffb87059e645bd1",
         "image": "images/cffb87059e645bd1.webp",
         "name": "Denise Gomes",

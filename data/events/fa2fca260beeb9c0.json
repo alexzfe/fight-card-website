@@ -48,7 +48,7 @@
       "id": "05cd24b9fa16f8a2",
       "red": "fdd22e895a70e4a8",
       "result": null,
-      "segment": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Middleweight"
@@ -61,7 +61,7 @@
       "id": "5943397217cca7ae",
       "red": "60425d07ef4b91a7",
       "result": null,
-      "segment": null,
+      "segment": "main",
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Bantamweight"

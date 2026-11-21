@@ -1294,7 +1294,7 @@
     "dob": "1985-12-18",
     "elo": 1537,
     "elo_inactive": false,
-    "elo_peak": 1601,
+    "elo_peak": 1602,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "113df4fde64735c6",
@@ -1632,7 +1632,7 @@
     },
     "details_fetched_at": "2026-11-20T06:00:05Z",
     "dob": "1997-05-15",
-    "elo": 1409,
+    "elo": 1410,
     "elo_inactive": true,
     "elo_peak": null,
     "elo_provisional": false,
@@ -1954,7 +1954,7 @@
     "dob": "1991-12-14",
     "elo": 1444,
     "elo_inactive": false,
-    "elo_peak": 1547,
+    "elo_peak": 1548,
     "elo_provisional": false,
     "height_in": 65.0,
     "id": "1897b7b913736a7c",
@@ -2764,7 +2764,7 @@
     "dob": "1994-03-30",
     "elo": 1464,
     "elo_inactive": false,
-    "elo_peak": 1621,
+    "elo_peak": 1622,
     "elo_provisional": false,
     "height_in": 72.0,
     "id": "2558ae2e5671e318",
@@ -3869,7 +3869,7 @@
     "dob": "1989-11-11",
     "elo": 1527,
     "elo_inactive": false,
-    "elo_peak": 1582,
+    "elo_peak": 1583,
     "elo_provisional": false,
     "height_in": 66.0,
     "id": "3143bf892608139a",
@@ -6016,7 +6016,7 @@
   "5078e1dacf9d25f4": {
     "best_win": {
       "date": "2026-10-31",
-      "elo": 1564,
+      "elo": 1565,
       "opponent": "Yana Santos",
       "opponent_id": "3143bf892608139a"
     },
@@ -6496,7 +6496,7 @@
   "5537efc6e496dd84": {
     "best_win": {
       "date": "2026-10-24",
-      "elo": 1536,
+      "elo": 1537,
       "opponent": "Losene Keita",
       "opponent_id": "5b43d68174b6e2ab"
     },
@@ -7125,7 +7125,7 @@
   "5fa2974cbd18e05c": {
     "best_win": {
       "date": "2023-11-11",
-      "elo": 1550,
+      "elo": 1551,
       "opponent": "Kyung Ho Kang",
       "opponent_id": "a7897d200692ab64"
     },
@@ -7691,7 +7691,7 @@
     },
     "details_fetched_at": "2026-11-15T04:17:03Z",
     "dob": "1993-04-25",
-    "elo": 1630,
+    "elo": 1629,
     "elo_inactive": false,
     "elo_peak": 1649,
     "elo_provisional": false,
@@ -8328,7 +8328,7 @@
     "dob": "1992-01-09",
     "elo": 1342,
     "elo_inactive": false,
-    "elo_peak": 1520,
+    "elo_peak": 1521,
     "elo_provisional": false,
     "height_in": 67.0,
     "id": "6d68c1afe954f121",
@@ -9706,7 +9706,7 @@
     },
     "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1988-05-30",
-    "elo": 1593,
+    "elo": 1592,
     "elo_inactive": false,
     "elo_peak": 1687,
     "elo_provisional": false,
@@ -11213,7 +11213,7 @@
     "dob": "1989-07-31",
     "elo": 1517,
     "elo_inactive": false,
-    "elo_peak": 1573,
+    "elo_peak": 1574,
     "elo_provisional": false,
     "height_in": 73.0,
     "id": "902ec2cc48c8ae8a",
@@ -11831,7 +11831,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1676,
+    "elo": 1675,
     "elo_inactive": false,
     "elo_peak": 1709,
     "elo_provisional": false,
@@ -13056,7 +13056,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1989-03-01",
-    "elo": 1683,
+    "elo": 1682,
     "elo_inactive": false,
     "elo_peak": 1685,
     "elo_provisional": false,
@@ -13515,7 +13515,7 @@
   "b08012bbe542592a": {
     "best_win": {
       "date": "2026-11-07",
-      "elo": 1634,
+      "elo": 1635,
       "opponent": "Virna Jandiroba",
       "opponent_id": "7dda2cf308f24a02"
     },
@@ -15291,7 +15291,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1581,
+    "elo": 1580,
     "elo_inactive": false,
     "elo_peak": 1582,
     "elo_provisional": false,
@@ -15411,7 +15411,7 @@
     },
     "details_fetched_at": "2026-11-16T06:00:05Z",
     "dob": "1992-10-06",
-    "elo": 1546,
+    "elo": 1545,
     "elo_inactive": true,
     "elo_peak": 1648,
     "elo_provisional": false,
@@ -16260,7 +16260,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1993-02-27",
-    "elo": 1430,
+    "elo": 1431,
     "elo_inactive": false,
     "elo_peak": 1527,
     "elo_provisional": false,
@@ -17114,7 +17114,7 @@
   "e2be0c1a9b886d92": {
     "best_win": {
       "date": "2026-08-22",
-      "elo": 1560,
+      "elo": 1561,
       "opponent": "Mason Jones",
       "opponent_id": "f6ad6a1e4d600e0d"
     },
@@ -17705,7 +17705,7 @@
     "best_win": null,
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1998-11-13",
-    "elo": 1339,
+    "elo": 1340,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -18130,7 +18130,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-10-11",
-    "elo": 1707,
+    "elo": 1706,
     "elo_inactive": false,
     "elo_peak": 1711,
     "elo_provisional": false,
@@ -18880,7 +18880,7 @@
     },
     "details_fetched_at": "2026-11-20T06:00:05Z",
     "dob": "1985-01-18",
-    "elo": 1538,
+    "elo": 1537,
     "elo_inactive": false,
     "elo_peak": 1711,
     "elo_provisional": false,
@@ -19144,7 +19144,7 @@
   "f96856f9d69fd7e4": {
     "best_win": {
       "date": "2025-09-06",
-      "elo": 1509,
+      "elo": 1510,
       "opponent": "Brad Tavares",
       "opponent_id": "0c6d9ea8306c029e"
     },
