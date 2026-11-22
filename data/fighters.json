@@ -6,9 +6,9 @@
       "opponent": "Glover Teixeira",
       "opponent_id": "7ff97850e8c32bda"
     },
-    "details_fetched_at": "2026-10-25T18:18:58Z",
-    "dob": null,
-    "elo": 1608,
+    "details_fetched_at": "2026-11-21T21:17:04Z",
+    "dob": "1992-10-14",
+    "elo": 1573,
     "elo_inactive": false,
     "elo_peak": 1670,
     "elo_provisional": false,
@@ -20,6 +20,16 @@
     "p4p_rank": null,
     "reach_in": 80.0,
     "recent_fights": [
+      {
+        "date": "2026-11-21",
+        "event": "UFC Fight Night: Prochazka vs. Stirling",
+        "method": "KO/TKO",
+        "opponent": "Navajo Stirling",
+        "opponent_id": "b4b496ec2197ee3e",
+        "result": "loss",
+        "round": 2,
+        "time": "4:58"
+      },
       {
         "date": "2026-04-11",
         "event": "UFC 327: Prochazka vs. Ulberg",
@@ -39,21 +49,11 @@
         "result": "win",
         "round": 3,
         "time": "3:04"
-      },
-      {
-        "date": "2025-01-18",
-        "event": "UFC 311: Makhachev vs. Moicano",
-        "method": "KO/TKO",
-        "opponent": "Jamahal Hill",
-        "opponent_id": "5444c5a201d3ee5a",
-        "result": "win",
-        "round": 3,
-        "time": "3:01"
       }
     ],
     "record": {
       "d": 1,
-      "l": 6,
+      "l": 7,
       "nc": 0,
       "w": 32
     },
@@ -188,7 +188,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1562,
+    "elo": 1561,
     "elo_inactive": false,
     "elo_peak": 1648,
     "elo_provisional": false,
@@ -1741,7 +1741,7 @@
     "image": "images/17734443a833cdf7.webp",
     "name": "Quillan Salkilld",
     "nickname": null,
-    "p4p_rank": 5,
+    "p4p_rank": 6,
     "reach_in": 75.0,
     "recent_fights": [
       {
@@ -1792,7 +1792,7 @@
     },
     "details_fetched_at": "2026-11-21T18:17:04Z",
     "dob": "1999-12-07",
-    "elo": 1566,
+    "elo": 1565,
     "elo_inactive": false,
     "elo_peak": 1566,
     "elo_provisional": false,
@@ -2010,9 +2010,9 @@
       "opponent": "Mateusz Gamrot",
       "opponent_id": "72db2a14ffa73ece"
     },
-    "details_fetched_at": "2026-10-25T18:18:58Z",
-    "dob": null,
-    "elo": 1461,
+    "details_fetched_at": "2026-11-21T20:17:03Z",
+    "dob": "1990-02-13",
+    "elo": 1499,
     "elo_inactive": false,
     "elo_peak": 1643,
     "elo_provisional": false,
@@ -2024,6 +2024,16 @@
     "p4p_rank": null,
     "reach_in": 75.0,
     "recent_fights": [
+      {
+        "date": "2026-11-21",
+        "event": "UFC Fight Night: Prochazka vs. Stirling",
+        "method": "U-DEC",
+        "opponent": "Brian Ortega",
+        "opponent_id": "def8166ff24bd237",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-09-05",
         "event": "UFC Fight Night: Hooker vs. Parnasse",
@@ -2043,23 +2053,13 @@
         "result": "loss",
         "round": 2,
         "time": "4:45"
-      },
-      {
-        "date": "2025-11-22",
-        "event": "UFC Fight Night: Tsarukyan vs. Hooker",
-        "method": "SUB",
-        "opponent": "Arman Tsarukyan",
-        "opponent_id": "eae48ff31db420c2",
-        "result": "loss",
-        "round": 2,
-        "time": "3:34"
       }
     ],
     "record": {
       "d": 0,
       "l": 15,
       "nc": 0,
-      "w": 24
+      "w": 25
     },
     "stance": "Switch"
   },
@@ -2595,16 +2595,16 @@
   },
   "239d8e5359022f3b": {
     "best_win": {
-      "date": "2026-03-14",
-      "elo": 1511,
-      "opponent": "Josh Emmett",
-      "opponent_id": "fba03cd6cc28dc41"
+      "date": "2026-11-21",
+      "elo": 1656,
+      "opponent": "Aljamain Sterling",
+      "opponent_id": "cb696ebfb6598724"
     },
-    "details_fetched_at": "2026-10-25T18:18:58Z",
-    "dob": null,
-    "elo": 1633,
+    "details_fetched_at": "2026-11-21T21:17:04Z",
+    "dob": "2001-12-08",
+    "elo": 1689,
     "elo_inactive": false,
-    "elo_peak": null,
+    "elo_peak": 1689,
     "elo_provisional": false,
     "height_in": 67.0,
     "id": "239d8e5359022f3b",
@@ -2614,6 +2614,16 @@
     "p4p_rank": null,
     "reach_in": 68.0,
     "recent_fights": [
+      {
+        "date": "2026-11-21",
+        "event": "UFC Fight Night: Prochazka vs. Stirling",
+        "method": "U-DEC",
+        "opponent": "Aljamain Sterling",
+        "opponent_id": "cb696ebfb6598724",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-03-14",
         "event": "UFC Fight Night: Emmett vs. Vallejos",
@@ -2633,23 +2643,13 @@
         "result": "win",
         "round": 2,
         "time": "1:29"
-      },
-      {
-        "date": "2025-08-02",
-        "event": "UFC Fight Night: Taira vs. Park",
-        "method": "U-DEC",
-        "opponent": "Danny Silva",
-        "opponent_id": "d964a59c48381cb6",
-        "result": "win",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
       "l": 1,
       "nc": 0,
-      "w": 18
+      "w": 19
     },
     "stance": "Switch"
   },
@@ -3071,7 +3071,7 @@
     "image": "images/279566840aa55bf2.webp",
     "name": "Alexander Volkov",
     "nickname": "Drago",
-    "p4p_rank": 9,
+    "p4p_rank": 10,
     "reach_in": 80.0,
     "recent_fights": [
       {
@@ -3182,7 +3182,7 @@
     },
     "details_fetched_at": "2026-11-15T03:17:03Z",
     "dob": "1993-11-16",
-    "elo": 1389,
+    "elo": 1390,
     "elo_inactive": false,
     "elo_peak": 1389,
     "elo_provisional": false,
@@ -3756,7 +3756,7 @@
     "image": "images/2f181c0467965b98.webp",
     "name": "Brendan Allen",
     "nickname": "All In",
-    "p4p_rank": 12,
+    "p4p_rank": 13,
     "reach_in": 75.0,
     "recent_fights": [
       {
@@ -4951,7 +4951,7 @@
     "image": "images/4126a78111c0855a.webp",
     "name": "Caio Borralho",
     "nickname": "The Natural",
-    "p4p_rank": 13,
+    "p4p_rank": 14,
     "reach_in": 75.0,
     "recent_fights": [
       {
@@ -7712,7 +7712,7 @@
     },
     "details_fetched_at": "2026-11-15T04:17:03Z",
     "dob": "1993-04-25",
-    "elo": 1630,
+    "elo": 1629,
     "elo_inactive": false,
     "elo_peak": 1649,
     "elo_provisional": false,
@@ -8467,7 +8467,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1999-11-15",
-    "elo": 1612,
+    "elo": 1611,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -9271,7 +9271,7 @@
     "image": "images/787bb1f087ccff8a.webp",
     "name": "Ciryl Gane",
     "nickname": "Bon Gamin",
-    "p4p_rank": 6,
+    "p4p_rank": 7,
     "reach_in": 81.0,
     "recent_fights": [
       {
@@ -9856,7 +9856,7 @@
     "image": "images/7ee0fd831c0fe7c3.webp",
     "name": "Carlos Prates",
     "nickname": "The Nightmare",
-    "p4p_rank": 7,
+    "p4p_rank": 8,
     "reach_in": 78.0,
     "recent_fights": [
       {
@@ -10087,7 +10087,7 @@
     },
     "details_fetched_at": "2026-11-15T05:17:04Z",
     "dob": "1988-05-30",
-    "elo": 1576,
+    "elo": 1575,
     "elo_inactive": false,
     "elo_peak": 1743,
     "elo_provisional": false,
@@ -11862,7 +11862,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1676,
+    "elo": 1675,
     "elo_inactive": false,
     "elo_peak": 1709,
     "elo_provisional": false,
@@ -11982,7 +11982,7 @@
     },
     "details_fetched_at": "2026-11-15T00:17:03Z",
     "dob": "1991-07-27",
-    "elo": 1405,
+    "elo": 1406,
     "elo_inactive": false,
     "elo_peak": 1561,
     "elo_provisional": false,
@@ -13845,25 +13845,35 @@
   },
   "b4b496ec2197ee3e": {
     "best_win": {
-      "date": "2026-08-01",
-      "elo": 1577,
-      "opponent": "Jan Blachowicz",
-      "opponent_id": "99df7d0a2a08a8a8"
+      "date": "2026-11-21",
+      "elo": 1608,
+      "opponent": "Jiri Prochazka",
+      "opponent_id": "009341ed974bad72"
     },
-    "details_fetched_at": "2026-10-25T18:18:58Z",
-    "dob": null,
-    "elo": 1706,
+    "details_fetched_at": "2026-11-21T21:17:04Z",
+    "dob": "1997-11-07",
+    "elo": 1743,
     "elo_inactive": false,
-    "elo_peak": 1715,
+    "elo_peak": 1743,
     "elo_provisional": false,
     "height_in": 76.0,
     "id": "b4b496ec2197ee3e",
     "image": "images/b4b496ec2197ee3e.webp",
     "name": "Navajo Stirling",
     "nickname": null,
-    "p4p_rank": null,
+    "p4p_rank": 5,
     "reach_in": 79.0,
     "recent_fights": [
+      {
+        "date": "2026-11-21",
+        "event": "UFC Fight Night: Prochazka vs. Stirling",
+        "method": "KO/TKO",
+        "opponent": "Jiri Prochazka",
+        "opponent_id": "009341ed974bad72",
+        "result": "win",
+        "round": 2,
+        "time": "4:58"
+      },
       {
         "date": "2026-08-01",
         "event": "UFC Fight Night: Medic vs. Rodriguez",
@@ -13883,23 +13893,13 @@
         "result": "win",
         "round": 2,
         "time": "3:23"
-      },
-      {
-        "date": "2026-03-28",
-        "event": "UFC Fight Night: Adesanya vs. Pyfer",
-        "method": "KO/TKO",
-        "opponent": "Bruno Lopes",
-        "opponent_id": "0abcf6bc47191219",
-        "result": "win",
-        "round": 2,
-        "time": "4:05"
       }
     ],
     "record": {
       "d": 0,
       "l": 0,
       "nc": 0,
-      "w": 11
+      "w": 12
     },
     "stance": "Orthodox"
   },
@@ -15380,9 +15380,9 @@
       "opponent": "Petr Yan",
       "opponent_id": "d661ce4da776fc20"
     },
-    "details_fetched_at": "2026-10-25T18:18:58Z",
-    "dob": null,
-    "elo": 1656,
+    "details_fetched_at": "2026-11-21T21:17:04Z",
+    "dob": "1989-07-31",
+    "elo": 1617,
     "elo_inactive": false,
     "elo_peak": 1759,
     "elo_provisional": false,
@@ -15394,6 +15394,16 @@
     "p4p_rank": null,
     "reach_in": 71.0,
     "recent_fights": [
+      {
+        "date": "2026-11-21",
+        "event": "UFC Fight Night: Prochazka vs. Stirling",
+        "method": "U-DEC",
+        "opponent": "Kevin Vallejos",
+        "opponent_id": "239d8e5359022f3b",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2026-04-25",
         "event": "UFC Fight Night: Sterling vs. Zalal",
@@ -15413,21 +15423,11 @@
         "result": "win",
         "round": 5,
         "time": "5:00"
-      },
-      {
-        "date": "2024-12-07",
-        "event": "UFC 310: Pantoja vs. Asakura",
-        "method": "U-DEC",
-        "opponent": "Movsar Evloev",
-        "opponent_id": "76e2870ffafbe38f",
-        "result": "loss",
-        "round": 3,
-        "time": "5:00"
       }
     ],
     "record": {
       "d": 0,
-      "l": 5,
+      "l": 6,
       "nc": 0,
       "w": 26
     },
@@ -16895,10 +16895,10 @@
       "opponent": "Frankie Edgar",
       "opponent_id": "f2688492b9a525a3"
     },
-    "details_fetched_at": "2026-10-25T18:18:58Z",
-    "dob": null,
-    "elo": 1493,
-    "elo_inactive": true,
+    "details_fetched_at": "2026-11-21T20:17:03Z",
+    "dob": "1991-02-21",
+    "elo": 1447,
+    "elo_inactive": false,
     "elo_peak": 1752,
     "elo_provisional": false,
     "height_in": 68.0,
@@ -16909,6 +16909,16 @@
     "p4p_rank": null,
     "reach_in": 69.0,
     "recent_fights": [
+      {
+        "date": "2026-11-21",
+        "event": "UFC Fight Night: Prochazka vs. Stirling",
+        "method": "U-DEC",
+        "opponent": "Dan Hooker",
+        "opponent_id": "193b9d1858bc4df3",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      },
       {
         "date": "2025-08-23",
         "event": "UFC Fight Night: Walker vs. Zhang",
@@ -16928,21 +16938,11 @@
         "result": "loss",
         "round": 3,
         "time": "5:00"
-      },
-      {
-        "date": "2024-02-24",
-        "event": "UFC Fight Night: Moreno vs. Royval 2",
-        "method": "SUB",
-        "opponent": "Yair Rodriguez",
-        "opponent_id": "cbf5e6f231b55443",
-        "result": "win",
-        "round": 3,
-        "time": "0:58"
       }
     ],
     "record": {
       "d": 0,
-      "l": 5,
+      "l": 6,
       "nc": 1,
       "w": 16
     },
@@ -17126,7 +17126,7 @@
     "image": "images/e1248941344b3288.webp",
     "name": "Alexander Volkanovski",
     "nickname": "The Great",
-    "p4p_rank": 8,
+    "p4p_rank": 9,
     "reach_in": 71.0,
     "recent_fights": [
       {
@@ -18187,7 +18187,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-10-11",
-    "elo": 1707,
+    "elo": 1706,
     "elo_inactive": false,
     "elo_peak": 1711,
     "elo_provisional": false,
@@ -18196,7 +18196,7 @@
     "image": "images/eae48ff31db420c2.webp",
     "name": "Arman Tsarukyan",
     "nickname": "The Batman",
-    "p4p_rank": 15,
+    "p4p_rank": null,
     "reach_in": 72.0,
     "recent_fights": [
       {

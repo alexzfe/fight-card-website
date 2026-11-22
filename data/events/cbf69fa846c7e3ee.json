@@ -3,12 +3,90 @@
   "fights": [
     {
       "blue": "b4b496ec2197ee3e",
-      "elo": null,
+      "elo": {
+        "blue_delta": 37,
+        "blue_p4p_rank": null,
+        "blue_pre": 1706,
+        "red_delta": -35,
+        "red_p4p_rank": null,
+        "red_pre": 1608
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-08-01",
+            "event": "UFC Fight Night: Medic vs. Rodriguez",
+            "method": "KO/TKO",
+            "opponent": "Jan Blachowicz",
+            "opponent_id": "99df7d0a2a08a8a8",
+            "result": "win",
+            "round": 1,
+            "time": "2:56"
+          },
+          {
+            "date": "2026-06-20",
+            "event": "UFC Fight Night: Kape vs. Horiguchi",
+            "method": "KO/TKO",
+            "opponent": "Ion Cutelaba",
+            "opponent_id": "cd13728ae1151f46",
+            "result": "win",
+            "round": 2,
+            "time": "3:23"
+          },
+          {
+            "date": "2026-03-28",
+            "event": "UFC Fight Night: Adesanya vs. Pyfer",
+            "method": "KO/TKO",
+            "opponent": "Bruno Lopes",
+            "opponent_id": "0abcf6bc47191219",
+            "result": "win",
+            "round": 2,
+            "time": "4:05"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-04-11",
+            "event": "UFC 327: Prochazka vs. Ulberg",
+            "method": "KO/TKO",
+            "opponent": "Carlos Ulberg",
+            "opponent_id": "9014c02eff8b3d62",
+            "result": "loss",
+            "round": 1,
+            "time": "3:45"
+          },
+          {
+            "date": "2025-10-04",
+            "event": "UFC 320: Ankalaev vs. Pereira 2",
+            "method": "KO/TKO",
+            "opponent": "Khalil Rountree Jr.",
+            "opponent_id": "749f572d1d3161fb",
+            "result": "win",
+            "round": 3,
+            "time": "3:04"
+          },
+          {
+            "date": "2025-01-18",
+            "event": "UFC 311: Makhachev vs. Moicano",
+            "method": "KO/TKO",
+            "opponent": "Jamahal Hill",
+            "opponent_id": "5444c5a201d3ee5a",
+            "result": "win",
+            "round": 3,
+            "time": "3:01"
+          }
+        ]
+      },
       "id": "7de3df8199eafe71",
       "red": "009341ed974bad72",
-      "result": null,
+      "result": {
+        "method": "KO/TKO",
+        "outcome": "win",
+        "round": 2,
+        "time": "4:58",
+        "winner": "b4b496ec2197ee3e"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-11-21T00:17:52Z",
       "title_fight": false,
@@ -16,12 +94,90 @@
     },
     {
       "blue": "239d8e5359022f3b",
-      "elo": null,
+      "elo": {
+        "blue_delta": 56,
+        "blue_p4p_rank": null,
+        "blue_pre": 1633,
+        "red_delta": -39,
+        "red_p4p_rank": null,
+        "red_pre": 1656
+      },
       "finish_tier": "low",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2026-03-14",
+            "event": "UFC Fight Night: Emmett vs. Vallejos",
+            "method": "KO/TKO",
+            "opponent": "Josh Emmett",
+            "opponent_id": "fba03cd6cc28dc41",
+            "result": "win",
+            "round": 1,
+            "time": "3:33"
+          },
+          {
+            "date": "2025-12-13",
+            "event": "UFC Fight Night: Royval vs. Kape",
+            "method": "KO/TKO",
+            "opponent": "Giga Chikadze",
+            "opponent_id": "9560ff14eb3129f7",
+            "result": "win",
+            "round": 2,
+            "time": "1:29"
+          },
+          {
+            "date": "2025-08-02",
+            "event": "UFC Fight Night: Taira vs. Park",
+            "method": "U-DEC",
+            "opponent": "Danny Silva",
+            "opponent_id": "d964a59c48381cb6",
+            "result": "win",
+            "round": 3,
+            "time": "5:00"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-04-25",
+            "event": "UFC Fight Night: Sterling vs. Zalal",
+            "method": "U-DEC",
+            "opponent": "Youssef Zalal",
+            "opponent_id": "52c2ae6d2f2d2613",
+            "result": "win",
+            "round": 5,
+            "time": "5:00"
+          },
+          {
+            "date": "2025-08-23",
+            "event": "UFC Fight Night: Walker vs. Zhang",
+            "method": "U-DEC",
+            "opponent": "Brian Ortega",
+            "opponent_id": "def8166ff24bd237",
+            "result": "win",
+            "round": 5,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-12-07",
+            "event": "UFC 310: Pantoja vs. Asakura",
+            "method": "U-DEC",
+            "opponent": "Movsar Evloev",
+            "opponent_id": "76e2870ffafbe38f",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          }
+        ]
+      },
       "id": "07ea5460ba2f04c6",
       "red": "cb696ebfb6598724",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "239d8e5359022f3b"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-11-21T00:17:52Z",
       "title_fight": false,
@@ -29,12 +185,90 @@
     },
     {
       "blue": "def8166ff24bd237",
-      "elo": null,
+      "elo": {
+        "blue_delta": -46,
+        "blue_p4p_rank": null,
+        "blue_pre": 1493,
+        "red_delta": 39,
+        "red_p4p_rank": null,
+        "red_pre": 1461
+      },
       "finish_tier": "high",
-      "form": null,
+      "form": {
+        "blue": [
+          {
+            "date": "2025-08-23",
+            "event": "UFC Fight Night: Walker vs. Zhang",
+            "method": "U-DEC",
+            "opponent": "Aljamain Sterling",
+            "opponent_id": "cb696ebfb6598724",
+            "result": "loss",
+            "round": 5,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-09-14",
+            "event": "UFC 306: Riyadh Season Noche UFC",
+            "method": "U-DEC",
+            "opponent": "Diego Lopes",
+            "opponent_id": "f166e93d04a8c274",
+            "result": "loss",
+            "round": 3,
+            "time": "5:00"
+          },
+          {
+            "date": "2024-02-24",
+            "event": "UFC Fight Night: Moreno vs. Royval 2",
+            "method": "SUB",
+            "opponent": "Yair Rodriguez",
+            "opponent_id": "cbf5e6f231b55443",
+            "result": "win",
+            "round": 3,
+            "time": "0:58"
+          }
+        ],
+        "red": [
+          {
+            "date": "2026-09-05",
+            "event": "UFC Fight Night: Hooker vs. Parnasse",
+            "method": "KO/TKO",
+            "opponent": "Salahdine Parnasse",
+            "opponent_id": "b3cb9dfccff3be76",
+            "result": "loss",
+            "round": 1,
+            "time": "2:35"
+          },
+          {
+            "date": "2026-01-31",
+            "event": "UFC 325: Volkanovski vs. Lopes 2",
+            "method": "KO/TKO",
+            "opponent": "Benoit Saint Denis",
+            "opponent_id": "c2299ec916bc7c56",
+            "result": "loss",
+            "round": 2,
+            "time": "4:45"
+          },
+          {
+            "date": "2025-11-22",
+            "event": "UFC Fight Night: Tsarukyan vs. Hooker",
+            "method": "SUB",
+            "opponent": "Arman Tsarukyan",
+            "opponent_id": "eae48ff31db420c2",
+            "result": "loss",
+            "round": 2,
+            "time": "3:34"
+          }
+        ]
+      },
       "id": "739aaa5e3a1e5ed1",
       "red": "193b9d1858bc4df3",
-      "result": null,
+      "result": {
+        "method": "U-DEC",
+        "outcome": "win",
+        "round": 3,
+        "time": "5:00",
+        "winner": "193b9d1858bc4df3"
+      },
       "segment": "main",
       "tier_frozen_at": "2026-11-21T00:17:52Z",
       "title_fight": false,
