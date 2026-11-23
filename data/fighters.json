@@ -656,7 +656,7 @@
   "07047eb7d17fb0a2": {
     "best_win": {
       "date": "2025-06-21",
-      "elo": 1509,
+      "elo": 1510,
       "opponent": "Melissa Mullins",
       "opponent_id": "bd532e9a2b93870c"
     },
@@ -3747,7 +3747,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1995-12-28",
-    "elo": 1715,
+    "elo": 1714,
     "elo_inactive": false,
     "elo_peak": 1743,
     "elo_provisional": false,
@@ -5421,7 +5421,7 @@
   "48e43b65f7838878": {
     "best_win": {
       "date": "2026-09-01",
-      "elo": 1365,
+      "elo": 1366,
       "opponent": "Brandon Holmes",
       "opponent_id": "f295d50c56339ab6"
     },
@@ -7412,7 +7412,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-09-13",
-    "elo": 1410,
+    "elo": 1411,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -7766,7 +7766,7 @@
   "6967153c7edb4d87": {
     "best_win": {
       "date": "2025-03-08",
-      "elo": 1508,
+      "elo": 1509,
       "opponent": "Djorden Santos",
       "opponent_id": "312f7d7b2b2f7de4"
     },
@@ -8221,7 +8221,7 @@
   "6c3b2525436cf5d4": {
     "best_win": {
       "date": "2026-06-06",
-      "elo": 1649,
+      "elo": 1650,
       "opponent": "Fares Ziam",
       "opponent_id": "1e4f273069fb9e85"
     },
@@ -9727,7 +9727,7 @@
     },
     "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1988-05-30",
-    "elo": 1593,
+    "elo": 1592,
     "elo_inactive": false,
     "elo_peak": 1687,
     "elo_provisional": false,
@@ -9841,7 +9841,7 @@
   "7ee0fd831c0fe7c3": {
     "best_win": {
       "date": "2026-05-02",
-      "elo": 1664,
+      "elo": 1665,
       "opponent": "Jack Della Maddalena",
       "opponent_id": "6b453bc35a823c3f"
     },
@@ -11046,7 +11046,7 @@
   "8ebc3a8da015d70c": {
     "best_win": {
       "date": "2025-09-27",
-      "elo": 1531,
+      "elo": 1532,
       "opponent": "Andre Petroski",
       "opponent_id": "5f61780fe5e9b6d0"
     },
@@ -12654,7 +12654,7 @@
     "dob": "1987-10-18",
     "elo": 1567,
     "elo_inactive": false,
-    "elo_peak": 1629,
+    "elo_peak": 1630,
     "elo_provisional": false,
     "height_in": 72.0,
     "id": "a495f599e787614f",
@@ -14612,7 +14612,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1990-05-07",
-    "elo": 1625,
+    "elo": 1624,
     "elo_inactive": false,
     "elo_peak": 1627,
     "elo_provisional": false,
@@ -15322,7 +15322,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1581,
+    "elo": 1580,
     "elo_inactive": false,
     "elo_peak": 1582,
     "elo_provisional": false,
@@ -15442,7 +15442,7 @@
     },
     "details_fetched_at": "2026-11-16T06:00:05Z",
     "dob": "1992-10-06",
-    "elo": 1546,
+    "elo": 1545,
     "elo_inactive": true,
     "elo_peak": 1648,
     "elo_provisional": false,
@@ -15887,7 +15887,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1617,
+    "elo": 1616,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -16771,7 +16771,7 @@
   "dd6103dd7127db1d": {
     "best_win": {
       "date": "2026-10-17",
-      "elo": 1581,
+      "elo": 1582,
       "opponent": "Joaquin Buckley",
       "opponent_id": "b9437600497350f3"
     },
@@ -17357,7 +17357,7 @@
     },
     "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1999-09-30",
-    "elo": 1433,
+    "elo": 1434,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -18249,7 +18249,7 @@
     "dob": "1995-12-28",
     "elo": 1336,
     "elo_inactive": false,
-    "elo_peak": 1445,
+    "elo_peak": 1446,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "eb393afdbe3293d5",
