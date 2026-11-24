@@ -108,7 +108,7 @@
     {
       "blue": "285ae0b4a68221f4",
       "elo": null,
-      "finish_tier": "medium",
+      "finish_tier": "low",
       "form": null,
       "id": "6c09b1accf47db44",
       "red": "9384e71bca6c409d",
@@ -156,6 +156,32 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Bantamweight"
+    },
+    {
+      "blue": "f2f140ce7532e327",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "c66e44b14d9e423e",
+      "red": "b1de86d835638319",
+      "result": null,
+      "segment": "main",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Featherweight"
+    },
+    {
+      "blue": "48a9a128784d53d1",
+      "elo": null,
+      "finish_tier": "medium",
+      "form": null,
+      "id": "35d00e4a77a19584",
+      "red": "849c5d9979df5357",
+      "result": null,
+      "segment": "prelims",
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Lightweight"
     }
   ],
   "id": "a1bf037613180253",

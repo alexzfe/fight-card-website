@@ -1,12 +1,12 @@
 {
   "contract_version": "1.4",
-  "generated_at": "2026-11-23T06:00:04Z",
+  "generated_at": "2026-11-24T06:00:04Z",
   "model": {
-    "as_of": "2026-11-16",
+    "as_of": "2026-11-23",
     "importance": [
       {
         "group": "fight_endings",
-        "share": 20.6
+        "share": 20.7
       },
       {
         "group": "context",
@@ -14,11 +14,11 @@
       },
       {
         "group": "grappling",
-        "share": 17.2
+        "share": 16.7
       },
       {
         "group": "striking",
-        "share": 14.9
+        "share": 15.6
       },
       {
         "group": "physical",
@@ -26,11 +26,11 @@
       },
       {
         "group": "experience",
-        "share": 9.4
+        "share": 9.6
       },
       {
         "group": "form",
-        "share": 7.4
+        "share": 6.9
       }
     ],
     "low_max": 0.42849160588727814,
@@ -58,9 +58,9 @@
         "mean_predicted": 0.4897490961492546
       }
     },
-    "train_rows": 8406,
+    "train_rows": 8418,
     "trees": 300,
-    "version": "2026-11-16+5006318a"
+    "version": "2026-11-23+5006318a"
   },
   "recent": [
     "cbf69fa846c7e3ee",

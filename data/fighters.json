@@ -542,7 +542,7 @@
     },
     "details_fetched_at": "2026-11-10T06:00:05Z",
     "dob": "1994-05-16",
-    "elo": 1618,
+    "elo": 1617,
     "elo_inactive": false,
     "elo_peak": 1625,
     "elo_provisional": false,
@@ -656,7 +656,7 @@
   "07047eb7d17fb0a2": {
     "best_win": {
       "date": "2025-06-21",
-      "elo": 1510,
+      "elo": 1509,
       "opponent": "Melissa Mullins",
       "opponent_id": "bd532e9a2b93870c"
     },
@@ -1226,7 +1226,7 @@
   "1091d4d957141094": {
     "best_win": {
       "date": "2023-03-11",
-      "elo": 1588,
+      "elo": 1587,
       "opponent": "Ryan Spann",
       "opponent_id": "a67f5afa8d6a1b80"
     },
@@ -1234,7 +1234,7 @@
     "dob": null,
     "elo": 1478,
     "elo_inactive": false,
-    "elo_peak": 1646,
+    "elo_peak": 1645,
     "elo_provisional": false,
     "height_in": 75.0,
     "id": "1091d4d957141094",
@@ -1294,7 +1294,7 @@
     "dob": "1985-12-18",
     "elo": 1537,
     "elo_inactive": false,
-    "elo_peak": 1602,
+    "elo_peak": 1601,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "113df4fde64735c6",
@@ -1566,7 +1566,7 @@
   "140567899d98978a": {
     "best_win": {
       "date": "2026-09-19",
-      "elo": 1385,
+      "elo": 1384,
       "opponent": "Tai Tuivasa",
       "opponent_id": "c62fbc117d57b943"
     },
@@ -1794,7 +1794,7 @@
     "dob": "1999-12-07",
     "elo": 1565,
     "elo_inactive": false,
-    "elo_peak": 1566,
+    "elo_peak": 1565,
     "elo_provisional": false,
     "height_in": 79.0,
     "id": "17923f676f100e16",
@@ -1954,7 +1954,7 @@
     "dob": "1991-12-14",
     "elo": 1444,
     "elo_inactive": false,
-    "elo_peak": 1548,
+    "elo_peak": 1547,
     "elo_provisional": false,
     "height_in": 65.0,
     "id": "1897b7b913736a7c",
@@ -2662,7 +2662,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1994-03-24",
-    "elo": 1498,
+    "elo": 1497,
     "elo_inactive": false,
     "elo_peak": 1531,
     "elo_provisional": false,
@@ -2764,7 +2764,7 @@
     "dob": "1994-03-30",
     "elo": 1464,
     "elo_inactive": false,
-    "elo_peak": 1622,
+    "elo_peak": 1621,
     "elo_provisional": false,
     "height_in": 72.0,
     "id": "2558ae2e5671e318",
@@ -3002,7 +3002,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-02-03",
-    "elo": 1761,
+    "elo": 1760,
     "elo_inactive": false,
     "elo_peak": 1765,
     "elo_provisional": false,
@@ -3064,7 +3064,7 @@
     "dob": null,
     "elo": 1718,
     "elo_inactive": false,
-    "elo_peak": 1721,
+    "elo_peak": 1720,
     "elo_provisional": false,
     "height_in": 79.0,
     "id": "279566840aa55bf2",
@@ -3122,7 +3122,7 @@
     },
     "details_fetched_at": "2026-11-10T06:00:05Z",
     "dob": "1991-02-27",
-    "elo": 1533,
+    "elo": 1532,
     "elo_inactive": true,
     "elo_peak": 1597,
     "elo_provisional": false,
@@ -3182,7 +3182,7 @@
     },
     "details_fetched_at": "2026-11-15T03:17:03Z",
     "dob": "1993-11-16",
-    "elo": 1390,
+    "elo": 1389,
     "elo_inactive": false,
     "elo_peak": 1389,
     "elo_provisional": false,
@@ -3807,7 +3807,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "2002-04-10",
-    "elo": 1586,
+    "elo": 1585,
     "elo_inactive": false,
     "elo_peak": 1668,
     "elo_provisional": false,
@@ -3869,7 +3869,7 @@
     "dob": "1989-11-11",
     "elo": 1527,
     "elo_inactive": false,
-    "elo_peak": 1583,
+    "elo_peak": 1582,
     "elo_provisional": false,
     "height_in": 66.0,
     "id": "3143bf892608139a",
@@ -4592,7 +4592,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1419,
+    "elo": 1418,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -4882,7 +4882,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1999-02-28",
-    "elo": 1489,
+    "elo": 1488,
     "elo_inactive": false,
     "elo_peak": 1489,
     "elo_provisional": false,
@@ -5181,7 +5181,7 @@
   "442c9011034ae1fd": {
     "best_win": {
       "date": "2025-04-26",
-      "elo": 1693,
+      "elo": 1692,
       "opponent": "Carlos Prates",
       "opponent_id": "7ee0fd831c0fe7c3"
     },
@@ -5307,7 +5307,7 @@
     },
     "details_fetched_at": "2026-11-10T06:00:05Z",
     "dob": "2000-06-10",
-    "elo": 1608,
+    "elo": 1607,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -5361,13 +5361,13 @@
   "48a9a128784d53d1": {
     "best_win": {
       "date": "2023-02-11",
-      "elo": 1550,
+      "elo": 1549,
       "opponent": "Zubaira Tukhugov",
       "opponent_id": "aceffa19749c4dc0"
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-09-27",
-    "elo": 1473,
+    "elo": 1472,
     "elo_inactive": false,
     "elo_peak": 1473,
     "elo_provisional": false,
@@ -5421,7 +5421,7 @@
   "48e43b65f7838878": {
     "best_win": {
       "date": "2026-09-01",
-      "elo": 1366,
+      "elo": 1365,
       "opponent": "Brandon Holmes",
       "opponent_id": "f295d50c56339ab6"
     },
@@ -6026,7 +6026,7 @@
   "5078e1dacf9d25f4": {
     "best_win": {
       "date": "2026-10-31",
-      "elo": 1565,
+      "elo": 1564,
       "opponent": "Yana Santos",
       "opponent_id": "3143bf892608139a"
     },
@@ -6152,7 +6152,7 @@
     },
     "details_fetched_at": "2026-11-15T03:17:03Z",
     "dob": "2001-07-16",
-    "elo": 1507,
+    "elo": 1506,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -6214,7 +6214,7 @@
     "dob": "1988-10-19",
     "elo": 1491,
     "elo_inactive": false,
-    "elo_peak": 1622,
+    "elo_peak": 1621,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "519e4fe37ce9ff75",
@@ -6446,7 +6446,7 @@
   "5442f1bc4b47eaf3": {
     "best_win": {
       "date": "2021-12-04",
-      "elo": 1660,
+      "elo": 1659,
       "opponent": "Brendan Allen",
       "opponent_id": "2f181c0467965b98"
     },
@@ -6506,7 +6506,7 @@
   "5537efc6e496dd84": {
     "best_win": {
       "date": "2026-10-24",
-      "elo": 1537,
+      "elo": 1536,
       "opponent": "Losene Keita",
       "opponent_id": "5b43d68174b6e2ab"
     },
@@ -6669,7 +6669,7 @@
     "dob": "1992-08-31",
     "elo": 1486,
     "elo_inactive": false,
-    "elo_peak": 1660,
+    "elo_peak": 1659,
     "elo_provisional": false,
     "height_in": 66.0,
     "id": "5987b2458f4b5290",
@@ -7146,7 +7146,7 @@
   "5fa2974cbd18e05c": {
     "best_win": {
       "date": "2023-11-11",
-      "elo": 1551,
+      "elo": 1550,
       "opponent": "Kyung Ho Kang",
       "opponent_id": "a7897d200692ab64"
     },
@@ -7322,7 +7322,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "2001-01-18",
-    "elo": 1512,
+    "elo": 1511,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -7412,7 +7412,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-09-13",
-    "elo": 1411,
+    "elo": 1410,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -7652,7 +7652,7 @@
     },
     "details_fetched_at": "2026-11-21T18:17:04Z",
     "dob": "1990-02-10",
-    "elo": 1488,
+    "elo": 1487,
     "elo_inactive": false,
     "elo_peak": 1551,
     "elo_provisional": false,
@@ -7766,7 +7766,7 @@
   "6967153c7edb4d87": {
     "best_win": {
       "date": "2025-03-08",
-      "elo": 1509,
+      "elo": 1508,
       "opponent": "Djorden Santos",
       "opponent_id": "312f7d7b2b2f7de4"
     },
@@ -7832,7 +7832,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-02-05",
-    "elo": 1449,
+    "elo": 1448,
     "elo_inactive": false,
     "elo_peak": 1514,
     "elo_provisional": false,
@@ -8012,7 +8012,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1996-08-18",
-    "elo": 1544,
+    "elo": 1543,
     "elo_inactive": false,
     "elo_peak": 1545,
     "elo_provisional": false,
@@ -8221,7 +8221,7 @@
   "6c3b2525436cf5d4": {
     "best_win": {
       "date": "2026-06-06",
-      "elo": 1650,
+      "elo": 1649,
       "opponent": "Fares Ziam",
       "opponent_id": "1e4f273069fb9e85"
     },
@@ -8349,7 +8349,7 @@
     "dob": "1992-01-09",
     "elo": 1342,
     "elo_inactive": false,
-    "elo_peak": 1521,
+    "elo_peak": 1520,
     "elo_provisional": false,
     "height_in": 67.0,
     "id": "6d68c1afe954f121",
@@ -9016,7 +9016,7 @@
   "74939a16c7b56f33": {
     "best_win": {
       "date": "2026-05-16",
-      "elo": 1502,
+      "elo": 1501,
       "opponent": "Malcolm Wellmaker",
       "opponent_id": "2e45d08b3f2f02c8"
     },
@@ -9841,13 +9841,13 @@
   "7ee0fd831c0fe7c3": {
     "best_win": {
       "date": "2026-05-02",
-      "elo": 1665,
+      "elo": 1664,
       "opponent": "Jack Della Maddalena",
       "opponent_id": "6b453bc35a823c3f"
     },
     "details_fetched_at": "2026-10-27T06:00:04Z",
     "dob": "1993-08-17",
-    "elo": 1725,
+    "elo": 1724,
     "elo_inactive": false,
     "elo_peak": 1742,
     "elo_provisional": false,
@@ -10149,7 +10149,7 @@
     "dob": null,
     "elo": 1527,
     "elo_inactive": false,
-    "elo_peak": 1581,
+    "elo_peak": 1580,
     "elo_provisional": false,
     "height_in": 69.0,
     "id": "814e5233e2acf2ee",
@@ -10317,7 +10317,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1997-01-22",
-    "elo": 1468,
+    "elo": 1467,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -10357,6 +10357,66 @@
       "w": 7
     },
     "stance": "Switch"
+  },
+  "849c5d9979df5357": {
+    "best_win": {
+      "date": "2024-10-26",
+      "elo": 1605,
+      "opponent": "Myktybek Orolbai",
+      "opponent_id": "bf2c8e01b07d3eb1"
+    },
+    "details_fetched_at": "2026-11-24T06:00:04Z",
+    "dob": "1992-10-03",
+    "elo": 1482,
+    "elo_inactive": false,
+    "elo_peak": 1577,
+    "elo_provisional": false,
+    "height_in": 67.0,
+    "id": "849c5d9979df5357",
+    "image": "images/849c5d9979df5357.webp",
+    "name": "Mateusz Rebecki",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 66.0,
+    "recent_fights": [
+      {
+        "date": "2026-08-01",
+        "event": "UFC Fight Night: Medic vs. Rodriguez",
+        "method": "KO/TKO",
+        "opponent": "Kyle Prepolec",
+        "opponent_id": "873626e5547b5235",
+        "result": "win",
+        "round": 1,
+        "time": "4:41"
+      },
+      {
+        "date": "2026-05-09",
+        "event": "UFC 328: Chimaev vs. Strickland",
+        "method": "SUB",
+        "opponent": "Grant Dawson",
+        "opponent_id": "99bd51917728c25d",
+        "result": "loss",
+        "round": 3,
+        "time": "4:42"
+      },
+      {
+        "date": "2025-10-25",
+        "event": "UFC 321: Aspinall vs. Gane",
+        "method": "M-DEC",
+        "opponent": "Ludovit Klein",
+        "opponent_id": "5b86d491d63890c5",
+        "result": "loss",
+        "round": 3,
+        "time": "5:00"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 5,
+      "nc": 0,
+      "w": 21
+    },
+    "stance": "Southpaw"
   },
   "85497ffd934ecf7e": {
     "best_win": {
@@ -11046,7 +11106,7 @@
   "8ebc3a8da015d70c": {
     "best_win": {
       "date": "2025-09-27",
-      "elo": 1532,
+      "elo": 1531,
       "opponent": "Andre Petroski",
       "opponent_id": "5f61780fe5e9b6d0"
     },
@@ -11234,7 +11294,7 @@
     "dob": "1989-07-31",
     "elo": 1517,
     "elo_inactive": false,
-    "elo_peak": 1574,
+    "elo_peak": 1573,
     "elo_provisional": false,
     "height_in": 73.0,
     "id": "902ec2cc48c8ae8a",
@@ -11982,7 +12042,7 @@
     },
     "details_fetched_at": "2026-11-15T00:17:03Z",
     "dob": "1991-07-27",
-    "elo": 1406,
+    "elo": 1405,
     "elo_inactive": false,
     "elo_peak": 1561,
     "elo_provisional": false,
@@ -12102,7 +12162,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1992-05-04",
-    "elo": 1594,
+    "elo": 1593,
     "elo_inactive": false,
     "elo_peak": 1596,
     "elo_provisional": false,
@@ -12654,7 +12714,7 @@
     "dob": "1987-10-18",
     "elo": 1567,
     "elo_inactive": false,
-    "elo_peak": 1630,
+    "elo_peak": 1629,
     "elo_provisional": false,
     "height_in": 72.0,
     "id": "a495f599e787614f",
@@ -12969,7 +13029,7 @@
     "dob": "1994-08-19",
     "elo": 1534,
     "elo_inactive": false,
-    "elo_peak": 1616,
+    "elo_peak": 1615,
     "elo_provisional": false,
     "height_in": 71.0,
     "id": "a845f0735bc67405",
@@ -13141,7 +13201,7 @@
   "aa72b0f831d0bfe5": {
     "best_win": {
       "date": "2020-02-29",
-      "elo": 1695,
+      "elo": 1694,
       "opponent": "Joseph Benavidez",
       "opponent_id": "80eacd4da0617c57"
     },
@@ -13372,7 +13432,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1581,
+    "elo": 1580,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -13546,7 +13606,7 @@
   "b08012bbe542592a": {
     "best_win": {
       "date": "2026-11-07",
-      "elo": 1635,
+      "elo": 1634,
       "opponent": "Virna Jandiroba",
       "opponent_id": "7dda2cf308f24a02"
     },
@@ -13660,6 +13720,66 @@
       "l": 5,
       "nc": 0,
       "w": 8
+    },
+    "stance": "Orthodox"
+  },
+  "b1de86d835638319": {
+    "best_win": {
+      "date": "2026-07-11",
+      "elo": 1436,
+      "opponent": "Kai Kamaka III",
+      "opponent_id": "eee0ef3e2b14816b"
+    },
+    "details_fetched_at": "2026-11-24T06:00:04Z",
+    "dob": "1999-06-30",
+    "elo": 1592,
+    "elo_inactive": false,
+    "elo_peak": null,
+    "elo_provisional": false,
+    "height_in": 69.0,
+    "id": "b1de86d835638319",
+    "image": "images/b1de86d835638319.webp",
+    "name": "Luke Riley",
+    "nickname": null,
+    "p4p_rank": null,
+    "reach_in": 69.0,
+    "recent_fights": [
+      {
+        "date": "2026-07-11",
+        "event": "UFC 329: McGregor vs. Holloway 2",
+        "method": "KO/TKO",
+        "opponent": "Kai Kamaka III",
+        "opponent_id": "eee0ef3e2b14816b",
+        "result": "win",
+        "round": 1,
+        "time": "3:03"
+      },
+      {
+        "date": "2026-03-21",
+        "event": "UFC Fight Night: Evloev vs. Murphy",
+        "method": "U-DEC",
+        "opponent": "Michael Aswell Jr.",
+        "opponent_id": "01c9e4013afce141",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2025-11-22",
+        "event": "UFC Fight Night: Tsarukyan vs. Hooker",
+        "method": "KO/TKO",
+        "opponent": "Bogdan Grad",
+        "opponent_id": "fb37795db81f93f3",
+        "result": "win",
+        "round": 2,
+        "time": "0:30"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 0,
+      "nc": 0,
+      "w": 14
     },
     "stance": "Orthodox"
   },
@@ -13946,7 +14066,7 @@
   "b6452706b373eea1": {
     "best_win": {
       "date": "2026-04-04",
-      "elo": 1634,
+      "elo": 1633,
       "opponent": "Chris Duncan",
       "opponent_id": "fd406a32a6fb3a29"
     },
@@ -14182,7 +14302,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1994-04-27",
-    "elo": 1550,
+    "elo": 1549,
     "elo_inactive": false,
     "elo_peak": 1707,
     "elo_provisional": false,
@@ -14302,7 +14422,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1987-05-01",
-    "elo": 1574,
+    "elo": 1573,
     "elo_inactive": false,
     "elo_peak": 1651,
     "elo_provisional": false,
@@ -14422,7 +14542,7 @@
     },
     "details_fetched_at": "2026-11-10T06:00:05Z",
     "dob": "1999-12-30",
-    "elo": 1499,
+    "elo": 1498,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -15769,7 +15889,7 @@
     "dob": "1995-11-13",
     "elo": 1413,
     "elo_inactive": false,
-    "elo_peak": 1413,
+    "elo_peak": 1412,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "d008d785f6347dc2",
@@ -16187,7 +16307,7 @@
     },
     "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1999-08-26",
-    "elo": 1625,
+    "elo": 1624,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -16241,7 +16361,7 @@
   "d661ce4da776fc20": {
     "best_win": {
       "date": "2025-12-06",
-      "elo": 1814,
+      "elo": 1813,
       "opponent": "Merab Dvalishvili",
       "opponent_id": "c03520b5c88ed6b4"
     },
@@ -16367,7 +16487,7 @@
     },
     "details_fetched_at": "2026-11-17T06:00:05Z",
     "dob": "1996-02-19",
-    "elo": 1609,
+    "elo": 1608,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -16719,7 +16839,7 @@
     "dob": "1997-04-11",
     "elo": 1547,
     "elo_inactive": false,
-    "elo_peak": 1548,
+    "elo_peak": 1547,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "d9a56ecb6e94f02e",
@@ -16771,13 +16891,13 @@
   "dd6103dd7127db1d": {
     "best_win": {
       "date": "2026-10-17",
-      "elo": 1582,
+      "elo": 1581,
       "opponent": "Joaquin Buckley",
       "opponent_id": "b9437600497350f3"
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1991-11-07",
-    "elo": 1697,
+    "elo": 1696,
     "elo_inactive": false,
     "elo_peak": 1699,
     "elo_provisional": false,
@@ -16897,7 +17017,7 @@
     },
     "details_fetched_at": "2026-11-21T20:17:03Z",
     "dob": "1991-02-21",
-    "elo": 1447,
+    "elo": 1446,
     "elo_inactive": false,
     "elo_peak": 1752,
     "elo_provisional": false,
@@ -17171,7 +17291,7 @@
   "e2be0c1a9b886d92": {
     "best_win": {
       "date": "2026-08-22",
-      "elo": 1561,
+      "elo": 1560,
       "opponent": "Mason Jones",
       "opponent_id": "f6ad6a1e4d600e0d"
     },
@@ -17297,7 +17417,7 @@
     },
     "details_fetched_at": "2026-11-01T06:00:04Z",
     "dob": "1992-11-11",
-    "elo": 1604,
+    "elo": 1603,
     "elo_inactive": false,
     "elo_peak": 1605,
     "elo_provisional": false,
@@ -17357,7 +17477,7 @@
     },
     "details_fetched_at": "2026-11-08T20:17:04Z",
     "dob": "1999-09-30",
-    "elo": 1434,
+    "elo": 1433,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": true,
@@ -17587,7 +17707,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1666,
+    "elo": 1665,
     "elo_inactive": false,
     "elo_peak": 1789,
     "elo_provisional": false,
@@ -17707,7 +17827,7 @@
     },
     "details_fetched_at": "2026-11-20T06:00:05Z",
     "dob": "1998-07-16",
-    "elo": 1540,
+    "elo": 1539,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -17922,7 +18042,7 @@
     },
     "details_fetched_at": "2026-10-25T18:18:58Z",
     "dob": null,
-    "elo": 1563,
+    "elo": 1562,
     "elo_inactive": false,
     "elo_peak": 1714,
     "elo_provisional": false,
@@ -17982,7 +18102,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1991-04-10",
-    "elo": 1507,
+    "elo": 1506,
     "elo_inactive": false,
     "elo_peak": 1580,
     "elo_provisional": false,
@@ -18249,7 +18369,7 @@
     "dob": "1995-12-28",
     "elo": 1336,
     "elo_inactive": false,
-    "elo_peak": 1446,
+    "elo_peak": 1445,
     "elo_provisional": false,
     "height_in": 68.0,
     "id": "eb393afdbe3293d5",
@@ -18641,7 +18761,7 @@
   "f139d6836efd43dd": {
     "best_win": {
       "date": "2026-05-09",
-      "elo": 1661,
+      "elo": 1660,
       "opponent": "Joel Alvarez",
       "opponent_id": "58bbef3770bb2dfc"
     },
@@ -18877,7 +18997,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "1995-11-27",
-    "elo": 1546,
+    "elo": 1545,
     "elo_inactive": false,
     "elo_peak": 1602,
     "elo_provisional": false,
@@ -18928,6 +19048,66 @@
     },
     "stance": "Switch"
   },
+  "f2f140ce7532e327": {
+    "best_win": {
+      "date": "2024-09-07",
+      "elo": 1586,
+      "opponent": "Yizha",
+      "opponent_id": "3f11fd1751fa83b1"
+    },
+    "details_fetched_at": "2026-11-24T06:00:04Z",
+    "dob": "1996-11-28",
+    "elo": 1533,
+    "elo_inactive": true,
+    "elo_peak": null,
+    "elo_provisional": false,
+    "height_in": 69.0,
+    "id": "f2f140ce7532e327",
+    "image": "images/f2f140ce7532e327.webp",
+    "name": "Gabriel Santos",
+    "nickname": "Mosquitinho",
+    "p4p_rank": null,
+    "reach_in": 70.0,
+    "recent_fights": [
+      {
+        "date": "2025-02-08",
+        "event": "UFC 312: Du Plessis vs. Strickland 2",
+        "method": "SUB",
+        "opponent": "Jack Jenkins",
+        "opponent_id": "a9da3158dd2c2b5a",
+        "result": "win",
+        "round": 3,
+        "time": "2:06"
+      },
+      {
+        "date": "2024-09-07",
+        "event": "UFC Fight Night: Burns vs. Brady",
+        "method": "U-DEC",
+        "opponent": "Yizha",
+        "opponent_id": "3f11fd1751fa83b1",
+        "result": "win",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "date": "2023-06-24",
+        "event": "UFC Fight Night: Emmett vs. Topuria",
+        "method": "KO/TKO",
+        "opponent": "David Onama",
+        "opponent_id": "ffe9703408fb5964",
+        "result": "loss",
+        "round": 2,
+        "time": "4:13"
+      }
+    ],
+    "record": {
+      "d": 0,
+      "l": 2,
+      "nc": 0,
+      "w": 12
+    },
+    "stance": "Orthodox"
+  },
   "f53d4f21d1b5f2dc": {
     "best_win": {
       "date": "2019-02-23",
@@ -18937,7 +19117,7 @@
     },
     "details_fetched_at": "2026-11-20T06:00:05Z",
     "dob": "1985-01-18",
-    "elo": 1538,
+    "elo": 1537,
     "elo_inactive": false,
     "elo_peak": 1711,
     "elo_provisional": false,
@@ -19047,7 +19227,7 @@
     },
     "details_fetched_at": "2026-11-20T06:00:05Z",
     "dob": "1999-03-05",
-    "elo": 1595,
+    "elo": 1594,
     "elo_inactive": false,
     "elo_peak": null,
     "elo_provisional": false,
@@ -19151,7 +19331,7 @@
   "f7e856a73c96048e": {
     "best_win": {
       "date": "2026-07-11",
-      "elo": 1374,
+      "elo": 1373,
       "opponent": "Elisha Ellison",
       "opponent_id": "87e4a3a5080ee7ce"
     },
@@ -19201,7 +19381,7 @@
   "f96856f9d69fd7e4": {
     "best_win": {
       "date": "2025-09-06",
-      "elo": 1510,
+      "elo": 1509,
       "opponent": "Brad Tavares",
       "opponent_id": "0c6d9ea8306c029e"
     },
@@ -19627,7 +19807,7 @@
     },
     "details_fetched_at": "2026-11-15T02:17:03Z",
     "dob": "1990-07-09",
-    "elo": 1490,
+    "elo": 1489,
     "elo_inactive": false,
     "elo_peak": 1553,
     "elo_provisional": false,
