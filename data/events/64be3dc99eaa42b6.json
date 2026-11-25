@@ -65,6 +65,58 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Welterweight"
+    },
+    {
+      "blue": "1f8cd7634e8286ff",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "2ef6f66d74836ce9",
+      "red": "04c8b08b16a5b99e",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "147e70aa6cc48cfc",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "4466a5d9a5fe4bfa",
+      "red": "8e9eb3fc86db0f7d",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
+    },
+    {
+      "blue": "23a81656507b56a3",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "38936b0384021395",
+      "red": "f7e856a73c96048e",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Heavyweight"
+    },
+    {
+      "blue": "025c1ee70b2cedf4",
+      "elo": null,
+      "finish_tier": "high",
+      "form": null,
+      "id": "517f7520dc942f24",
+      "red": "cd0dfd9846bd03b9",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Middleweight"
     }
   ],
   "id": "64be3dc99eaa42b6",

@@ -210,7 +210,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1689,
+      "elo": 1688,
       "id": "239d8e5359022f3b",
       "name": "Kevin Vallejos",
       "p4p_rank": null,
@@ -458,7 +458,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1651,
+      "elo": 1650,
       "id": "f166e93d04a8c274",
       "name": "Diego Lopes",
       "p4p_rank": null,
@@ -730,7 +730,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1620,
+      "elo": 1619,
       "id": "97cf1a2c7c5e7889",
       "name": "Steve Garcia",
       "p4p_rank": null,
@@ -746,7 +746,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1618,
+      "elo": 1617,
       "id": "eff9074bc066f0f2",
       "name": "Bia Mesquita",
       "p4p_rank": null,
@@ -802,7 +802,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1616,
+      "elo": 1615,
       "id": "e463ce0a2ca474f4",
       "name": "Ryan Gandra",
       "p4p_rank": null,
@@ -1042,7 +1042,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1595,
+      "elo": 1594,
       "id": "8b6e5dc2ba1edbe7",
       "name": "Sam Patterson",
       "p4p_rank": null,
@@ -1066,7 +1066,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1594,
+      "elo": 1593,
       "id": "c85bad793cd14e28",
       "name": "Marcio Barbosa",
       "p4p_rank": null,
@@ -1122,7 +1122,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1592,
+      "elo": 1591,
       "id": "b1de86d835638319",
       "name": "Luke Riley",
       "p4p_rank": null,
@@ -1170,7 +1170,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1587,
+      "elo": 1586,
       "id": "2f43a3e82661fa99",
       "name": "Rei Tsuruya",
       "p4p_rank": null,
@@ -1314,7 +1314,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1576,
+      "elo": 1575,
       "id": "530af2900b5a1693",
       "name": "Dom Mar Fan",
       "p4p_rank": null,
@@ -1578,7 +1578,7 @@
     },
     {
       "division": "Women's Strawweight",
-      "elo": 1557,
+      "elo": 1556,
       "id": "77ba5b2939c4018b",
       "name": "Carol Foro",
       "p4p_rank": null,
@@ -1690,7 +1690,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1548,
+      "elo": 1547,
       "id": "d247691a6c0e9034",
       "name": "Cub Swanson",
       "p4p_rank": null,
@@ -2314,7 +2314,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1515,
+      "elo": 1514,
       "id": "d8c811df0386d5e8",
       "name": "Rinya Nakamura",
       "p4p_rank": null,
@@ -3962,7 +3962,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1418,
+      "elo": 1419,
       "id": "3bc3f60b21cddc6a",
       "name": "Azamat Bekoev",
       "p4p_rank": null,
@@ -4290,7 +4290,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1389,
+      "elo": 1390,
       "id": "29162be25ebef5f0",
       "name": "Luis Gurule",
       "p4p_rank": null,
@@ -4514,7 +4514,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1373,
+      "elo": 1374,
       "id": "095854a135e6db55",
       "name": "Marcus Buchecha",
       "p4p_rank": null,
@@ -4698,7 +4698,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1359,
+      "elo": 1360,
       "id": "e6679e38e7fab7a8",
       "name": "Jamie Siraj",
       "p4p_rank": null,
@@ -4802,7 +4802,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1350,
+      "elo": 1351,
       "id": "be9bdec19b7e9ffe",
       "name": "Austen Lane",
       "p4p_rank": null,
@@ -4938,7 +4938,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1336,
+      "elo": 1337,
       "id": "c4d039123e62f6a9",
       "name": "Dennis Buzukja",
       "p4p_rank": null,
@@ -5169,7 +5169,7 @@
       "provisional": false
     }
   ],
-  "as_of": "2026-11-24",
+  "as_of": "2026-11-25",
   "p4p": {
     "men": [
       {

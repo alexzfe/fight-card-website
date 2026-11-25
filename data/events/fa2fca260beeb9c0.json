@@ -78,6 +78,32 @@
       "tier_frozen_at": null,
       "title_fight": false,
       "weight_class": "Light Heavyweight"
+    },
+    {
+      "blue": "ca80d72da81d7224",
+      "elo": null,
+      "finish_tier": "low",
+      "form": null,
+      "id": "0bd7e99a90215a2e",
+      "red": "e3964ece586e0635",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Women's Bantamweight"
+    },
+    {
+      "blue": "bf60dd3256801649",
+      "elo": null,
+      "finish_tier": null,
+      "form": null,
+      "id": "ec9714f18c5015fc",
+      "red": "b4ebc1539a08054b",
+      "result": null,
+      "segment": null,
+      "tier_frozen_at": null,
+      "title_fight": false,
+      "weight_class": "Flyweight"
     }
   ],
   "id": "fa2fca260beeb9c0",
