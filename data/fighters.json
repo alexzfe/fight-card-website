@@ -68,7 +68,7 @@
     },
     "details_fetched_at": "2026-11-25T06:00:07Z",
     "dob": "1997-08-20",
-    "elo": 1690,
+    "elo": 1689,
     "elo_inactive": false,
     "elo_peak": 1702,
     "elo_provisional": false,
@@ -1261,7 +1261,7 @@
   "1091d4d957141094": {
     "best_win": {
       "date": "2023-03-11",
-      "elo": 1587,
+      "elo": 1588,
       "opponent": "Ryan Spann",
       "opponent_id": "a67f5afa8d6a1b80"
     },
@@ -1601,7 +1601,7 @@
   "140567899d98978a": {
     "best_win": {
       "date": "2026-09-19",
-      "elo": 1384,
+      "elo": 1385,
       "opponent": "Tai Tuivasa",
       "opponent_id": "c62fbc117d57b943"
     },
@@ -1661,7 +1661,7 @@
   "147e70aa6cc48cfc": {
     "best_win": {
       "date": "2026-08-15",
-      "elo": 1548,
+      "elo": 1549,
       "opponent": "Vicente Luque",
       "opponent_id": "6d4b63c767106d3a"
     },
@@ -1947,7 +1947,7 @@
     },
     "details_fetched_at": "2026-10-28T08:08:48Z",
     "dob": "2001-10-10",
-    "elo": 1777,
+    "elo": 1776,
     "elo_inactive": false,
     "elo_peak": 1783,
     "elo_provisional": false,
@@ -4039,7 +4039,7 @@
     "dob": "1989-11-11",
     "elo": 1527,
     "elo_inactive": false,
-    "elo_peak": 1582,
+    "elo_peak": 1583,
     "elo_provisional": false,
     "height_in": 66.0,
     "id": "3143bf892608139a",
@@ -5112,7 +5112,7 @@
     },
     "details_fetched_at": "2026-11-15T04:17:03Z",
     "dob": "1993-01-16",
-    "elo": 1714,
+    "elo": 1713,
     "elo_inactive": false,
     "elo_peak": 1746,
     "elo_provisional": false,
@@ -5351,7 +5351,7 @@
   "442c9011034ae1fd": {
     "best_win": {
       "date": "2025-04-26",
-      "elo": 1692,
+      "elo": 1693,
       "opponent": "Carlos Prates",
       "opponent_id": "7ee0fd831c0fe7c3"
     },
@@ -6616,7 +6616,7 @@
   "5442f1bc4b47eaf3": {
     "best_win": {
       "date": "2021-12-04",
-      "elo": 1659,
+      "elo": 1660,
       "opponent": "Brendan Allen",
       "opponent_id": "2f181c0467965b98"
     },
@@ -6995,9 +6995,9 @@
       "opponent": "Asu Almabayev",
       "opponent_id": "8d3273573b85be09"
     },
-    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "details_fetched_at": "2026-11-26T06:00:06Z",
     "dob": "1993-11-14",
-    "elo": 1683,
+    "elo": 1682,
     "elo_inactive": false,
     "elo_peak": 1694,
     "elo_provisional": false,
@@ -9186,7 +9186,7 @@
   "74939a16c7b56f33": {
     "best_win": {
       "date": "2026-05-16",
-      "elo": 1501,
+      "elo": 1502,
       "opponent": "Malcolm Wellmaker",
       "opponent_id": "2e45d08b3f2f02c8"
     },
@@ -10015,7 +10015,7 @@
       "opponent": "Jack Della Maddalena",
       "opponent_id": "6b453bc35a823c3f"
     },
-    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "details_fetched_at": "2026-11-26T06:00:06Z",
     "dob": "1993-08-17",
     "elo": 1724,
     "elo_inactive": false,
@@ -12212,7 +12212,7 @@
     },
     "details_fetched_at": "2026-11-15T00:17:03Z",
     "dob": "1991-07-27",
-    "elo": 1405,
+    "elo": 1406,
     "elo_inactive": false,
     "elo_peak": 1561,
     "elo_provisional": false,
@@ -13199,7 +13199,7 @@
     "dob": "1994-08-19",
     "elo": 1534,
     "elo_inactive": false,
-    "elo_peak": 1615,
+    "elo_peak": 1616,
     "elo_provisional": false,
     "height_in": 71.0,
     "id": "a845f0735bc67405",
@@ -15345,7 +15345,7 @@
       "opponent": "Sean Brady",
       "opponent_id": "45f7cb591c3ab00b"
     },
-    "details_fetched_at": "2026-10-27T06:00:04Z",
+    "details_fetched_at": "2026-11-26T06:00:06Z",
     "dob": "1999-06-24",
     "elo": 1724,
     "elo_inactive": true,
@@ -16194,7 +16194,7 @@
     "dob": "1995-11-13",
     "elo": 1413,
     "elo_inactive": false,
-    "elo_peak": 1412,
+    "elo_peak": 1413,
     "elo_provisional": false,
     "height_in": 70.0,
     "id": "d008d785f6347dc2",
@@ -19182,7 +19182,7 @@
     },
     "details_fetched_at": "2026-11-25T06:00:07Z",
     "dob": "1992-05-13",
-    "elo": 1672,
+    "elo": 1671,
     "elo_inactive": false,
     "elo_peak": 1723,
     "elo_provisional": false,
@@ -19696,7 +19696,7 @@
   "f7e856a73c96048e": {
     "best_win": {
       "date": "2026-07-11",
-      "elo": 1373,
+      "elo": 1374,
       "opponent": "Elisha Ellison",
       "opponent_id": "87e4a3a5080ee7ce"
     },

@@ -10,7 +10,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1777,
+      "elo": 1776,
       "id": "17e97649403ba428",
       "name": "Joshua Van",
       "p4p_rank": 2,
@@ -114,7 +114,7 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1714,
+      "elo": 1713,
       "id": "4126a78111c0855a",
       "name": "Caio Borralho",
       "p4p_rank": 14,
@@ -202,7 +202,7 @@
     },
     {
       "division": "Welterweight",
-      "elo": 1690,
+      "elo": 1689,
       "id": "01641ba5df0c69b0",
       "name": "Gabriel Bonfim",
       "p4p_rank": null,
@@ -250,7 +250,7 @@
     },
     {
       "division": "Flyweight",
-      "elo": 1683,
+      "elo": 1682,
       "id": "5d1b7e3dd9e11074",
       "name": "Manel Kape",
       "p4p_rank": null,
@@ -338,7 +338,7 @@
     },
     {
       "division": "Heavyweight",
-      "elo": 1672,
+      "elo": 1671,
       "id": "f14cf73e51b29254",
       "name": "Sergei Pavlovich",
       "p4p_rank": null,
@@ -530,7 +530,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1645,
+      "elo": 1644,
       "id": "6b0a6def604de298",
       "name": "Tommy McMillen",
       "p4p_rank": null,
@@ -1018,7 +1018,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1596,
+      "elo": 1595,
       "id": "d549cefc7c54ab78",
       "name": "Reinier de Ridder",
       "p4p_rank": null,
@@ -1538,7 +1538,7 @@
     },
     {
       "division": "Bantamweight",
-      "elo": 1561,
+      "elo": 1560,
       "id": "65f09bacd3957381",
       "name": "Cory Sandhagen",
       "p4p_rank": null,
@@ -4090,7 +4090,7 @@
     },
     {
       "division": "Women's Bantamweight",
-      "elo": 1405,
+      "elo": 1406,
       "id": "9cdd2da1a9104a0b",
       "name": "Macy Chiasson",
       "p4p_rank": null,
@@ -4730,7 +4730,7 @@
     },
     {
       "division": "Light Heavyweight",
-      "elo": 1355,
+      "elo": 1356,
       "id": "7e9b36a9847db116",
       "name": "Kevin Christian",
       "p4p_rank": null,
@@ -4810,7 +4810,7 @@
     },
     {
       "division": "Featherweight",
-      "elo": 1350,
+      "elo": 1351,
       "id": "21b813b919776d90",
       "name": "Erik Silva",
       "p4p_rank": null,
@@ -4898,7 +4898,7 @@
     },
     {
       "division": "Lightweight",
-      "elo": 1342,
+      "elo": 1343,
       "id": "52b6bf4528130e86",
       "name": "Shem Rock",
       "p4p_rank": null,
@@ -5162,14 +5162,14 @@
     },
     {
       "division": "Middleweight",
-      "elo": 1255,
+      "elo": 1256,
       "id": "baa9be02c3e3e038",
       "name": "Jose Daniel Medina",
       "p4p_rank": null,
       "provisional": false
     }
   ],
-  "as_of": "2026-11-25",
+  "as_of": "2026-11-26",
   "p4p": {
     "men": [
       {
@@ -5182,7 +5182,7 @@
       },
       {
         "division": "Flyweight",
-        "elo": 1777,
+        "elo": 1776,
         "id": "17e97649403ba428",
         "image": "images/17e97649403ba428.webp",
         "name": "Joshua Van",
@@ -5278,7 +5278,7 @@
       },
       {
         "division": "Middleweight",
-        "elo": 1714,
+        "elo": 1713,
         "id": "4126a78111c0855a",
         "image": "images/4126a78111c0855a.webp",
         "name": "Caio Borralho",
